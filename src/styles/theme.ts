@@ -49,7 +49,7 @@ const createFontStyle = (
   `;
 };
 
-// 컬러보드 디자인 시스템 반영 (세컨더리 조절)
+// 컬러보드 디자인 시스템 반영 (세컨더리 보류)
 const colors = {
   primary: {
     VT500: '#973EE9',
@@ -78,28 +78,8 @@ const colors = {
   },
 };
 
-// TODO: 디자인 가이드에 맞춰 폰트 두께 및 사이즈 관리 (아래는 예시 (지피티한테 부탁한 더미))
+// 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
 const fonts = {
-  display: {
-    large: createFontStyle(
-      { tablet: 3.5, mobile: 2.5 }, 
-      800, 
-      { tablet: 3.85, mobile: 2.75 }, 
-      -0.07
-    ),
-    medium: createFontStyle(
-      { tablet: 2.875, mobile: 2 }, 
-      700, 
-      { tablet: 3.3, mobile: 2.3 }, 
-      -0.0575
-    ),
-    small: createFontStyle(
-      { tablet: 2.25, mobile: 1.75 }, 
-      700, 
-      { tablet: 2.7, mobile: 2.1 }, 
-      -0.045
-    ),
-  },
   heading: {
     Extra: createFontStyle(
       { tablet: 3, mobile: 1.5 }, 
@@ -108,15 +88,15 @@ const fonts = {
       { tablet: -0.06, mobile: -0.03 }
     ),  
     h1: createFontStyle(
-      { tablet: 1.75, mobile: 1.25 }, 
+      { tablet: 1.75, mobile: 1.375 }, 
       600,
-      { tablet: 2.625, mobile: 1.875 },
-      { tablet: -0.035, mobile: -0.025 }
+      { tablet: 2.625, mobile: 2 },
+      { tablet: -0.035, mobile: -0.0275 }
     ),      
     h2: createFontStyle(
       { tablet: 1.25, mobile: 1.125 }, 
       600, 
-      { tablet: 2, mobile: 1.69 }, 
+      { tablet: 2, mobile: 1.75 }, 
       { tablet: -0.025, mobile: -0.0225 }
     ),     
     h3: createFontStyle(
@@ -134,55 +114,59 @@ const fonts = {
     h5: createFontStyle(
       { tablet: 1.125, mobile: 0.875 }, 
       600, 
-      { tablet: 1.63, mobile: 1.31 }, 
+      { tablet: 1.63, mobile: 1.25 }, 
       { tablet: -0.0225, mobile: -0.0175 }
     ),   
           
   },
   body: {
-    large: createFontStyle(
+    l500: createFontStyle(
       { tablet: 1.125, mobile: 1 }, 
-      400, 
-      { tablet: 1.74, mobile: 1.5 }, 
+      500, 
+      { tablet: 1.75, mobile: 1.5 }, 
       { tablet: -0.0225, mobile: -0.02 }
     ),
-    medium: createFontStyle(
-      { tablet: 1, mobile: 0.875 }, 
+    l400: createFontStyle(
+      { tablet: 1.125, mobile: 1 }, 
       400, 
-      { tablet: 1.5, mobile: 1.31 }, 
-      { tablet: -0.02, mobile: -0.0175 }
+      { tablet: 1.75, mobile: 1.5 }, 
+      { tablet: -0.0225, mobile: -0.02 }
     ),
-    small: createFontStyle(
-      { tablet: 0.875, mobile: 0.75 }, 
-      400, 
-      { tablet: 1.27, mobile: 1.125 }, 
-      { tablet: -0.0175, mobile: -0.015 }
-    ),
-    xsmall: createFontStyle(
-      { tablet: 0.75, mobile: 0.625 }, 
-      400, 
-      { tablet: 1.05, mobile: 0.9375 }, 
-      { tablet: -0.015, mobile: -0.0125 }
-    ),
-  },
-  label: {
-    large: createFontStyle(
+    m500: createFontStyle(
       { tablet: 1, mobile: 0.875 }, 
       500, 
-      { tablet: 1.5, mobile: 1.31 }, 
+      { tablet: 1.5, mobile: 1.25 }, 
       { tablet: -0.02, mobile: -0.0175 }
     ),
-    medium: createFontStyle(
-      { tablet: 0.875, mobile: 0.75 }, 
-      500, 
-      { tablet: 1.27, mobile: 1.125 }, 
-      { tablet: -0.0175, mobile: -0.015 }
+    m400: createFontStyle(
+      { tablet: 1, mobile: 0.875 }, 
+      400, 
+      { tablet: 1.5, mobile: 1.25 }, 
+      { tablet: -0.02, mobile: -0.0175 }
     ),
-    small: createFontStyle(
-      { tablet: 0.75, mobile: 0.625 }, 
+    r500: createFontStyle(
+      { tablet: 0.875, mobile: 0.8125 }, 
       500, 
-      { tablet: 1.05, mobile: 0.9375 }, 
-      { tablet: -0.015, mobile: -0.0125 }
+      { tablet: 1.25, mobile: 1.125 }, 
+      { tablet: -0.0175, mobile: -0.01625}
+    ),
+    r400: createFontStyle(
+      { tablet: 0.875, mobile: 0.8125 }, 
+      400, 
+      { tablet: 1.25, mobile: 1.125 }, 
+      { tablet: -0.0175, mobile: -0.01625}
+    ),
+    s500: createFontStyle(
+      { tablet: 0.75, mobile: 0.75 }, 
+      500, 
+      { tablet: 1.125, mobile: 0.125 }, 
+      { tablet: -0.015, mobile: -0.015 }
+    ),
+    s400: createFontStyle(
+      { tablet: 0.75, mobile: 0.75 }, 
+      400, 
+      { tablet: 1.125, mobile: 0.125 }, 
+      { tablet: -0.015, mobile: -0.015 }
     ),
   },
 };
@@ -204,12 +188,27 @@ const effects = {
   },
 };
 
+// 반응형 레이아웃 공통 스타일
+const layouts = {
+  wideCommon: css`
+    display: flex;
+    width: 100vw;
+    height: 67.5rem;
+    padding: 0 2rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    flex-shrink: 0;
+  `,
+};
+
 // TODO: 반응형을 위한 브레이크 포인트 정의 - 기기 단위가 아닌 화면 사이즈 단위로 나누기! (디자인 가이드 참고해서 수정)
 const breakpoints = {
   mobile: '768px',
   tablet: '1024px',
   desktop: '1280px',
-  wide: '1440px',
+  wide: '1920px',
 } as const;
 
 const media = {
@@ -224,6 +223,7 @@ export const theme = {
   colors,
   fonts,
   effects,
+  layouts,
   breakpoints,
   media,
 } as const;
