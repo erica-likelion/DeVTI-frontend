@@ -114,6 +114,23 @@ const withShade = (color: string, amount: number) => {
   return `#${shadeR.toString(16).padStart(2, '0')}${shadeG.toString(16).padStart(2, '0')}${shadeB.toString(16).padStart(2, '0')}`;
 };
 
+// Shape 유틸리티 (border-radius)
+const borders = {
+  hard: '0.5rem',
+  sharp: '0.75rem',
+  soft: '1.5rem',
+  round: '2.25rem',
+} as const;
+
+// System 컬러 유틸리티 (테두리 컬러)
+const systems = {
+  default: '#D0D2DC',
+  active: '#01B777',
+  success: '#3D85FF',
+  error: '#EF5D58',
+  warning: '#EFB058',
+} as const;
+
 // 반응형 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
 const fonts = {
   heading: {
@@ -287,6 +304,8 @@ export const theme = {
   effects,
   layouts,
   media,
+  borders,
+  systems,
   withOpacity,
   withTint,
   withShade,
