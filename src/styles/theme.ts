@@ -235,7 +235,7 @@ const layouts = {
   `,
 };
 
-// 반응형 미디어 쿼리 정의
+// 반응형 미디어 쿼리 정의 (view point range 기준 정의)
 const media = {
   mobile: `@media (min-width: 360px) and (max-width: 719px)`,
   tablet: `@media (min-width: 720px) and (max-width: 1439px)`,
@@ -243,13 +243,21 @@ const media = {
   wide: `@media (min-width: 1920px)`,
   hover: '@media (hover: hover) and (pointer: fine)',
 } as const;
-
+// 컬러 opacity 유틸리티
+const withOpacity = (color: string, opacity: number) => {
+  const hex = color.replace('#', '');
+  const r = parseInt(hex.substr(0, 2), 16);
+  const g = parseInt(hex.substr(2, 2), 16);
+  const b = parseInt(hex.substr(4, 2), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`;
+};
 export const theme = {
   colors,
   fonts,
   effects,
   layouts,
   media,
+  withOpacity,
 } as const;
 
 export type ThemeType = typeof theme;
