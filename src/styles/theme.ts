@@ -75,6 +75,12 @@ const colors = {
     gray900: '#3B3F48',
     black: '#19181D',
   },
+  transparents: {
+    BL100: 'var(--Colors-Transparent-BL100, rgba(25, 24, 29, 0.10))',
+    BL200: 'var(--Colors-Transparent-BL200, rgba(25, 24, 29, 0.20))',
+    WH200: 'var(--Colors-Transparent-WH200, rgba(252, 252, 255, 0.20))',
+    WH300: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.30))',
+  },
 };
 
 // 컬러 opacity 유틸리티
@@ -224,16 +230,19 @@ const fonts = {
   },
 };
 
-// TODO: 디자인 반영하여 이팩트 조절
+// dropshadows / 배경 블러: Backdrop blur / gradients
 const effects = {
-  shadows: {
-   
+  dropShadows: {
+    DS100: '0 0 4px 0 var(--Colors-Gray-Scale-GY100, #EEF0F5)',
+    DS200: '0 1px 12px 0 var(--Colors-Gray-Scale-GY200, #E1E4EB)',
+    DS300: '0 2px 18px 0 var(--Colors-Gray-Scale-GY300, #D0D2DC)',
   },
-  blur: {
-   
-  },
+  
   backdropBlur: {
-   
+    BG100: 'backdrop-filter: blur(4px)',
+    BG200: 'backdrop-filter: blur(8px)',
+    BG300: 'backdrop-filter: blur(16px)',
+    BG400: 'backdrop-filter: blur(24px)',
   },
   gradients: {
     primary: 'linear-gradient(83deg, var(--Colors-Primary-VT500, #973EE9) 9.02%, var(--Colors-Secondary-MT500, #66D7BC) 90.81%)',
