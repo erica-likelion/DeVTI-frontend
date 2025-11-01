@@ -49,8 +49,8 @@ export const InfoBox = styled.div`
       color: ${({ theme }) => theme.colors.grayScale.gray700};
       margin-bottom: 0.5rem;
       padding-left: 0.5rem;
-    }
   }
+
 `;
 
 export const Note = styled.div`
