@@ -77,6 +77,43 @@ const colors = {
   },
 };
 
+// 컬러 opacity 유틸리티
+const withOpacity = (color: string, opacity: number) => {
+  const hex = color.replace('#', '');
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`;
+};
+
+// 컬러 Tints 유틸리티 (기본 컬러에 white 단계별로 추가)
+const withTint = (color: string, amount: number) => {
+  const hex = color.replace('#', '');
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  
+  const tintR = Math.round(r + (255 - r) * (amount / 100));
+  const tintG = Math.round(g + (255 - g) * (amount / 100));
+  const tintB = Math.round(b + (255 - b) * (amount / 100));
+  
+  return `#${tintR.toString(16).padStart(2, '0')}${tintG.toString(16).padStart(2, '0')}${tintB.toString(16).padStart(2, '0')}`;
+};
+
+// 컬러 Shadows 유틸리티 (기본 컬러에 black 단계별로 추가)
+const withShade = (color: string, amount: number) => {
+  const hex = color.replace('#', '');
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  
+  const shadeR = Math.round(r * (1 - amount / 100));
+  const shadeG = Math.round(g * (1 - amount / 100));
+  const shadeB = Math.round(b * (1 - amount / 100));
+  
+  return `#${shadeR.toString(16).padStart(2, '0')}${shadeG.toString(16).padStart(2, '0')}${shadeB.toString(16).padStart(2, '0')}`;
+};
+
 // 반응형 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
 const fonts = {
   heading: {
@@ -243,14 +280,7 @@ const media = {
   wide: `@media (min-width: 1920px)`,
   hover: '@media (hover: hover) and (pointer: fine)',
 } as const;
-// 컬러 opacity 유틸리티
-const withOpacity = (color: string, opacity: number) => {
-  const hex = color.replace('#', '');
-  const r = parseInt(hex.substr(0, 2), 16);
-  const g = parseInt(hex.substr(2, 2), 16);
-  const b = parseInt(hex.substr(4, 2), 16);
-  return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`;
-};
+
 export const theme = {
   colors,
   fonts,
@@ -258,6 +288,8 @@ export const theme = {
   layouts,
   media,
   withOpacity,
+  withTint,
+  withShade,
 } as const;
 
 export type ThemeType = typeof theme;
