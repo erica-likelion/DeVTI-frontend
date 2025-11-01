@@ -75,7 +75,67 @@ const colors = {
     gray900: '#3B3F48',
     black: '#19181D',
   },
+  transparents: {
+    BL100: 'var(--Colors-Transparent-BL100, rgba(25, 24, 29, 0.10))',
+    BL200: 'var(--Colors-Transparent-BL200, rgba(25, 24, 29, 0.20))',
+    WH200: 'var(--Colors-Transparent-WH200, rgba(252, 252, 255, 0.20))',
+    WH300: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.30))',
+  },
 };
+
+// 컬러 opacity 유틸리티
+const withOpacity = (color: string, opacity: number) => {
+  const hex = color.replace('#', '');
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`;
+};
+
+// 컬러 Tints 유틸리티 (기본 컬러에 white 단계별로 추가)
+const withTint = (color: string, amount: number) => {
+  const hex = color.replace('#', '');
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  
+  const tintR = Math.round(r + (255 - r) * (amount / 100));
+  const tintG = Math.round(g + (255 - g) * (amount / 100));
+  const tintB = Math.round(b + (255 - b) * (amount / 100));
+  
+  return `#${tintR.toString(16).padStart(2, '0')}${tintG.toString(16).padStart(2, '0')}${tintB.toString(16).padStart(2, '0')}`;
+};
+
+// 컬러 Shadows 유틸리티 (기본 컬러에 black 단계별로 추가)
+const withShade = (color: string, amount: number) => {
+  const hex = color.replace('#', '');
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  
+  const shadeR = Math.round(r * (1 - amount / 100));
+  const shadeG = Math.round(g * (1 - amount / 100));
+  const shadeB = Math.round(b * (1 - amount / 100));
+  
+  return `#${shadeR.toString(16).padStart(2, '0')}${shadeG.toString(16).padStart(2, '0')}${shadeB.toString(16).padStart(2, '0')}`;
+};
+
+// Shape 유틸리티 (border-radius)
+const borders = {
+  hard: '0.5rem',
+  sharp: '0.75rem',
+  soft: '1.5rem',
+  round: '2.25rem',
+} as const;
+
+// System 컬러 유틸리티 (테두리 컬러)
+const systems = {
+  default: '#D0D2DC',
+  active: '#01B777',
+  success: '#3D85FF',
+  error: '#EF5D58',
+  warning: '#EFB058',
+} as const;
 
 // 반응형 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
 const fonts = {
@@ -170,16 +230,19 @@ const fonts = {
   },
 };
 
-// TODO: 디자인 반영하여 이팩트 조절
+// dropshadows / 배경 블러: Backdrop blur / gradients
 const effects = {
-  shadows: {
-   
+  dropShadows: {
+    DS100: '0 0 4px 0 var(--Colors-Gray-Scale-GY100, #EEF0F5)',
+    DS200: '0 1px 12px 0 var(--Colors-Gray-Scale-GY200, #E1E4EB)',
+    DS300: '0 2px 18px 0 var(--Colors-Gray-Scale-GY300, #D0D2DC)',
   },
-  blur: {
-   
-  },
+  
   backdropBlur: {
-   
+    BG100: 'backdrop-filter: blur(4px)',
+    BG200: 'backdrop-filter: blur(8px)',
+    BG300: 'backdrop-filter: blur(16px)',
+    BG400: 'backdrop-filter: blur(24px)',
   },
   gradients: {
     primary: 'linear-gradient(83deg, var(--Colors-Primary-VT500, #973EE9) 9.02%, var(--Colors-Secondary-MT500, #66D7BC) 90.81%)',
@@ -235,7 +298,7 @@ const layouts = {
   `,
 };
 
-// 반응형 미디어 쿼리 정의
+// 반응형 미디어 쿼리 정의 (view point range 기준 정의)
 const media = {
   mobile: `@media (min-width: 360px) and (max-width: 719px)`,
   tablet: `@media (min-width: 720px) and (max-width: 1439px)`,
@@ -250,6 +313,11 @@ export const theme = {
   effects,
   layouts,
   media,
+  borders,
+  systems,
+  withOpacity,
+  withTint,
+  withShade,
 } as const;
 
 export type ThemeType = typeof theme;
