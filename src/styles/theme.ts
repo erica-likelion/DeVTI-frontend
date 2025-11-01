@@ -1,6 +1,5 @@
 import { css } from 'styled-components';
 
-/* 폰트 (완료) */
 const createFontStyle = (
   size: number | { wide?: number; desktop?: number; tablet?: number; mobile: number },
   weight: number,
@@ -78,7 +77,7 @@ const colors = {
   },
 };
 
-// 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
+// 반응형 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
 const fonts = {
   heading: {
     Extra: createFontStyle(
@@ -188,7 +187,7 @@ const effects = {
   },
 };
 
-// 반응형 레이아웃 공통 스타일
+// 반응형 레이아웃 공통 스타일 정의 (theme.layouts.mobileCommon 형태로 사용)
 const layouts = {
   wideCommon: css`
     display: flex;
@@ -201,21 +200,47 @@ const layouts = {
     gap: 1.25rem;
     flex-shrink: 0;
   `,
+  desktopCommon: css`
+    display: flex;
+    width: 100vw;
+    height: 67.5rem;
+    padding: 0 var(--General-Margin, 2rem);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    flex-shrink: 0;
+  `,
+  tabletCommon: css`
+    display: flex;
+    width: 100vw;
+    height: 67.5rem;
+    padding: 0 var(--General-Margin, 2rem);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    flex-shrink: 0;
+  `,
+  mobileCommon: css`
+    display: flex;
+    width: 100vw;
+    height: 67.5rem;
+    padding: 0 var(--General-Margin, 1rem);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    flex-shrink: 0;
+  `,
 };
 
-// TODO: 반응형을 위한 브레이크 포인트 정의 - 기기 단위가 아닌 화면 사이즈 단위로 나누기! (디자인 가이드 참고해서 수정)
-const breakpoints = {
-  mobile: '768px',
-  tablet: '1024px',
-  desktop: '1280px',
-  wide: '1920px',
-} as const;
-
+// 반응형 미디어 쿼리 정의
 const media = {
-  mobile: `@media (max-width: ${breakpoints.mobile})`,
-  tablet: `@media (min-width: ${breakpoints.mobile}) and (max-width: ${breakpoints.tablet})`,
-  desktop: `@media (min-width: ${breakpoints.tablet}) and (max-width: ${breakpoints.desktop})`,
-  wide: `@media (min-width: ${breakpoints.wide})`,
+  mobile: `@media (min-width: 360px) and (max-width: 719px)`,
+  tablet: `@media (min-width: 720px) and (max-width: 1439px)`,
+  desktop: `@media (min-width: 1440px) and (max-width: 1919px)`,
+  wide: `@media (min-width: 1920px)`,
   hover: '@media (hover: hover) and (pointer: fine)',
 } as const;
 
@@ -224,7 +249,6 @@ export const theme = {
   fonts,
   effects,
   layouts,
-  breakpoints,
   media,
 } as const;
 
