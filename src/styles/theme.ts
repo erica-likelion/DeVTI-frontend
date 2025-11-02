@@ -2,7 +2,7 @@ import { css } from 'styled-components';
 
 // 반응형 미디어 쿼리 정의 (view point range 기준 정의)
 const media = {
-  mobile: `@media (min-width: 360px) and (max-width: 719px)`,
+  mobile: `@media (max-width: 719px)`,
   tablet: `@media (min-width: 720px) and (max-width: 1439px)`,
   desktop: `@media (min-width: 1440px) and (max-width: 1919px)`,
   wide: `@media (min-width: 1920px)`,
