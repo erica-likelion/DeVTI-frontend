@@ -90,6 +90,13 @@ const colors = {
     WH200: 'var(--Colors-Transparent-WH200, rgba(252, 252, 255, 0.20))',
     WH300: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.30))',
   },
+  systems: {
+    default: '#D0D2DC',
+    active: '#01B777',
+    success: '#3D85FF',
+    error: '#EF5D58',
+    warning: '#EFB058',
+  },
 };
 
 // 컬러 opacity 유틸리티
@@ -137,14 +144,6 @@ const borders = {
   round: '2.25rem',
 } as const;
 
-// System 컬러 유틸리티 (테두리 컬러)
-const systems = {
-  default: '#D0D2DC',
-  active: '#01B777',
-  success: '#3D85FF',
-  error: '#EF5D58',
-  warning: '#EFB058',
-} as const;
 
 // 반응형 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
 const fonts = {
@@ -314,7 +313,6 @@ export const theme = {
   layouts,
   media,
   borders,
-  systems,
   withOpacity,
   withTint,
   withShade,
