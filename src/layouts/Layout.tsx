@@ -3,7 +3,6 @@ import * as S from './Layout.styles';
 import { useEffect } from 'react';
 import Footer from '../components/Footer/Footer';
 import TopNav from '../components/TopNav/TopNav';
-import AuthDebugger from '../components/AuthDebugger/AuthDebugger';
 
 /**
  * Main Layout component
@@ -30,7 +29,6 @@ export default function Layout() {
         <Outlet />
       </S.Main>
       <Footer />
-      <AuthDebugger />
       {/* TODO: 필요시 Modal, Toast 컴포넌트 추가 */}
     </S.Container>
   );
