@@ -10,7 +10,7 @@ import Layout from '@/layouts/Layout';
 // const HomePage = lazy(() => import('@/pages/HomePage'));
 
 // TODO: 실제 페이지 컴포넌트로 교체
-import HomePage from '@/pages/HomePage';
+import HomePage from '@/pages/home/HomePage';
 import LandingPage from '@/pages/landing/LandingPage';
 
 
