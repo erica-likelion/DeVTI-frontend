@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-/** 기본 폰트: 현재 pretendard (디자인에 맞춰 수정 예정) */
+/** 기본 폰트: pretendard 유지 */
 export const fontFaces = css`
   @font-face {
     font-family: Pretendard;

@@ -1,5 +1,14 @@
 import { css } from 'styled-components';
 
+// 반응형 미디어 쿼리 정의 (view point range 기준 정의)
+const media = {
+  mobile: `@media (max-width: 719px)`,
+  tablet: `@media (min-width: 720px) and (max-width: 1439px)`,
+  desktop: `@media (min-width: 1440px) and (max-width: 1919px)`,
+  wide: `@media (min-width: 1920px)`,
+  hover: '@media (hover: hover) and (pointer: fine)',
+} as const;
+
 const createFontStyle = (
   size: number | { wide?: number; desktop?: number; tablet?: number; mobile: number },
   weight: number,
@@ -81,6 +90,13 @@ const colors = {
     WH200: 'var(--Colors-Transparent-WH200, rgba(252, 252, 255, 0.20))',
     WH300: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.30))',
   },
+  systems: {
+    default: '#D0D2DC',
+    active: '#01B777',
+    success: '#3D85FF',
+    error: '#EF5D58',
+    warning: '#EFB058',
+  },
 };
 
 // 컬러 opacity 유틸리티
@@ -128,14 +144,6 @@ const borders = {
   round: '2.25rem',
 } as const;
 
-// System 컬러 유틸리티 (테두리 컬러)
-const systems = {
-  default: '#D0D2DC',
-  active: '#01B777',
-  success: '#3D85FF',
-  error: '#EF5D58',
-  warning: '#EFB058',
-} as const;
 
 // 반응형 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
 const fonts = {
@@ -298,15 +306,6 @@ const layouts = {
   `,
 };
 
-// 반응형 미디어 쿼리 정의 (view point range 기준 정의)
-const media = {
-  mobile: `@media (min-width: 360px) and (max-width: 719px)`,
-  tablet: `@media (min-width: 720px) and (max-width: 1439px)`,
-  desktop: `@media (min-width: 1440px) and (max-width: 1919px)`,
-  wide: `@media (min-width: 1920px)`,
-  hover: '@media (hover: hover) and (pointer: fine)',
-} as const;
-
 export const theme = {
   colors,
   fonts,
@@ -314,7 +313,6 @@ export const theme = {
   layouts,
   media,
   borders,
-  systems,
   withOpacity,
   withTint,
   withShade,

@@ -3,7 +3,7 @@
  * 라우터들을 별도 파일에 분리하는게 어떨까해서 
  * 파일을 main.tsx랑 AppRouter.tsx로 분리해놨습니다! **/
 
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import Layout from '@/layouts/Layout';
 // TODO: 페이지가 많아지면 lazy loading을 고려해보는거 어떨까요..?
 // import { lazy, Suspense } from 'react';
@@ -11,6 +11,7 @@ import Layout from '@/layouts/Layout';
 
 // TODO: 실제 페이지 컴포넌트로 교체
 import HomePage from '@/pages/HomePage';
+import LandingPage from '@/pages/landing/LandingPage';
 
 
 
@@ -21,11 +22,15 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/home" replace />,
+        element: <LandingPage />,
       },
       {
         path: 'home',
         element: <HomePage />,
+      },
+      {
+        path: 'landing',
+        element: <LandingPage />,
       },
       // TODO: 추가 라우트 정의
       // { path: 'about', element: <AboutPage /> },
