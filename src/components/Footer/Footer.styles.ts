@@ -7,6 +7,16 @@ export const Container = styled.footer`
   left: 0;
   width: 100%;
   z-index: 1000;
+  
+  ${theme.media.mobile} {
+    display: flex;
+    width: 100vw;
+    height: 3.75rem;
+    padding: 0.75rem 1rem;
+    align-items: flex-start;
+    gap: 0.625rem;
+    flex-shrink: 0;
+  }
 `;
 
 export const Content = styled.div`
@@ -16,7 +26,8 @@ export const Content = styled.div`
   align-items: left;
   
   ${theme.media.mobile} {
-    padding: 0.75rem 1rem;
+    padding: 0;
+    width: 100%;
   }
 `;
 
