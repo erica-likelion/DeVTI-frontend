@@ -33,7 +33,7 @@ export const Subtitle = styled.p`
   ${theme.fonts.heading.h1}
   color: ${theme.colors.grayScale.black};
   text-align: center;
-  margin-bottom: 12.5rem;
+  margin-bottom: clamp(1.5rem, 15vh, 12.5rem);
 
 `;
 
