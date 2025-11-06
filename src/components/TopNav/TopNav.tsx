@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import { useIsMobile } from '@/hooks/useMediaQuery';
-import NavButton from '@/components/NavButton';
-import UserProfile from '@/components/UserProfile';
-import LoginButton from '@/components/LoginButton';
-import MobileSidebar from '@/components/MobileSidebar';
+import NavButton from '@/components/NavButton/NavButton';
+import UserProfile from '@/components/UserProfile/UserProfile';
+import LoginButton from '@/components/LoginButton/LoginButton';
+import MobileSidebar from '@/components/MobileSidebar/MobileSidebar';
 import * as S from './TopNav.styles';
 
 interface TopNavProps {
@@ -14,9 +14,14 @@ interface TopNavProps {
 
 export default function TopNav({ className }: TopNavProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isLoggedIn } = useAuthStore();
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // 랜딩과 로그인 페이지에서는 항상 비로그인 상태로 표시
+  const isAuthPage = location.pathname === '/' || location.pathname === '/landing' || location.pathname === '/login';
+  const shouldShowLoggedOut = !isLoggedIn || isAuthPage;
 
   const handleLogoClick = () => {
     navigate('/');
@@ -85,7 +90,9 @@ export default function TopNav({ className }: TopNavProps) {
         <img src="/MainLogo.svg" alt="DevTI Logo" />
       </S.Logo>
       <S.MobileRightSection>
-        {isLoggedIn ? (
+        {shouldShowLoggedOut ? (
+          <LoginButton />
+        ) : (
           <>
             <NavButton 
               onClick={handleMenuToggle} 
@@ -96,8 +103,6 @@ export default function TopNav({ className }: TopNavProps) {
             </NavButton>
             <UserProfile />
           </>
-        ) : (
-          <LoginButton />
         )}
       </S.MobileRightSection>
     </>
@@ -107,7 +112,7 @@ export default function TopNav({ className }: TopNavProps) {
     if (isMobile) {
       return renderMobileNav();
     }
-    return isLoggedIn ? renderDesktopLoggedInNav() : renderDesktopLoggedOutNav();
+    return shouldShowLoggedOut ? renderDesktopLoggedOutNav() : renderDesktopLoggedInNav();
   };
 
   return (

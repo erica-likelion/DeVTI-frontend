@@ -1,8 +1,13 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as S from './LandingPage.styles';
 import { PrimaryButton } from '../../components/Button';
 
-const LandingPage: React.FC = () => {
+const LandingPage = () => {
+  const navigate = useNavigate();
+
+  const handleJoinClick = () => {
+    navigate('/login');
+  };
   return (
     <S.Container>
       <S.HeroSection>
@@ -13,7 +18,7 @@ const LandingPage: React.FC = () => {
           시작이 반이라면, 시작을 완벽하게
         </S.Subtitle>
         <S.ButtonGroup>
-          <PrimaryButton>Join DevTI</PrimaryButton>
+          <PrimaryButton onClick={handleJoinClick} className="">Join DevTI</PrimaryButton>
         </S.ButtonGroup>
       </S.HeroSection>
     </S.Container>

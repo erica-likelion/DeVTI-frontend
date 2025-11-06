@@ -12,6 +12,7 @@ import Layout from '@/layouts/Layout';
 // TODO: 실제 페이지 컴포넌트로 교체
 import HomePage from '@/pages/home/HomePage';
 import LandingPage from '@/pages/landing/LandingPage';
+import LoginPage from '@/pages/login/LoginPage';
 
 
 
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
       {
         path: 'landing',
         element: <LandingPage />,
+      },
+      {
+        path: 'login',
+        element: <LoginPage />,
       },
       // TODO: 추가 라우트 정의
       // { path: 'about', element: <AboutPage /> },

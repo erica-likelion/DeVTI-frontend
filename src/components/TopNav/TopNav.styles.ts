@@ -24,24 +24,24 @@ export const NavWrapper = styled.div`
   }
   
   ${({ theme }) => theme.media.tablet} {
-    padding: 0 24px;
+    padding: 0 1.5rem;
   }
   
   ${({ theme }) => theme.media.desktop} {
-    max-width: 1440px;
-    padding: 0 32px;
+    max-width: 90rem;
+    padding: 0 2rem;
   }
   
   ${({ theme }) => theme.media.wide} {
-    max-width: 1920px;
-    padding: 0 40px;
+    max-width: 120rem;
+    padding: 0 2.5rem;
   }
 `;
 
 export const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 1.5rem;
 `;
 
 export const Logo = styled.button`
@@ -58,7 +58,7 @@ export const Logo = styled.button`
 
 export const NavButtons = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 0.75rem;
   
   ${({ theme }) => theme.media.mobile} {
     display: none;
@@ -71,7 +71,7 @@ export const MobileRightSection = styled.div`
   ${({ theme }) => theme.media.mobile} {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0.75rem;
   }
 `;
 
@@ -87,13 +87,8 @@ export const MobileMenuButton = styled.button`
     ${({ theme }) => theme.fonts.body.m500};
     color: ${({ theme }) => theme.colors.grayScale.gray700};
     cursor: pointer;
-    padding: 8px 12px;
+    padding: 0.5rem 0.75rem;
     border-radius: ${({ theme }) => theme.borders.sharp};
-    transition: background-color 0.2s ease;
-    
-    &:hover {
-      background-color: ${({ theme }) => theme.colors.grayScale.gray50};
-    }
   }
 `;
 
@@ -105,11 +100,7 @@ export const MobileNavButton = styled.div`
       border: none;
       ${({ theme }) => theme.fonts.body.m500};
       color: ${({ theme }) => theme.colors.grayScale.gray700};
-      padding: 8px 12px;
-      
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.grayScale.gray50};
-      }
+      padding: 0.5rem 0.75rem;
     }
   }
 `;

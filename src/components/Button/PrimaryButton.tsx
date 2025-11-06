@@ -1,21 +1,21 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 import * as S from './PrimaryButton.styles';
 
 interface PrimaryButtonProps {
-  children: React.ReactNode;
+  children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   className?: string;
 }
 
-const PrimaryButton: React.FC<PrimaryButtonProps> = ({
+const PrimaryButton = ({
   children,
   onClick,
   disabled = false,
   type = 'button',
   className,
-}) => {
+}: PrimaryButtonProps) => {
   return (
     <S.StyledButton
       onClick={onClick}

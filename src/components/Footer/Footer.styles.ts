@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { theme } from '../../styles/theme';
 
 export const Container = styled.footer`
   position: fixed;
@@ -8,7 +7,7 @@ export const Container = styled.footer`
   width: 100%;
   z-index: 1000;
   
-  ${theme.media.mobile} {
+  ${({ theme }) => theme.media.mobile} {
     display: flex;
     width: 100vw;
     height: 3.75rem;
@@ -25,15 +24,15 @@ export const Content = styled.div`
   justify-content: left;
   align-items: left;
   
-  ${theme.media.mobile} {
+  ${({ theme }) => theme.media.mobile} {
     padding: 0;
     width: 100%;
   }
 `;
 
 export const CopyrightText = styled.p`
-  ${theme.fonts.body.m500}
-  color: ${theme.colors.grayScale.gray700};
+  ${({ theme }) => theme.fonts.body.m500}
+  color: ${({ theme }) => theme.colors.grayScale.gray700};
   margin: 0;
   text-align: left;
 `;
