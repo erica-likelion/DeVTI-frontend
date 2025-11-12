@@ -5,7 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: ${({ theme }) => theme.colors.grayScale.white};
+  min-height: 100vh;
   
   ${({ theme }) => theme.media.mobile} {
     padding-top: calc(3.5rem + 2rem);

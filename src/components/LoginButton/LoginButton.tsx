@@ -15,7 +15,7 @@ export default function LoginButton({ className }: LoginButtonProps) {
   return (
     <S.Container className={className} onClick={handleClick}>
       <S.Icon>
-        <img src="/Logo.svg" alt="Login" />
+        <img src="/DefaultIMG_Login.webp" alt="Login" />
       </S.Icon>
       로그인
     </S.Container>

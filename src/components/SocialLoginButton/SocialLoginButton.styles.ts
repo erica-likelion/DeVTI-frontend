@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface ButtonProps {
-  provider: 'kakao';
+  $provider: 'kakao';
 }
 
 export const Button = styled.button<ButtonProps>`

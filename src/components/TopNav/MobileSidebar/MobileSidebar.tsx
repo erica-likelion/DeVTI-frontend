@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import UserProfile from '@/components/TopNav/UserProfile';
-import LoginButton from '@/components/TopNav/LoginButton';
+import LoginButton from '@/components/LoginButton/LoginButton';
 import * as S from './MobileSidebar.styles';
 
 interface MobileSidebarProps {

@@ -20,11 +20,11 @@ export const NavWrapper = styled.div`
   justify-content: space-between;
   
   ${({ theme }) => theme.media.mobile} {
-    padding: 1.38rem 1rem;
+    padding: 1.38rem 2rem;
   }
   
   ${({ theme }) => theme.media.tablet} {
-    padding: 0 1.5rem;
+    padding: 0 2rem;
   }
   
   ${({ theme }) => theme.media.desktop} {
@@ -34,7 +34,7 @@ export const NavWrapper = styled.div`
   
   ${({ theme }) => theme.media.wide} {
     max-width: 120rem;
-    padding: 0 2.5rem;
+    padding: 0 2rem;
   }
 `;
 

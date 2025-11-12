@@ -90,6 +90,13 @@ const colors = {
     WH200: 'var(--Colors-Transparent-WH200, rgba(252, 252, 255, 0.20))',
     WH300: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.30))',
   },
+  inner: {
+    gl100: {
+      background: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.08))',
+      backdropFilter: 'blur(0.6rem)',
+      boxShadow: 'inset 0 0 1rem 0 rgba(0, 0, 0, 0.1)',
+    },
+  },
   systems: {
     default: '#D0D2DC',
     active: '#01B777',

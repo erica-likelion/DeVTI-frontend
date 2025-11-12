@@ -11,7 +11,7 @@ export const Container = styled.footer`
     display: flex;
     width: 100vw;
     height: 3.75rem;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 2rem;
     align-items: flex-start;
     gap: 0.625rem;
     flex-shrink: 0;

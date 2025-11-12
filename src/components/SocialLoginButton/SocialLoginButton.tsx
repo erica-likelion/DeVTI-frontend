@@ -21,7 +21,7 @@ const SocialLoginButton = ({
   };
 
   return (
-    <S.Button onClick={onClick} provider={provider}>
+    <S.Button onClick={onClick} $provider={provider}>
       <S.Icon>
         {renderIcon()}
       </S.Icon>
