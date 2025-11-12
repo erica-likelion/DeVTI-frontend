@@ -8,18 +8,22 @@ export const GlobalStyle = createGlobalStyle`
 
   :root {
     /* TODO: 반응형 폰트 사이즈 조정 */
-    font-size: 16px;
+    font-size: 1rem;
 
-    @media (max-width: 768px) {
-      font-size: 15px;
+    @media (min-width: 14rem) and (max-width: 44.9375rem) {
+      font-size: 0.9375rem;
     }
 
-    @media (max-width: 480px) {
-      font-size: 14px;
+    @media (min-width: 45rem) and (max-width: 89.9375rem) {
+      font-size: 1rem;
     }
 
-    @media (max-width: 360px) {
-      font-size: 13px;
+    @media (min-width: 90rem) and (max-width: 119.9375rem) {
+      font-size: 1rem;
+    }
+
+    @media (min-width: 120rem) {
+      font-size: 1rem;
     }
   }
 

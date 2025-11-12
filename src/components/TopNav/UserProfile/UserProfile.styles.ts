@@ -35,10 +35,12 @@ export const DefaultProfileIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('/Logo.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+  }
 `;
 
 interface UserNameProps {

@@ -2,10 +2,10 @@ import { css } from 'styled-components';
 
 // 반응형 미디어 쿼리 정의 (view point range 기준 정의)
 const media = {
-  mobile: `@media (min-width: 224px) and (max-width: 719px)`,
-  tablet: `@media (min-width: 720px) and (max-width: 1439px)`,
-  desktop: `@media (min-width: 1440px) and (max-width: 1919px)`,
-  wide: `@media (min-width: 1920px)`,
+  mobile: `@media (min-width: 14rem) and (max-width: 44.9375rem)`,
+  tablet: `@media (min-width: 45rem) and (max-width: 89.9375rem)`,
+  desktop: `@media (min-width: 90rem) and (max-width: 119.9375rem)`,
+  wide: `@media (min-width: 120rem)`,
   hover: '@media (hover: hover) and (pointer: fine)',
 } as const;
 
@@ -241,16 +241,16 @@ const fonts = {
 // dropshadows / 배경 블러: Backdrop blur / gradients
 const effects = {
   dropShadows: {
-    DS100: '0 0 4px 0 var(--Colors-Gray-Scale-GY100, #EEF0F5)',
-    DS200: '0 1px 12px 0 var(--Colors-Gray-Scale-GY200, #E1E4EB)',
-    DS300: '0 2px 18px 0 var(--Colors-Gray-Scale-GY300, #D0D2DC)',
+    DS100: '0 0 0.25rem 0 var(--Colors-Gray-Scale-GY100, #EEF0F5)',
+    DS200: '0 0.0625rem 0.75rem 0 var(--Colors-Gray-Scale-GY200, #E1E4EB)',
+    DS300: '0 0.125rem 1.125rem 0 var(--Colors-Gray-Scale-GY300, #D0D2DC)',
   },
   
   backdropBlur: {
-    BG100: 'backdrop-filter: blur(4px)',
-    BG200: 'backdrop-filter: blur(8px)',
-    BG300: 'backdrop-filter: blur(16px)',
-    BG400: 'backdrop-filter: blur(24px)',
+    BG100: 'backdrop-filter: blur(0.25rem)',
+    BG200: 'backdrop-filter: blur(0.5rem)',
+    BG300: 'backdrop-filter: blur(1rem)',
+    BG400: 'backdrop-filter: blur(1.5rem)',
   },
   gradients: {
     primary: 'linear-gradient(83deg, var(--Colors-Primary-VT500, #973EE9) 9.02%, var(--Colors-Secondary-MT500, #66D7BC) 90.81%)',

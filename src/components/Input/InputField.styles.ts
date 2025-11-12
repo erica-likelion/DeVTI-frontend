@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { theme } from '../../styles/theme';
 
 export const Container = styled.div`
   display: flex;
@@ -10,20 +9,20 @@ export const Container = styled.div`
 `;
 
 export const Label = styled.label<{ required?: boolean }>`
-  ${theme.fonts.heading.h2}
-  color: ${theme.colors.grayScale.black};
+  ${({ theme }) => theme.fonts.heading.h2}
+  color: ${({ theme }) => theme.colors.grayScale.black};
   width: 8.25rem;
   flex-shrink: 0;
   
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     width: 8rem;
   }
-  ${theme.media.mobile} {
+  ${({ theme }) => theme.media.mobile} {
     width: 6.0625rem;
   }
 
   // 필수 입력란 * 표시
-  ${({ required }) =>
+  ${({ required, theme }) =>
     required &&
     `
     &::after {
@@ -34,56 +33,56 @@ export const Label = styled.label<{ required?: boolean }>`
 `;
 
 export const StyledInput = styled.input<{ $error?: boolean }>`
-  ${theme.fonts.body.l500}
+  ${({ theme }) => theme.fonts.body.l500}
   height: 1.75rem;
   display: flex;
   padding: 1.5rem 1rem;
   align-items: center;
-  color: ${theme.colors.grayScale.black};
+  color: ${({ theme }) => theme.colors.grayScale.black};
 
-  border-radius: ${theme.borders.sharp};
-  border: 0.06px solid ${({ $error }) => 
+  border-radius: ${({ theme }) => theme.borders.sharp};
+  border: 0.00375rem solid ${({ $error, theme }) => 
     $error ? theme.colors.systems.error : theme.colors.grayScale.gray300};
   
   
   &::placeholder {
-    color: ${theme.colors.grayScale.black};
+    color: ${({ theme }) => theme.colors.grayScale.black};
   }
   
   
   &:focus {
     outline: none;
-    border-color: ${({ $error }) => 
+    border-color: ${({ $error, theme }) => 
       $error ? theme.colors.systems.error : theme.colors.systems.default};
   }
   
   &:disabled {
-    background: ${theme.colors.grayScale.gray100};
-    color: ${theme.colors.grayScale.gray500};
+    background: ${({ theme }) => theme.colors.grayScale.gray100};
+    color: ${({ theme }) => theme.colors.grayScale.gray500};
     cursor: not-allowed;
   }
   
   
-  ${theme.media.mobile} {
+  ${({ theme }) => theme.media.mobile} {
     width: 11.4rem;
     height: 3rem;
   }
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     width: 31.3rem;
   }
   
-  ${theme.media.desktop} {
+  ${({ theme }) => theme.media.desktop} {
     width: 31.3rem;
   }
 
-  ${theme.media.wide} {
+  ${({ theme }) => theme.media.wide} {
     width: 31.3rem;
   }
 `;
 
 export const ErrorMessage = styled.span`
-  ${theme.fonts.body.s400}
-  color: ${theme.colors.systems.error};
+  ${({ theme }) => theme.fonts.body.s400}
+  color: ${({ theme }) => theme.colors.systems.error};
   margin-top: 0.25rem;
 `;
