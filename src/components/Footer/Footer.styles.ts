@@ -1,6 +1,14 @@
 import styled from 'styled-components';
 
-export const Container = styled.footer`
+interface ContainerProps {
+  $isLoginPage: boolean;
+}
+
+interface CopyrightTextProps {
+  $isLoginPage: boolean;
+}
+
+export const Container = styled.footer<ContainerProps>`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -30,9 +38,10 @@ export const Content = styled.div`
   }
 `;
 
-export const CopyrightText = styled.p`
+export const CopyrightText = styled.p<CopyrightTextProps>`
   ${({ theme }) => theme.fonts.body.m500}
-  color: ${({ theme }) => theme.colors.grayScale.gray700};
+  color: ${({ $isLoginPage, theme }) => 
+    $isLoginPage ? theme.colors.grayScale.white : theme.colors.grayScale.gray700};
   margin: 0;
   text-align: left;
 `;

@@ -27,7 +27,7 @@ export default function Layout() {
       <S.Main>
         <Outlet />
       </S.Main>
-      <Footer />
+      <Footer pathname={location.pathname} />
       {/* TODO: 필요시 Modal, Toast 컴포넌트 추가 */}
     </S.Container>
   );
