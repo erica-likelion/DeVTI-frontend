@@ -66,8 +66,9 @@ const colors = {
   secondary: {
     VT700: '#7E19DC',
     VT100: '#F5EEFB',
+    VT50: '#FAF6FD',
     MT500: '#66D7BC',
-    MT100: '#F2FCF9',
+    MT100: '#D1EEED',
 
   },
   grayScale: {
@@ -147,6 +148,7 @@ const withShade = (color: string, amount: number) => {
 const borders = {
   hard: '0.5rem',
   sharp: '0.75rem',
+  smooth: '1.125rem',
   soft: '1.5rem',
   round: '2.25rem',
 } as const;
@@ -251,6 +253,7 @@ const effects = {
     DS100: '0 0 0.25rem 0 var(--Colors-Gray-Scale-GY100, #EEF0F5)',
     DS200: '0 0.0625rem 0.75rem 0 var(--Colors-Gray-Scale-GY200, #E1E4EB)',
     DS300: '0 0.125rem 1.125rem 0 var(--Colors-Gray-Scale-GY300, #D0D2DC)',
+    DS200_VT: '0 0.0625rem 0.75rem 0 rgba(151, 62, 233, 0.30)',
   },
   
   backdropBlur: {
