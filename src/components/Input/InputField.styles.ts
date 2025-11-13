@@ -1,88 +1,65 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  position: relative;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 1.25rem;
   width: 100%;
 `;
 
-export const Label = styled.label<{ required?: boolean }>`
-  ${({ theme }) => theme.fonts.heading.h2}
-  color: ${({ theme }) => theme.colors.grayScale.black};
-  width: 8.25rem;
-  flex-shrink: 0;
-  
-  ${({ theme }) => theme.media.tablet} {
-    width: 8rem;
-  }
-  ${({ theme }) => theme.media.mobile} {
-    width: 6.0625rem;
-  }
-
-  // 필수 입력란 * 표시
-  ${({ required, theme }) =>
-    required &&
-    `
-    &::after {
-      content: ' *';
-      color: ${theme.colors.primary.MT500};
-    }
-  `}  
+export const InputWrapper = styled.div<{ 
+  $hasIcon?: boolean; 
+}>`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `;
 
-export const StyledInput = styled.input<{ $error?: boolean }>`
-  ${({ theme }) => theme.fonts.body.l500}
-  height: 1.75rem;
+export const IconContainer = styled.div`
+  width: 2.5rem;
+  height: 2.5rem;
+  position: absolute;
+  right: 1rem;
+  z-index: 1;
   display: flex;
-  padding: 1.5rem 1rem;
   align-items: center;
-  color: ${({ theme }) => theme.colors.grayScale.black};
+  justify-content: center;
+  
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+`;
 
-  border-radius: ${({ theme }) => theme.borders.sharp};
-  border: 0.00375rem solid ${({ $error, theme }) => 
-    $error ? theme.colors.systems.error : theme.colors.grayScale.gray300};
+
+export const StyledInput = styled.input<{ 
+  $error?: boolean;
+  $hasIcon?: boolean;
+}>`
+  ${({ theme }) => theme.fonts.body.l500}
+  height: auto;
+  padding: 1rem ${({ $hasIcon }) => 
+    $hasIcon ? '1rem' : '1.5rem'};
+  color: ${({ theme }) => theme.colors.grayScale.black};
+  border-radius: ${({ theme }) => theme.borders.smooth};
+  background: ${({ theme }) => theme.colors.grayScale.white};
+  box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
+  width: 100%;
   
   
   &::placeholder {
-    color: ${({ theme }) => theme.colors.grayScale.black};
+    color: ${({ theme, $hasIcon }) => 
+      $hasIcon ? theme.colors.grayScale.gray700 : theme.colors.grayScale.black};
   }
-  
   
   &:focus {
-    outline: none;
-    border-color: ${({ $error, theme }) => 
-      $error ? theme.colors.systems.error : theme.colors.systems.default};
-  }
-  
-  &:disabled {
-    background: ${({ theme }) => theme.colors.grayScale.gray100};
-    color: ${({ theme }) => theme.colors.grayScale.gray500};
-    cursor: not-allowed;
-  }
-  
-  
-  ${({ theme }) => theme.media.mobile} {
-    width: 11.4rem;
-    height: 3rem;
-  }
+    ${({ theme }) => theme.fonts.heading.h3}
 
-  ${({ theme }) => theme.media.tablet} {
-    width: 31.3rem;
+    &::placeholder {
+      ${({ theme }) => theme.fonts.body.l500}
+    }
   }
-  
-  ${({ theme }) => theme.media.desktop} {
-    width: 31.3rem;
-  }
-
-  ${({ theme }) => theme.media.wide} {
-    width: 31.3rem;
-  }
-`;
-
-export const ErrorMessage = styled.span`
-  ${({ theme }) => theme.fonts.body.s400}
-  color: ${({ theme }) => theme.colors.systems.error};
-  margin-top: 0.25rem;
 `;

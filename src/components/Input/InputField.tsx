@@ -1,9 +1,10 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import * as S from './InputField.styles';
+import CalendarBlack from '../../assets/icons/Calendar/CalendarBlack.svg';
+import Calendar from '../Calendar/Calendar';
 
-//url: 깃허브 주소용
 interface InputFieldProps {
-  type?: 'text' | 'email' | 'password' | 'number' | 'url';
+  type?: 'text' | 'email' | 'password' | 'number' | 'url' | 'date' | 'time';
   placeholder?: string;
   value?: string;
   defaultValue?: string;
@@ -14,9 +15,10 @@ interface InputFieldProps {
   name?: string;
   id?: string;
   className?: string;
-  // error?: boolean;
-  // errorMessage?: string;
-  label?: string;
+  icon?: React.ReactNode | null;
+  onIconClick?: () => void;
+  showCalendar?: boolean;
+  onDateSelect?: (date: string) => void;
 }
 
 const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
@@ -32,39 +34,66 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       required = false,
       name,
       id,
-      className, // 추가 스타일용 클래스
-      // error = false, // 필수 입력값 부재시 : 에러 상태 및 메시지 표시 (논의 후 제거합시다!)
-      // errorMessage,
-      label, //입력 필드 라벨 테스트  (반응형 적용)
+      icon = <img src={CalendarBlack} alt="calendar" />,
+      onIconClick,
+      showCalendar = false,
+      onDateSelect,
       ...rest // 확장성 확보용 props
     },
     ref
   ) => {
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    
+    const handleIconClick = () => {
+      if (showCalendar) {
+        setIsCalendarOpen(true);
+      }
+      onIconClick?.();
+    };
+    
+    const handleDateSelect = (date: string) => {
+      onDateSelect?.(date);
+      setIsCalendarOpen(false);
+    };
     return (
-      <S.Container className={className}>
-        {label && (
-          <S.Label htmlFor={id} required={required}> 
-            {label}
-          </S.Label> 
-        )}
-        <S.StyledInput
-          ref={ref}
-          type={type}
-          placeholder={placeholder}
-          value={value} 
-          defaultValue={defaultValue} 
-          onChange={onChange}
-          disabled={disabled} 
-          readOnly={readOnly}
-          required={required}
-          name={name}
-          id={id}
-          // $error={error}
-          {...rest}
-        /> 
-        {/* {error && errorMessage && (
-          <S.ErrorMessage>{errorMessage}</S.ErrorMessage> 
-        )} */}
+      <S.Container>
+        <S.InputWrapper $hasIcon={icon !== null && icon !== undefined}>
+          <S.StyledInput
+            ref={ref}
+            type={type}
+            placeholder={placeholder}
+            value={value} 
+            defaultValue={defaultValue} 
+            onChange={onChange}
+            disabled={disabled} 
+            readOnly={readOnly}
+            required={required}
+            name={name}
+            id={id}
+            $hasIcon={icon !== null && icon !== undefined}
+            {...rest}
+          />
+          {icon !== null && icon !== undefined && (
+            <S.IconContainer 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleIconClick();
+              }}
+              style={{ cursor: (onIconClick || showCalendar) ? 'pointer' : 'default' }}
+            >
+              {icon}
+            </S.IconContainer>
+          )}
+          {showCalendar && (
+            <Calendar
+              isOpen={isCalendarOpen}
+              onClose={() => setIsCalendarOpen(false)}
+              onDateSelect={handleDateSelect}
+              selectedDate={value}
+            />
+          )}
+        </S.InputWrapper>
       </S.Container>
     );
   }
