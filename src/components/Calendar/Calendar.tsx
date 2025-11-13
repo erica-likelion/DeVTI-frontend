@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import * as S from './Calendar.styles';
 import InputField from '../Input/InputField';
 import ArrowLeft from '../../assets/icons/Calendar/ArrowLeft.svg';
@@ -14,6 +14,7 @@ interface CalendarProps {
 const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, selectedDate }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState('12:00');
+  const [tempSelectedDate, setTempSelectedDate] = useState<Date | null>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
 
 
@@ -21,22 +22,7 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  // 달력 외부 클릭 시 닫기
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen, onClose]);
+  // 외부 클릭으로 달력이 닫히지 않도록 제거
 
   // 이전/다음 달로 이동
   const navigateMonth = (direction: 'prev' | 'next') => {
@@ -51,13 +37,41 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
     });
   };
 
-  // 날짜 선택 핸들러
+  // 날짜 선택 핸들러 (달력 닫지 않음)
   const handleDateClick = (day: number) => {
     const selectedDate = new Date(year, month, day);
-    const formattedDate = selectedDate.toLocaleDateString('ko-KR');
-    const dateTimeString = `${formattedDate} ${selectedTime}`;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // 시간 제거하여 날짜만 비교
+    selectedDate.setHours(0, 0, 0, 0);
+    
+    // 오늘 이전 날짜는 선택 불가
+    if (selectedDate < today) {
+      return;
+    }
+    
+    setTempSelectedDate(selectedDate);
+    // 날짜만 선택했을 때는 업데이트하지 않음
+  };
+
+  // 시간 변경 핸들러 (날짜와 시간 모두 선택 시 달력 닫기)
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTime = e.target.value;
+    setSelectedTime(newTime);
+    
+    if (tempSelectedDate) {
+      updateDateTime(tempSelectedDate, newTime);
+      // 날짜와 시간 모두 선택된 경우 달력 닫기
+      setTimeout(() => {
+        onClose();
+      }, 100);
+    }
+  };
+
+  // 날짜와 시간을 합쳐서 부모에 전달
+  const updateDateTime = (date: Date, time: string) => {
+    const formattedDate = date.toLocaleDateString('ko-KR');
+    const dateTimeString = `${formattedDate} ${time}`;
     onDateSelect(dateTimeString);
-    onClose();
   };
 
   // 달력 날짜 생성
@@ -82,12 +96,22 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
     while (currentDate <= lastWeekEnd) {
       const isCurrentMonth = currentDate.getMonth() === currentMonth;
       const isToday = currentDate.toDateString() === today.toDateString();
-      const isSelected = selectedDate && currentDate.toLocaleDateString('ko-KR') === selectedDate;
+      
+      // 오늘 날짜와 정확히 비교하기 위해 시간을 제거
+      const currentDateOnly = new Date(currentDate);
+      const todayOnly = new Date(today);
+      currentDateOnly.setHours(0, 0, 0, 0);
+      todayOnly.setHours(0, 0, 0, 0);
+      
+      const isPastDate = currentDateOnly < todayOnly;
+      const isSelected = (selectedDate && currentDate.toLocaleDateString('ko-KR') === selectedDate.split(' ')[0]) ||
+                        (tempSelectedDate && currentDate.toDateString() === tempSelectedDate.toDateString());
 
       days.push({
         date: currentDate.getDate(),
         isCurrentMonth,
         isToday,
+        isPastDate,
         isSelected,
         fullDate: new Date(currentDate)
       });
@@ -123,7 +147,9 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
             key={index}
             $isToday={day.isToday}
             $isSelected={!!day.isSelected}
-            onClick={() => day.isCurrentMonth && handleDateClick(day.date)}
+            $isCurrentMonth={day.isCurrentMonth}
+            $isPastDate={day.isPastDate}
+            onClick={() => day.isCurrentMonth && !day.isPastDate && handleDateClick(day.date)}
           >
             {day.date}
           </S.DayCell>
@@ -136,11 +162,12 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
           <InputField
             type="time"
             value={selectedTime}
-            onChange={(e) => setSelectedTime(e.target.value)}
+            onChange={handleTimeChange}
             icon={null}
           />
         </S.TimeInputWrapper>
       </S.TimeSection>
+
     </S.CalendarContainer>
   );
 };

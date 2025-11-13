@@ -53,6 +53,8 @@ export const DaysGrid = styled.div<{ $rows: number }>`
 export const DayCell = styled.div<{
   $isToday: boolean;
   $isSelected: boolean;
+  $isCurrentMonth: boolean;
+  $isPastDate?: boolean;
 }>`
   ${({ theme }) => theme.fonts.body.m400}
   width: 2.5rem;
@@ -60,16 +62,39 @@ export const DayCell = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.colors.grayScale.black};
+  border-radius: 50%;
+  cursor: ${({ $isCurrentMonth, $isPastDate }) => 
+    $isCurrentMonth && !$isPastDate ? 'pointer' : 'not-allowed'};
+  
+  /* 기본 색상 */
+  color: ${({ theme, $isCurrentMonth, $isPastDate }) => {
+    if ($isPastDate) return theme.colors.grayScale.gray200;
+    return $isCurrentMonth ? theme.colors.grayScale.black : theme.colors.grayScale.gray300;
+  }};
 
-`;
+
+
+  /* 선택된 날짜 스타일 */
+  ${({ $isSelected, $isToday, theme }) => $isSelected && !$isToday && `
+    background-color: ${theme.colors.secondary.VT100};
+    color: ${theme.colors.grayScale.black};
+    box-shadow: ${theme.effects.dropShadows.DS200_VT};
+  `}
+
+  /* 오늘 날짜가 선택된 경우 */
+  ${({ $isSelected, $isToday, theme }) => $isSelected && $isToday && `
+    background-color: ${theme.colors.secondary.VT100};
+    color: ${theme.colors.grayScale.black};
+    box-shadow: ${theme.effects.dropShadows.DS200_VT};
+  `}
+  }`;
 
 export const TimeSection = styled.div`
   display: flex;
   width:100%;
   flex-direction: column;
   margin-top:1rem;
-  gap:0.5rem;
+  gap: 0.5rem;
 `;
 
 export const TimeLabel = styled.label`
