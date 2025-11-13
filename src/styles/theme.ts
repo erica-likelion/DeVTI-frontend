@@ -272,46 +272,43 @@ const effects = {
 const layouts = {
   wideCommon: css`
     display: flex;
-    width: 100vw;
-    height: 67.5rem;
+    width: 100%;
+    height: 100%;
     padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.25rem;
     flex-shrink: 0;
   `,
   desktopCommon: css`
     display: flex;
-    width: 100vw;
-    height: 67.5rem;
-    padding: 0 var(--General-Margin, 2rem);
+    width: 100%;
+    height: 100%;
+    padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.25rem;
+
     flex-shrink: 0;
   `,
   tabletCommon: css`
     display: flex;
-    width: 100vw;
-    height: 67.5rem;
-    padding: 0 var(--General-Margin, 2rem);
+    width: 100%;
+    height: 100%;
+    padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.25rem;
     flex-shrink: 0;
   `,
   mobileCommon: css`
     display: flex;
-    width: 100vw;
-    height: 67.5rem;
-    padding: 0 var(--General-Margin, 1rem);
+    width: 100%;
+    height: 100%;
+    padding: 0 1rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.25rem;
     flex-shrink: 0;
   `,
 };
