@@ -13,6 +13,7 @@ import Layout from '@/layouts/Layout';
 import HomePage from '@/pages/home/HomePage';
 import LandingPage from '@/pages/landing/LandingPage';
 import LoginPage from '@/pages/login/LoginPage';
+import JoinRoom from '@/pages/joinroom/JoinRoom';
 
 
 
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: 'login',
         element: <LoginPage />,
+      },
+      {
+        path: 'join-room',
+        element: <JoinRoom />,
       },
       // TODO: 추가 라우트 정의
       // { path: 'about', element: <AboutPage /> },
