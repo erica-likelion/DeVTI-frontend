@@ -55,7 +55,7 @@ export const Logo = styled.button`
 
 export const NavButtons = styled.div`
   display: flex;
-  gap: 0.75rem;
+  gap: 2rem;
   
   ${({ theme }) => theme.media.mobile} {
     display: none;
@@ -72,32 +72,3 @@ export const MobileRightSection = styled.div`
   }
 `;
 
-export const MobileMenuButton = styled.button`
-  display: none;
-  
-  ${({ theme }) => theme.media.mobile} {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    ${({ theme }) => theme.fonts.body.m500};
-    color: ${({ theme }) => theme.colors.grayScale.gray700};
-    cursor: pointer;
-    padding: 0.5rem 0.75rem;
-    border-radius: ${({ theme }) => theme.borders.sharp};
-  }
-`;
-
-// NavButton을 모바일 메뉴로 사용할 때의 스타일
-export const MobileNavButton = styled.div`
-  .mobile-menu {
-    ${({ theme }) => theme.media.mobile} {
-      background: none;
-      border: none;
-      ${({ theme }) => theme.fonts.body.m500};
-      color: ${({ theme }) => theme.colors.grayScale.gray700};
-      padding: 0.5rem 0.75rem;
-    }
-  }
-`;

@@ -38,7 +38,7 @@ export const Content = styled.div`
     padding: 0;
     width: 100%;
   }
-`;
+`
 
 export const CopyrightText = styled.p<CopyrightTextProps>`
   ${({ theme }) => theme.fonts.body.m500}

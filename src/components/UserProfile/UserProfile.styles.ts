@@ -3,21 +3,10 @@ import styled from 'styled-components';
 export const Container = styled.button`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: none;
-  border: none;
-  padding: 0.5rem 1rem;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
   border-radius: ${({ theme }) => theme.borders.sharp};
-  border: 0.0625rem solid ${({ theme }) => theme.colors.grayScale.gray300};
-  cursor: pointer;
   
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.grayScale.gray50};
-  }
-  
-  ${({ theme }) => theme.media.mobile} {
-    gap: 0;
-  }
 `;
 
 export const ProfileImage = styled.img`
@@ -35,7 +24,7 @@ export const DefaultProfileIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('/Logo.svg');
+  background-image: url('/DefaultIMG_Profile.webp');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -46,12 +35,9 @@ interface UserNameProps {
 }
 
 export const UserName = styled.span<UserNameProps>`
-  ${({ theme }) => theme.fonts.heading.h3};
+  ${({ theme }) => theme.fonts.heading.h4};
   color: ${({ theme }) => theme.colors.grayScale.black};
-  max-width: 7.4375rem;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   
   ${({ theme }) => theme.media.mobile} {
     display: ${({ $showOnMobile = false }) => ($showOnMobile ? 'block' : 'none')};
