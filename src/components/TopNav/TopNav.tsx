@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuthStore } from '@/stores/authStore';
-import { useIsMobile } from '@/hooks/useMediaQuery';
-import NavButton from '@/components/NavButton/NavButton';
-import UserProfile from '@/components/UserProfile/UserProfile';
-import LoginButton from '@/components/LoginButton/LoginButton';
-import MobileSidebar from '@/components/MobileSidebar/MobileSidebar';
-import * as S from './TopNav.styles';
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuthStore } from "@/stores/authStore";
+import { useIsMobile } from "@/hooks/useMediaQuery";
+import NavButton from "@/components/NavButton";
+import UserProfile from "@/components/UserProfile";
+import LoginButton from "@/components/LoginButton";
+import MobileSidebar from "@/components/MobileSidebar";
+import * as S from "./TopNav.styles";
 
 interface TopNavProps {
   className?: string;
@@ -19,25 +19,27 @@ export default function TopNav({ className }: TopNavProps) {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // 랜딩과 로그인 페이지에서는 항상 비로그인 상태로 표시
-  const isAuthPage = location.pathname === '/' || location.pathname === '/landing' || location.pathname === '/login';
+  const isAuthPage =
+    location.pathname === "/" ||
+    location.pathname === "/landing" ||
+    location.pathname === "/login";
   const shouldShowLoggedOut = !isLoggedIn || isAuthPage;
+  const isProfilePage = location.pathname.startsWith("/profile");
 
   const handleLogoClick = () => {
-    navigate('/');
+    navigate("/");
   };
 
-
   const handleNewChatRoom = () => {
-    navigate('/');
+    navigate("/");
   };
 
   const handleJoinChatRoom = () => {
-    navigate('/');
+    navigate("/");
   };
 
   const handleManageChatRoom = () => {
-    navigate('/');
+    navigate("/");
   };
 
   const handleMenuToggle = () => {
@@ -48,9 +50,6 @@ export default function TopNav({ className }: TopNavProps) {
     setIsSidebarOpen(false);
   };
 
-
-
-  // 데스크톱 - 로그인 전
   const renderDesktopLoggedOutNav = () => (
     <>
       <S.Logo onClick={handleLogoClick}>
@@ -60,7 +59,6 @@ export default function TopNav({ className }: TopNavProps) {
     </>
   );
 
-  // 데스크톱 - 로그인 후
   const renderDesktopLoggedInNav = () => (
     <>
       <S.LeftSection>
@@ -68,22 +66,15 @@ export default function TopNav({ className }: TopNavProps) {
           <img src="/MainLogo.svg" alt="DevTI Logo" />
         </S.Logo>
         <S.NavButtons>
-          <NavButton onClick={handleNewChatRoom}>
-            새 채팅룸
-          </NavButton>
-          <NavButton onClick={handleJoinChatRoom}>
-            채팅룸 참여
-          </NavButton>
-          <NavButton onClick={handleManageChatRoom}>
-            채팅룸 관리
-          </NavButton>
+          <NavButton onClick={handleNewChatRoom}>새 매칭룸</NavButton>
+          <NavButton onClick={handleJoinChatRoom}>매칭룸 참여</NavButton>
+          <NavButton onClick={handleManageChatRoom}>매칭룸 관리</NavButton>
         </S.NavButtons>
       </S.LeftSection>
-      <UserProfile />
+      <UserProfile variant={isProfilePage ? "profile" : "default"} />
     </>
   );
 
-  // 모바일
   const renderMobileNav = () => (
     <>
       <S.Logo onClick={handleLogoClick}>
@@ -94,14 +85,14 @@ export default function TopNav({ className }: TopNavProps) {
           <LoginButton />
         ) : (
           <>
-            <NavButton 
-              onClick={handleMenuToggle} 
+            <NavButton
+              onClick={handleMenuToggle}
               className="mobile-menu"
               icon={<span>☰</span>}
             >
               메뉴
             </NavButton>
-            <UserProfile />
+            <UserProfile variant={isProfilePage ? "profile" : "default"} />
           </>
         )}
       </S.MobileRightSection>
@@ -112,15 +103,15 @@ export default function TopNav({ className }: TopNavProps) {
     if (isMobile) {
       return renderMobileNav();
     }
-    return shouldShowLoggedOut ? renderDesktopLoggedOutNav() : renderDesktopLoggedInNav();
+    return shouldShowLoggedOut
+      ? renderDesktopLoggedOutNav()
+      : renderDesktopLoggedInNav();
   };
 
   return (
     <>
       <S.Container className={className}>
-        <S.NavWrapper>
-          {renderNavContent()}
-        </S.NavWrapper>
+        <S.NavWrapper>{renderNavContent()}</S.NavWrapper>
       </S.Container>
       <MobileSidebar isOpen={isSidebarOpen} onClose={handleSidebarClose} />
     </>

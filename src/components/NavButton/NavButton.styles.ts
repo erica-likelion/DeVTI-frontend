@@ -11,11 +11,16 @@ export const Container = styled.button`
   ${({ theme }) => theme.fonts.heading.h3};
   color: ${({ theme }) => theme.colors.grayScale.black};
   white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
   
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.grayScale.gray50};
+  }
   
   ${({ theme }) => theme.media.mobile} {
     padding: 0.5rem 1rem;
-    ${({ theme }) => theme.fonts.heading.h3};
+    ${({ theme }) => theme.fonts.heading.h4};
   }
 `;
 

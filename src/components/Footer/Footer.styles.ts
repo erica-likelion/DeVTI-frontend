@@ -19,13 +19,12 @@ export const Container = styled.footer`
 `;
 
 export const Content = styled.div`
-  padding: 1rem 2rem;
+  padding: 0.75rem 2rem; // 상하 12px, 좌우 2rem
   display: flex;
   justify-content: left;
   align-items: left;
-  
   ${({ theme }) => theme.media.mobile} {
-    padding: 0;
+    padding: 0.75rem 1rem; // 상하 12px, 좌우 1rem
     width: 100%;
   }
 `;
