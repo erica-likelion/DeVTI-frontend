@@ -7,10 +7,9 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   
   ${({ $isImageBackground, $pathname }) => {
     if (!$isImageBackground) {
@@ -46,35 +45,24 @@ export const Container = styled.div<ContainerProps>`
     `;
   }}
   
-  ${({ theme }) => theme.media.mobile} {
-    min-height: 100vh;
-  }
-  
-  ${({ theme }) => theme.media.tablet} {
-    min-height: 100vh;
-  }
   
   ${({ theme }) => theme.media.desktop} {
-    max-width: 90rem;
-    margin: 0 auto;
+    width: 100%;
   }
   
   ${({ theme }) => theme.media.wide} {
-    max-width: 120rem;
-    margin: 0 auto;
+    max-width: none;
+    width: 100%;
   }
 `;
 
 export const Main = styled.main`
-  flex: 1;
+  height: calc(100vh - 3.75rem);
   overflow: hidden;
-  padding: 4rem 2rem;
+  padding: 4.5rem 2.5rem 4rem;
   
   ${({ theme }) => theme.media.mobile} {
-    padding: 3.5rem 1rem 3rem;
-  }
-  
-  ${({ theme }) => theme.media.tablet} {
-    padding: 4rem 2rem;
+    height: calc(100vh - 3.75rem);
+    padding: 4.5rem 1rem 4.5rem;
   }
 `;

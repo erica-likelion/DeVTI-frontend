@@ -12,8 +12,10 @@ export const Container = styled.footer<ContainerProps>`
   position: fixed;
   bottom: 0;
   left: 0;
+  right: 0;
   width: 100%;
   z-index: 1000;
+  height: 4.5rem;
   
   ${({ theme }) => theme.media.mobile} {
     display: flex;
@@ -27,7 +29,7 @@ export const Container = styled.footer<ContainerProps>`
 `;
 
 export const Content = styled.div`
-  padding: 1rem 2rem;
+  padding: 0.75rem 2.5rem 1.5rem;
   display: flex;
   justify-content: left;
   align-items: left;

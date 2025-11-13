@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.nav`
   position: fixed;
-  left: 0;
-  right: 0;
+  width:100%;
   height: 4.5rem;
   z-index: 1000;
   
@@ -28,13 +27,11 @@ export const NavWrapper = styled.div`
   }
   
   ${({ theme }) => theme.media.desktop} {
-    max-width: 90rem;
     padding: 0 2rem;
   }
   
   ${({ theme }) => theme.media.wide} {
-    max-width: 120rem;
-    padding: 0 2rem;
+    padding: 1.37rem 2.5rem;
   }
 `;
 

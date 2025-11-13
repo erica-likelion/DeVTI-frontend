@@ -2,10 +2,11 @@ import styled from 'styled-components';
 
 export const Container = styled.button`
   display: flex;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.75rem 0.5rem 0.62rem;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  margin-left: 0.5rem;
   color: ${({ theme }) => theme.colors.grayScale.black};
   border-radius: ${({ theme }) => theme.borders.sharp};
   ${({ theme }) => theme.fonts.heading.h3};

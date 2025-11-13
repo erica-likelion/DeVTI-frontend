@@ -4,10 +4,9 @@ import { theme } from '../../styles/theme';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  gap: 1.25rem;
+  justify-content: center;
+  height: calc(100vh - 3.75rem);
   overflow: hidden;
   background: transparent;
   
@@ -20,9 +19,9 @@ export const CardFrame = styled.section`
   display: flex;
   width: 71.5rem;
   padding: 5rem 0;
-  margin-top: -6rem;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: calc(16.38rem - 14.25rem);
   align-items: center;
   gap: 6.25rem;
   border-radius: 3.75rem;
