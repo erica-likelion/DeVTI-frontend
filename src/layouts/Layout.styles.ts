@@ -7,7 +7,7 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   
@@ -36,33 +36,21 @@ export const Container = styled.div<ContainerProps>`
       `;
     }
     
-    // 기본 배경 (기존 background.webp)
     return `
-      background-image: url('/background.webp');
+      background-image: url('/LandingBG.webp');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
     `;
   }}
-  
-  
-  ${({ theme }) => theme.media.desktop} {
-    width: 100%;
-  }
-  
-  ${({ theme }) => theme.media.wide} {
-    max-width: none;
-    width: 100%;
-  }
 `;
 
 export const Main = styled.main`
-  height: calc(100vh - 3.75rem);
+  height: 100vh;
   overflow: hidden;
   padding: 4.5rem 2.5rem 4rem;
   
   ${({ theme }) => theme.media.mobile} {
-    height: calc(100vh - 3.75rem);
     padding: 4.5rem 1rem 4.5rem;
   }
 `;

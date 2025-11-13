@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
-import UserProfile from '@/components/UserProfile';
+import UserProfile from '@/components/UserProfile/UserProfile';
 import LoginButton from '@/components/LoginButton';
 import * as S from './MobileSidebar.styles';
 
