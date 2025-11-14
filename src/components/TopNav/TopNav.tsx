@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import { useIsMobile } from "@/hooks/useMediaQuery";
-import NavButton from "@/components/NavButton";
+import { WhiteMButton } from "@/components/Button";
 import UserProfile from "@/components/UserProfile";
-import LoginButton from "@/components/LoginButton";
-import MobileSidebar from "@/components/MobileSidebar";
+import LoginButton from "@/components/LoginButton/LoginButton";
+import MobileSidebar from "@/components/MobileSidebar/MobileSidebar";
 import * as S from "./TopNav.styles";
 
 interface TopNavProps {
@@ -43,7 +43,7 @@ export default function TopNav({ className }: TopNavProps) {
   };
 
   const handleMenuToggle = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsSidebarOpen((prev) => !prev);
   };
 
   const handleSidebarClose = () => {
@@ -66,9 +66,9 @@ export default function TopNav({ className }: TopNavProps) {
           <img src="/MainLogo.svg" alt="DevTI Logo" />
         </S.Logo>
         <S.NavButtons>
-          <NavButton onClick={handleNewChatRoom}>새 매칭룸</NavButton>
-          <NavButton onClick={handleJoinChatRoom}>매칭룸 참여</NavButton>
-          <NavButton onClick={handleManageChatRoom}>매칭룸 관리</NavButton>
+          <WhiteMButton onClick={handleNewChatRoom}>새 매칭룸</WhiteMButton>
+          <WhiteMButton onClick={handleJoinChatRoom}>매칭룸 참여</WhiteMButton>
+          <WhiteMButton onClick={handleManageChatRoom}>매칭룸 관리</WhiteMButton>
         </S.NavButtons>
       </S.LeftSection>
       <UserProfile variant={isProfilePage ? "profile" : "default"} />
@@ -85,13 +85,7 @@ export default function TopNav({ className }: TopNavProps) {
           <LoginButton />
         ) : (
           <>
-            <NavButton
-              onClick={handleMenuToggle}
-              className="mobile-menu"
-              icon={<span>☰</span>}
-            >
-              메뉴
-            </NavButton>
+            <WhiteMButton onClick={handleMenuToggle}>☰ 메뉴</WhiteMButton>
             <UserProfile variant={isProfilePage ? "profile" : "default"} />
           </>
         )}

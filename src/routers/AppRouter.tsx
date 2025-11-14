@@ -10,7 +10,8 @@ import Layout from "@/layouts/Layout";
 // const HomePage = lazy(() => import('@/pages/HomePage'));
 
 // TODO: 실제 페이지 컴포넌트로 교체
-import HomePage from "@/pages/home/HomePage";
+import HomePage from "@/pages/home/HomePageDefault";
+import HomePageNone from "@/pages/home/HomePageNone";
 import LandingPage from "@/pages/landing/LandingPage";
 import LoginPage from "@/pages/login/LoginPage";
 import ProfilePage from "@/pages/profile/ProfilePage";
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: "home",
         element: <HomePage />,
+      },
+      {
+        path: "home/none",
+        element: <HomePageNone />,
       },
       {
         path: "landing",
@@ -49,11 +54,7 @@ export const router = createBrowserRouter([
         path: "*",
         element: (
           <div style={{ padding: "2rem", textAlign: "center" }}>
-            <h2>비상 ! 에러</h2>
-            <p>
-              더미더미더미 에러 페이지 확인을 위한 더미 텍스트 - 실제로는 페이지
-              생성해서 스타일 추가 하는게 좋을 것 같음
-            </p>
+            <p>페이지 제작 중</p>
           </div>
         ),
       },

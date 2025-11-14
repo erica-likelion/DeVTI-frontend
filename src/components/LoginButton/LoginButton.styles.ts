@@ -2,13 +2,12 @@ import styled from 'styled-components';
 
 export const Container = styled.button`
   display: flex;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem 0.5rem 0.62rem;
   justify-content: center;
   align-items: center;
-  gap: 0.75rem;
-  background-color: ${({ theme }) => theme.colors.grayScale.white};
+  gap: 0.5rem;
+  margin-left: 0.5rem;
   color: ${({ theme }) => theme.colors.grayScale.black};
-  border: 0.0625rem solid ${({ theme }) => theme.colors.grayScale.gray300};
   border-radius: ${({ theme }) => theme.borders.sharp};
   ${({ theme }) => theme.fonts.heading.h3};
   
@@ -21,10 +20,12 @@ export const Icon = styled.span`
   justify-content: center;
   width: 1.5rem;
   height: 1.5rem;
+  border-radius: 50%;
+  overflow: hidden;
   
   img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
   }
 `;

@@ -66,8 +66,9 @@ const colors = {
   secondary: {
     VT700: '#7E19DC',
     VT100: '#F5EEFB',
+    VT50: '#FAF6FD',
     MT500: '#66D7BC',
-    MT100: '#F2FCF9',
+    MT100: '#D1EEED',
 
   },
   grayScale: {
@@ -89,6 +90,13 @@ const colors = {
     BL200: 'var(--Colors-Transparent-BL200, rgba(25, 24, 29, 0.20))',
     WH200: 'var(--Colors-Transparent-WH200, rgba(252, 252, 255, 0.20))',
     WH300: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.30))',
+  },
+  inner: {
+    gl100: {
+      background: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.08))',
+      backdropFilter: 'blur(0.6rem)',
+      boxShadow: 'inset 0 0 1rem 0 rgba(0, 0, 0, 0.1)',
+    },
   },
   systems: {
     default: '#D0D2DC',
@@ -140,6 +148,7 @@ const withShade = (color: string, amount: number) => {
 const borders = {
   hard: '0.5rem',
   sharp: '0.75rem',
+  smooth: '1.125rem',
   soft: '1.5rem',
   round: '2.25rem',
 } as const;
@@ -244,6 +253,7 @@ const effects = {
     DS100: '0 0 0.25rem 0 var(--Colors-Gray-Scale-GY100, #EEF0F5)',
     DS200: '0 0.0625rem 0.75rem 0 var(--Colors-Gray-Scale-GY200, #E1E4EB)',
     DS300: '0 0.125rem 1.125rem 0 var(--Colors-Gray-Scale-GY300, #D0D2DC)',
+    DS200_VT: '0 0.0625rem 0.75rem 0 rgba(151, 62, 233, 0.30)',
   },
   
   backdropBlur: {
@@ -262,46 +272,43 @@ const effects = {
 const layouts = {
   wideCommon: css`
     display: flex;
-    width: 100vw;
-    height: 67.5rem;
+    width: 100%;
+    height: 100%;
     padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.25rem;
     flex-shrink: 0;
   `,
   desktopCommon: css`
     display: flex;
-    width: 100vw;
-    height: 67.5rem;
-    padding: 0 var(--General-Margin, 2rem);
+    width: 100%;
+    height: 100%;
+    padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.25rem;
+
     flex-shrink: 0;
   `,
   tabletCommon: css`
     display: flex;
-    width: 100vw;
-    height: 67.5rem;
-    padding: 0 var(--General-Margin, 2rem);
+    width: 100%;
+    height: 100%;
+    padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.25rem;
     flex-shrink: 0;
   `,
   mobileCommon: css`
     display: flex;
-    width: 100vw;
-    height: 67.5rem;
-    padding: 0 var(--General-Margin, 1rem);
+    width: 100%;
+    height: 100%;
+    padding: 0 1rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.25rem;
     flex-shrink: 0;
   `,
 };

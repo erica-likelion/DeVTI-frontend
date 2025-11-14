@@ -3,18 +3,9 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background: ${({ theme }) => theme.colors.grayScale.white};
-  
-  ${({ theme }) => theme.media.mobile} {
-    padding-top: calc(3.5rem + 2rem);
-  }
-  
-  ${({ theme }) => theme.media.tablet} {
-    padding: 1.5rem;
-    padding-top: calc(4rem + 1.5rem);
-  }
+  min-height: 100vh;
+  padding-top: 17rem;
 `;
 
 
@@ -32,7 +23,7 @@ export const SocialButtonGroup = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 2.5rem;
-  margin-top: 5.5rem;
+  margin-top: 12.5rem;
   
   ${({ theme }) => theme.media.mobile} {
     gap: 2.5rem;

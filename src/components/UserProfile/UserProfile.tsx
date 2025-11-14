@@ -28,7 +28,7 @@ export default function UserProfile({
             <S.ProfileIconImage src={user.profileImage} alt={user.name} />
           ) : (
             <S.ProfileDefaultIcon>
-              <img src="/IMG.svg" alt="Profile" />
+              <img src="/DefaultIMG_Profile.webp" alt="Profile" />
             </S.ProfileDefaultIcon>
           )}
         </S.ProfileIconWrapper>
