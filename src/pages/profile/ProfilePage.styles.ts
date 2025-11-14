@@ -1,15 +1,36 @@
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
 
+const VIEWPORT_AVAILABLE_HEIGHT = "calc(100vh - 4.5rem - 4rem)"; // TopNav + Footer padding in Layout
+
 export const Container = styled.div`
   display: flex;
-  width: 100%;
-  min-height: 100%;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 0;
+  justify-content: center;
+  gap: 3.75rem;
+  width: 100%;
+  max-width: 42.5rem;
+  min-height: ${VIEWPORT_AVAILABLE_HEIGHT};
+  margin: 0 auto;
+  padding: 4rem 3rem;
+  border-radius: 2rem;
   background: ${theme.colors.grayScale.white};
+  box-shadow: ${theme.effects.dropShadows.DS100};
+
+  ${theme.media.tablet} {
+    max-width: 38rem;
+    padding: 3.5rem 2.5rem;
+  }
+
+  ${theme.media.mobile} {
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    padding: 2.75rem 1.5rem;
+    border-radius: 1.5rem;
+    gap: 3rem;
+  }
 `;
 
 export const ProfileSection = styled.div`
@@ -19,23 +40,22 @@ export const ProfileSection = styled.div`
   justify-content: center;
   gap: 0;
   width: 100%;
-  max-width: 100%;
 `;
 
 export const ProfileImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 3.75rem; // 60px
+  margin-bottom: 3.75rem;
 
   ${theme.media.mobile} {
-    margin-bottom: 3.75rem;
+    margin-bottom: 3rem;
   }
 `;
 
 export const ProfileImage = styled.img`
-  width: 12.5rem; // 200pt 고정
-  height: 12.5rem; // 200pt 고정
+  width: 12.5rem;
+  height: 12.5rem;
   border-radius: 50%;
   object-fit: cover;
   background: ${theme.colors.grayScale.gray600};
@@ -48,8 +68,8 @@ export const ProfileImage = styled.img`
 `;
 
 export const ProfileImagePlaceholder = styled.div`
-  width: 12.5rem; // 200pt 고정
-  height: 12.5rem; // 200pt 고정
+  width: 12.5rem;
+  height: 12.5rem;
   border-radius: 50%;
   background: ${theme.colors.grayScale.gray600};
   flex-shrink: 0;
@@ -63,11 +83,10 @@ export const ProfileImagePlaceholder = styled.div`
 export const UserName = styled.h1`
   ${theme.fonts.heading.h1}
   color: ${theme.colors.grayScale.black};
-  margin: 0;
-  margin-bottom: 7.5rem; // 120px
+  margin: 0 0 7.5rem;
 
   ${theme.media.mobile} {
-    margin-bottom: 7.5rem;
+    margin-bottom: 5.5rem;
   }
 `;
 
@@ -78,9 +97,8 @@ export const ButtonWrapper = styled.div`
   width: 100%;
 `;
 
-// 프로필 페이지 전용 버튼 스타일 (공유 컴포넌트 수정 없이 오버라이드)
 export const ProfileButton = styled.button`
-  ${theme.fonts.heading.h3} // Header/H3
+  ${theme.fonts.heading.h3}
   display: flex;
   padding: 0.75rem 0;
   flex-direction: column;
@@ -92,6 +110,7 @@ export const ProfileButton = styled.button`
   border-radius: ${theme.borders.sharp};
   cursor: pointer;
   transition: background-color 0.2s ease;
+  width: 100%;
 
   &:hover:not(:disabled) {
     background: ${theme.colors.grayScale.gray400};
@@ -103,81 +122,73 @@ export const ProfileButton = styled.button`
   }
 
   ${theme.media.wide} {
-    width: 28rem;
+    max-width: 28rem;
   }
 
   ${theme.media.desktop} {
-    width: 28rem;
+    max-width: 28rem;
   }
 
   ${theme.media.tablet} {
-    width: 20rem;
+    max-width: 20rem;
   }
 
   ${theme.media.mobile} {
-    width: 11.375rem;
+    max-width: 100%;
   }
 `;
 
-// 편집 모드 스타일
-// Footer 높이 계산: 
-// - Desktop/Tablet: padding 0.75rem(12px) * 2 + line-height 1.5rem(24px) = 3rem(48px)
-// - Mobile: height 3.75rem(60px) 명시적으로 설정됨
-// EditContainer는 Footer 아래에 위치해야 하므로 bottom을 Footer 높이만큼 설정
-// 저장 버튼 아래 간격은 LeftPanel의 padding-bottom (7.5rem)에서 관리
 export const EditContainer = styled.div`
   display: flex;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 64px; // TopNav 높이
-  bottom: 3rem; // Footer 높이 (48px) - Footer가 사이드섹션 안에 들어가지 않도록
-  width: 100vw; // viewport 전체 너비 사용
-  height: calc(100vh - 64px - 3rem); // TopNav + Footer 제외한 전체 높이
-  flex-direction: row;
+  width: 100%;
+  max-width: 96rem;
+  height: ${VIEWPORT_AVAILABLE_HEIGHT};
+  margin: 0 auto;
+  border-radius: 2rem;
   background: ${theme.colors.grayScale.white};
-  margin: 0;
-  padding: 0;
-  z-index: 1;
+  box-shadow: ${theme.effects.dropShadows.DS100};
+  overflow: hidden;
+
+  ${theme.media.desktop} {
+    max-width: 90rem;
+  }
 
   ${theme.media.tablet} {
-    top: 64px;
-    bottom: 3rem; // Footer 높이 (48px)
-    height: calc(100vh - 64px - 3rem);
+    flex-direction: column;
+    height: auto;
+    min-height: ${VIEWPORT_AVAILABLE_HEIGHT};
   }
 
   ${theme.media.mobile} {
-    top: 56px;
-    bottom: 3.75rem; // 모바일 Footer 높이 (60px)
-    height: calc(100vh - 56px - 3.75rem);
+    flex-direction: column;
+    min-height: auto;
+    border-radius: 1.5rem;
   }
 `;
 
 export const LeftPanel = styled.div`
   flex: 0 0 auto;
-  min-width: 24.25rem; // 388px
-  max-width: 24.25rem; // 388px
+  width: 24.25rem;
   background: ${theme.colors.grayScale.gray100};
-  padding: 7.5rem 2rem 7.5rem 2rem; // 상 120px, 하 120px (저장 버튼 아래 간격), 좌우 2rem (GeneralMargin)
+  padding: 7.5rem 2rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100%;
-  overflow-y: auto; // 내용이 많을 경우 스크롤 가능
+  overflow-y: auto;
   overflow-x: hidden;
 
   ${theme.media.tablet} {
-    min-width: 24.25rem;
-    max-width: 24.25rem;
-    padding: 7.5rem 2rem 7.5rem 2rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 6rem 2rem;
+    height: auto;
   }
 
   ${theme.media.mobile} {
     width: 100%;
-    min-width: 100%;
-    max-width: 100%;
-    padding: 7.5rem 1rem 7.5rem 1rem;
+    padding: 5rem 1.5rem;
   }
 `;
 
@@ -187,11 +198,16 @@ export const RightPanel = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 3.75rem; // 60px
+  padding: 3.75rem;
   background: ${theme.colors.grayScale.white};
   height: 100%;
   overflow-y: auto;
   gap: 2.5rem;
+
+  ${theme.media.tablet} {
+    height: auto;
+    padding: 3rem 2.5rem 4rem;
+  }
 
   ${theme.media.mobile} {
     display: none;
@@ -201,26 +217,26 @@ export const RightPanel = styled.div`
 export const EditProfileSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0; // gap 제거 - 각 요소 간격을 개별적으로 관리
+  gap: 0;
   max-width: 100%;
   width: 100%;
   flex: 1;
-  padding-top: 0; // LeftPanel의 padding-top (7.5rem)이 프로필 아이콘 위 간격
-  padding-bottom: 0; // 저장 버튼 아래 간격은 LeftPanel의 padding-bottom (7.5rem)에서 관리
-  min-height: 0; // flex item이 shrink할 수 있도록
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 0;
 `;
 
 export const EditProfileImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2.5rem; // 40px (프로필 아이콘과 사용자 이름 사이) - 정확히 40px
-  width: 100%; // 전체 너비 사용하여 중앙 정렬 보장
+  margin-bottom: 2.5rem;
+  width: 100%;
 `;
 
 export const EditProfileImage = styled.img`
-  width: 7.5rem; // 120px
-  height: 7.5rem; // 120px
+  width: 7.5rem;
+  height: 7.5rem;
   border-radius: 50%;
   object-fit: cover;
   background: ${theme.colors.grayScale.gray600};
@@ -233,8 +249,8 @@ export const EditProfileImage = styled.img`
 `;
 
 export const EditProfileImagePlaceholder = styled.div`
-  width: 7.5rem; // 120px
-  height: 7.5rem; // 120px
+  width: 7.5rem;
+  height: 7.5rem;
   border-radius: 50%;
   background: ${theme.colors.grayScale.gray600};
   flex-shrink: 0;
@@ -247,12 +263,12 @@ export const EditProfileImagePlaceholder = styled.div`
 
 export const EditUserName = styled.h2`
   ${theme.fonts.heading.h2}
-  font-weight: 600; // 세미볼드
+  font-weight: 600;
   color: ${theme.colors.grayScale.black};
-  margin: 0 auto; // 가운데 정렬
-  margin-bottom: 2.5rem; // 40px (사용자 이름과 한 줄 소개 사이)
+  margin: 0 auto;
+  margin-bottom: 2.5rem;
   text-align: center;
-  width: 100%; // 전체 너비 사용하여 중앙 정렬 보장
+  width: 100%;
 `;
 
 export const FormSection = styled.div`
