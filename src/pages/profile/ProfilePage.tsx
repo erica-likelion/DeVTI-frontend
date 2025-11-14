@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
+import { BlackMButton } from "@/components/Button";
 import * as S from "./ProfilePage.styles";
 import PMPortfolioForm from "./components/PMPortfolioForm";
 
@@ -59,9 +60,9 @@ export default function ProfilePage() {
           </S.ProfileImageWrapper>
           <S.UserName>{user?.name || "사용자"}</S.UserName>
           <S.ButtonWrapper>
-            <S.ProfileButton onClick={handleRegisterProfile}>
+            <BlackMButton onClick={handleRegisterProfile}>
               프로필 등록
-            </S.ProfileButton>
+            </BlackMButton>
           </S.ButtonWrapper>
         </S.ProfileSection>
       </S.Container>

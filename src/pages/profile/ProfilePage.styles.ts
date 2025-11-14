@@ -8,28 +8,20 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3.75rem;
   width: 100%;
-  max-width: 42.5rem;
   min-height: ${VIEWPORT_AVAILABLE_HEIGHT};
-  margin: 0 auto;
-  padding: 4rem 3rem;
-  border-radius: 2rem;
-  background: ${theme.colors.grayScale.white};
-  box-shadow: ${theme.effects.dropShadows.DS100};
+  padding: 0 2.5rem;
+  gap: 3.5rem;
 
   ${theme.media.tablet} {
-    max-width: 38rem;
-    padding: 3.5rem 2.5rem;
+    padding: 0 2rem;
+    gap: 3rem;
   }
 
   ${theme.media.mobile} {
-    width: 100%;
-    max-width: 100%;
     min-height: auto;
-    padding: 2.75rem 1.5rem;
-    border-radius: 1.5rem;
-    gap: 3rem;
+    padding: 0 1.5rem;
+    gap: 2.5rem;
   }
 `;
 
@@ -71,7 +63,10 @@ export const ProfileImagePlaceholder = styled.div`
   width: 12.5rem;
   height: 12.5rem;
   border-radius: 50%;
-  background: ${theme.colors.grayScale.gray600};
+  background-image: url("/DefaultIMG_Profile.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   flex-shrink: 0;
 
   ${theme.media.mobile} {
@@ -83,10 +78,10 @@ export const ProfileImagePlaceholder = styled.div`
 export const UserName = styled.h1`
   ${theme.fonts.heading.h1}
   color: ${theme.colors.grayScale.black};
-  margin: 0 0 7.5rem;
+  margin: 0 0 4rem;
 
   ${theme.media.mobile} {
-    margin-bottom: 5.5rem;
+    margin-bottom: 3rem;
   }
 `;
 
@@ -95,47 +90,6 @@ export const ButtonWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-`;
-
-export const ProfileButton = styled.button`
-  ${theme.fonts.heading.h3}
-  display: flex;
-  padding: 0.75rem 0;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: ${theme.colors.grayScale.gray300};
-  color: ${theme.colors.grayScale.black};
-  border: none;
-  border-radius: ${theme.borders.sharp};
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  width: 100%;
-
-  &:hover:not(:disabled) {
-    background: ${theme.colors.grayScale.gray400};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  ${theme.media.wide} {
-    max-width: 28rem;
-  }
-
-  ${theme.media.desktop} {
-    max-width: 28rem;
-  }
-
-  ${theme.media.tablet} {
-    max-width: 20rem;
-  }
-
-  ${theme.media.mobile} {
-    max-width: 100%;
-  }
 `;
 
 export const EditContainer = styled.div`
