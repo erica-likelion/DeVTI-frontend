@@ -60,9 +60,9 @@ export default function ProfilePage() {
           </S.ProfileImageWrapper>
           <S.UserName>{user?.name || "사용자"}</S.UserName>
           <S.ButtonWrapper>
-            <BlackMButton onClick={handleRegisterProfile}>
+            <S.ProfileActionButton onClick={handleRegisterProfile}>
               프로필 등록
-            </BlackMButton>
+            </S.ProfileActionButton>
           </S.ButtonWrapper>
         </S.ProfileSection>
       </S.Container>

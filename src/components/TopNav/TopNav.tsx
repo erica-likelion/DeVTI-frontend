@@ -19,10 +19,11 @@ export default function TopNav({ className }: TopNavProps) {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const isAuthPage =
-    location.pathname === "/" ||
-    location.pathname === "/landing" ||
-    location.pathname === "/login";
+  const isLandingPage = location.pathname === "/" || location.pathname === "/landing";
+  const isLoginPage = location.pathname === "/login";
+  const shouldHideNavButtons = isLandingPage || isLoginPage;
+
+  const isAuthPage = isLandingPage || isLoginPage;
   const shouldShowLoggedOut = !isLoggedIn || isAuthPage;
   const isProfilePage = location.pathname.startsWith("/profile");
 
@@ -50,27 +51,31 @@ export default function TopNav({ className }: TopNavProps) {
     setIsSidebarOpen(false);
   };
 
-  const renderDesktopLoggedOutNav = () => (
-    <>
+  const renderLeftSection = () => (
+    <S.LeftSection>
       <S.Logo onClick={handleLogoClick}>
         <img src="/MainLogo.svg" alt="DevTI Logo" />
       </S.Logo>
+      {!shouldHideNavButtons && (
+        <S.NavButtons>
+          <WhiteMButton onClick={handleNewChatRoom}>새 매칭룸</WhiteMButton>
+          <WhiteMButton onClick={handleJoinChatRoom}>매칭룸 참여</WhiteMButton>
+          <WhiteMButton onClick={handleManageChatRoom}>매칭룸 관리</WhiteMButton>
+        </S.NavButtons>
+      )}
+    </S.LeftSection>
+  );
+
+  const renderDesktopLoggedOutNav = () => (
+    <>
+      {renderLeftSection()}
       <LoginButton />
     </>
   );
 
   const renderDesktopLoggedInNav = () => (
     <>
-      <S.LeftSection>
-        <S.Logo onClick={handleLogoClick}>
-          <img src="/MainLogo.svg" alt="DevTI Logo" />
-        </S.Logo>
-        <S.NavButtons>
-          <WhiteMButton onClick={handleNewChatRoom}>새 매칭룸</WhiteMButton>
-          <WhiteMButton onClick={handleJoinChatRoom}>매칭룸 참여</WhiteMButton>
-          <WhiteMButton onClick={handleManageChatRoom}>매칭룸 관리</WhiteMButton>
-        </S.NavButtons>
-      </S.LeftSection>
+      {renderLeftSection()}
       <UserProfile variant={isProfilePage ? "profile" : "default"} />
     </>
   );
@@ -85,7 +90,9 @@ export default function TopNav({ className }: TopNavProps) {
           <LoginButton />
         ) : (
           <>
-            <WhiteMButton onClick={handleMenuToggle}>☰ 메뉴</WhiteMButton>
+            {!shouldHideNavButtons && (
+              <WhiteMButton onClick={handleMenuToggle}>☰ 메뉴</WhiteMButton>
+            )}
             <UserProfile variant={isProfilePage ? "profile" : "default"} />
           </>
         )}

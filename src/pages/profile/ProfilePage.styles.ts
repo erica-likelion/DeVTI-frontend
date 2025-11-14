@@ -59,14 +59,14 @@ export const ProfileImage = styled.img`
   }
 `;
 
-export const ProfileImagePlaceholder = styled.div`
+export const ProfileImagePlaceholder = styled.img.attrs({
+  src: "/Image.svg",
+  alt: "기본 프로필 이미지",
+})`
   width: 12.5rem;
   height: 12.5rem;
   border-radius: 50%;
-  background-image: url("/DefaultIMG_Profile.webp");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  object-fit: cover;
   flex-shrink: 0;
 
   ${theme.media.mobile} {
@@ -90,6 +90,39 @@ export const ButtonWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+`;
+
+export const ProfileActionButton = styled.button`
+  ${theme.fonts.heading.h3}
+  display: flex;
+  width: 28rem;
+  padding: 0.75rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: ${theme.borders.sharp};
+  background: ${theme.colors.grayScale.black};
+  color: ${theme.colors.grayScale.white};
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: ${theme.colors.grayScale.gray800};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  ${theme.media.tablet} {
+    width: 20rem;
+  }
+
+  ${theme.media.mobile} {
+    width: 100%;
+  }
 `;
 
 export const EditContainer = styled.div`

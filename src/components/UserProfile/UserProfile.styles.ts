@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const Container = styled.button`
   display: flex;
   align-items: center;
+  padding: 0.5rem 1rem;
   gap: 0.5rem;
-  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
   border-radius: ${({ theme }) => theme.borders.sharp};
   background: none;
   border: none;
@@ -13,10 +13,6 @@ export const Container = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayScale.gray50};
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    gap: 0;
   }
 `;
 
@@ -35,7 +31,7 @@ export const DefaultProfileIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('/DefaultIMG_Profile.webp');
+  background-image: url("/Image.svg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -61,10 +57,10 @@ export const UserName = styled.span<UserNameProps>`
 export const ProfileContainer = styled.button`
   display: flex;
   align-items: center;
+  padding: 0.5rem 1rem;
   gap: 0.5rem;
   background: none;
   border: none;
-  padding: 0.5rem 0.75rem 0.5rem 0.625rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
 
