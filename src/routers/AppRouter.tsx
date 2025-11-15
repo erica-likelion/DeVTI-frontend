@@ -16,6 +16,7 @@ import LandingPage from "@/pages/landing/LandingPage";
 import LoginPage from "@/pages/login/LoginPage";
 import ProfilePage from "@/pages/profile/ProfilePage";
 import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
+import JoinRoom from "@/pages/joinroom/JoinRoom";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,12 @@ export const router = createBrowserRouter([
           <ProtectedRoute>
             <ProfilePage />
           </ProtectedRoute>
+        ),
+      },
+      {
+        path: "join-room",
+        element: (
+          <JoinRoom />
         ),
       },
       {
