@@ -19,6 +19,7 @@ interface InputFieldProps {
   onIconClick?: () => void;
   showCalendar?: boolean;
   onDateSelect?: (date: string) => void;
+  maxLength?: number;
 }
 
 const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
@@ -38,6 +39,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       onIconClick,
       showCalendar = false,
       onDateSelect,
+      maxLength,
       ...rest // 확장성 확보용 props
     },
     ref
@@ -55,6 +57,10 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       onDateSelect?.(date);
       setIsCalendarOpen(false);
     };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.(e);
+    };
     return (
       <S.Container>
         <S.InputWrapper $hasIcon={icon !== null && icon !== undefined}>
@@ -64,12 +70,13 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
             placeholder={placeholder}
             value={value} 
             defaultValue={defaultValue} 
-            onChange={onChange}
+            onChange={handleChange}
             disabled={disabled} 
             readOnly={readOnly}
             required={required}
             name={name}
             id={id}
+            maxLength={maxLength}
             $hasIcon={icon !== null && icon !== undefined}
             {...rest}
           />

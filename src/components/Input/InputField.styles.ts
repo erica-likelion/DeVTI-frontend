@@ -35,6 +35,7 @@ export const IconContainer = styled.div`
 `;
 
 
+
 export const StyledInput = styled.input<{ 
   $error?: boolean;
   $hasIcon?: boolean;
@@ -51,8 +52,7 @@ export const StyledInput = styled.input<{
   
   
   &::placeholder {
-    color: ${({ theme, $hasIcon }) => 
-      $hasIcon ? theme.colors.grayScale.gray700 : theme.colors.grayScale.black};
+    color: ${({ theme }) => theme.colors.grayScale.gray700};
   }
   
   &:focus {
