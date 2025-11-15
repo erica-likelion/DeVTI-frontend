@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import * as S from './RoleTabs.styles';
 
 export const RoleTabs = ({ tabs }: { tabs: string[] }) => {
@@ -29,7 +29,7 @@ export const RoleTabs = ({ tabs }: { tabs: string[] }) => {
           {tab}
         </S.TabButton>
       ))}
-      
+
       <S.Indicator style={indicatorStyle} />
     </S.Container>
   );
