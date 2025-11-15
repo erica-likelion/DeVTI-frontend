@@ -61,9 +61,14 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       onChange?.(e);
     };
+
+    const hasIcon = icon !== null && icon !== undefined;
+    const hasValue = Boolean(value || defaultValue);
+    const isActive = hasValue || !readOnly;
+    
     return (
       <S.Container>
-        <S.InputWrapper $hasIcon={icon !== null && icon !== undefined}>
+        <S.InputWrapper $hasIcon={hasIcon}>
           <S.StyledInput
             ref={ref}
             type={type}
@@ -77,7 +82,9 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
             name={name}
             id={id}
             maxLength={maxLength}
-            $hasIcon={icon !== null && icon !== undefined}
+            $hasIcon={hasIcon}
+            $isActive={isActive}
+            $readOnly={readOnly}
             {...rest}
           />
           {icon !== null && icon !== undefined && (

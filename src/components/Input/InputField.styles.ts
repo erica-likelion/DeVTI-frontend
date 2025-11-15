@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   position: relative;
@@ -37,8 +37,9 @@ export const IconContainer = styled.div`
 
 
 export const StyledInput = styled.input<{ 
-  $error?: boolean;
   $hasIcon?: boolean;
+  $isActive?: boolean;
+  $readOnly?: boolean;
 }>`
   ${({ theme }) => theme.fonts.body.l500}
   height: auto;
@@ -50,16 +51,23 @@ export const StyledInput = styled.input<{
   box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
   width: 100%;
   
-  
   &::placeholder {
     color: ${({ theme }) => theme.colors.grayScale.gray700};
   }
   
-  &:focus {
-    ${({ theme }) => theme.fonts.heading.h3}
+  
 
-    &::placeholder {
-      ${({ theme }) => theme.fonts.body.l500}
+  ${({ $hasIcon, $isActive, $readOnly }) => ($hasIcon || $isActive) && !$readOnly && css`
+    
+    
+    &:focus {
+      ${({ theme }) => theme.fonts.heading.h3}
+      background: ${({ theme }) => theme.colors.grayScale.white};
+
+      &::placeholder {
+        ${({ theme }) => theme.fonts.body.l500}
+        color: ${({ theme }) => theme.colors.grayScale.gray700};
+      }
     }
-  }
+  `}
 `;
