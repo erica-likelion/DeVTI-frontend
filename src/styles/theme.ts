@@ -61,7 +61,7 @@ const createFontStyle = (
 const colors = {
   primary: {
     VT500: '#973EE9',
-    MT500: '#6CC8C2',      
+    MT400: '#6CC8C2',      
   },
   secondary: {
     VT700: '#7E19DC',
