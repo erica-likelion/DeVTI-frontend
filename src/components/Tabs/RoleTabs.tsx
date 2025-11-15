@@ -1,7 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import * as S from './RoleTabs.styles';
 
-export const RoleTabs = ({ tabs }: { tabs: string[] }) => {
+interface RoleTabsProps {
+  tabs: string[];
+  onChange?: (value: string) => void;
+}
+
+export const RoleTabs = ({ tabs, onChange }: RoleTabsProps) => {
   const [active, setActive] = useState(tabs[0]);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
 
@@ -15,14 +20,18 @@ export const RoleTabs = ({ tabs }: { tabs: string[] }) => {
       const { offsetLeft, offsetWidth } = element;
       setIndicatorStyle({ left: offsetLeft, width: offsetWidth });
     }
-  }, [active, tabs]);
+
+    onChange?.(active);
+  }, [active, tabs, onChange]);
 
   return (
     <S.Container>
       {tabs.map((tab, i) => (
         <S.TabButton
           key={tab}
-          ref={(el: HTMLButtonElement | null) => {tabRefs.current[i] = el;}}
+          ref={(el: HTMLButtonElement | null) => {
+            tabRefs.current[i] = el;
+          }}
           isActive={tab === active}
           onClick={() => setActive(tab)}
         >
@@ -34,6 +43,5 @@ export const RoleTabs = ({ tabs }: { tabs: string[] }) => {
     </S.Container>
   );
 };
-
 
 export default RoleTabs;
