@@ -23,8 +23,11 @@ const LoginPage = () => {
         <S.Title>로그인</S.Title>
 
         <S.SocialButtonGroup>
+          <SocialLoginButton provider="google" onClick={handleKakaoLogin}>
+            Google 로그인
+          </SocialLoginButton>
           <SocialLoginButton provider="kakao" onClick={handleKakaoLogin}>
-            카카오로 로그인
+            카카오 로그인
           </SocialLoginButton>
         </S.SocialButtonGroup>
     </S.Container>

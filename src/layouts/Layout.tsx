@@ -11,24 +11,23 @@ import TopNav from '../components/TopNav/TopNav';
 export default function Layout() {
   const location = useLocation();
 
-  // TODO: 페이지별 테마 컬러 변경 로직 (필요시 구현)
+  // 랜딩과 로그인 페이지에서 배경 이미지 사용
+  const isImageBackground = location.pathname === '/' || location.pathname === '/landing' || location.pathname === '/login';
+
+
   useEffect(() => {
-    // 경로에 따른 테마 컬러나 배경색 변경
     const themeColorMeta = document.querySelector('meta[name="theme-color"]');
     if (!themeColorMeta) return;
-    
-    // 예시: 특정 페이지에서 다른 테마 컬러 적용
-    const themeColor = '#ffffff'; // TODO: 테마에 맞게 수정
-    themeColorMeta.setAttribute('content', themeColor);
+  
   }, [location.pathname]);
 
   return (
-    <S.Container>
+    <S.Container $isImageBackground={isImageBackground} $pathname={location.pathname}>
       <TopNav />
       <S.Main>
         <Outlet />
       </S.Main>
-      <Footer />
+      <Footer pathname={location.pathname} />
       {/* TODO: 필요시 Modal, Toast 컴포넌트 추가 */}
     </S.Container>
   );

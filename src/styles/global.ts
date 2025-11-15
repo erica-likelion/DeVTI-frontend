@@ -39,13 +39,13 @@ export const GlobalStyle = createGlobalStyle`
     /* TODO: overscroll 동작 조정 */
     overscroll-behavior: none;
     
-    /* TODO: 배경색 설정 - 현재 흰색 */
     background-color: ${(props) => props.theme.colors.grayScale.white};
   }
 
   #root {
     width: 100%;
     height: 100%;
+    background: transparent;
   }
 
   * {

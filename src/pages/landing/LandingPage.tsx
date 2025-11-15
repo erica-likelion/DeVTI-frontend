@@ -10,17 +10,19 @@ const LandingPage = () => {
   };
   return (
     <S.Container>
-      <S.HeroSection>
-        <S.Title>
-          Every great project begins with the right team
-        </S.Title>
-        <S.Subtitle>
-          시작이 반이라면, 시작을 완벽하게
-        </S.Subtitle>
+      <S.CardFrame>
+        <S.TitleSection>
+          <S.Title>
+            Every great project begins with the right team
+          </S.Title>
+          <S.Subtitle>
+            시작이 반이라면, 시작을 완벽하게
+          </S.Subtitle>
+        </S.TitleSection>
         <S.ButtonGroup>
           <PrimaryButton onClick={handleJoinClick} className="">Join DevTI</PrimaryButton>
         </S.ButtonGroup>
-      </S.HeroSection>
+      </S.CardFrame>
     </S.Container>
   );
 };
