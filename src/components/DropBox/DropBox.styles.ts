@@ -8,11 +8,11 @@ export const Container = styled.div<{ $size?: "L" | "M" }>`
     $size === "M" ? "none" : "var(--Component-Width-Large, 42.5rem)"};
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: ${({ $size }) => ($size === "M" ? "0" : "0.5rem")};
   border-radius: ${theme.borders.sharp};
 `;
 
-export const DropBoxField = styled.button<{ $size?: "L" | "M" }>`
+export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boolean }>`
   display: ${({ $size }) => ($size === "M" ? "inline-flex" : "flex")};
   align-items: center;
   justify-content: ${({ $size }) => ($size === "M" ? "center" : "flex-start")};
@@ -20,25 +20,39 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M" }>`
   padding: ${({ $size }) =>
     $size === "M"
       ? "0.5rem 0.5rem 0.5rem 0.75rem"
-      : "0.875rem 1rem 0.875rem 1.25rem"};
+      : "1rem 1.25rem 1rem 1.25rem"};
   border: none;
   border-radius: ${({ $size }) =>
     $size === "M" ? theme.borders.sharp : theme.borders.smooth};
-  background: ${theme.colors.grayScale.white};
+  background: ${({ $size, $disabled, theme }) =>
+    $size === "M" && $disabled
+      ? "transparent"
+      : theme.colors.grayScale.white};
   box-shadow: ${({ $size }) =>
     $size === "M" ? "none" : "0 0 4px 0 rgba(25, 24, 29, 0.1)"};
-  cursor: pointer;
+  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   gap: ${({ $size }) => ($size === "M" ? "0.5rem" : "1.25rem")};
-  min-height: ${({ $size }) => ($size === "M" ? "auto" : "3.25rem")};
+  height: ${({ $size }) => ($size === "M" ? "auto" : "3.5rem")};
+  align-self: ${({ $size }) => ($size === "M" ? "auto" : "stretch")};
   transition: background-color 0.2s ease;
 
-  &:hover {
-    background: ${theme.colors.grayScale.gray50};
+  &:hover:not(:disabled) {
+    background: ${({ $size, $disabled, theme }) =>
+      $size === "M" && $disabled
+        ? "transparent"
+        : theme.colors.grayScale.gray50};
   }
 
-  &:active {
-    background: ${theme.colors.grayScale.gray100};
+  &:active:not(:disabled) {
+    background: ${({ $size, $disabled, theme }) =>
+      $size === "M" && $disabled
+        ? "transparent"
+        : theme.colors.grayScale.gray100};
     transition: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 `;
 
@@ -57,13 +71,11 @@ export const ArrowIcon = styled.span<{ $isOpen: boolean }>`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.2s ease;
 
-  ${({ $isOpen }) => $isOpen && `transform: rotate(180deg);`}
-
-  svg {
+  img {
     width: 100%;
     height: 100%;
+    object-fit: contain;
   }
 `;
 
