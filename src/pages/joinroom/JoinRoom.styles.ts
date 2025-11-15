@@ -3,7 +3,9 @@ import { theme } from '../../styles/theme';
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap; 
+  gap: 0.5rem;
   justify-content: center;
   align-items: center;
   height: 100vh;
