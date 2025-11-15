@@ -29,8 +29,7 @@ export const RoleTabs = ({ tabs }: { tabs: string[] }) => {
           {tab}
         </S.TabButton>
       ))}
-
-      {/* 움직이는 인디케이터 */}
+      
       <S.Indicator style={indicatorStyle} />
     </S.Container>
   );

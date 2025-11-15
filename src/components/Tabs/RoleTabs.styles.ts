@@ -19,6 +19,11 @@ export const TabButton = styled.button<{ isActive: boolean }>`
 
   color: ${({ theme }) => theme.colors.grayScale.black};
   ${({ theme }) => theme.fonts.body.m500};
+
+  &:hover {
+    cursor: pointer;
+    color: ${({ theme }) => theme.colors.primary.VT500};
+  }
 `;
 
 export const Indicator = styled.div`
