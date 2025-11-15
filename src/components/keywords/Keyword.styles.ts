@@ -8,7 +8,7 @@ export const Container = styled.div<{ color: string; isSingle: boolean; size: st
   width: auto;
   height: auto;
 
-  border-radius: 0.5rem;;
+  border-radius: ${({ theme }) => theme.borders.hard};
   background-color: ${({ color, theme }) =>
   color === 'green'
     ? theme.colors.secondary.MT100
