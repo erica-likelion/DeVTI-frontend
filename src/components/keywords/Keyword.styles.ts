@@ -8,7 +8,7 @@ export const Container = styled.div<{ color: string; isSingle: boolean; size: st
   width: auto;
   height: auto;
 
-  border-radius: 0.5rem;;
+  border-radius: ${({ theme }) => theme.borders.hard};
   background-color: ${({ color, theme }) =>
   color === 'green'
     ? theme.colors.secondary.MT100
@@ -35,6 +35,7 @@ export const Text = styled.span<{ divide?: boolean; size: string }>`
         top: 50%;
         transform: translateY(-50%);
         width: 1px;
+        border-radius: 0.25rem;
         height: ${(size === 's' ? '1rem' : '1.25rem')};
         background-color: ${theme.colors.primary.MT400};
       }
