@@ -1,8 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import * as S from './Calendar.styles';
 import InputField from '../Input/InputField';
 import ArrowLeft from '../../assets/icons/Calendar/ArrowLeft.svg';
 import ArrowRight from '../../assets/icons/Calendar/ArrowRight.svg';
+import { BlackMButton } from '../Button/BlackMButton';
+import { processTimeInput } from '../../utils/timeValidation';
+import NumButton from '../Button/Static/WhiteM/Num/NumButton';
 
 interface CalendarProps {
   isOpen: boolean;
@@ -13,16 +16,14 @@ interface CalendarProps {
 
 const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, selectedDate }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState('12:00');
+  const [selectedTime, setSelectedTime] = useState('');
   const [tempSelectedDate, setTempSelectedDate] = useState<Date | null>(null);
-  const calendarRef = useRef<HTMLDivElement>(null);
 
 
   const today = new Date();
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  // 외부 클릭으로 달력이 닫히지 않도록 제거
 
   // 이전/다음 달로 이동
   const navigateMonth = (direction: 'prev' | 'next') => {
@@ -53,29 +54,55 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
     // 날짜만 선택했을 때는 업데이트하지 않음
   };
 
-  // 시간 변경 핸들러 (날짜와 시간 모두 선택 시 달력 닫기)
+  // 시간 변경 핸들러
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = e.target.value;
-    setSelectedTime(newTime);
     
-    if (tempSelectedDate) {
-      updateDateTime(tempSelectedDate, newTime);
-      // 날짜와 시간 모두 선택된 경우 달력 닫기
-      setTimeout(() => {
-        onClose();
-      }, 100);
+    // 숫자와 : 만 입력허용
+    const filteredTime = newTime.replace(/[^\d:]/g, '');
+    
+    // 최대 길이 5자리(HH:MM)로 제한
+    if (filteredTime.length > 5) {
+      return;
     }
+    
+    let formattedTime = filteredTime;
+    
+    // 4자리 연속 숫자가 입력된 경우에만 자동 포맷팅
+    if (/^\d{4}$/.test(filteredTime)) {
+      // 1434 -> 14:34 
+      const hour = filteredTime.slice(0, 2);
+      const minute = filteredTime.slice(2, 4);
+      const tempTime = `${hour}:${minute}`;
+      const result = processTimeInput(tempTime);
+      formattedTime = result.isValid ? result.formattedTime : tempTime;
+    } else {
+      
+      formattedTime = filteredTime;
+    }
+    
+    setSelectedTime(formattedTime);
   };
 
-  // 날짜와 시간을 합쳐서 부모에 전달
+
+
   const updateDateTime = (date: Date, time: string) => {
     const formattedDate = date.toLocaleDateString('ko-KR');
-    const dateTimeString = `${formattedDate} ${time}`;
+    const result = processTimeInput(time);
+    const finalTime = result.isValid ? result.formattedTime : time;
+    const dateTimeString = `${formattedDate} ${finalTime}`;
     onDateSelect(dateTimeString);
   };
 
   // 달력 날짜 생성
-  const generateCalendarDays = () => {
+  const generateCalendarDays = (): Array<{
+    date: number;
+    isCurrentMonth: boolean;
+    isToday: boolean;
+    isPastDate: boolean;
+    isSelected: boolean;
+    fullDate: Date;
+  }> => {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     
@@ -97,15 +124,15 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
       const isCurrentMonth = currentDate.getMonth() === currentMonth;
       const isToday = currentDate.toDateString() === today.toDateString();
       
-      // 오늘 날짜와 정확히 비교하기 위해 시간을 제거
+      // 오늘 날짜와 정확히 비교하기 위해 시간을 제거 (오늘 날짜가 비활성화 되는 문제 해결)
       const currentDateOnly = new Date(currentDate);
       const todayOnly = new Date(today);
       currentDateOnly.setHours(0, 0, 0, 0);
       todayOnly.setHours(0, 0, 0, 0);
       
       const isPastDate = currentDateOnly < todayOnly;
-      const isSelected = (selectedDate && currentDate.toLocaleDateString('ko-KR') === selectedDate.split(' ')[0]) ||
-                        (tempSelectedDate && currentDate.toDateString() === tempSelectedDate.toDateString());
+      const isSelected = !!(selectedDate && currentDate.toLocaleDateString('ko-KR') === selectedDate.split(' ')[0]) ||
+                        !!(tempSelectedDate && currentDate.toDateString() === tempSelectedDate.toDateString());
 
       days.push({
         date: currentDate.getDate(),
@@ -127,7 +154,7 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
   if (!isOpen) return null;
 
   return (
-    <S.CalendarContainer ref={calendarRef}>
+    <S.CalendarContainer>
       <S.Header>
         <S.MonthYear>{year}. {String(month + 1).padStart(2, '0')}</S.MonthYear>
         <S.NavContainer>
@@ -143,30 +170,42 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
       
       <S.DaysGrid $rows={Math.ceil(calendarDays.length / 7)}>
         {calendarDays.map((day, index) => (
-          <S.DayCell
+          <NumButton
             key={index}
-            $isToday={day.isToday}
-            $isSelected={!!day.isSelected}
-            $isCurrentMonth={day.isCurrentMonth}
-            $isPastDate={day.isPastDate}
             onClick={() => day.isCurrentMonth && !day.isPastDate && handleDateClick(day.date)}
+            disabled={!day.isCurrentMonth || day.isPastDate}
+            isSelected={day.isSelected}
           >
             {day.date}
-          </S.DayCell>
+          </NumButton>
         ))}
       </S.DaysGrid>
       
       <S.TimeSection>
-        <S.TimeLabel>시간</S.TimeLabel>
-        <S.TimeInputWrapper>
-          <InputField
-            type="time"
-            value={selectedTime}
-            onChange={handleTimeChange}
-            icon={null}
-          />
-        </S.TimeInputWrapper>
+        <S.TimeLabel>시각</S.TimeLabel>
+        <InputField
+          type="text"
+          value={selectedTime}
+          onChange={handleTimeChange}
+          placeholder="23:59"
+          icon={null}
+          maxLength={5}
+        />
       </S.TimeSection>
+
+      <S.ButtonSection>
+        <BlackMButton 
+          onClick={() => {
+            if (tempSelectedDate && selectedTime) {
+              updateDateTime(tempSelectedDate, selectedTime);
+              onClose();
+            }
+          }}
+          disabled={!tempSelectedDate || !selectedTime}
+        >
+          저장
+        </BlackMButton>
+      </S.ButtonSection>
 
     </S.CalendarContainer>
   );
