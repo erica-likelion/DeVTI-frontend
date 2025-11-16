@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import * as S from './WhiteMButton.styles';
+import * as S from './WtMButton.styles';
 
-interface WhiteMTextButtonProps {
+interface WtMButtonProps {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
   children: React.ReactNode;
 }
 
-export default function WhiteMTextButton({ className, onClick, disabled = false, children }: WhiteMTextButtonProps) {
+export default function WtMButton({ className, onClick, disabled = false, children }: WtMButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {

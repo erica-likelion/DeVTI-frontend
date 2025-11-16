@@ -18,6 +18,8 @@ export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolea
   &:active {
     background-color: ${({ theme, disabled }) => 
       disabled ? theme.colors.grayScale.white : theme.colors.secondary.VT100};
+    color: ${({ theme, disabled }) => 
+      disabled ? theme.colors.grayScale.black : theme.colors.grayScale.black};
   }
 
   ${({ $isClicked, theme }) => $isClicked && `

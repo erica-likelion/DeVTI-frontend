@@ -3,16 +3,15 @@ import { theme } from "@/styles/theme";
 
 export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean }>`
   display: inline-flex;
-  padding: 0.75rem 1.25rem 0.75rem 1rem;
+  padding: 0.5rem 0.75rem 0.5rem 1rem;
   justify-content: center;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   border: none;
   border-radius: ${theme.borders.sharp};
-  background: ${theme.colors.grayScale.white};
-  box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
+  background: none;
   color: ${theme.colors.grayScale.black};
-  ${theme.fonts.heading.h4}
+  ${theme.fonts.body.m500}
 
   
   &:hover:not(:disabled) {
@@ -30,7 +29,7 @@ export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolea
   ${({ $isClicked, theme }) => 
     $isClicked && `
       color: ${theme.colors.secondary.VT700};
-      background: ${theme.colors.secondary.VT100};
+      background: ${theme.colors.grayScale.white};
     `}
 `;
 

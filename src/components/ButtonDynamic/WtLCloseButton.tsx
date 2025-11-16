@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import * as S from './WhiteLCloseButton.styles';
+import * as S from './WtLCloseButton.styles';
 import XblackIcon from '@/assets/icons/Xblack.svg';
 import XgrayIcon from '@/assets/icons/Xgray.svg';
 import XpuppleIcon from '@/assets/icons/Xpupple.svg';
@@ -17,6 +17,7 @@ export default function WhiteLCloseButton({
 }: WhiteLCloseButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const handleClick = () => {
     if (!disabled && onClick) {
@@ -27,8 +28,10 @@ export default function WhiteLCloseButton({
 
   const getIcon = () => {
     if (disabled) return XgrayIcon;
-    if (isClicked || isHovered) return XpuppleIcon;
-    return XblackIcon; // hover & active� CSS� ��
+    if (isClicked) return XpuppleIcon;
+    if (isActive) return XblackIcon;
+    if (isHovered) return XpuppleIcon;
+    return XblackIcon;
   };
 
   return (
@@ -39,6 +42,8 @@ export default function WhiteLCloseButton({
       $isClicked={isClicked}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onMouseDown={() => setIsActive(true)}
+      onMouseUp={() => setIsActive(false)}
     >
       White L
       <S.Icon>
