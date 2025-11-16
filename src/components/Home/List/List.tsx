@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 import * as S from './List.styles';
-import { WhiteMButton } from '../../Button';
+import WtMTextButton from '../../ButtonStatic/WtMTextButton';
 
 interface ListItem {
   id: string | number;
@@ -19,9 +19,9 @@ export default function List({ items }: ListProps) {
       {items.map((item) => (
         <S.ListItem key={item.id}>
           {item.content}
-          <WhiteMButton onClick={item.onClick}>
+          <WtMTextButton onClick={item.onClick}>
             {item.buttonText}
-          </WhiteMButton>
+          </WtMTextButton>
         </S.ListItem>
       ))}
     </S.Container>

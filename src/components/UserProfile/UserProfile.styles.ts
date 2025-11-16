@@ -1,18 +1,24 @@
 import styled from "styled-components";
 
 export const Container = styled.button`
-  display: flex;
+  display: inline-flex;
+  padding: 0.5rem 0.75rem 0.5rem 0.62rem;
+  justify-content: center;
   align-items: center;
-  padding: 0.5rem 1rem;
   gap: 0.5rem;
+  color: ${({ theme }) => theme.colors.grayScale.black};
   border-radius: ${({ theme }) => theme.borders.sharp};
+  ${({ theme }) => theme.fonts.heading.h4};
   background: none;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-
+  
   &:hover {
-    background-color: ${({ theme }) => theme.colors.grayScale.gray50};
+    background-color: ${({ theme }) => theme.colors.transparents.BL100};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.transparents.BL200};
   }
 `;
 
@@ -21,13 +27,14 @@ export const ProfileImage = styled.img`
   height: 1.5rem;
   border-radius: 50%;
   object-fit: cover;
+  border: none;
+  box-shadow: none;
 `;
 
 export const DefaultProfileIcon = styled.div`
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray300};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,6 +42,8 @@ export const DefaultProfileIcon = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  border: none;
+  box-shadow: none;
 `;
 
 interface UserNameProps {
@@ -55,17 +64,24 @@ export const UserName = styled.span<UserNameProps>`
 `;
 
 export const ProfileContainer = styled.button`
-  display: flex;
+  display: inline-flex;
+  padding: 0.5rem 0.75rem 0.5rem 0.62rem;
+  justify-content: center;
   align-items: center;
-  padding: 0.5rem 1rem;
   gap: 0.5rem;
+  color: ${({ theme }) => theme.colors.grayScale.black};
+  border-radius: ${({ theme }) => theme.borders.sharp};
+  ${({ theme }) => theme.fonts.heading.h4};
   background: none;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-
+  
   &:hover {
-    background-color: ${({ theme }) => theme.colors.grayScale.gray50};
+    background-color: ${({ theme }) => theme.colors.transparents.BL100};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.transparents.BL200};
   }
 `;
 
@@ -76,7 +92,6 @@ export const ProfileIconWrapper = styled.div`
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: #e8f5e9;
   flex-shrink: 0;
 `;
 
@@ -85,6 +100,8 @@ export const ProfileIconImage = styled.img`
   height: 1.5rem;
   border-radius: 50%;
   object-fit: cover;
+  border: none;
+  box-shadow: none;
 `;
 
 export const ProfileDefaultIcon = styled.div`
@@ -93,6 +110,8 @@ export const ProfileDefaultIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  box-shadow: none;
 
   img {
     width: 1.5rem;

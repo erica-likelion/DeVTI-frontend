@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import { useIsMobile } from "@/hooks/useMediaQuery";
-import { WhiteMButton } from "@/components/Button";
+import WtMButton from "@/components/ButtonDynamic/WtMButton";
 import UserProfile from "@/components/UserProfile";
 import LoginButton from "@/components/LoginButton/LoginButton";
 import MobileSidebar from "@/components/MobileSidebar/MobileSidebar";
@@ -58,9 +58,9 @@ export default function TopNav({ className }: TopNavProps) {
       </S.Logo>
       {!shouldHideNavButtons && (
         <S.NavButtons>
-          <WhiteMButton onClick={handleNewChatRoom}>새 매칭룸</WhiteMButton>
-          <WhiteMButton onClick={handleJoinChatRoom}>매칭룸 참여</WhiteMButton>
-          <WhiteMButton onClick={handleManageChatRoom}>매칭룸 관리</WhiteMButton>
+          <WtMButton onClick={handleNewChatRoom}>새 매칭룸</WtMButton>
+          <WtMButton onClick={handleJoinChatRoom}>매칭룸 참여</WtMButton>
+          <WtMButton onClick={handleManageChatRoom}>매칭룸 관리</WtMButton>
         </S.NavButtons>
       )}
     </S.LeftSection>
@@ -91,7 +91,7 @@ export default function TopNav({ className }: TopNavProps) {
         ) : (
           <>
             {!shouldHideNavButtons && (
-              <WhiteMButton onClick={handleMenuToggle}>☰ 메뉴</WhiteMButton>
+              <WtMButton onClick={handleMenuToggle}>☰ 메뉴</WtMButton>
             )}
             <UserProfile variant={isProfilePage ? "profile" : "default"} />
           </>

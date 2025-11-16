@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import * as S from './LandingPage.styles';
-import { PrimaryButton } from '../../components/Button';
+import BkLTextButton from '../../components/ButtonStatic/BkLTextButton';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const LandingPage = () => {
           </S.Subtitle>
         </S.TitleSection>
         <S.ButtonGroup>
-          <PrimaryButton onClick={handleJoinClick} className="">Join DevTI</PrimaryButton>
+          <BkLTextButton onClick={handleJoinClick} className="">Join DevTI</BkLTextButton>
         </S.ButtonGroup>
       </S.CardFrame>
     </S.Container>
