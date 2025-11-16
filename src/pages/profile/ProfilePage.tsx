@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
-import { BlackMButton } from "@/components/Button";
 import * as S from "./ProfilePage.styles";
 import PMPortfolioForm from "./components/PMPortfolioForm";
+import Score from "@/components/Score";
 
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
 type PartOption = (typeof PART_OPTIONS)[number];
@@ -64,6 +64,9 @@ export default function ProfilePage() {
               프로필 등록
             </S.ProfileActionButton>
           </S.ButtonWrapper>
+          <S.TestSection>
+            <Score value={0} onChange={(v: number) => console.log("Score:", v)} />
+          </S.TestSection>
         </S.ProfileSection>
       </S.Container>
     );

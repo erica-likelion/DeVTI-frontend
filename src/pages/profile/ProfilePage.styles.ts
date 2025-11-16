@@ -92,6 +92,14 @@ export const ButtonWrapper = styled.div`
   width: 100%;
 `;
 
+export const TestSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 2rem;
+`;
+
 export const ProfileActionButton = styled.button`
   ${theme.fonts.heading.h3}
   display: flex;
@@ -137,19 +145,7 @@ export const EditContainer = styled.div`
   overflow: hidden;
 
   ${theme.media.desktop} {
-    max-width: 90rem;
-  }
-
-  ${theme.media.tablet} {
-    flex-direction: column;
-    height: auto;
-    min-height: ${VIEWPORT_AVAILABLE_HEIGHT};
-  }
-
-  ${theme.media.mobile} {
-    flex-direction: column;
-    min-height: auto;
-    border-radius: 1.5rem;
+    grid-template-columns: 24rem 1fr;
   }
 `;
 
