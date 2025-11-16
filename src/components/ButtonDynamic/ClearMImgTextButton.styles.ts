@@ -1,26 +1,27 @@
 import styled from 'styled-components';
 
-export const Container = styled.button`
+export const Container = styled.button<{ disabled?: boolean }>`
   display: inline-flex;
   padding: 0.5rem 0.75rem 0.5rem 0.62rem;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  margin-left: 0.5rem;
   color: ${({ theme }) => theme.colors.grayScale.black};
   border-radius: ${({ theme }) => theme.borders.sharp};
   ${({ theme }) => theme.fonts.heading.h4};
-  background: none;
-  border: none;
-  cursor: pointer;
+  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
   
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.transparents.BL100};
   }
 
-  &:active {
+  &:active:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.transparents.BL200};
   }
+
+  &:disabled {
+  }
+
 `;
 
 export const Icon = styled.span`

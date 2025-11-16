@@ -1,12 +1,12 @@
 import { type ReactNode, type ButtonHTMLAttributes } from 'react';
-import * as S from './BlackMButton.styles';
+import * as S from './BkMTextButton.styles';
 
 interface BlackMButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   className?: string;
 }
 
-export const BlackMButton = ({ 
+const BlackMTextButton = ({ 
   children, 
   className, 
   ...props 
@@ -17,3 +17,5 @@ export const BlackMButton = ({
     </S.StyledButton>
   );
 };
+
+export default BlackMTextButton;

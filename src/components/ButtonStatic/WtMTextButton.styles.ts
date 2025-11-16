@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledButton = styled.button`
+export const StyledButton = styled.button<{ $isClicked?: boolean }>`
   ${({ theme }) => theme.fonts.heading.h4}
   display: flex;
   padding: 0.5rem 1rem;
@@ -11,6 +11,7 @@ export const StyledButton = styled.button`
   color: ${({ theme }) => theme.colors.grayScale.black};
   border: none;
   border-radius: ${({ theme }) => theme.borders.sharp};
+  box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
 
   &:hover:not(:disabled) {
     color: ${({ theme }) => theme.colors.secondary.VT700};
@@ -18,14 +19,18 @@ export const StyledButton = styled.button`
 
   &:active:not(:disabled) {
     background: ${({ theme }) => theme.colors.secondary.VT100};
+    color: ${({ theme }) => theme.colors.grayScale.black};
   }
 
-  &:focus:not(:disabled), &.clicked {
-    background: ${({ theme }) => theme.colors.secondary.VT100};
-    color: ${({ theme }) => theme.colors.secondary.VT700};
-  }
+  ${({ $isClicked, theme }) => 
+    $isClicked && `
+      background: ${theme.colors.secondary.VT100};
+      color: ${theme.colors.secondary.VT700};
+    `}
 
   &:disabled {
+    color: ${({ theme }) => theme.colors.grayScale.gray300};
+    background: ${({ theme }) => theme.colors.grayScale.white};
     cursor: not-allowed;
   }
 `;

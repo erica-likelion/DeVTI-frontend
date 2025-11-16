@@ -1,17 +1,19 @@
-import React from 'react';
-import * as S from './NumButton.styles';
+import React, { useState } from 'react';
+import * as S from './WtMButton.styles';
 
-interface NumButtonProps {
+interface WtMButtonProps {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
   children: React.ReactNode;
-  isSelected?: boolean;
 }
 
-export default function NumButton({ className, onClick, disabled = false, children, isSelected = false }: NumButtonProps) {
+export default function WtMButton({ className, onClick, disabled = false, children }: WtMButtonProps) {
+  const [isClicked, setIsClicked] = useState(false);
+
   const handleClick = () => {
     if (!disabled && onClick) {
+      setIsClicked(!isClicked);
       onClick();
     }
   };
@@ -21,7 +23,7 @@ export default function NumButton({ className, onClick, disabled = false, childr
       className={className} 
       onClick={handleClick} 
       disabled={disabled}
-      $isClicked={isSelected}
+      $isClicked={isClicked}
     >
       {children}
     </S.Container>
