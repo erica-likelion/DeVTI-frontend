@@ -34,7 +34,7 @@ export default function Score({ value = 0, onChange, disabled = false }: ScorePr
               onClick={() => handleStarClick(index)}
             >
               <img
-                src={isFilled ? "/star_filled.svg" : "/star.svg"}
+                src={isFilled ? "/star_filled_purple.svg" : "/star.svg"}
                 alt={isFilled ? "Filled star" : "Empty star"}
               />
             </S.StarButton>

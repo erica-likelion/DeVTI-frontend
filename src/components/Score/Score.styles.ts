@@ -19,8 +19,8 @@ export const StarButton = styled.button<{ $isFilled?: boolean; $disabled?: boole
   justify-content: center;
   align-items: center;
   gap: var(--Gap-XXS, 0.5rem);
-  border-radius: var(--Numbers-Border-Sharp, 0.75rem);
-  background: var(--Colors-Gray-Scale-White, #FCFCFF);
+  border-radius: ${theme.borders.sharp};
+  background: ${theme.colors.grayScale.white};
   border: none;
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   flex-shrink: 0;
@@ -38,37 +38,31 @@ export const StarButton = styled.button<{ $isFilled?: boolean; $disabled?: boole
         : ""}
   }
 
-  /* DActv (disabled) 상태 */
   &:disabled {
-    background: var(--Colors-Gray-Scale-White, #FCFCFF);
+    background: ${theme.colors.grayScale.white};
     cursor: not-allowed;
   }
 
-  /* hovering (기본 상태) - disabled가 아닐 때만 */
   &:hover:not(:active):not(:disabled) {
-    background: var(--Colors-Secondary-VT100, #F5EEFB);
+    background: ${theme.colors.secondary.VT100};
   }
 
-  /* pressing (기본 상태) - disabled가 아닐 때만 */
   &:active:not(:disabled) {
-    background: var(--Colors-Secondary-VT100, #F5EEFB);
+    background: ${theme.colors.secondary.VT100};
     transition: none;
   }
 
-  /* clicked (선택된 별) - 기본 상태는 이미 white */
   ${({ $isFilled }) =>
     $isFilled &&
     `
-    background: var(--Colors-Gray-Scale-White, #FCFCFF);
-    
-    /* clicked_hovering - disabled가 아닐 때만 */
+    background: ${theme.colors.grayScale.white};
+
     &:hover:not(:active):not(:disabled) {
-      background: var(--Colors-Secondary-VT100, #F5EEFB);
+      background: ${theme.colors.secondary.VT100};
     }
-    
-    /* clicked_pressing - disabled가 아닐 때만 */
+
     &:active:not(:disabled) {
-      background: var(--Colors-Secondary-VT100, #F5EEFB);
+      background: ${theme.colors.secondary.VT100};
       transition: none;
     }
   `}

@@ -1,5 +1,4 @@
 import * as S from './HomePageDefault.styles';
-import { Keyword } from '@/components/keywords/Keyword';
 
 export default function HomePage() {
   return (
@@ -10,4 +9,4 @@ export default function HomePage() {
       </S.ListWrapper>
     </S.Container>
   );
-}`
+}
