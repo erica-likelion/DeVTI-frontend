@@ -10,9 +10,9 @@ export const Container = styled.div`
   align-items: flex-start;
   gap: var(--Gap-XS, 0.75rem);
   flex-shrink: 0;
-  border-radius: var(--Numbers-Border-Soft, 1.5rem);
+  border-radius: ${theme.borders.soft};
   background: ${theme.colors.grayScale.white};
-  box-shadow: 0 1px 12px 0 rgba(25, 24, 29, 0.10);
+  box-shadow: ${theme.effects.dropShadows.DS200};
 `;
 
 export const Header = styled.h3`
@@ -22,12 +22,22 @@ export const Header = styled.h3`
   margin: 0;
 `;
 
+// 텍스트 + 버튼(별) 프레임
+export const Content = styled.div`
+  display: flex;
+  padding: 0 var(--Gap-S, 1rem);
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex: 1 0 0;
+  align-self: stretch;
+`;
+
 export const Body = styled.p`
   ${theme.fonts.body.l500}
   align-self: stretch;
   color: ${theme.colors.grayScale.black};
   margin: 0;
-  flex: 1 1 auto;
 `;
 
 export const Footer = styled.div`

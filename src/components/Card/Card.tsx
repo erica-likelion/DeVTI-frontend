@@ -14,10 +14,12 @@ export default function Card({ header, body, score = 0, variant = "input" }: Car
   return (
     <S.Container>
       <S.Header>{header}</S.Header>
-      <S.Body>{body}</S.Body>
-      <S.Footer>
-        <Score value={score} disabled={isOutput} onChange={isOutput ? undefined : () => {}} />
-      </S.Footer>
+      <S.Content>
+        <S.Body>{body}</S.Body>
+        <S.Footer>
+          <Score value={score} disabled={isOutput} onChange={isOutput ? undefined : () => {}} />
+        </S.Footer>
+      </S.Content>
     </S.Container>
   );
 }

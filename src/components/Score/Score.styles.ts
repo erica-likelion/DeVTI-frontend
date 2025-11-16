@@ -30,12 +30,6 @@ export const StarButton = styled.button<{ $isFilled?: boolean; $disabled?: boole
     width: 1.5rem;
     height: 1.5rem;
     object-fit: contain;
-    ${({ $isFilled }) =>
-      $isFilled
-        ? `
-      filter: brightness(0) saturate(100%) invert(37%) sepia(89%) saturate(2000%) hue-rotate(250deg) brightness(0.9) contrast(1.1);
-    `
-        : ""}
   }
 
   &:disabled {
