@@ -1,4 +1,4 @@
-import * as S from './WhiteMIconButton.styles';
+import * as S from './WtMIconButton.styles';
 import ArrowLeftBlack from '../../assets/icons/ArrowLeftBlack.svg';
 import ArrowLeftGray from '../../assets/icons/ArrowLeftGray.svg';
 
@@ -8,7 +8,7 @@ interface WhiteLeftArrowButtonProps {
   disabled?: boolean;
 }
 
-export default function WhiteLeftArrowButton({ className, onClick, disabled = false }: WhiteLeftArrowButtonProps) {
+export default function WhiteLeftArrowButton({ className, onClick, disabled = true }: WhiteLeftArrowButtonProps) {
   const handleClick = () => {
     if (!disabled && onClick) {
       onClick();

@@ -6,7 +6,6 @@ export const Container = styled.button<{ $disabled?: boolean; $isClicked?: boole
   justify-content: center;
   align-items: center;
   border-radius: ${({ theme }) => theme.borders.sharp};
-  cursor: ${({ $disabled }) => $disabled ? 'default' : 'pointer'};
   border: none;
   background: ${({ theme }) => theme.colors.grayScale.white};
   

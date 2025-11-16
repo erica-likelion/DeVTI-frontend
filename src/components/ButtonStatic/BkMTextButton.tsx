@@ -1,16 +1,16 @@
 import { type ReactNode, type ButtonHTMLAttributes } from 'react';
-import * as S from './WhiteMTextButton.styles';
+import * as S from './BkMTextButton.styles';
 
-interface WhiteMButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface BlackMButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   className?: string;
 }
 
-const WhiteMTextButton = ({ 
+const BlackMTextButton = ({ 
   children, 
   className, 
   ...props 
-}: WhiteMButtonProps) => {
+}: BlackMButtonProps) => {
   return (
     <S.StyledButton className={className} {...props}>
       {children}
@@ -18,4 +18,4 @@ const WhiteMTextButton = ({
   );
 };
 
-export default WhiteMTextButton;
+export default BlackMTextButton;

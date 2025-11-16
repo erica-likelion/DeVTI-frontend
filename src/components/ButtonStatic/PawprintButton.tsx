@@ -12,6 +12,8 @@ interface PawprintButtonProps {
 
 export default function PawprintButton({ className, onClick, disabled = false }: PawprintButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const handleClick = () => {
     if (!disabled && onClick) {
@@ -23,13 +25,19 @@ export default function PawprintButton({ className, onClick, disabled = false }:
   const getIcon = () => {
     if (disabled) return CircleGray;
     if (isClicked) return FootPupple;
-    return CirclePupple; // hover & active는 CSS에서 처리
+    if (isActive) return CirclePupple;
+    if (isHovered) return CirclePupple;
+    return CircleGray;
   };
 
   return (
     <S.Container 
       className={className} 
       onClick={handleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onMouseDown={() => setIsActive(true)}
+      onMouseUp={() => setIsActive(false)}
       $disabled={disabled}
       $isClicked={isClicked}
     >

@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import * as S from './BlackLTextButton.styles';
+import * as S from './BkLTextButton.styles';
 
 interface PrimaryButtonProps {
   children: ReactNode;
