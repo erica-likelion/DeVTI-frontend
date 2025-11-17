@@ -17,7 +17,6 @@ export const ButtonWrapper = styled.div<{ $isSelected?: boolean }>`
     box-shadow: ${theme.effects.dropShadows.DS100};
   }
 
-  /* 선택되지 않은 버튼: WtMTextButton의 기본 스타일 유지 (내부 isClicked 상태 무시) */
   button:not(.selected) {
     background: ${theme.colors.grayScale.white} !important;
     color: ${theme.colors.grayScale.black} !important;
@@ -32,7 +31,6 @@ export const ButtonWrapper = styled.div<{ $isSelected?: boolean }>`
     color: ${theme.colors.grayScale.black} !important;
   }
 
-  /* 선택된 버튼: WtMTextButton의 $isClicked 스타일과 동일하게 적용 */
   & button.selected {
     background: ${theme.colors.secondary.VT100} !important;
     color: ${theme.colors.secondary.VT700} !important;
@@ -48,4 +46,3 @@ export const ButtonWrapper = styled.div<{ $isSelected?: boolean }>`
     color: ${theme.colors.secondary.VT700} !important;
   }
 `;
-
