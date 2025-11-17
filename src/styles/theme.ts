@@ -155,6 +155,64 @@ const borders = {
   round: '2.25rem',
 } as const;
 
+// Gap 유틸리티 (spacing) - 반응형
+const gaps = {
+  XXXS: {
+    wide: '0.25rem',    // 4px
+    desktop: '0.25rem', // 4px
+    tablet: '0.25rem',  // 4px
+    mobile: '0.125rem', // 2px
+  },
+  XXS: {
+    wide: '0.5rem',     // 8px
+    desktop: '0.5rem',  // 8px
+    tablet: '0.375rem', // 6px
+    mobile: '0.25rem',  // 4px
+  },
+  XS: {
+    wide: '0.75rem',    // 12px
+    desktop: '0.75rem', // 12px
+    tablet: '0.5rem',   // 8px
+    mobile: '0.375rem', // 6px
+  },
+  S: {
+    wide: '1rem',       // 16px
+    desktop: '1rem',    // 16px
+    tablet: '0.625rem', // 10px
+    mobile: '0.5rem',   // 8px
+  },
+  R: {
+    wide: '1.25rem',    // 20px
+    desktop: '1.25rem', // 20px
+    tablet: '0.75rem',  // 12px
+    mobile: '0.625rem', // 10px
+  },
+  M: {
+    wide: '1.5rem',     // 24px
+    desktop: '1.5rem',  // 24px
+    tablet: '0.875rem', // 14px
+    mobile: '0.75rem',  // 12px
+  },
+  L: {
+    wide: '1.75rem',    // 28px
+    desktop: '1.75rem', // 28px
+    tablet: '1rem',     // 16px
+    mobile: '0.875rem', // 14px
+  },
+  XL: {
+    wide: '2rem',       // 32px
+    desktop: '2rem',    // 32px
+    tablet: '1.25rem',  // 20px
+    mobile: '1rem',     // 16px
+  },
+  XXL: {
+    wide: '2.75rem',    // 44px
+    desktop: '2.75rem', // 44px
+    tablet: '1.25rem',  // 20px
+    mobile: '1rem',     // 16px
+  },
+} as const;
+
 
 // 반응형 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
 const fonts = {
@@ -322,6 +380,7 @@ export const theme = {
   layouts,
   media,
   borders,
+  gaps,
   withOpacity,
   withTint,
   withShade,
