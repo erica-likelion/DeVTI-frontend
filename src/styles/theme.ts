@@ -213,6 +213,68 @@ const gaps = {
   },
 } as const;
 
+// Component Width 유틸리티 (component widths) - 반응형
+const componentWidths = {
+  min: {
+    wide: '8.25rem',      // 132px
+    desktop: '8.25rem',   // 132px
+    tablet: '8rem',       // 128px
+    mobile: '6.0625rem',  // 97px
+  },
+  small: {
+    wide: '15.5rem',      // 248px
+    desktop: '15.5rem',   // 248px
+    tablet: '14rem',      // 224px
+    mobile: '8.0625rem',  // 129px
+  },
+  medium: {
+    wide: '28rem',        // 448px
+    desktop: '28rem',     // 448px
+    tablet: '20rem',      // 320px
+    mobile: '11.375rem',  // 182px
+  },
+  large: {
+    wide: '42.5rem',      // 680px
+    desktop: '42.5rem',   // 680px
+    tablet: '41rem',      // 656px
+    mobile: '20.5rem',    // 328px
+  },
+  max: {
+    wide: '71.5rem',      // 1144px
+    desktop: '71.5rem',   // 1144px
+    tablet: '41rem',      // 656px
+    mobile: '20.5rem',    // 328px
+  },
+} as const;
+
+// Source Width 유틸리티 (image/media source widths) - 반응형
+const sourceWidths = {
+  S: {
+    wide: '1.25rem',      // 20px
+    desktop: '1.25rem',   // 20px
+    tablet: '1.125rem',   // 18px
+    mobile: '1rem',       // 16px
+  },
+  R: {
+    wide: '1.5rem',       // 24px
+    desktop: '1.5rem',    // 24px
+    tablet: '1.375rem',   // 22px
+    mobile: '1.25rem',    // 20px
+  },
+  M: {
+    wide: '1.75rem',      // 28px
+    desktop: '1.75rem',   // 28px
+    tablet: '1.5rem',     // 24px
+    mobile: '1.375rem',   // 22px
+  },
+  L: {
+    wide: '2.5rem',       // 40px
+    desktop: '2.5rem',    // 40px
+    tablet: '2.25rem',    // 36px
+    mobile: '2rem',       // 32px
+  },
+} as const;
+
 
 // 반응형 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
 const fonts = {
@@ -381,6 +443,8 @@ export const theme = {
   media,
   borders,
   gaps,
+  componentWidths,
+  sourceWidths,
   withOpacity,
   withTint,
   withShade,
