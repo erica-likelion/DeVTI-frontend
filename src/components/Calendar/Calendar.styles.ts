@@ -4,10 +4,10 @@ export const CalendarContainer = styled.div`
   position: fixed;
   z-index: 1000;
   background: ${({ theme }) => theme.colors.grayScale.white};
-  border-radius: ${({ theme }) => theme.borders.soft};
+  ${({ theme }) => theme.responsive.property.borderRadius('soft')}
   box-shadow: ${({ theme }) => theme.effects.dropShadows.DS300};
   display: inline-flex;
-  padding: 1.25rem 1.75rem;
+  ${({ theme }) => theme.responsive.property.paddingComplex('M', 'L', 'M', 'L')}
   flex-direction: column;
   align-items: center;
 `;
@@ -16,25 +16,36 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: ${({ theme }) => theme.responsive.gap('S')};
   width: 100%;
+
+  ${({ theme }) => theme.media.desktop} {
+    margin-bottom: ${({ theme }) => theme.responsive.gap('S', 'desktop')};
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    margin-bottom: ${({ theme }) => theme.responsive.gap('S', 'tablet')};
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-bottom: ${({ theme }) => theme.responsive.gap('S', 'mobile')};
+  }
 `;
 
 export const NavContainer = styled.div`
   display: flex;
-  gap: 0.5rem;
+  ${({ theme }) => theme.responsive.property.gap('XXS')}
   align-items: center;
 `;
 
 export const NavButton = styled.button`
   display: flex;
-  padding: 0.5rem;
+  ${({ theme }) => theme.responsive.property.padding('XXS')}
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
   
   img {
-    padding: 0.27rem 0.52rem;
+    ${({ theme }) => theme.responsive.property.sourceWidth('R')}
   }
 
 `;
@@ -53,10 +64,25 @@ export const DaysGrid = styled.div<{ $rows: number }>`
 
 export const TimeSection = styled.div`
   display: flex;
-  width:100%;
+  width: 100%;
   flex-direction: column;
-  margin-top:1rem;
-  gap: 0.5rem;
+  margin-top: ${({ theme }) => theme.responsive.gap('S')};
+  gap: ${({ theme }) => theme.responsive.gap('XXS')};
+
+  ${({ theme }) => theme.media.desktop} {
+    margin-top: ${({ theme }) => theme.responsive.gap('S', 'desktop')};
+    gap: ${({ theme }) => theme.responsive.gap('XXS', 'desktop')};
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    margin-top: ${({ theme }) => theme.responsive.gap('S', 'tablet')};
+    gap: ${({ theme }) => theme.responsive.gap('XS', 'tablet')};
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-top: ${({ theme }) => theme.responsive.gap('S', 'mobile')};
+    gap: ${({ theme }) => theme.responsive.gap('XXS', 'mobile')};
+  }
 `;
 
 export const TimeLabel = styled.label`
@@ -69,6 +95,18 @@ export const TimeLabel = styled.label`
 export const ButtonSection = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: ${({ theme }) => theme.responsive.gap('S')};
+
+  ${({ theme }) => theme.media.desktop} {
+    margin-top: ${({ theme }) => theme.responsive.gap('S', 'desktop')};
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    margin-top: ${({ theme }) => theme.responsive.gap('S', 'tablet')};
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    margin-top: ${({ theme }) => theme.responsive.gap('S', 'mobile')};
+  }
 `;
 
