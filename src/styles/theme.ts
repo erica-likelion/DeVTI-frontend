@@ -146,17 +146,48 @@ const withShade = (color: string, amount: number) => {
   return `#${shadeR.toString(16).padStart(2, '0')}${shadeG.toString(16).padStart(2, '0')}${shadeB.toString(16).padStart(2, '0')}`;
 };
 
-// Shape 유틸리티 (border-radius)
+// Shape 유틸리티 (border-radius) - 반응형
 const borders = {
-  hard: '0.5rem',
-  sharp: '0.75rem',
-  smooth: '1.125rem',
-  soft: '1.5rem',
-  round: '2.25rem',
+  hard: {
+    wide: '0.5rem',       // 8px
+    desktop: '0.5rem',    // 8px
+    tablet: '0.5rem',     // 8px
+    mobile: '0.375rem',   // 6px
+  },
+  sharp: {
+    wide: '0.75rem',      // 12px
+    desktop: '0.75rem',   // 12px
+    tablet: '0.75rem',    // 12px
+    mobile: '0.5rem',     // 8px
+  },
+  smooth: {
+    wide: '1.125rem',     // 18px
+    desktop: '1.125rem',  // 18px
+    tablet: '1.125rem',   // 18px
+    mobile: '0.75rem',    // 12px
+  },
+  soft: {
+    wide: '1.5rem',       // 24px
+    desktop: '1.5rem',    // 24px
+    tablet: '1.5rem',     // 24px
+    mobile: '1.125rem',   // 18px
+  },
+  round: {
+    wide: '2.25rem',      // 36px
+    desktop: '2.25rem',   // 36px
+    tablet: '2.25rem',    // 36px
+    mobile: '1.5rem',     // 24px
+  },
 } as const;
 
 // Gap 유틸리티 (spacing) - 반응형
 const gaps = {
+  none: {
+    wide: '0',       // 0px
+    desktop: '0',    // 0px
+    tablet: '0',     // 0px
+    mobile: '0',     // 0px
+  },
   XXXS: {
     wide: '0.25rem',    // 4px
     desktop: '0.25rem', // 4px
@@ -390,6 +421,147 @@ const effects = {
   },
 };
 
+// 반응형 값을 자동으로 적용하는 유틸리티 (속성값 전용)
+const createResponsiveProperty = (property: string, values: { wide: string; desktop?: string; tablet?: string; mobile: string }) => {
+  return css`
+    ${property}: ${values.wide};
+
+    ${media.desktop} {
+      ${property}: ${values.desktop || values.wide};
+    }
+
+    ${media.tablet} {
+      ${property}: ${values.tablet || values.desktop || values.wide};
+    }
+
+    ${media.mobile} {
+      ${property}: ${values.mobile};
+    }
+  `;
+};
+
+// 반응형 값만 반환하는 유틸리티 (값 자체만 필요한 경우)
+const responsive = {
+  // gaps - 값만 반환 (기본값은 wide)
+  gap: (size: keyof typeof gaps, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return gaps[size][breakpoint];
+    }
+    return gaps[size].wide;
+  },
+  
+  // borders - 값만 반환
+  border: (type: keyof typeof borders, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return borders[type][breakpoint];
+    }
+    return borders[type].wide;
+  },
+  
+  // componentWidths - 값만 반환
+  width: (size: keyof typeof componentWidths, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return componentWidths[size][breakpoint];
+    }
+    return componentWidths[size].wide;
+  },
+  
+  // sourceWidths - 값만 반환
+  sourceWidth: (size: keyof typeof sourceWidths, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return sourceWidths[size][breakpoint];
+    }
+    return sourceWidths[size].wide;
+  },
+
+  // padding 값만 반환 (gaps와 동일)
+  padding: (size: keyof typeof gaps, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return gaps[size][breakpoint];
+    }
+    return gaps[size].wide;
+  },
+
+  // borderRadius 값만 반환
+  borderRadius: (type: keyof typeof borders, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return borders[type][breakpoint];
+    }
+    return borders[type].wide;
+  },
+
+  // 전체 속성을 반응형으로 적용하는 유틸리티
+  property: {
+    gap: (size: keyof typeof gaps) => createResponsiveProperty('gap', {
+      wide: gaps[size].wide,
+      desktop: gaps[size].desktop,
+      tablet: gaps[size].tablet,
+      mobile: gaps[size].mobile
+    }),
+    
+    padding: (size: keyof typeof gaps) => createResponsiveProperty('padding', {
+      wide: gaps[size].wide,
+      desktop: gaps[size].desktop,
+      tablet: gaps[size].tablet,
+      mobile: gaps[size].mobile
+    }),
+
+    // 복잡한 padding 값들을 위한 유틸리티 (top right bottom left 순서)
+    paddingComplex: (top: keyof typeof gaps, right: keyof typeof gaps, bottom: keyof typeof gaps, left: keyof typeof gaps) => createResponsiveProperty('padding', {
+      wide: `${gaps[top].wide} ${gaps[right].wide} ${gaps[bottom].wide} ${gaps[left].wide}`,
+      desktop: `${gaps[top].desktop} ${gaps[right].desktop} ${gaps[bottom].desktop} ${gaps[left].desktop}`,
+      tablet: `${gaps[top].tablet} ${gaps[right].tablet} ${gaps[bottom].tablet} ${gaps[left].tablet}`,
+      mobile: `${gaps[top].mobile} ${gaps[right].mobile} ${gaps[bottom].mobile} ${gaps[left].mobile}`
+    }),
+    
+    borderRadius: (type: keyof typeof borders) => createResponsiveProperty('border-radius', {
+      wide: borders[type].wide,
+      desktop: borders[type].desktop,
+      tablet: borders[type].tablet,
+      mobile: borders[type].mobile
+    }),
+    
+    width: (size: keyof typeof componentWidths) => createResponsiveProperty('width', {
+      wide: componentWidths[size].wide,
+      desktop: componentWidths[size].desktop,
+      tablet: componentWidths[size].tablet,
+      mobile: componentWidths[size].mobile
+    }),
+
+    // sourceWidth를 width 속성에 적용
+    sourceWidth: (size: keyof typeof sourceWidths) => createResponsiveProperty('width', {
+      wide: sourceWidths[size].wide,
+      desktop: sourceWidths[size].desktop,
+      tablet: sourceWidths[size].tablet,
+      mobile: sourceWidths[size].mobile
+    }),
+
+    // sourceWidth를 height 속성에 적용
+    sourceHeight: (size: keyof typeof sourceWidths) => createResponsiveProperty('height', {
+      wide: sourceWidths[size].wide,
+      desktop: sourceWidths[size].desktop,
+      tablet: sourceWidths[size].tablet,
+      mobile: sourceWidths[size].mobile
+    }),
+
+    // sourceWidth 크기를 width와 height에 동시 적용
+    sourceSize: (size: keyof typeof sourceWidths) => css`
+      ${createResponsiveProperty('width', {
+        wide: sourceWidths[size].wide,
+        desktop: sourceWidths[size].desktop,
+        tablet: sourceWidths[size].tablet,
+        mobile: sourceWidths[size].mobile
+      })}
+      ${createResponsiveProperty('height', {
+        wide: sourceWidths[size].wide,
+        desktop: sourceWidths[size].desktop,
+        tablet: sourceWidths[size].tablet,
+        mobile: sourceWidths[size].mobile
+      })}
+    `
+  }
+};
+
 // 반응형 레이아웃 공통 스타일 정의 (theme.layouts.mobileCommon 형태로 사용)
 const layouts = {
   wideCommon: css`
@@ -445,6 +617,7 @@ export const theme = {
   gaps,
   componentWidths,
   sourceWidths,
+  responsive,
   withOpacity,
   withTint,
   withShade,
