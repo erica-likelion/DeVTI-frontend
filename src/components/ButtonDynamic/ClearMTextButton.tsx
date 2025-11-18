@@ -5,9 +5,10 @@ interface ClearTextButtonProps {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  children?: React.ReactNode;
 }
 
-export default function ClearTextButton({ className, onClick, disabled = false }: ClearTextButtonProps) {
+export default function ClearTextButton({ className, onClick, disabled = false, children }: ClearTextButtonProps) {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleClick = () => {
@@ -21,7 +22,7 @@ export default function ClearTextButton({ className, onClick, disabled = false }
 
   return (
     <S.Container className={className} onClick={handleClick} $isSelected={isSelected} disabled={disabled}>
-      Clear
+      {children || 'Clear'}
     </S.Container>
   );
 }
