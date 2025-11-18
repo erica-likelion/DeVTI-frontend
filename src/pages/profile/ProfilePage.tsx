@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import * as S from "./ProfilePage.styles";
 import PMPortfolioForm from "./components/PMPortfolioForm";
-import Score from "@/components/Score";
+import BkLTextButton from "@/components/ButtonStatic/BkLTextButton";
 
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
 type PartOption = (typeof PART_OPTIONS)[number];
@@ -60,13 +60,10 @@ export default function ProfilePage() {
           </S.ProfileImageWrapper>
           <S.UserName>{user?.name || "사용자"}</S.UserName>
           <S.ButtonWrapper>
-            <S.ProfileActionButton onClick={handleRegisterProfile}>
+            <BkLTextButton onClick={handleRegisterProfile}>
               프로필 등록
-            </S.ProfileActionButton>
+            </BkLTextButton>
           </S.ButtonWrapper>
-          <S.TestSection>
-            <Score value={0} onChange={(v: number) => console.log("Score:", v)} />
-          </S.TestSection>
         </S.ProfileSection>
       </S.Container>
     );
