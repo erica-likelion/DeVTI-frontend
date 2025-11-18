@@ -48,18 +48,18 @@ export const Container = styled.div<ContainerProps>`
 
 export const Main = styled.main`
   height:100%;
-  padding: 4.5rem ${({ theme }) => theme.gaps.XL.wide} ${({ theme }) => theme.gaps.XXL.wide};
+  padding: 4.5rem ${({ theme }) => theme.gaps.XL.wide} 4.5rem;
   margin-top: 0;
 
   ${({ theme }) => theme.media.desktop} {
-    padding: 4.5rem ${theme.gaps.XL.desktop} ${theme.gaps.XXL.desktop};
+    padding: 4.5rem ${theme.gaps.XL.desktop} 4.5rem;
   }
 
   ${({ theme }) => theme.media.tablet} {
-    padding: 4.5rem ${theme.gaps.XL.tablet} ${theme.gaps.XXL.tablet};
+    padding: 4.5rem ${theme.gaps.XL.tablet} 4.5rem;
   }
   
   ${({ theme }) => theme.media.mobile} {
-    padding: calc(4.5rem + ${theme.gaps.R.mobile}) ${theme.gaps.R.mobile} ${theme.gaps.XXL.mobile};
+    padding: calc(4.5rem + ${theme.gaps.R.mobile}) ${theme.gaps.R.mobile} 3.75rem;
   }
 `;
