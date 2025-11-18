@@ -3,14 +3,14 @@ import { theme } from "@/styles/theme";
 
 export const Container = styled.div`
   display: flex;
-  width: var(--Component-Width-Medium, 28rem);
-  height: var(--Component-Width-Small, 15.5rem);
-  padding: var(--Gap-M, 1rem);
+  ${({ theme }) => theme.responsive.property.width('medium')}
+  ${({ theme }) => theme.responsive.property.height('small')}
+  ${({ theme }) => theme.responsive.property.padding('M')}
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--Gap-XS, 0.75rem);
+  ${({ theme }) => theme.responsive.property.gap('XS')}
   flex-shrink: 0;
-  border-radius: ${theme.borders.soft};
+  ${({ theme }) => theme.responsive.property.borderRadius('soft')}
   background: ${theme.colors.grayScale.white};
   box-shadow: ${theme.effects.dropShadows.DS200};
 `;
@@ -25,7 +25,7 @@ export const Header = styled.h3`
 // 텍스트 + 버튼(별) 프레임
 export const Content = styled.div`
   display: flex;
-  padding: 0 var(--Gap-S, 1rem);
+  ${({ theme }) => theme.responsive.property.paddingComplex('none', 'S', 'none', 'S')}
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
