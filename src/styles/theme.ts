@@ -88,16 +88,25 @@ const colors = {
     black: '#19181D',
   },
   transparents: {
-    BL100: 'var(--Colors-Transparent-BL100, rgba(25, 24, 29, 0.10))',
-    BL200: 'var(--Colors-Transparent-BL200, rgba(25, 24, 29, 0.20))',
-    WH200: 'var(--Colors-Transparent-WH200, rgba(252, 252, 255, 0.20))',
-    WH300: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.30))',
+    BL100: 'rgba(25, 24, 29, 0.10)',
+    BL200: 'rgba(25, 24, 29, 0.20)',
+    WH200: 'rgba(252, 252, 255, 0.20)',
+    WH300: 'rgba(252, 252, 255, 0.30)',
   },
   inner: {
-    gl100: {
-      background: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.08))',
-      backdropFilter: 'blur(0.6rem)',
-      boxShadow: 'inset 0 0 1rem 0 rgba(0, 0, 0, 0.1)',
+    GL100: {
+      background: 'rgba(252, 252, 255, 0.30)',
+      backdropFilter: 'blur(0.125rem)',
+    },
+    GL200: {
+      background: 'rgba(252, 252, 255, 0.30)',
+      boxShadow: '0 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.25)',
+      backdropFilter: 'blur(0.625rem)',
+    },
+    Gl_DS_VT: {
+      background: 'rgba(252, 252, 255, 0.30)',
+      boxShadow: '-0.0125rem 0 0.0625rem 0 #FCFCFF inset, 0 -0.0625rem 0.625rem 0 rgba(252, 252, 255, 0.30) inset, 0.01875rem 0.01875rem 0.03125rem 0 #FCFCFF inset, 0 0 0.5rem 0 rgba(25, 24, 29, 0.08) inset, 0 0.0625rem 0.75rem 0 rgba(151, 62, 233, 0.30)',
+      backdropFilter: 'blur(0.625rem)',
     },
   },
   systems: {
@@ -403,9 +412,9 @@ const fonts = {
 // dropshadows / 배경 블러: Backdrop blur / gradients
 const effects = {
   dropShadows: {
-    DS100: '0 0 0.25rem 0 var(--Colors-Gray-Scale-GY100, #EEF0F5)',
-    DS200: '0 0.0625rem 0.75rem 0 var(--Colors-Gray-Scale-GY200, #E1E4EB)',
-    DS300: '0 0.125rem 1.125rem 0 var(--Colors-Gray-Scale-GY300, #D0D2DC)',
+    DS100: '0 0 0.25rem 0 #EEF0F5',
+    DS200: '0 0.0625rem 0.75rem 0 #E1E4EB',
+    DS300: '0 0.125rem 1.125rem 0 #D0D2DC',
     DS200_VT: '0 0.0625rem 0.75rem 0 rgba(151, 62, 233, 0.30)',
   },
   
@@ -416,8 +425,8 @@ const effects = {
     BG400: 'backdrop-filter: blur(1.5rem)',
   },
   gradients: {
-    primary: 'linear-gradient(83deg, var(--Colors-Primary-VT500, #973EE9) 9.02%, var(--Colors-Secondary-MT500, #66D7BC) 90.81%)',
-    grayscale: 'linear-gradient(83deg, var(--Colors-Gray-Scale-GY300, #D0D2DC) 9.02%, var(--Colors-Gray-Scale-GY700, #6F7587) 90.81%)',
+    primary: 'linear-gradient(83deg, #973EE9 9.02%, #66D7BC 90.81%)',
+    grayscale: 'linear-gradient(83deg, #D0D2DC 9.02%, #6F7587 90.81%)',
   },
 };
 
