@@ -528,6 +528,13 @@ const responsive = {
       mobile: componentWidths[size].mobile
     }),
 
+    height: (size: keyof typeof componentWidths) => createResponsiveProperty('height', {
+      wide: componentWidths[size].wide,
+      desktop: componentWidths[size].desktop,
+      tablet: componentWidths[size].tablet,
+      mobile: componentWidths[size].mobile
+    }),
+
     // sourceWidth를 width 속성에 적용
     sourceWidth: (size: keyof typeof sourceWidths) => createResponsiveProperty('width', {
       wide: sourceWidths[size].wide,
