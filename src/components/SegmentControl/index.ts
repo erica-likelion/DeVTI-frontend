@@ -1,2 +1,3 @@
-export { default } from "./SegmentControl_Tight";
+export { default as SegmentControlTight } from "./SegmentControlTight";
+export { default as SegmentControlTransparent } from "./SegmentControlTransparent";
 
