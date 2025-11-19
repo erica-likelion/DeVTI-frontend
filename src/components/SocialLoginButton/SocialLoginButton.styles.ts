@@ -8,13 +8,15 @@ export const Button = styled.button<ButtonProps>`
   display: flex;
   width: 20.9375rem;
   height: 3.25rem;
-  padding: 0 1.5rem;
+  ${({ theme }) => theme.responsive.property.paddingComplex('none', 'L', 'none', 'L')}
   align-items: center;
   justify-content: center;
   position: relative;
-  border-radius: ${({ theme }) => theme.borders.sharp};
+  border: none;
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
   color: ${({ theme }) => theme.colors.grayScale.gray700};
   ${({ theme }) => theme.fonts.heading.h4};
+  cursor: pointer;
   
   ${({ $provider }) => {
     if ($provider === 'kakao') {
@@ -35,12 +37,23 @@ export const Button = styled.button<ButtonProps>`
 
 export const Icon = styled.div`
   position: absolute;
-  left: 1.5rem;
-  width: 1.25rem;
-  height: 1.25rem;
+  left: ${({ theme }) => theme.responsive.gap('L')};
+  ${({ theme }) => theme.responsive.property.sourceSize('M')}
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${({ theme }) => theme.media.desktop} {
+    left: ${({ theme }) => theme.responsive.gap('L', 'desktop')};
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    left: ${({ theme }) => theme.responsive.gap('L', 'tablet')};
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    left: ${({ theme }) => theme.responsive.gap('L', 'mobile')};
+  }
   
   img {
     width: 100%;

@@ -2,16 +2,17 @@ import styled from 'styled-components';
 
 export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean }>`
   display: inline-flex;
-  padding: 0.75rem 1.5rem 0.75rem 1.25rem;
+  ${({ theme }) => theme.responsive.property.paddingComplex('XS', 'M', 'XS', 'M')}
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  ${({ theme }) => theme.responsive.property.gap('S')}
   background-color: ${({ theme }) => theme.colors.grayScale.white};
-  border-radius: ${({ theme }) => theme.borders.sharp};
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
   ${({ theme }) => theme.fonts.heading.h3};
   color: ${({ theme }) => theme.colors.secondary.VT700};
   border: none;
   box-shadow: ${({ theme }) => theme.effects.dropShadows.DS200_VT};
+
   
   &:hover {
     background-color: ${({ theme, disabled }) => 
@@ -42,12 +43,12 @@ export const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('M')}
   flex-shrink: 0;
   background-image: url('/DefaultIMG_Profile.webp');
   background-size: cover;
   background-position: center;
+
   
   img {
     width: 100%;

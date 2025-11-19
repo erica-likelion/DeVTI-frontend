@@ -3,9 +3,9 @@ import * as S from './Calendar.styles';
 import InputField from '../Input/InputField';
 import ArrowLeft from '../../assets/icons/Calendar/ArrowLeft.svg';
 import ArrowRight from '../../assets/icons/Calendar/ArrowRight.svg';
-import { BlackMButton } from '../Button/BlackMButton';
 import { processTimeInput } from '../../utils/timeValidation';
-import NumButton from '../Button/Static/WhiteM/Num/NumButton';
+import NumButton from '../ButtonStatic/NumButton';
+import BkMTextButton from '../ButtonStatic/BkMTextButton';
 
 interface CalendarProps {
   isOpen: boolean;
@@ -194,7 +194,7 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
       </S.TimeSection>
 
       <S.ButtonSection>
-        <BlackMButton 
+        <BkMTextButton 
           onClick={() => {
             if (tempSelectedDate && selectedTime) {
               updateDateTime(tempSelectedDate, selectedTime);
@@ -204,7 +204,7 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
           disabled={!tempSelectedDate || !selectedTime}
         >
           저장
-        </BlackMButton>
+        </BkMTextButton>
       </S.ButtonSection>
 
     </S.CalendarContainer>

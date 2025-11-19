@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   width: 26.75rem;
   align-items: center;
-  gap: var(--Gap-S, 1rem);
+  ${({ theme }) => theme.responsive.property.gap('S')}
 `;
 
 export const ButtonWrapper = styled.div<{ $isSelected?: boolean }>`

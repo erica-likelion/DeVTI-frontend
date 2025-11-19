@@ -1,3 +1,4 @@
+import { theme } from '@/styles/theme';
 import styled from 'styled-components';
 
 interface ContainerProps {
@@ -46,11 +47,19 @@ export const Container = styled.div<ContainerProps>`
 `;
 
 export const Main = styled.main`
-  height: 100vh;
-  overflow: hidden;
-  padding: 4.5rem 2.5rem 4rem;
+  height:100%;
+  padding: 4.5rem ${({ theme }) => theme.gaps.XL.wide} 4.5rem;
+  margin-top: 0;
+
+  ${({ theme }) => theme.media.desktop} {
+    padding: 4.5rem ${theme.gaps.XL.desktop} 4.5rem;
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    padding: 4.5rem ${theme.gaps.XL.tablet} 4.5rem;
+  }
   
   ${({ theme }) => theme.media.mobile} {
-    padding: 4.5rem 1rem 4.5rem;
+    padding: calc(4.5rem + ${theme.gaps.R.mobile}) ${theme.gaps.R.mobile} 3.75rem;
   }
 `;

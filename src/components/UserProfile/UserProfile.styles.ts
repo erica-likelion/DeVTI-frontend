@@ -2,29 +2,33 @@ import styled from "styled-components";
 
 export const Container = styled.button`
   display: inline-flex;
-  padding: 0.5rem 0.75rem 0.5rem 0.62rem;
+  ${({ theme }) => theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')}
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  ${({ theme }) => theme.responsive.property.gap('XXS')}
   color: ${({ theme }) => theme.colors.grayScale.black};
-  border-radius: ${({ theme }) => theme.borders.sharp};
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
   ${({ theme }) => theme.fonts.heading.h4};
   background: none;
   border: none;
   cursor: pointer;
   
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.transparents.BL100};
   }
 
-  &:active {
+  &:active:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.transparents.BL200};
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.grayScale.gray300};
+    cursor: not-allowed;
   }
 `;
 
 export const ProfileImage = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   border-radius: 50%;
   object-fit: cover;
   border: none;
@@ -32,8 +36,7 @@ export const ProfileImage = styled.img`
 `;
 
 export const DefaultProfileIcon = styled.div`
-  width: 1.5rem;
-  height: 1.5rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -65,23 +68,28 @@ export const UserName = styled.span<UserNameProps>`
 
 export const ProfileContainer = styled.button`
   display: inline-flex;
-  padding: 0.5rem 0.75rem 0.5rem 0.62rem;
+  ${({ theme }) => theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')}
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  ${({ theme }) => theme.responsive.property.gap('XXS')}
   color: ${({ theme }) => theme.colors.grayScale.black};
-  border-radius: ${({ theme }) => theme.borders.sharp};
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
   ${({ theme }) => theme.fonts.heading.h4};
   background: none;
   border: none;
   cursor: pointer;
   
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.transparents.BL100};
   }
 
-  &:active {
+  &:active:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.transparents.BL200};
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.grayScale.gray300};
+    cursor: not-allowed;
   }
 `;
 
@@ -89,15 +97,13 @@ export const ProfileIconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   border-radius: 50%;
   flex-shrink: 0;
 `;
 
 export const ProfileIconImage = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   border-radius: 50%;
   object-fit: cover;
   border: none;
@@ -105,8 +111,7 @@ export const ProfileIconImage = styled.img`
 `;
 
 export const ProfileDefaultIcon = styled.div`
-  width: 1.5rem;
-  height: 1.5rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,8 +119,7 @@ export const ProfileDefaultIcon = styled.div`
   box-shadow: none;
 
   img {
-    width: 1.5rem;
-    height: 1.5rem;
+    ${({ theme }) => theme.responsive.property.sourceSize('R')}
     object-fit: contain;
   }
 `;

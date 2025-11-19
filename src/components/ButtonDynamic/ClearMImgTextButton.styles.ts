@@ -2,12 +2,14 @@ import styled from 'styled-components';
 
 export const Container = styled.button<{ disabled?: boolean }>`
   display: inline-flex;
-  padding: 0.5rem 0.75rem 0.5rem 0.62rem;
+  ${({ theme }) => theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')}
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  ${({ theme }) => theme.responsive.property.gap('XXS')}
+  border: none;
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
+  background: none;
   color: ${({ theme }) => theme.colors.grayScale.black};
-  border-radius: ${({ theme }) => theme.borders.sharp};
   ${({ theme }) => theme.fonts.heading.h4};
   cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
   
@@ -20,7 +22,10 @@ export const Container = styled.button<{ disabled?: boolean }>`
   }
 
   &:disabled {
+    color: ${({ theme }) => theme.colors.grayScale.gray300};
+    cursor: not-allowed;
   }
+
 
 `;
 
@@ -28,8 +33,7 @@ export const Icon = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   border-radius: 50%;
   overflow: hidden;
   
@@ -38,4 +42,5 @@ export const Icon = styled.span`
     height: 100%;
     object-fit: cover;
   }
+
 `;

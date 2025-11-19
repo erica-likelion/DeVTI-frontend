@@ -5,9 +5,10 @@ export const Container = styled.nav`
   width:100%;
   height: 4.5rem;
   z-index: 1000;
+  ${({ theme }) => theme.responsive.property.gap('XXL')}
   
   ${({ theme }) => theme.media.mobile} {
-   padding: 0.62rem 0rem;
+    padding: 0.62rem 0rem;
   }
 `;
 
@@ -38,7 +39,6 @@ export const NavWrapper = styled.div`
 export const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
 `;
 
 export const Logo = styled.button`
@@ -55,7 +55,7 @@ export const Logo = styled.button`
 
 export const NavButtons = styled.div`
   display: flex;
-  gap: 2rem;
+  ${({ theme }) => theme.responsive.property.gap('XL')}
   
   ${({ theme }) => theme.media.mobile} {
     display: none;
@@ -68,7 +68,8 @@ export const MobileRightSection = styled.div`
   ${({ theme }) => theme.media.mobile} {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: ${({ theme }) => theme.responsive.gap('XXL', 'mobile')};
+
   }
 `;
 
