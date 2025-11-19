@@ -6,14 +6,19 @@ interface ClearTextButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   children?: React.ReactNode;
+  selected?: boolean;
 }
 
-export default function ClearTextButton({ className, onClick, disabled = false, children }: ClearTextButtonProps) {
-  const [isSelected, setIsSelected] = useState(false);
+export default function ClearTextButton({ className, onClick, disabled = false, children, selected }: ClearTextButtonProps) {
+  const [internalSelected, setInternalSelected] = useState(false);
+
+  const isSelected = selected !== undefined ? selected : internalSelected;
 
   const handleClick = () => {
     if (!disabled) {
-      setIsSelected(!isSelected);
+      if (selected === undefined) {
+        setInternalSelected(!internalSelected);
+      }
       if (onClick) {
         onClick();
       }

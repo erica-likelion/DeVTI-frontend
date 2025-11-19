@@ -55,7 +55,8 @@ export const Main = styled.main`
   ${({ theme }) => theme.layouts.mobileCommon}
 
   ${({ theme }) => theme.media.tablet} {
-    ${({ theme }) => theme.layouts.tabletCommon}
+    padding-top: calc(4.5rem + ${({ theme }) => theme.gaps.R.tablet});
+    padding-bottom: 3.75rem;
   }
 
   ${({ theme }) => theme.media.desktop} {
