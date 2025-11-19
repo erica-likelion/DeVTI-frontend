@@ -1,4 +1,3 @@
-import { theme } from '@/styles/theme';
 import styled from 'styled-components';
 
 interface ContainerProps {
@@ -24,6 +23,7 @@ export const Container = styled.div<ContainerProps>`
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        background-attachment: fixed;
       `;
     }
     
@@ -48,18 +48,26 @@ export const Container = styled.div<ContainerProps>`
 
 export const Main = styled.main`
   height:100%;
-  padding: 4.5rem ${({ theme }) => theme.gaps.XL.wide} 4.5rem;
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
   margin-top: 0;
-
-  ${({ theme }) => theme.media.desktop} {
-    padding: 4.5rem ${theme.gaps.XL.desktop} 4.5rem;
-  }
+  
+  ${({ theme }) => theme.layouts.mobileCommon}
 
   ${({ theme }) => theme.media.tablet} {
-    padding: 4.5rem ${theme.gaps.XL.tablet} 4.5rem;
+    ${({ theme }) => theme.layouts.tabletCommon}
+  }
+
+  ${({ theme }) => theme.media.desktop} {
+    ${({ theme }) => theme.layouts.desktopCommon}
+  }
+  
+  ${({ theme }) => theme.media.wide} {
+    ${({ theme }) => theme.layouts.wideCommon}
   }
   
   ${({ theme }) => theme.media.mobile} {
-    padding: calc(4.5rem + ${theme.gaps.R.mobile}) ${theme.gaps.R.mobile} 3.75rem;
+    padding-top: calc(4.5rem + ${({ theme }) => theme.gaps.R.mobile});
+    padding-bottom: 3.75rem;
   }
 `;
