@@ -20,6 +20,7 @@ import JoinRoom from "@/pages/joinroom/JoinRoom";
 import NewRoom from "@/pages/newroom/NewRoom";
 import NewRoomCode from "@/pages/newroom/NewRoomCode";
 import JoinRoomPR from "@/pages/joinroom/JoinRoomPR";
+import TestPage from "@/pages/test/TestPage";
 
 export const router = createBrowserRouter([
   {
@@ -77,6 +78,12 @@ export const router = createBrowserRouter([
         path: "new-room/code",
         element: (
           <NewRoomCode />
+        ),
+      },
+      {
+        path: "test",
+        element: (
+          <TestPage />
         ),
       },
       {
