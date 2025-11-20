@@ -1,13 +1,13 @@
 import * as S from './JoinRoom.styles'
 
-import RoleTabs from '../../components/Tabs/RoleTabs';
+import WtLMemberList from '../../components/list/WtLMemberList';
+import img from '/DefaultIMG_Profile.webp';
 
 
 const JoinRoom = () => {
   return (
-    <S.Container>
-        <RoleTabs tabs={['전체', 'PM', '디자인', '프론트엔드', '백엔드']} onChange={(tab) => console.log(tab)} />
-
+    <S.Container >
+      <WtLMemberList icon={img} header="김사자" keywords={[['낮', '대면'], ['PM'], ['배우면서 즐겁게']]} rightButton="꼬리 흔들기" disabled={false} onClick={() => console.log('Clicked!')} />
 
 
     </S.Container>
