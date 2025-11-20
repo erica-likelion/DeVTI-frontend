@@ -9,4 +9,8 @@ export default function HomePage() {
       </S.ListWrapper>
     </S.Container>
   );
+<<<<<<< Updated upstream
 }
+=======
+};
+>>>>>>> Stashed changes
