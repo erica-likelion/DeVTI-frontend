@@ -3,45 +3,24 @@ import { theme } from "@/styles/theme";
 
 export const Container = styled.div<{ $size?: "L" | "M" }>`
   display: flex;
-  width: ${({ $size, theme }) => ($size === "M" ? "auto" : theme.responsive.width('medium'))};
-  max-width: ${({ $size, theme }) =>
-    $size === "M" ? "none" : theme.responsive.width('large')};
+  width: ${({ $size }) => ($size === "M" ? "auto" : "100%")};
+  max-width: ${({ $size }) => ($size === "M" ? "auto" : "33.25rem")};
   flex-direction: column;
   align-items: flex-start;
-  gap: ${({ $size, theme }) => ($size === "M" ? "0" : theme.responsive.gap('XS'))};
+  ${({ theme }) => theme.responsive.property.gap('XXS')}
   ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
-
-  ${({ theme }) => theme.media.desktop} {
-    width: ${({ $size, theme }) => ($size === "M" ? "auto" : theme.responsive.width('medium', 'desktop'))};
-    max-width: ${({ $size, theme }) =>
-      $size === "M" ? "none" : theme.responsive.width('large', 'desktop')};
-    gap: ${({ $size, theme }) => ($size === "M" ? "0" : theme.responsive.gap('XS', 'desktop'))};
-  }
-
-  ${({ theme }) => theme.media.tablet} {
-    width: ${({ $size, theme }) => ($size === "M" ? "auto" : theme.responsive.width('medium', 'tablet'))};
-    max-width: ${({ $size, theme }) =>
-      $size === "M" ? "none" : theme.responsive.width('large', 'tablet')};
-    gap: ${({ $size, theme }) => ($size === "M" ? "0" : theme.responsive.gap('XS', 'tablet'))};
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    width: ${({ $size, theme }) => ($size === "M" ? "auto" : theme.responsive.width('medium', 'mobile'))};
-    max-width: ${({ $size, theme }) =>
-      $size === "M" ? "none" : theme.responsive.width('large', 'mobile')};
-    gap: ${({ $size, theme }) => ($size === "M" ? "0" : theme.responsive.gap('XS', 'mobile'))};
-  }
 `;
 
+
 export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boolean }>`
-  display: ${({ $size }) => ($size === "M" ? "inline-flex" : "flex")};
+  display: inline-flex;
   align-items: center;
   justify-content: ${({ $size }) => ($size === "M" ? "center" : "flex-start")};
-  width: ${({ $size }) => ($size === "M" ? "auto" : "100%")};
+  width: 100%;
   padding: ${({ $size, theme }) =>
     $size === "M"
-      ? `${theme.responsive.gap('XS')} ${theme.responsive.gap('XS')} ${theme.responsive.gap('XS')} ${theme.responsive.gap('XXS')}`
-      : `${theme.responsive.gap('R')} ${theme.responsive.gap('S')}`};
+      ? `${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XS')}`
+      : `${theme.responsive.gap('S')} ${theme.responsive.gap('M')} ${theme.responsive.gap('S')} ${theme.responsive.gap('M')}`};
   border: none;
   border-radius: ${({ $size, theme }) =>
     $size === "M" ? theme.responsive.borderRadius('sharp') : theme.responsive.borderRadius('smooth')};
@@ -52,43 +31,12 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
   box-shadow: ${({ $size }) =>
     $size === "M" ? "none" : "0 0 4px 0 rgba(25, 24, 29, 0.1)"};
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
-  gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XS') : theme.responsive.gap('S'))};
-  height: ${({ $size, theme }) => ($size === "M" ? "auto" : theme.responsive.width('small'))};
-  align-self: ${({ $size }) => ($size === "M" ? "auto" : "stretch")};
+  gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XXS') : theme.responsive.gap('S'))};
+  height: ${({ $size}) => ($size === "M" ? "2.5rem" : "3.5rem")};
+  align-self: stretch;
   transition: background-color 0.2s ease;
 
-  ${({ theme }) => theme.media.desktop} {
-    padding: ${({ $size, theme }) =>
-      $size === "M"
-        ? `${theme.responsive.gap('XS', 'desktop')} ${theme.responsive.gap('XS', 'desktop')} ${theme.responsive.gap('XS', 'desktop')} ${theme.responsive.gap('XXS', 'desktop')}`
-        : `${theme.responsive.gap('R', 'desktop')} ${theme.responsive.gap('S', 'desktop')}`};
-    border-radius: ${({ $size, theme }) =>
-      $size === "M" ? theme.responsive.borderRadius('sharp', 'desktop') : theme.responsive.borderRadius('smooth', 'desktop')};
-    gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XS', 'desktop') : theme.responsive.gap('S', 'desktop'))};
-    height: ${({ $size, theme }) => ($size === "M" ? "auto" : theme.responsive.width('small', 'desktop'))};
-  }
 
-  ${({ theme }) => theme.media.tablet} {
-    padding: ${({ $size, theme }) =>
-      $size === "M"
-        ? `${theme.responsive.gap('XS', 'tablet')} ${theme.responsive.gap('XS', 'tablet')} ${theme.responsive.gap('XS', 'tablet')} ${theme.responsive.gap('XXS', 'tablet')}`
-        : `${theme.responsive.gap('R', 'tablet')} ${theme.responsive.gap('S', 'tablet')}`};
-    border-radius: ${({ $size, theme }) =>
-      $size === "M" ? theme.responsive.borderRadius('sharp', 'tablet') : theme.responsive.borderRadius('smooth', 'tablet')};
-    gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XS', 'tablet') : theme.responsive.gap('S', 'tablet'))};
-    height: ${({ $size, theme }) => ($size === "M" ? "auto" : theme.responsive.width('small', 'tablet'))};
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    padding: ${({ $size, theme }) =>
-      $size === "M"
-        ? `${theme.responsive.gap('XS', 'mobile')} ${theme.responsive.gap('XS', 'mobile')} ${theme.responsive.gap('XS', 'mobile')} ${theme.responsive.gap('XXS', 'mobile')}`
-        : `${theme.responsive.gap('R', 'mobile')} ${theme.responsive.gap('S', 'mobile')}`};
-    border-radius: ${({ $size, theme }) =>
-      $size === "M" ? theme.responsive.borderRadius('sharp', 'mobile') : theme.responsive.borderRadius('smooth', 'mobile')};
-    gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XS', 'mobile') : theme.responsive.gap('S', 'mobile'))};
-    height: ${({ $size, theme }) => ($size === "M" ? "auto" : theme.responsive.width('small', 'mobile'))};
-  }
 
   &:hover:not(:disabled) {
     background: ${({ $size, $disabled, theme }) =>
@@ -143,27 +91,19 @@ export const DropdownList = styled.div`
   overflow: hidden;
 `;
 
-export const DropOption = styled.div<{ $isActive?: boolean; $isSelected?: boolean }>`
+export const DropOption = styled.div<{ $size?: "L" | "M"; $isActive?: boolean; $isSelected?: boolean }>`
   display: flex;
-  height: ${({ theme }) => theme.responsive.width('small')};
-  ${({ theme }) => theme.responsive.property.paddingComplex('R', 'S', 'R', 'S')}
+  height: 3.5rem;
   align-items: center;
   align-self: stretch;
+  padding: ${({ $size, theme }) =>
+    $size === "M"
+      ? `${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XS')}`
+      : `${theme.responsive.gap('S')} ${theme.responsive.gap('M')} ${theme.responsive.gap('S')} ${theme.responsive.gap('M')}`};
   background: ${theme.colors.grayScale.white};
   cursor: ${({ $isActive }) => ($isActive ? "default" : "pointer")};
   transition: background-color 0.2s ease;
 
-  ${({ theme }) => theme.media.desktop} {
-    height: ${({ theme }) => theme.responsive.width('small', 'desktop')};
-  }
-
-  ${({ theme }) => theme.media.tablet} {
-    height: ${({ theme }) => theme.responsive.width('small', 'tablet')};
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    height: ${({ theme }) => theme.responsive.width('small', 'mobile')};
-  }
 
   /* Default 상태: 배경 흰색, 글씨 검은색 (이미 적용됨) */
 
