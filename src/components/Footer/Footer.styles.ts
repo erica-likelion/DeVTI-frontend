@@ -21,7 +21,7 @@ export const Container = styled.footer<ContainerProps>`
     display: flex;
     width: 100vw;
     height: 3.75rem;
-    padding: 0.75rem 2rem;
+    padding: 0.75rem 1rem;
     align-items: flex-start;
     gap: 0.625rem;
     flex-shrink: 0;
@@ -33,6 +33,14 @@ export const Content = styled.div`
   display: flex;
   justify-content: left;
   align-items: left;
+  
+  ${({ theme }) => theme.media.tablet} {
+    padding: 0.75rem 2rem 1.5rem;
+  }
+  
+  ${({ theme }) => theme.media.desktop} {
+    padding: 0.75rem 2rem 1.5rem;
+  }
   
   ${({ theme }) => theme.media.mobile} {
     padding: 0;
