@@ -2,11 +2,14 @@ import styled from 'styled-components';
 
 export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean }>`
   display: inline-flex;
-  padding: 0.5rem 0.66rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: ${({ theme }) => theme.responsive.padding('XXS')} 0;
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.grayScale.white};
-  border-radius: ${({ theme }) => theme.borders.sharp};
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
+  border: none;
   ${({ theme }) => theme.fonts.body.m400};
   color: ${({ theme, disabled }) => 
     disabled ? theme.colors.grayScale.gray300 : theme.colors.grayScale.black};
@@ -28,5 +31,4 @@ export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolea
     background-color: ${theme.colors.secondary.VT100};
     color: ${disabled ? theme.colors.grayScale.gray300 : theme.colors.secondary.VT700};
   `}
-
 `;

@@ -2,10 +2,12 @@ import styled from 'styled-components';
 
 export const Container = styled.button<{ disabled?: boolean }>`
   display: inline-flex;
-  padding: 0.5rem 0.625rem;
+  ${({ theme }) => theme.responsive.property.padding('XXS')}
   justify-content: center;
   align-items: center;
-  border-radius: ${({ theme }) => theme.borders.sharp};
+  border: none;
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
+  background: none;
   cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
   
   &:hover:not(:disabled) {
@@ -17,13 +19,14 @@ export const Container = styled.button<{ disabled?: boolean }>`
   }
 
   &:disabled {
+    color: ${({ theme }) => theme.colors.grayScale.gray300};
+    cursor: not-allowed;
   }
 `;
 
 export const Icon = styled.span`
   display: flex;
-  width: 1.5rem;
-  height: 1.5rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   border-radius: 50%;
   overflow: hidden;
   
@@ -32,4 +35,5 @@ export const Icon = styled.span`
     height: 100%;
     object-fit: cover;
   }
+
 `;

@@ -3,12 +3,12 @@ import styled from 'styled-components';
 export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean }>`
   display: inline-flex;
   height: auto;
-  padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+  ${({ theme }) => theme.responsive.property.paddingComplex('XXXS', 'XXS', 'XXXS', 'XS')}
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  ${({ theme }) => theme.responsive.property.gap('XXS')}
   background-color: ${({ theme }) => theme.colors.systems.warning};
-  border-radius: ${({ theme }) => theme.borders.sharp};
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
   ${({ theme }) => theme.fonts.heading.h4};
   border: none;
 
@@ -33,9 +33,8 @@ export const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.25rem;
-  height: 1.25rem;
-  padding: 0.2rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('S')}
+  ${({ theme }) => theme.responsive.property.padding('XXXS')}
   flex-shrink: 0;
   
   img {

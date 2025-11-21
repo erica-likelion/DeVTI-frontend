@@ -3,7 +3,6 @@ import * as S from './CopyIconButton.styles';
 import CopyBlackGray from '../../assets/icons/Copy/CopyBlackGray.svg';
 import CopyGray from '../../assets/icons/Copy/CopyGray.svg';
 import CopyPupple from '../../assets/icons/Copy/CopyPupple.svg';
-import { copyToClipboard } from '../../utils/copyToClipboard';
 
 interface CopyIconButtonProps {
   className?: string;

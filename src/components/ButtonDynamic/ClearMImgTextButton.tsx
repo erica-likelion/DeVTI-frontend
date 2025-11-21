@@ -4,9 +4,10 @@ interface ClearButtonProps {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  children?: React.ReactNode;
 }
 
-export default function ClearButton({ className, onClick, disabled = false }: ClearButtonProps) {
+export default function ClearButton({ className, onClick, disabled = false, children }: ClearButtonProps) {
   const handleClick = () => {
     if (!disabled && onClick) {
       onClick();
@@ -18,7 +19,7 @@ export default function ClearButton({ className, onClick, disabled = false }: Cl
       <S.Icon>
         <img src="/DefaultIMG_Profile.webp" alt="Clear" />
       </S.Icon>
-      Clear
+      {children || 'Clear'}
     </S.Container>
   );
 }
