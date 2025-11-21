@@ -144,7 +144,7 @@ export const LeftPanel = styled.div`
   flex: 0 0 auto;
   ${({ theme }) => theme.responsive.property.width('medium')}
   height: 59.25rem;
-  ${({ theme }) => theme.responsive.property.paddingComplex('XL', 'M', 'M', 'M')}
+  padding: 5rem 2.5rem 2.5rem 2.5rem; /* theme에 없는 값 (5rem=80px, 2.5rem=40px) - 원래 디자인 유지 */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -157,13 +157,13 @@ export const LeftPanel = styled.div`
   ${theme.media.tablet} {
     width: 100%;
     max-width: 100%;
-    ${({ theme }) => theme.responsive.property.paddingComplex('L', 'S', 'L', 'S')}
+    padding: 6rem 2rem;
     height: auto;
   }
 
   ${theme.media.mobile} {
     width: 100%;
-    ${({ theme }) => theme.responsive.property.paddingComplex('XL', 'XS', 'XL', 'XS')}
+    padding: 5rem 1.5rem;
   }
 `;
 
@@ -175,7 +175,7 @@ export const RightPanel = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  ${({ theme }) => theme.responsive.property.paddingComplex('XXL', 'M', 'XXL', 'M')}
+  padding: 3.75rem 2.5rem; /* theme에 없는 값 (3.75rem=60px, 2.5rem=40px) - 원래 디자인 유지 */
   ${({ theme }) => theme.responsive.property.gap('XXL')}
   background: ${theme.colors.grayScale.white} !important;
   height: 100%;
@@ -184,7 +184,7 @@ export const RightPanel = styled.div`
 
   ${theme.media.tablet} {
     height: auto;
-    ${({ theme }) => theme.responsive.property.paddingComplex('L', 'M', 'XL', 'M')}
+    padding: 3rem 2.5rem 4rem;
   }
 
   ${theme.media.mobile} {
