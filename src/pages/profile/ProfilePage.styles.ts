@@ -173,7 +173,7 @@ export const RightPanel = styled.div`
   align-self: stretch;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 3.75rem 2.5rem; /* theme에 없는 값 (3.75rem=60px, 2.5rem=40px) - 원래 디자인 유지 */
   ${({ theme }) => theme.responsive.property.gap('XXL')}
@@ -384,6 +384,38 @@ export const PartSelectorWrapper = styled.div`
   ${({ theme }) => theme.responsive.property.gap('XS')}
 `;
 
+export const PartSelectionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${({ theme }) => theme.responsive.property.gap('XS')}
+  width: 100%;
+`;
+
+export const PartButtonWrapper = styled.div<{ $isActive?: boolean }>`
+  width: 100%;
+  position: relative;
+  isolation: isolate;
+  
+  & > button {
+    width: 100%;
+    justify-content: flex-start;
+    position: relative;
+    z-index: 1;
+    pointer-events: auto;
+    
+    & > span:first-child {
+      display: none;
+    }
+    
+    ${({ $isActive, theme }) =>
+      $isActive &&
+      `
+      color: ${theme.colors.secondary.VT700};
+      background: ${theme.colors.secondary.VT100};
+    `}
+  }
+`;
+
 export const SelectedPartList = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -507,7 +539,14 @@ export const SaveButton = styled.button`
 `;
 
 // 오른쪽 패널 안내 메시지
-// 오른쪽 패널 안내 메시지
+export const EmptyMessageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
 export const EmptyMessage = styled.h2`
   ${theme.fonts.heading.h2}
   color: ${theme.colors.grayScale.black};

@@ -3,10 +3,9 @@ import { theme } from "@/styles/theme";
 
 export const Container = styled.div`
   display: flex;
-  width: 100%;
-  max-width: 26.75rem;
+  width: 26.75rem;
   align-items: center;
-  ${({ theme }) => theme.responsive.property.gap('S')}
+  gap: var(--Gap-S, 1rem);
 `;
 
 export const ButtonWrapper = styled.div<{ $isSelected?: boolean }>`

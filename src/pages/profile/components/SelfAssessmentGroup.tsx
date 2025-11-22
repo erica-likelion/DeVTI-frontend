@@ -1,4 +1,5 @@
 import * as S from "./SelfAssessmentGroup.styles";
+import Card from "@/components/Card";
 
 const RATING_SCALE = [
   "매우 모름",
@@ -32,30 +33,15 @@ export default function SelfAssessmentGroup({
       <S.GroupTitle>{title}</S.GroupTitle>
       <S.CardGrid>
         {items.map((item) => (
-          <S.Card key={item.key}>
-            <S.CardTitle>{item.title}</S.CardTitle>
-            <S.CardDescription>{item.description}</S.CardDescription>
-            <S.RatingGroup>
-              {RATING_SCALE.map((label, index) => {
-                const value = index + 1;
-                const isActive = (values[item.key] ?? 0) === value;
-
-                return (
-                  <S.RatingOption key={label} $active={isActive}>
-                    <S.HiddenRadio
-                      name={item.key}
-                      type="radio"
-                      value={value}
-                      checked={isActive}
-                      onChange={() => onChange(item.key, value)}
-                    />
-                    <S.RatingCircle $active={isActive} />
-                    <S.RatingLabelText>{label}</S.RatingLabelText>
-                  </S.RatingOption>
-                );
-              })}
-            </S.RatingGroup>
-          </S.Card>
+          <S.CardWrapper key={item.key}>
+            <Card
+              header={item.title}
+              body={item.description}
+              score={values[item.key] ?? 0}
+              variant="input"
+              onScoreChange={(score) => onChange(item.key, score)}
+            />
+          </S.CardWrapper>
         ))}
       </S.CardGrid>
     </S.Group>

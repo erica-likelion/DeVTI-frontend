@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import * as S from "./ProfilePage.styles";
 import PMPortfolioForm from "./components/PMPortfolioForm";
+import DesignPortfolioForm from "./components/DesignPortfolioForm";
+import FrontendPortfolioForm from "./components/FrontendPortfolioForm";
+import BackendPortfolioForm from "./components/BackendPortfolioForm";
 import BkLTextButton from "@/components/ButtonStatic/BkLTextButton";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
 import WtMIconButton from "@/components/ButtonStatic/WtMIconButton";
@@ -23,7 +26,6 @@ export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(user?.profileImage || null);
   const [name, setName] = useState<string>(user?.name || "");
   const [intro, setIntro] = useState<string>("");
-  const [selectedPart, setSelectedPart] = useState<string>("");
   const [dbtiInfo, setDbtiInfo] = useState<string | null>(null); // DBTI 정보 상태
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -32,7 +34,7 @@ export default function ProfilePage() {
   const isNameEmpty = !name.trim();
   
   // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI, 파트 전부 입력/선택되어야 함
-  const isSaveDisabled = isNameEmpty || !intro.trim() || !dbtiInfo || !selectedPart;
+  const isSaveDisabled = isNameEmpty || !intro.trim() || !dbtiInfo || selectedParts.length === 0;
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
@@ -84,6 +86,8 @@ export default function ProfilePage() {
     // DBTI 정보가 없으면 센터 시트 열기
     if (!dbtiInfo) {
       // TODO: 센터 시트 열기 (아직 구현되지 않음)
+      // 임시로 DBTI 정보 설정 (DBTI 페이지가 만들어지면 제거)
+      setDbtiInfo("test"); // 임시 값
       console.log("센터 시트 열기");
       // 예: setIsCenterSheetOpen(true);
     } else {
@@ -172,23 +176,42 @@ export default function ProfilePage() {
 
           <S.FormSection>
             <S.FormLabel>파트</S.FormLabel>
-            <DropBox
-              size="L"
-              value={selectedPart}
-              placeholder="파트 추가"
-              isOpen={isPartDropdownOpen}
-              options={[...PART_OPTIONS]}
-              disabledOptions={selectedParts}
-              onClick={() => setIsPartDropdownOpen((prev) => !prev)}
-              onSelectOption={(option) => {
-                setSelectedPart(option);
-                if (!selectedParts.includes(option as PartOption)) {
-                  setSelectedParts((prev) => [...prev, option as PartOption]);
-                }
-                setActivePart(option as PartOption);
-                setIsPartDropdownOpen(false);
-              }}
-            />
+            <S.PartSelectionWrapper>
+              {selectedParts.map((part) => (
+                <S.PartButtonWrapper 
+                  key={part} 
+                  $isActive={activePart === part}
+                >
+                  <WtLPawButton
+                    key={`${part}-${activePart}`}
+                    onClick={() => {
+                      setActivePart(part);
+                    }}
+                    disabled={false}
+                  >
+                    {part}
+                  </WtLPawButton>
+                </S.PartButtonWrapper>
+              ))}
+              <div ref={partSelectorRef}>
+                <DropBox
+                  size="L"
+                  value=""
+                  placeholder="파트 추가"
+                  isOpen={isPartDropdownOpen}
+                  options={[...PART_OPTIONS]}
+                  disabledOptions={selectedParts}
+                  onClick={() => setIsPartDropdownOpen((prev) => !prev)}
+                  onSelectOption={(option) => {
+                    if (!selectedParts.includes(option as PartOption)) {
+                      setSelectedParts((prev) => [...prev, option as PartOption]);
+                      setActivePart(option as PartOption);
+                    }
+                    setIsPartDropdownOpen(false);
+                  }}
+                />
+              </div>
+            </S.PartSelectionWrapper>
           </S.FormSection>
 
           <S.SaveButtonWrapper>
@@ -200,25 +223,32 @@ export default function ProfilePage() {
       </S.LeftPanel>
 
       <S.RightPanel>
-        {!intro ? (
-          <S.EmptyMessage>
-            한 줄 소개를 작성해 나를 표현해봐요.
-          </S.EmptyMessage>
+        {activePart === "PM" ? (
+          <PMPortfolioForm />
+        ) : activePart === "디자인" ? (
+          <DesignPortfolioForm />
+        ) : activePart === "프론트엔드" ? (
+          <FrontendPortfolioForm />
+        ) : activePart === "백엔드" ? (
+          <BackendPortfolioForm />
         ) : (
-          <S.EmptyMessage>
-            DBTI 테스트를 통해 내 프로젝트 성향을 알아봐요.
-          </S.EmptyMessage>
+          <S.EmptyMessageWrapper>
+            {!intro ? (
+              <S.EmptyMessage>
+                한 줄 소개를 작성해 나를 표현해봐요.
+              </S.EmptyMessage>
+            ) : !dbtiInfo ? (
+              <S.EmptyMessage>
+                DBTI 테스트를 통해 내 프로젝트 성향을 알아봐요.
+              </S.EmptyMessage>
+            ) : (
+              <S.EmptyMessage>
+                파트를 추가하고 포트폴리오를 작성해봐요.
+              </S.EmptyMessage>
+            )}
+          </S.EmptyMessageWrapper>
         )}
-
-        {activePart === "PM" && <PMPortfolioForm />}
-
-        {activePart &&
-          activePart !== "PM" && (
-            <S.NotReadyMessage>
-              해당 파트 포트폴리오는 준비 중이에요.
-            </S.NotReadyMessage>
-          )}
-        </S.RightPanel>
+      </S.RightPanel>
       </S.EditContainer>
     </S.EditWrapper>
   );
