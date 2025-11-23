@@ -37,9 +37,13 @@ export const WtLMemberList = ({
       {/* Keyword 태그들 */}
       <S.KeywordArea>
         {keywords.map((group, idx) => (
-    <Keyword key={idx} items={group} />))}
+          <Keyword key={idx} items={group} />))}
       </S.KeywordArea>
 
+      <S.IndicatorArea>
+        <S.Indicator />
+      </S.IndicatorArea>
+      
       {/* 오른쪽 버튼 */}
       <S.RightArea>
         <VT500Button disabled={disabled}>{rightButton}</VT500Button>
