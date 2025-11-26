@@ -15,6 +15,7 @@ import HomePageNone from "@/pages/home/HomePageNone";
 import LandingPage from "@/pages/landing/LandingPage";
 import LoginPage from "@/pages/login/LoginPage";
 import ProfilePage from "@/pages/profile/ProfilePage";
+import PMPortfolioViewPage from "@/pages/profile/PMPortfolioViewPage";
 import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 import JoinRoom from "@/pages/joinroom/JoinRoom";
 import NewRoom from "@/pages/newroom/NewRoom";
@@ -48,6 +49,22 @@ export const router = createBrowserRouter([
         element: <LoginPage />,
       },
       
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/pm/view",
+        element: (
+          <ProtectedRoute>
+            <PMPortfolioViewPage />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: '*',
         element: (

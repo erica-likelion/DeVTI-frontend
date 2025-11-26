@@ -562,3 +562,25 @@ export const NotReadyMessage = styled.p`
   margin: 0;
   text-align: center;
 `;
+
+export const ReadOnlyText = styled.p`
+  ${theme.fonts.body.l500}
+  color: ${theme.colors.grayScale.black};
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+`;
+
+export const ReadOnlyPartButton = styled.div`
+  ${theme.fonts.body.m500}
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: ${({ theme }) => theme.responsive.gap('XXS')} ${({ theme }) => theme.responsive.gap('S')};
+  border-radius: ${({ theme }) => theme.borders.sharp.wide};
+  background: ${theme.colors.secondary.VT100};
+  color: ${theme.colors.secondary.VT700};
+  border: none;
+  cursor: default;
+`;

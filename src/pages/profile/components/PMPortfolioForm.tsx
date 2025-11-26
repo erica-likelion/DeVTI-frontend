@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BasePortfolioForm from "./BasePortfolioForm";
 import SelfAssessmentGroup from "./SelfAssessmentGroup";
 import type { SelfAssessmentItem } from "./SelfAssessmentGroup";
@@ -72,6 +73,7 @@ const DEVELOPMENT_ITEMS: SelfAssessmentItem[] = [
 ] as const;
 
 export default function PMPortfolioForm() {
+  const navigate = useNavigate();
   const [experienceSummary, setExperienceSummary] = useState("");
   const [strengths, setStrengths] = useState("");
   const [dailyAvailability, setDailyAvailability] =
@@ -113,6 +115,21 @@ export default function PMPortfolioForm() {
   );
   const isSelfAssessmentValid = isDesignAssessmentComplete && isDevelopmentAssessmentComplete;
 
+  const handleRegister = (isNewcomerValue: boolean) => {
+    // 등록 후 페이지로 이동 (상태를 URL 파라미터나 state로 전달)
+    navigate("/profile/pm/view", {
+      state: {
+        experienceSummary,
+        strengths,
+        dailyAvailability,
+        weeklyAvailability,
+        designAssessment,
+        developmentAssessment,
+        isNewcomer: isNewcomerValue,
+      },
+    });
+  };
+
   return (
     <BasePortfolioForm
       title="PM 포트폴리오"
@@ -126,6 +143,7 @@ export default function PMPortfolioForm() {
       onStrengthsChange={setStrengths}
       onDailyAvailabilityChange={toggleDailyAvailability}
       onWeeklyAvailabilityChange={toggleWeeklyAvailability}
+      onRegister={handleRegister}
     >
       <SelfAssessmentGroup
         title="디자인에 대한 이해도 자가평가"

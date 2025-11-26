@@ -4,7 +4,6 @@ import { theme } from "@/styles/theme";
 export const Container = styled.div<{ $size?: "L" | "M" }>`
   display: flex;
   width: ${({ $size }) => ($size === "M" ? "auto" : "100%")};
-  max-width: ${({ $size }) => ($size === "M" ? "auto" : "33.25rem")};
   flex-direction: column;
   align-items: flex-start;
   ${({ theme }) => theme.responsive.property.gap('XXS')}

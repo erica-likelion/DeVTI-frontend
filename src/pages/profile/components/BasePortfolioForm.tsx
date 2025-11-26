@@ -37,6 +37,7 @@ interface BasePortfolioFormProps {
   onDailyAvailabilityChange: (key: DailyAvailabilityKey) => void;
   onWeeklyAvailabilityChange: (key: WeeklyAvailabilityKey) => void;
   isFormValid?: boolean; // 폼 유효성 검사 결과
+  onRegister?: (isNewcomer: boolean) => void; // 등록 버튼 클릭 시 호출 (isNewcomer 전달)
   children?: ReactNode; // 파트별 특화 섹션들
 }
 
@@ -53,12 +54,18 @@ export default function BasePortfolioForm({
   onDailyAvailabilityChange,
   onWeeklyAvailabilityChange,
   isFormValid = false,
+  onRegister,
   children,
 }: BasePortfolioFormProps) {
   const [isNewcomer, setIsNewcomer] = useState(false);
   const isNewcomerRef = useRef(false);
   const experienceTextareaRef = useRef<HTMLTextAreaElement>(null);
   const strengthsTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // isNewcomer를 외부에서 접근할 수 있도록 ref에 저장
+  useEffect(() => {
+    isNewcomerRef.current = isNewcomer;
+  }, [isNewcomer]);
 
   // 신입 체크 시 경력 내용 초기화
   const handleNewcomerChange = (checked: boolean) => {
@@ -148,13 +155,12 @@ export default function BasePortfolioForm({
 
   const handleRegister = () => {
     if (!isFormValid) return;
-    // TODO: 포트폴리오 등록 로직
-    console.log("포트폴리오 등록");
+    onRegister?.(isNewcomer);
   };
 
-  // 기본 유효성 검사: 경력사항, 강점, 시간 선택
+  // 기본 유효성 검사: 경력사항(또는 신입 체크), 강점, 시간 선택
   const baseValidation = 
-    experienceSummary.trim() !== "" &&
+    (experienceSummary.trim() !== "" || isNewcomer) &&
     strengths.trim() !== "" &&
     dailyAvailability !== null &&
     weeklyAvailability !== null;
@@ -184,7 +190,7 @@ export default function BasePortfolioForm({
                 value={experienceSummary}
                 onChange={handleExperienceChange}
                 placeholder=""
-                disabled={false}
+                disabled={isNewcomer}
               />
             </S.TextAreaWrapper>
           </S.InputWrapper>
