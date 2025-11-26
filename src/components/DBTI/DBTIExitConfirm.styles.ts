@@ -6,19 +6,13 @@ export const Container = styled.div`
   align-items: center;
   gap: 2.5rem;
   width: 100%;
-  margin: 0;
+  margin-top: 2.5rem;
 `;
 
-export const Title = styled.h1`
-  ${({ theme }) => theme.fonts.heading.h1}
-  color: ${({ theme }) => theme.colors.grayScale.black};
-  margin: 0;
-  text-align: center;
-`;
 
-export const Subtitle = styled.p`
+export const CloseSubtitle = styled.p`
   ${({ theme }) => theme.fonts.body.l500}
-  color: ${({ theme }) => theme.colors.grayScale.gray500};
+  color: ${({ theme }) => theme.colors.grayScale.black};
   margin: 0;
   text-align: center;
 `;
@@ -29,12 +23,11 @@ export const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-top: 2.5rem;
   
 `;
 
 export const ImageWrapper = styled.div`
-  width: 17rem;
+  width:17rem;
   height: 17rem;
   display: flex;
   align-items: center;
