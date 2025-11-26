@@ -13,14 +13,14 @@ export const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 0 ${({ theme }) => theme.componentWidths.min.wide};
+  padding: 0 ${({ theme }) => theme.gaps.CenterSheet.wide};
 
   ${({ theme }) => theme.media.desktop} {
-    padding: 0 ${({ theme }) => theme.componentWidths.min.desktop};
+    padding: 0 ${({ theme }) => theme.gaps.CenterSheet.desktop};
   }
 
   ${({ theme }) => theme.media.tablet} {
-    padding: 0 ${({ theme }) => theme.componentWidths.min.tablet};
+    padding: 0 ${({ theme }) => theme.gaps.CenterSheet.tablet};
   }
 
   ${({ theme }) => theme.media.mobile} {
