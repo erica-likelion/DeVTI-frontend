@@ -251,6 +251,12 @@ const gaps = {
     tablet: '1.25rem',  // 20px
     mobile: '1rem',     // 16px
   },
+  CenterSheet: {
+    wide: '8.25rem',       // 132px
+    desktop: '7.25rem',    // 116px
+    tablet: '3rem',        // 48px
+    mobile: '0.75rem',     // 12px
+  },
 } as const;
 
 // Component Width 유틸리티 (component widths) - 반응형
