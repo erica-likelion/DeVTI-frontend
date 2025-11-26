@@ -5,14 +5,6 @@ export const Container = styled.div`
   flex-direction: column;
   align-item: center;
   gap: 2.5rem;
-`;
-
-export const TextWrapper = styled.div`
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
   padding: 0 ${({ theme }) => theme.gaps.CenterSheet.wide};
 
   ${({ theme }) => theme.media.desktop} {
@@ -26,6 +18,15 @@ export const TextWrapper = styled.div`
   ${({ theme }) => theme.media.mobile} {
     padding: 0;
   }
+`;
+
+export const TextWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  
 `;
 
 export const QuestionHeader = styled.h2`
@@ -49,7 +50,8 @@ export const LikertScale = styled.div`
   align-items: center;
   ${({ theme }) => theme.responsive.property.gap('M')}
   width: 100%;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0;
 `;
 
 export const LeftLabel = styled.span`
