@@ -52,8 +52,7 @@ export const ContentFrame = styled.div`
   align-items: flex-start;
   gap: 2.75rem;
   width: 100%;
-  padding-left: ${({ theme }) => theme.responsive.gap('M')};
-  padding-right: ${({ theme }) => theme.responsive.gap('M')};
+  ${({ theme }) => theme.responsive.property.paddingComplex('0', 'M', '0', 'M')}
 `;
 
 export const SectionTitle = styled.h3`
