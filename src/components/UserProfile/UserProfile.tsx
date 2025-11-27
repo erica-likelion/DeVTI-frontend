@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import ImageIcon from "@/assets/icons/Image.svg";
 import { useAuthStore } from "@/stores/authStore";
 import * as S from "./UserProfile.styles";
 
@@ -28,7 +29,7 @@ export default function UserProfile({
             <S.ProfileIconImage src={user.profileImage} alt={user.name} />
           ) : (
             <S.ProfileDefaultIcon>
-              <img src="/Image.svg" alt="Profile" />
+              <img src={ImageIcon} alt="Profile" />
             </S.ProfileDefaultIcon>
           )}
         </S.ProfileIconWrapper>

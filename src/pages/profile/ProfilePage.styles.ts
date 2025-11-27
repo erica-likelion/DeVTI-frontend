@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
+import ImageIcon from "@/assets/icons/Image.svg";
+import ProfileImageIcon from "@/assets/icons/ProfileImage.svg";
 
 const VIEWPORT_AVAILABLE_HEIGHT = "calc(100vh - 4.5rem - 4rem)"; // TopNav + Footer padding in Layout
 
@@ -66,7 +68,7 @@ export const ProfileImage = styled.img`
 `;
 
 export const ProfileImagePlaceholder = styled.img.attrs({
-  src: "/Image.svg",
+  src: ImageIcon,
   alt: "기본 프로필 이미지",
 })`
   width: 12.5rem;
@@ -223,7 +225,7 @@ export const EditProfileImage = styled.img`
 `;
 
 export const EditProfileImagePlaceholder = styled.img.attrs({
-  src: "/ProfileImage.svg",
+  src: ProfileImageIcon,
   alt: "기본 프로필 이미지",
 })`
   width: 7.5rem;
