@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean }>`
   display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
   padding: ${({ theme }) => theme.responsive.padding('XXS')} 0;
   justify-content: center;
   align-items: center;

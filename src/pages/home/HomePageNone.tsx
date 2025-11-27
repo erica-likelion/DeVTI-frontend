@@ -6,11 +6,11 @@ export default function HomePageNone() {
   const navigate = useNavigate();
 
   const handleNavigateToNewRoomCode = () => {
-    navigate('/newroom/code');
+    navigate('/new-room/code');
   };
 
   const handleNavigateToNewRoom = () => {
-    navigate('/newroom');
+    navigate('/new-room');
   };
 
 

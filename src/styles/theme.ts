@@ -287,6 +287,26 @@ const componentWidths = {
   },
 } as const;
 
+// Overlay Sheets Width 유틸리티 (modal/sheet widths) - 반응형
+const overlaySheets = {
+  width: {
+    wide: '66.75rem',     // 1068px
+    desktop: '51.75rem',  // 828px
+    tablet: '36.25rem',   // 580px
+    mobile: '22.5rem',    // 360px
+  },
+} as const;
+
+// Overlay Modals Width 유틸리티 (modal widths) - 반응형
+const overlayModals = {
+  width: {
+    wide: '35.25rem',     // 564px
+    desktop: '35.25rem',  // 564px
+    tablet: '27rem',      // 432px
+    mobile: '20.5rem',    // 328px
+  },
+} as const;
+
 // Source Width 유틸리티 (image/media source widths) - 반응형
 const sourceWidths = {
   S: {
@@ -633,6 +653,8 @@ export const theme = {
   gaps,
   componentWidths,
   sourceWidths,
+  overlaySheets,
+  overlayModals,
   responsive,
   withOpacity,
   withTint,

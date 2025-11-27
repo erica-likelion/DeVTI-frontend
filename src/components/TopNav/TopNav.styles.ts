@@ -18,9 +18,10 @@ export const NavWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: ${({ theme }) => theme.responsive.property.gap('XL')};
   
   ${({ theme }) => theme.media.mobile} {
-    padding: 1.38rem 2rem;
+    padding: 1.38rem 1rem;
   }
   
   ${({ theme }) => theme.media.tablet} {
@@ -39,6 +40,7 @@ export const NavWrapper = styled.div`
 export const LeftSection = styled.div`
   display: flex;
   align-items: center;
+  ${({ theme }) => theme.responsive.property.gap('XXL')};
 `;
 
 export const Logo = styled.button`
@@ -50,6 +52,11 @@ export const Logo = styled.button`
   img {
     width: 8.0625rem;
     height: 1.75rem;
+
+    ${({ theme }) => theme.media.mobile} {
+      width: 8.0625rem;
+      height: 1.75rem;
+    }
   }
 `;
 

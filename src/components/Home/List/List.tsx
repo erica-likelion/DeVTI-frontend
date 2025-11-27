@@ -18,7 +18,7 @@ export default function List({ items }: ListProps) {
     <S.Container>
       {items.map((item) => (
         <S.ListItem key={item.id}>
-          {item.content}
+          <S.ItemContent>{item.content}</S.ItemContent>
           <WtMTextButton onClick={item.onClick}>
             {item.buttonText}
           </WtMTextButton>

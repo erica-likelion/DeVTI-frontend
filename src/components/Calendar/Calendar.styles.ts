@@ -43,11 +43,6 @@ export const NavButton = styled.button`
   ${({ theme }) => theme.responsive.property.padding('XXS')}
   justify-content: center;
   align-items: center;
-  
-  img {
-    ${({ theme }) => theme.responsive.property.sourceWidth('R')}
-  }
-
 `;
 
 export const MonthYear = styled.div`

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import WtMTextButton from "@/components/ButtonStatic/WtMTextButton";
-import * as S from "./SegmentControl_Tight.styles";
+import * as S from "./SegmentControlTight.styles";
 
 interface SegmentControlProps {
   options: string[];
