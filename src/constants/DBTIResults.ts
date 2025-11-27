@@ -3,57 +3,81 @@ export interface DBTIResultData {
   name: string;
   keywords: string[];
   image: string;
+  goodAt: string;
+  bestPosition: string;
+  risk: string;
+  bestie: number[];
+}
+
+export interface BestieInfo {
+  id: number;
+  name: string;
+  image: string;
+  reason: string;
 }
 
 export const DBTI_RESULTS: Record<number, DBTIResultData> = {
   1: {
     id: 1,
     name: "햇살형 공감설계자, 골든 리트리버",
-    keywords: ["사람좋아", "팀 분위기 메이커", "유저 공감의 화신"],
-    image: "/dbti-golden-retriever.png"
+    keywords: ["사람 좋아", "팀 분위기 메이커", "유저 공감의 화신"],
+    image: "/dbti-golden-retriever.png",
+    goodAt: "온보딩/문서화(DX), 디자인-개발 핸드셰이크, 사용자 인터뷰 요약, 프로토타입 데모",
+    bestPosition: "프론트엔드 + 프로덕트(UX) 엔지니어, DevRel, Design system",
+    risk: "스코프가 자주 넓어짐(“이것도 넣으면 유저가 좋아하지 않을까?”), shiny object syndrome.",
+    bestie: [2, 3, 4]
   },
   2: {
     id: 2,
-    name: "보더콜리",
-    keywords: ["똑똑한", "리더십", "체계적인"],
-    image: "/dbti-border-collie.png"
+    name: "지능형 리더십, 보더콜리",
+    keywords: ["전략적 사고", "문제 해결", "리더십"],
+    image: "/dbti-border-collie.png",
+    goodAt: "복잡한 문제를 체계적으로 분석하고 해결책을 찾는 것",
+    bestPosition: "백엔드 개발자, 데이터 분석가",
+    risk: "너무 완벽을 추구하여 팀원들에게 부담을 줄 수 있음",
+    bestie: [1, 5, 6]
   },
   3: {
     id: 3,
-    name: "비글",
-    keywords: ["소통적인", "활발한", "친근한"],
-    image: "/dbti-beagle.png"
+    name: "충성심 가득한 보안관, 도베르만",
+    keywords: ["책임감", "신뢰성", "보안 의식"],
+    image: "/dbti-doberman.png",
+    goodAt: "시스템의 안정성과 보안을 책임지고 관리하는 것",
+    bestPosition: "데브옵스 엔지니어, 보안 전문가",
+    risk: "변화에 대한 적응이 다소 느릴 수 있음",
+    bestie: [1, 4, 2]
   },
   4: {
     id: 4,
-    name: "시바이누",
-    keywords: ["독립적인", "창의적인", "개성있는"],
-    image: "/dbti-shiba-inu.png"
-  },
-  5: {
-    id: 5,
-    name: "래브라도르",
-    keywords: ["성실한", "안정적인", "믿음직한"],
-    image: "/dbti-labrador.png"
-  },
-  6: {
-    id: 6,
-    name: "허스키",
-    keywords: ["에너지넘치는", "도전적인", "자유로운"],
-    image: "/dbti-husky.png"
-  },
-  7: {
-    id: 7,
-    name: "푸들",
-    keywords: ["우아한", "세심한", "완벽주의"],
-    image: "/dbti-poodle.png"
-  },
-  8: {
-    id: 8,
-    name: "닥스훈트",
-    keywords: ["끈질긴", "집중력", "목표지향"],
-    image: "/dbti-dachshund.png"
+    name: "호기심 많은 탐험가, 비글",
+    keywords: ["호기심", "창의성", "실험 정신"],
+    image: "/dbti-beagle.png",
+    goodAt: "새로운 기술과 아이디어를 탐구하고 실험하는 것",
+    bestPosition: "프론트엔드 개발자, UX 리서처",
+    risk: "집중력이 분산되어 프로젝트 완료가 지연될 수 있음",
+    bestie: [1, 3, 5]
   }
+};
+
+export const getBestieInfo = (id: number): BestieInfo | null => {
+  const result = DBTI_RESULTS[id];
+  if (!result) return null;
+  
+  return {
+    id: result.id,
+    name: result.name,
+    image: result.image,
+    reason: getBestieReason(1, id) // 골든 리트리버와의 궁합 이유
+  };
+};
+
+export const getBestieReason = (mainId: number, bestieId: number): string => {
+  const reasons: Record<string, string> = {
+    '1-2': '큰 그림·원칙으로 골든리트리버의 확산형 아이디어에 뼈대 제공',
+    '1-3': '실행력이 좋아 아이디어를 끝까지 밀어줌',
+    '1-4': '발상 폭발 듀오(단, 시간제한 필수..)'
+  };
+  return reasons[`${mainId}-${bestieId}`] || '서로의 장점을 보완하며 좋은 시너지를 발휘합니다';
 };
 
 export const getDBTIResult = (id: number): DBTIResultData | null => {

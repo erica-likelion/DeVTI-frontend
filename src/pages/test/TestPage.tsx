@@ -3,13 +3,18 @@ import CenterSheet from '@/components/CenterSheet/CenterSheet';
 import BlackLTextButton from '@/components/ButtonStatic/BkLTextButton';
 import DBTIIntro from '@/components/DBTI/DBTIIntro';
 import DBTIQuestionPage from '@/components/DBTI/DBTIQuestionPage';
+import DBTIExitConfirm from '@/components/DBTI/DBTIExitConfirm';
+import DBTIResult from '@/components/DBTI/DBTIResult';
+import { getDBTIResult } from '@/constants/DBTIResults';
 import * as S from './TestPage.styles';
 
 export default function TestPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [step, setStep] = useState<'intro' | 'question'>('intro');
+  const [step, setStep] = useState<'intro' | 'question' | 'result'>('intro');
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [answers, setAnswers] = useState<{[key: number]: number}>({});
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [resultId, setResultId] = useState<number | null>(null);
 
   const allQuestions = [
     // 페이지 1 (1-7)
@@ -62,9 +67,28 @@ export default function TestPage() {
     }));
   };
 
-  const handleNext = () => {
+  const submitAnswersToBackend = async (_answers: {[key: number]: number}) => {
+    try {
+      // 데모용: 무조건 골든리트리버 (ID 1) 반환
+      return 1;
+    } catch (error) {
+      console.error('Error submitting answers:', error);
+      // 데모용: 골든리트리버 ID 반환
+      return 1;
+    }
+  };
+
+  const handleNext = async () => {
     if (currentPageIndex < totalPages - 1) {
       setCurrentPageIndex(prev => prev + 1);
+    } else {
+      // 마지막 페이지에서 모든 질문에 답변했으면 백엔드에 전송
+      const allAnswered = allQuestions.every((_, index) => answers[index] !== undefined);
+      if (allAnswered) {
+        const id = await submitAnswersToBackend(answers);
+        setResultId(id);
+        setStep('result');
+      }
     }
   };
 
@@ -75,7 +99,53 @@ export default function TestPage() {
     }
   };
 
+  const handleClose = () => {
+    if (showExitConfirm) {
+      // Exit 확인 페이지에서 X 버튼을 누르면 창 닫기
+      setIsSheetOpen(false);
+      setStep('intro');
+      setCurrentPageIndex(0);
+      setAnswers({});
+      setShowExitConfirm(false);
+    } else if (step === 'question' && Object.keys(answers).length > 0) {
+      setShowExitConfirm(true);
+    } else {
+      setIsSheetOpen(false);
+      setStep('intro');
+      setShowExitConfirm(false);
+    }
+  };
+
+  const handleExitConfirm = () => {
+    // "이어하기" 버튼 - 원래 설문으로 돌아가기
+    setShowExitConfirm(false);
+  };
+
+  const handleExitCancel = () => {
+    setShowExitConfirm(false);
+  };
+
+  const handleResultClose = () => {
+    setIsSheetOpen(false);
+    setStep('intro');
+    setCurrentPageIndex(0);
+    setAnswers({});
+    setShowExitConfirm(false);
+    setResultId(null);
+  };
+
   const renderContent = () => {
+    if (showExitConfirm) {
+      return <DBTIExitConfirm onConfirm={handleExitConfirm} onCancel={handleExitCancel} />;
+    }
+    
+    if (step === 'result' && resultId) {
+      const resultData = getDBTIResult(resultId);
+      if (resultData) {
+        return <DBTIResult resultData={resultData} onClose={handleResultClose} />;
+      }
+    }
+    
     if (step === 'intro') {
       return <DBTIIntro onStart={handleStart} />;
     }
@@ -106,8 +176,8 @@ export default function TestPage() {
 
       <CenterSheet
         isOpen={isSheetOpen}
-        onClose={() => setIsSheetOpen(false)}
-        showNavigation={step === 'question'}
+        onClose={handleClose}
+        showNavigation={step === 'question' && !showExitConfirm}
         onPrevious={handlePrevious}
         onNext={handleNext}
         hasAnswer={(() => {
@@ -119,6 +189,8 @@ export default function TestPage() {
           return true;
         })()}
         isPreviousDisabled={currentPageIndex === 0}
+        currentPage={currentPageIndex}
+        isLastPage={currentPageIndex === totalPages - 1}
       >
         {renderContent()}
       </CenterSheet>
