@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   background: ${({ theme }) => theme.colors.grayScale.white};
   display: flex;
+  width:100%;
   padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.wide};
   flex-direction: column;
   align-items: flex-start;
