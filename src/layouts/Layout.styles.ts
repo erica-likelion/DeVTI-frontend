@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface ContainerProps {
   $isImageBackground: boolean;
@@ -46,7 +46,7 @@ export const Container = styled.div<ContainerProps>`
   }}
 `;
 
-export const Main = styled.main`
+export const Main = styled.main<{ $pathname: string }>`
   height:100%;
   padding-top: 4.5rem;
   padding-bottom: 4.5rem;
@@ -56,19 +56,43 @@ export const Main = styled.main`
 
   ${({ theme }) => theme.media.tablet} {
     padding-top: calc(4.5rem + ${({ theme }) => theme.gaps.R.tablet});
-    padding-bottom: 3.75rem;
+    padding-bottom: 4.5rem;
   }
 
   ${({ theme }) => theme.media.desktop} {
     ${({ theme }) => theme.layouts.desktopCommon}
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
   }
   
   ${({ theme }) => theme.media.wide} {
     ${({ theme }) => theme.layouts.wideCommon}
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
   }
   
   ${({ theme }) => theme.media.mobile} {
     padding-top: calc(4.5rem + ${({ theme }) => theme.gaps.R.mobile});
     padding-bottom: 3.75rem;
   }
+
+  ${({ $pathname }) => $pathname === '/profile/edit/DBTI' && css`
+    padding-left: 0;
+    padding-right: 0;
+
+    ${({ theme }) => theme.media.desktop} {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    
+    ${({ theme }) => theme.media.wide} {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    
+    ${({ theme }) => theme.media.mobile} {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  `}
 `;

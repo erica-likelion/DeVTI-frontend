@@ -3,6 +3,8 @@ import * as S from './CenterSheet.styles';
 import WtMIconButton from '@/components/ButtonStatic/WtMIconButton';
 import ArrowLeftTextButton from '@/components/ButtonDynamic/ArrowLeftTextButton';
 import ArrowRightTextButton from '@/components/ButtonDynamic/ArrowRightTextButton';
+import BlackMTextButton from '@/components/ButtonStatic/BkMTextButton';
+import ProgressBar from '@/components/Progress/ProgressBar';
 import Xblack from '@/assets/icons/Xblack.svg';
 
 interface CenterSheetProps {
@@ -15,6 +17,8 @@ interface CenterSheetProps {
   onNext?: () => void;
   hasAnswer?: boolean;
   isPreviousDisabled?: boolean;
+  currentPage?: number;
+  isLastPage?: boolean;
 }
 
 export default function CenterSheet({ 
@@ -26,13 +30,15 @@ export default function CenterSheet({
   onPrevious,
   onNext,
   hasAnswer = false,
-  isPreviousDisabled = false
+  isPreviousDisabled = false,
+  currentPage,
+  isLastPage = false
 }: CenterSheetProps) {
   if (!isOpen) return null;
 
   return (
-    <S.Overlay onClick={onClose}>
-      <S.Container onClick={(e) => e.stopPropagation()}>
+    <S.Overlay>
+      <S.Container>
         <S.ButtonFrame>
           <WtMIconButton onClick={onClose} disabled={false}>
             <img src={Xblack} alt="close" />
@@ -46,12 +52,23 @@ export default function CenterSheet({
         </S.ContentFrame>
         {showNavigation && (
           <S.BottomFrame>
-            {onPrevious && (
-              <ArrowLeftTextButton onClick={onPrevious} disabled={isPreviousDisabled}>이전</ArrowLeftTextButton>
-            )}
-            {onNext && (
-              <ArrowRightTextButton onClick={onNext} disabled={!hasAnswer}>다음</ArrowRightTextButton>
-            )}
+            <S.LeftSection>
+              {onPrevious && (
+                <ArrowLeftTextButton onClick={onPrevious} disabled={isPreviousDisabled}>이전</ArrowLeftTextButton>
+              )}
+              {currentPage !== undefined && (
+                <ProgressBar currentPage={currentPage} />
+              )}
+            </S.LeftSection>
+            <S.RightSection>
+              {onNext && (
+                isLastPage ? (
+                  <BlackMTextButton onClick={onNext} disabled={!hasAnswer}>제출</BlackMTextButton>
+                ) : (
+                  <ArrowRightTextButton onClick={onNext} disabled={!hasAnswer}>다음</ArrowRightTextButton>
+                )
+              )}
+            </S.RightSection>
           </S.BottomFrame>
         )}
 

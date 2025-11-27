@@ -24,7 +24,7 @@ export default function Layout() {
   return (
     <S.Container $isImageBackground={isImageBackground} $pathname={location.pathname}>
       <TopNav />
-      <S.Main>
+      <S.Main $pathname={location.pathname}>
         <Outlet />
       </S.Main>
       <Footer pathname={location.pathname} />
