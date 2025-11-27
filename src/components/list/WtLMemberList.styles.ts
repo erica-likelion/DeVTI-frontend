@@ -6,7 +6,7 @@ export const Container = styled.div<{ clicked?: boolean }>`
   align-items: center;
   height: auto;
   ${({ theme }) => theme.responsive.property.width('max')};
-  ${({ theme }) => theme.responsive.property.paddingComplex('M', 'L', 'M', 'M')}
+  ${({ theme }) => theme.responsive.property.paddingComplex('R', 'L', 'R', 'R')}
 
   border-radius: ${({ theme }) => theme.responsive.borderRadius("soft")};
   background: ${({ theme }) => theme.colors.transparents.WH300};
