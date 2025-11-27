@@ -20,8 +20,8 @@ export default function DBTIResult({ resultData, userName = '송재현', onClose
         <S.Image src={resultData.image} alt={`${resultData.name}`} />
       </S.ImageWrapper>
       <S.KeywordContainer>
-        {resultData.keywords.map((keyword, index) => (
-          <Keyword key={index} items={[keyword]} color="purple" size="m" />
+        {resultData.keywords.map((keyword, idx) => (
+          <Keyword key={idx} items={[keyword]} color="purple" size="m" />
         ))}
       </S.KeywordContainer>
       <BkMTextButton onClick={onClose}>

@@ -5,19 +5,6 @@ export const Container = styled.div`
   flex-direction: column;
   align-item: center;
   gap: 2.5rem;
-  padding: 0 ${({ theme }) => theme.gaps.CenterSheet.wide};
-
-  ${({ theme }) => theme.media.desktop} {
-    padding: 0 ${({ theme }) => theme.gaps.CenterSheet.desktop};
-  }
-
-  ${({ theme }) => theme.media.tablet} {
-    padding: 0 ${({ theme }) => theme.gaps.CenterSheet.tablet};
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    padding: 0;
-  }
 `;
 
 export const TextWrapper = styled.div`

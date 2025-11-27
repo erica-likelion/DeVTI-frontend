@@ -12,4 +12,20 @@ export const Container = styled.div`
 
 export const QuestionWrapper = styled.div`
   scroll-margin-top: 2rem;
+  padding: 0 ${({theme}) => theme.responsive.gap('CenterSheet')};
+
+  ${({ theme }) => theme.media.mobile} {
+    padding: 0 ${({ theme }) => theme.responsive.gap('CenterSheet', 'mobile')};
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    padding: 0 ${({ theme }) => theme.responsive.gap('CenterSheet', 'tablet')};
+  }
+
+  
+  ${({ theme }) => theme.media.desktop} {
+    padding: 0 ${({ theme }) => theme.responsive.gap('CenterSheet', 'desktop')};
+  }
+
+
 `;
