@@ -76,7 +76,7 @@ export const Main = styled.main<{ $pathname: string }>`
     padding-bottom: 3.75rem;
   }
 
-  ${({ $pathname }) => $pathname === '/profile/edit/DBTI' && css`
+  ${({ $pathname }) => $pathname.includes('/profile') && css`
     padding-left: 0;
     padding-right: 0;
 

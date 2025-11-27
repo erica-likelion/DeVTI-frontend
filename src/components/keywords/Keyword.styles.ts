@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{ color: string; isSingle: boolean; size: string }>`
+export const Container = styled.div<{ $color: string; $isSingle: boolean; $size: string }>`
   display: flex;
   align-items: center;
   ${({ theme }) => theme.responsive.property.paddingComplex('XXXS', 'XXS', 'XXXS', 'XXS')}
@@ -9,20 +9,20 @@ export const Container = styled.div<{ color: string; isSingle: boolean; size: st
   height: auto;
 
   ${({ theme }) => theme.responsive.property.borderRadius('hard')}
-  background-color: ${({ color, theme }) =>
-  color === 'green'
+  background-color: ${({ $color, theme }) =>
+  $color === 'green'
     ? theme.colors.secondary.MT100
     : theme.colors.secondary.VT100};
 
-  ${({ size, theme }) => (size === 's' ? theme.fonts.body.r500 : theme.fonts.body.m500)};
+  ${({ $size, theme }) => ($size === 's' ? theme.fonts.body.r500 : theme.fonts.body.m500)};
   color: ${({ theme }) => theme.colors.grayScale.gray900};
 `;
 
-export const Text = styled.span<{ divide?: boolean; size: string }>`
+export const Text = styled.span<{ $divide?: boolean; $size: string }>`
   position: relative;
 
-  ${({ divide, size, theme }) =>
-    divide &&
+  ${({ $divide, $size, theme }) =>
+    $divide &&
     `
       padding-right: ${theme.responsive.gap('XXXS')};
       margin-right: ${theme.responsive.gap('XXXS')};
@@ -35,7 +35,7 @@ export const Text = styled.span<{ divide?: boolean; size: string }>`
         transform: translateY(-50%);
         width: 1px;
         border-radius: ${theme.responsive.borderRadius('hard')};
-        height: ${(size === 's' ? '1rem' : '1.25rem')};
+        height: ${($size === 's' ? '1rem' : '1.25rem')};
         background-color: ${theme.colors.primary.MT400};
       }
     `};
