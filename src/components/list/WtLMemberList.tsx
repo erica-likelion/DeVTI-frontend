@@ -1,11 +1,10 @@
 import * as S from './WtLMemberList.styles';
-
 import { Keyword } from '../keywords/Keyword';
 import VT500Button from '../ButtonDynamic/VT500SButton';
-
+import { useState } from 'react';
 
 interface WtLMemberListProps {
-	icon?: string;
+  icon?: string;
   header: string;
   keywords: string[][];
   rightButton: string;
@@ -14,43 +13,49 @@ interface WtLMemberListProps {
 }
 
 export const WtLMemberList = ({
-	icon,
+  icon,
   header,
   keywords,
   rightButton,
   disabled = false,
   onClick,
 }: WtLMemberListProps) => {
-  
+
+  const [clicked, setClicked] = useState(false);
+
   return (
     <S.Container
-      disabled={disabled}
-      onClick={!disabled ? onClick : undefined}>
-      {/* 왼쪽 Header */}
+      clicked={clicked}
+      onClick={
+        !disabled
+          ? () => {
+              setClicked(prev => !prev); 
+              onClick?.();
+            }
+          : undefined
+      }>
       <S.LeftArea>
-        <S.Icon >
-					{icon && <img src={icon} alt="icon" />}
+        <S.Icon>
+          {icon && <img src={icon} alt="icon" />}
         </S.Icon>
-        <S.Header>{header}</S.Header>
+        <S.Header clicked={clicked}>{header}</S.Header>
       </S.LeftArea>
 
-      {/* Keyword 태그들 */}
       <S.KeywordArea>
         {keywords.map((group, idx) => (
-          <Keyword key={idx} items={group} />))}
+          <Keyword key={idx} items={group} />
+        ))}
       </S.KeywordArea>
 
       <S.IndicatorArea>
         <S.Indicator />
       </S.IndicatorArea>
-      
-      {/* 오른쪽 버튼 */}
+
       <S.RightArea>
         <VT500Button disabled={disabled}>{rightButton}</VT500Button>
       </S.RightArea>
     </S.Container>
   );
 };
-
 
 export default WtLMemberList;

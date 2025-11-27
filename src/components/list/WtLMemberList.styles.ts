@@ -1,19 +1,37 @@
 // WtLMemberList.styles.ts
 import styled, { css } from "styled-components";
 
-export const Container = styled.div<{ disabled: boolean }>`
+export const Container = styled.div<{ clicked?: boolean }>`
   display: flex;
   align-items: center;
   height: auto;
-	width: ${({ theme }) => theme.responsive.width("max")};
+  width: ${({ theme }) => theme.responsive.width("max")};
   ${({ theme }) => theme.responsive.property.paddingComplex('M', 'L', 'M', 'M')}
 
   border-radius: ${({ theme }) => theme.responsive.borderRadius("soft")};
-  background: ${({ theme }) => theme.colors.grayScale.white};
+  background: ${({ theme }) => theme.colors.transparents.WH300};
+  box-shadow: ${({ theme }) => theme.colors.inner.GL100};
+  backdrop-filter: blur(10px);
 
   cursor: pointer;
 
+  &:hover {
+    background: ${({ theme }) => theme.colors.inner.Gl_DS_VT};
+}
+
+  &:active {
+    background: ${({ theme }) => theme.colors.secondary.VT100};
+    box-shadow: ${({ theme }) => theme.effects.dropShadows.DS200_VT};
+  }
+
+  ${({ clicked, theme }) =>
+    clicked &&
+    css`
+      border-color: ${theme.colors.grayScale.white};
+      box-shadow: ${theme.effects.dropShadows.DS200_VT};
+    `}
 `;
+
 
 export const LeftArea = styled.div`
   display: flex;
@@ -35,9 +53,15 @@ export const Icon = styled.div`
 `;
 
 
-export const Header = styled.div`
+export const Header = styled.div<{ clicked?: boolean }>`
   font-size: ${({ theme }) => theme.fonts.heading.h2};
   color: ${({ theme }) => theme.colors.grayScale.black};
+
+  ${({ clicked, theme }) =>
+    clicked &&
+    css`
+      color: ${theme.colors.secondary.VT700};
+    `}
 `;
 
 export const KeywordArea = styled.div`
@@ -59,7 +83,6 @@ export const IndicatorArea = styled.div`
   display: flex;
   padding: 0.125rem 0.25rem;
   align-items: center;
-  gap: 0.625rem;
   align-self: stretch;
   margin-left: 1rem;
   margin-right: 1rem;
