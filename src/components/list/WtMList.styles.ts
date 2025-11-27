@@ -9,7 +9,7 @@ export const Container = styled.div<{ clicked?: boolean }>`
   ${({ theme }) => theme.responsive.property.width('large')};
   ${({ theme }) => theme.responsive.property.paddingComplex('R', 'L', 'R', 'R')}
 
-  border-radius: ${({ theme }) => theme.responsive.borderRadius("soft")};
+  border-radius: ${({ theme }) => theme.responsive.property.borderRadius("soft")};
   background: ${({ theme }) => theme.colors.grayScale.white};
   box-shadow: ${({ theme }) => theme.colors.transparents.BL100};
 
@@ -27,7 +27,7 @@ export const Container = styled.div<{ clicked?: boolean }>`
   ${({ clicked, theme }) =>
     clicked &&
     css`
-      border-color: ${theme.colors.grayScale.white};
+      background: ${theme.colors.grayScale.white};
       box-shadow: ${theme.effects.dropShadows.DS200_VT};
     `}
 `;

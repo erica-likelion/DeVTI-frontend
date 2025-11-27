@@ -8,7 +8,7 @@ export const Container = styled.div<{ clicked?: boolean }>`
   ${({ theme }) => theme.responsive.property.width("large")};
   ${({ theme }) => theme.responsive.property.paddingComplex('XS', 'XS', 'XS', 'S')}
 
-  border-radius: ${({ theme }) => theme.responsive.borderRadius("smooth")};
+  border-radius: ${({ theme }) => theme.responsive.property.borderRadius("smooth")};
   background: ${({ theme }) => theme.colors.transparents.WH300};
   box-shadow: ${({ theme }) => theme.colors.transparents.BL100};
   backdrop-filter: blur(10px);
