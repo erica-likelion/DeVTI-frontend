@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import * as S from "./Score.styles";
+import StarFilledPurple from "@/assets/icons/star_filled_purple.svg";
+import Star from "@/assets/icons/star.svg";
 
 interface ScoreProps {
   value?: number;
@@ -38,7 +40,7 @@ export default function Score({ value = 0, onChange, disabled = false }: ScorePr
               onClick={() => handleStarClick(index)}
             >
               <img
-                src={isFilled ? "/star_filled_purple.svg" : "/star.svg"}
+                src={isFilled ? StarFilledPurple : Star}
                 alt={isFilled ? "Filled star" : "Empty star"}
               />
             </S.StarButton>

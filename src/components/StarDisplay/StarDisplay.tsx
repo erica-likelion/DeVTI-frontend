@@ -1,4 +1,7 @@
 import * as S from "./StarDisplay.styles";
+import StarFilledPurple from "@/assets/icons/star_filled_purple.svg";
+import StarHalffilled from "@/assets/icons/star_halffilled.svg";
+import StarUnfilled from "@/assets/icons/star_unfilled.svg";
 
 interface StarDisplayProps {
   value: number; // 0~5, 0.5 단위
@@ -25,21 +28,21 @@ export default function StarDisplay({ value }: StarDisplayProps) {
         {/* 채워진 별 */}
         {Array.from({ length: fullStars }).map((_, index) => (
           <S.Star key={`full-${index}`}>
-            <img src="/star_filled_purple.svg" alt="Filled star" />
+            <img src={StarFilledPurple} alt="Filled star" />
           </S.Star>
         ))}
         
         {/* 반쪽 별 */}
         {hasHalfStar && (
           <S.Star>
-            <img src="/star_halffilled.svg" alt="Half filled star" />
+            <img src={StarHalffilled} alt="Half filled star" />
           </S.Star>
         )}
         
         {/* 빈 별 */}
         {Array.from({ length: emptyStars }).map((_, index) => (
           <S.Star key={`empty-${index}`}>
-            <img src="/star_unfilled.svg" alt="Empty star" />
+            <img src={StarUnfilled} alt="Empty star" />
           </S.Star>
         ))}
       </S.StarContainer>
