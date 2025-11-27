@@ -31,7 +31,7 @@ export const WtLMemberList = ({
         <S.Icon >
 					{icon && <img src={icon} alt="icon" />}
         </S.Icon>
-        <S.Header disabled={disabled}>{header}</S.Header>
+        <S.Header>{header}</S.Header>
       </S.LeftArea>
 
       {/* Keyword 태그들 */}

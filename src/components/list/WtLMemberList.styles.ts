@@ -26,27 +26,32 @@ export const Icon = styled.div`
   width: ${({ theme }) => theme.responsive.sourceWidth("L")};
   height: 2.5rem;
   border-radius: ${({ theme }) => theme.responsive.borderRadius("round")};
-	aspect-ratio: 1/1;
-	flex-shrink: 0;
-  
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-export const Header = styled.div<{ disabled: boolean }>`
-  font-size: 16px;
-  font-weight: 600;
-  color: ${({ disabled }) => (disabled ? "#999" : "#111")};
+
+export const Header = styled.div`
+  font-size: ${({ theme }) => theme.fonts.heading.h2};
+  color: ${({ theme }) => theme.colors.grayScale.black};
 `;
 
 export const KeywordArea = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.responsive.gap("S")};
   margin-left: auto;
+  font-size: ${({ theme }) => theme.fonts.body.m500};
 `;
 
 export const Indicator = styled.div`
   width: 1px;
   height: 2.25rem;
   background-color: ${({ theme }) => theme.colors.grayScale.gray300};
+  
 `;
 
 
