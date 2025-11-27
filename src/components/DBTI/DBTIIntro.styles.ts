@@ -35,12 +35,28 @@ export const TextWrapper = styled.div`
 
 export const ImageWrapper = styled.div`
   width: 17rem;
-  height: 17rem;
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   background: ${({ theme }) => theme.colors.grayScale.gray100};
+  
+  ${({ theme }) => theme.media.wide} {
+    width: 18%;
+  }
+
+  ${({ theme }) => theme.media.desktop} {
+    width: 23%;
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 38%;
+  }
+  
+  ${({ theme }) => theme.media.mobile} {
+    width: 70%;
+  }
 `;
 
 export const Image = styled.img`
