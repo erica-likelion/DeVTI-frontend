@@ -5,7 +5,7 @@ export const Container = styled.div<{ clicked?: boolean }>`
   display: flex;
   align-items: center;
   height: auto;
-  width: ${({ theme }) => theme.responsive.width("max")};
+  ${({ theme }) => theme.responsive.property.width('max')};
   ${({ theme }) => theme.responsive.property.paddingComplex('M', 'L', 'M', 'M')}
 
   border-radius: ${({ theme }) => theme.responsive.borderRadius("soft")};
@@ -50,6 +50,7 @@ export const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
 `;
 
 
@@ -69,13 +70,15 @@ export const KeywordArea = styled.div`
   gap: ${({ theme }) => theme.responsive.gap("S")};
   margin-left: auto;
   font-size: ${({ theme }) => theme.fonts.body.m500};
+  ${({ theme }) => theme.media.mobile} {
+    display: none;
+  }
 `;
 
 export const Indicator = styled.div`
   width: 1px;
   height: 2.25rem;
   background-color: ${({ theme }) => theme.colors.grayScale.gray300};
-  
 `;
 
 
@@ -87,9 +90,15 @@ export const IndicatorArea = styled.div`
   margin-left: 1rem;
   margin-right: 1rem;
   gap: ${({ theme }) => theme.responsive.gap("S")};
+  ${({ theme }) => theme.media.mobile} {
+    display: none;
+  }
 `;
 
 export const RightArea = styled.div`
   flex-shrink: 0;
   gap: ${({ theme }) => theme.responsive.gap("S")};
+  ${({ theme }) => theme.media.mobile} {
+    display: none;
+  }
 `;
