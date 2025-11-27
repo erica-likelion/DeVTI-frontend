@@ -15,6 +15,37 @@ export const CloseSubtitle = styled.p`
   color: ${({ theme }) => theme.colors.grayScale.black};
   margin: 0;
   text-align: center;
+
+  /* 데스크톱/태블릿: 두 번째 줄은 숨기고 첫 번째에 합치기 */
+  &:nth-child(2) {
+    ${({ theme }) => theme.media.tablet} {
+      display: none;
+    }
+    ${({ theme }) => theme.media.desktop} {
+      display: none;
+    }
+    ${({ theme }) => theme.media.wide} {
+      display: none;
+    }
+  }
+
+  &:first-child {
+    ${({ theme }) => theme.media.tablet} {
+      &::after {
+        content: " 소중한 응답들이 저장되지 않아요!";
+      }
+    }
+    ${({ theme }) => theme.media.desktop} {
+      &::after {
+        content: " 소중한 응답들이 저장되지 않아요!";
+      }
+    }
+    ${({ theme }) => theme.media.wide} {
+      &::after {
+        content: " 소중한 응답들이 저장되지 않아요!";
+      }
+    }
+  }
 `;
 
 export const TextWrapper = styled.div`
