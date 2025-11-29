@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 
 export const Container = styled.div<{ clicked?: boolean }>`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   height: auto;
   ${({ theme }) => theme.responsive.property.width('max')};
@@ -75,6 +76,12 @@ export const KeywordArea = styled.div`
   }
 `;
 
+export const RightArea = styled.div<{ hasRightButton: boolean }>`
+  display: flex;
+  align-items: center;
+  display: ${({ hasRightButton }) => (hasRightButton ? "flex" : "none")};
+`;
+
 export const Indicator = styled.div`
   width: 1px;
   height: 2.25rem;
@@ -82,25 +89,20 @@ export const Indicator = styled.div`
 `;
 
 
-export const IndicatorArea = styled.div`
+export const IndicatorArea = styled.div<{ hasRightButton: boolean }>`
   display: flex;
   padding: 0.125rem 0.25rem;
-  align-items: center;
-  align-self: stretch;
+  align-items: end;
   margin-left: 1rem;
   margin-right: 1rem;
   gap: ${({ theme }) => theme.responsive.gap("S")};
 
-  ${({ theme }) => theme.media.mobile} {
-    display: none;
-  }
 `;
 
-export const RightArea = styled.div`
+
+
+export const ButtonArea = styled.div`
   flex-shrink: 0;
   gap: ${({ theme }) => theme.responsive.gap("S")};
   
-  ${({ theme }) => theme.media.mobile} {
-    display: none;
-  }
 `;

@@ -7,7 +7,7 @@ interface WtLMemberListProps {
   icon?: string;
   header: string;
   keywords: string[][];
-  rightButton?: string;
+  rightButton?: string | false;
   disabled?: boolean;
   onClick?: () => void;
 }
@@ -20,8 +20,9 @@ export const WtLMemberList = ({
   disabled = false,
   onClick,
 }: WtLMemberListProps) => {
-
   const [clicked, setClicked] = useState(false);
+
+  const hasRightButton = !!rightButton; // undefined, '', false → false / 그 외 string → true
 
   return (
     <S.Container
@@ -29,11 +30,12 @@ export const WtLMemberList = ({
       onClick={
         !disabled
           ? () => {
-              setClicked(prev => !prev); 
+              setClicked(prev => !prev);
               onClick?.();
             }
           : undefined
-      }>
+      }
+    >
       <S.LeftArea>
         <S.Icon>
           {icon && <img src={icon} alt="icon" />}
@@ -47,12 +49,18 @@ export const WtLMemberList = ({
         ))}
       </S.KeywordArea>
 
-      <S.IndicatorArea>
-        <S.Indicator />
-      </S.IndicatorArea>
+      <S.RightArea hasRightButton={hasRightButton}>
+        <S.IndicatorArea hasRightButton={hasRightButton}>
+          <S.Indicator />
+        </S.IndicatorArea>
 
-      <S.RightArea>
-        <VT500Button disabled={disabled}>{rightButton}</VT500Button>
+        <S.ButtonArea>
+          {hasRightButton && (
+            <VT500Button disabled={disabled}>
+              {rightButton}
+            </VT500Button>
+          )}
+        </S.ButtonArea>
       </S.RightArea>
     </S.Container>
   );
