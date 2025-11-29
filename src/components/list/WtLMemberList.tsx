@@ -7,7 +7,7 @@ interface WtLMemberListProps {
   icon?: string;
   header: string;
   keywords: string[][];
-  rightButton: string;
+  rightButton?: string;
   disabled?: boolean;
   onClick?: () => void;
 }

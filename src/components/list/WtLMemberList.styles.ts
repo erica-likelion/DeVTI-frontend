@@ -90,6 +90,7 @@ export const IndicatorArea = styled.div`
   margin-left: 1rem;
   margin-right: 1rem;
   gap: ${({ theme }) => theme.responsive.gap("S")};
+
   ${({ theme }) => theme.media.mobile} {
     display: none;
   }
@@ -98,6 +99,7 @@ export const IndicatorArea = styled.div`
 export const RightArea = styled.div`
   flex-shrink: 0;
   gap: ${({ theme }) => theme.responsive.gap("S")};
+  
   ${({ theme }) => theme.media.mobile} {
     display: none;
   }

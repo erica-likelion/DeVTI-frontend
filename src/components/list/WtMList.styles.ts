@@ -67,9 +67,6 @@ export const IndicatorArea = styled.div`
   margin-left: 1rem;
   margin-right: 1rem;
   gap: ${({ theme }) => theme.responsive.gap("R")};
-  ${({ theme }) => theme.media.mobile} {
-    display: none;
-  }
 `;
 
 export const RightArea = styled.div`
