@@ -63,16 +63,3 @@ export const Footer = styled.div`
   display: flex;
   justify-content: center;
 `;
-
-export const PrimaryButton = styled.button`
-  min-width: 200px;
-  height: 3rem;
-  padding: 0 2rem;
-  border-radius: 999px;
-  border: none;
-  background: #000;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-`;

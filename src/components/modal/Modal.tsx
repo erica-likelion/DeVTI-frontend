@@ -5,7 +5,7 @@ import { BkMTextButton } from "../ButtonStatic";
 
 interface BaseModalProps {
   isOpen: boolean;
-  children: React.ReactNode;          // "입장 코드가 일치하지 않습니다..." 같은 내용
+  children: React.ReactNode;    // "입장 코드가 일치하지 않습니다..." 같은 내용
   buttonLabel: string;         // 확인 버튼 문구
   onClose: () => void;          // X 버튼 / 바깥 클릭
   onPrimary?: () => void;       // 확인 버튼 클릭 
@@ -26,9 +26,8 @@ export default function Modal({
   };
 
 
-
   return (
-    <S.Dimmed onClick={onClose}>
+    <S.Dimmed>
       <S.ModalContainer onClick={(e) => e.stopPropagation()}>
 
         <S.Header>
