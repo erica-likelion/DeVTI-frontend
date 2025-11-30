@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-${({ theme }) => theme.responsive.property.generalViewport()}
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0;
   gap: 10rem;
 `;
 
@@ -23,7 +21,6 @@ export const InputWrapper = styled.div`
   ${({ theme }) => theme.responsive.property.width('large')}
   display: flex;
   flex-direction: row;
-  align-items: center;
   gap: 1rem;
   margin: 0;
 `;
