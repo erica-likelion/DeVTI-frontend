@@ -28,8 +28,8 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
     $size === "M" && $disabled
       ? "transparent"
       : theme.colors.grayScale.white};
-  box-shadow: ${({ $size }) =>
-    $size === "M" ? "none" : "0 0 4px 0 rgba(25, 24, 29, 0.1)"};
+  box-shadow: ${({ $size, theme }) =>
+    $size === "M" ? "none" : theme.effects.dropShadows.DS100};
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XXS') : theme.responsive.gap('S'))};
   height: ${({ $size}) => ($size === "M" ? "2.5rem" : "3.5rem")};
@@ -86,7 +86,7 @@ export const DropdownList = styled.div`
   align-items: flex-start;
   align-self: stretch;
   ${({ theme }) => theme.responsive.property.borderRadius('smooth')}
-  box-shadow: 0 0 4px 0 rgba(25, 24, 29, 0.1);
+  box-shadow: ${theme.effects.dropShadows.DS100};
   background: ${theme.colors.grayScale.white};
   overflow: hidden;
 `;
