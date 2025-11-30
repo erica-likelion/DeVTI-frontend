@@ -29,7 +29,7 @@ export const InputWrapper = styled.div`
 `;
 
 export const Label = styled.div`
-  ${({ theme }) => theme.fonts.heading.h4};
+  ${({ theme }) => theme.fonts.heading.h3};
   ${({ theme }) => theme.responsive.property.width('min')};
 `;
 
