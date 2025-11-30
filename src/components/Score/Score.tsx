@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as S from "./Score.styles";
 
 interface ScoreProps {
@@ -9,6 +9,10 @@ interface ScoreProps {
 
 export default function Score({ value = 0, onChange, disabled = false }: ScoreProps) {
   const [selectedScore, setSelectedScore] = useState(value);
+
+  useEffect(() => {
+    setSelectedScore(value);
+  }, [value]);
 
   const handleStarClick = (index: number) => {
     if (disabled) return;

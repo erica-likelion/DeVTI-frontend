@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as S from './CheckboxButton.styles';
 import BoxFill from '@/assets/icons/CheckBox/BoxFill.svg';
 import BoxGray from '@/assets/icons/CheckBox/BoxGray.svg';
@@ -22,6 +22,10 @@ export default function CheckboxButton({
 }: CheckboxButtonProps) {
   const [isChecked, setIsChecked] = useState(checked);
   const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
 
   const handleClick = () => {
     if (!disabled) {

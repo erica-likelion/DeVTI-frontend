@@ -5,20 +5,43 @@ export const Group = styled.section`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  width: var(--Component-Width-Large, 42.5rem);
+  width: 100%;
 `;
 
 export const GroupTitle = styled.h3`
-  ${theme.fonts.heading.h3}
   color: ${theme.colors.grayScale.black};
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2rem; /* 160% */
+  letter-spacing: -0.025rem;
   margin: 0;
-  white-space: pre-line;
+  white-space: nowrap;
 `;
 
 export const CardGrid = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  flex-direction: row;
+  ${({ theme }) => theme.responsive.property.gap('M')}
+  width: 100%;
+  overflow-x: auto;
+  padding-top: 0.5rem; /* 위쪽 그림자 공간 확보 */
+  padding-bottom: 0.5rem; /* 아래쪽 그림자 공간 확보 */
+  padding-left: 0.5rem; /* 첫 번째 카드 왼쪽 그림자 공간 확보 */
+`;
+
+export const CardWrapper = styled.div`
+  flex: 0 0 auto;
+  min-width: 0;
+  width: calc((100% - 2 * ${({ theme }) => theme.responsive.gap('M')}) / 3);
+  max-width: calc((100% - 2 * ${({ theme }) => theme.responsive.gap('M')}) / 3);
+  
+  /* Card 컴포넌트 내부 너비 제한 */
+  & > * {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 `;
 
 export const Card = styled.div`
