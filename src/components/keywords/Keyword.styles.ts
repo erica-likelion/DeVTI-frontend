@@ -24,8 +24,8 @@ export const Text = styled.span<{ $divide?: boolean; $size: string }>`
   ${({ $divide, $size, theme }) =>
     $divide &&
     `
-      padding-right: ${theme.responsive.gap('XXXS')};
-      margin-right: ${theme.responsive.gap('XXXS')};
+      padding-right: ${theme.responsive.gap('XXS')};
+      margin-right: ${theme.responsive.gap('XXS')};
 
       &::after {
         content: '';
@@ -34,6 +34,8 @@ export const Text = styled.span<{ $divide?: boolean; $size: string }>`
         top: 50%;
         transform: translateY(-50%);
         width: 1px;
+        
+       
         border-radius: ${theme.responsive.borderRadius('hard')};
         height: ${($size === 's' ? '1rem' : '1.25rem')};
         background-color: ${theme.colors.primary.MT400};

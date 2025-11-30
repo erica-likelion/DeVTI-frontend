@@ -9,6 +9,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  
   padding: 2rem;
   background: ${theme.colors.grayScale.white};
   gap: 1.25rem;
