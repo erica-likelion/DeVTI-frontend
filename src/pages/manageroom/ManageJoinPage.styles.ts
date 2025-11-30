@@ -7,7 +7,7 @@ ${({ theme }) => theme.responsive.property.generalViewport()}
   justify-content: center;
   align-items: center;
   padding: 0;
-  gap: 5rem;
+  gap: 10rem;
 `;
 
 export const Title = styled.h1`
