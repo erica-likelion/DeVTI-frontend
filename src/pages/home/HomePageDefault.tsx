@@ -1,4 +1,6 @@
 import * as S from './HomePageDefault.styles';
+import WtLMemberList from '../../components/list/WtLMemberList';
+import img from '/DefaultIMG_Profile.webp';
 
 export default function HomePage() {
   return (
@@ -9,4 +11,4 @@ export default function HomePage() {
       </S.ListWrapper>
     </S.Container>
   );
-}
+};
