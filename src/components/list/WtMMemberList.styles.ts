@@ -52,14 +52,11 @@ export const Header = styled.div<{ clicked?: boolean }>`
     `}
 `;
 
-export const KeywordArea = styled.div`
-  display: flex;
+export const KeywordArea = styled.div<{ hasKeyword: boolean }>`
   gap: ${({ theme }) => theme.responsive.gap("S")};
   margin-left: auto;
   font-size: ${({ theme }) => theme.fonts.body.m500};
-  ${({ theme }) => theme.media.mobile} {
-    display: none;
-  }
+  display: ${({ hasKeyword }) => (hasKeyword ? "flex" : "none")};
 `;
 
 
