@@ -1,6 +1,6 @@
 import * as S from './JoinRoom.styles'
 import { useState } from 'react';
-import Modal from '@/components/modal/modal';
+import Modal from '@/components/modal/Modal';
 
 
 const JoinRoom = () => {
