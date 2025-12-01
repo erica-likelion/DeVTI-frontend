@@ -1,21 +1,36 @@
 import * as S from './JoinRoom.styles'
 
-import WtLMemberList from '@/components/list/WtLMemberList';
-import WtMMemberList from '@/components/list/WtMMemberList';
-import img from '/DefaultIMG_Profile.webp';
+import { useState } from 'react';
+import { InputField } from '@/components/Input';
+import BlackLTextButton from '@/components/ButtonStatic/BkLTextButton';
+import { useNavigate } from 'react-router-dom';
 
+export default function JoinRoom() {
+  const [text, setText] = useState('');
+  const navigate = useNavigate();
 
+  const isDisabled = text.trim().length === 0;
 
-const JoinRoom = () => {
   return (
-    <S.Container >
-      <WtLMemberList icon={img} header="김사자" keywords={[['낮', '대면'], ['PM'], ['배우면서 즐겁게']]} onClick={() => console.log('Clicked!')} />
-      <WtLMemberList icon={img} header="김사자" keywords={[['낮', '대면'], ['PM'], ['배우면서 즐겁게']]} rightButton="꼬리 흔들기" onClick={() => console.log('Clicked!')} />
-      <WtMMemberList header="김멍멍" keywords={[['낮', '대면'], ['PM'], ['배우면서 즐겁게']]} onClick={() => console.log('Clicked!')} />
-      <WtMMemberList header="김멍멍" onClick={() => console.log('Clicked!')} />
-    
+    <S.Container>
+      <S.Title>매칭룸 참여하기</S.Title>
+
+      <S.InputArea>
+        <S.Label>일반 입장 코드</S.Label>
+        <S.Input>
+          <InputField 
+            type="text"
+            placeholder=""
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            hasIcon={false}
+          />
+        </S.Input>
+      </S.InputArea>
+
+      <BlackLTextButton disabled={isDisabled} onClick={() => navigate(`/join-room/pr`) }>
+        다음
+      </BlackLTextButton>
     </S.Container>
   );
-};
-
-export default JoinRoom;
+}

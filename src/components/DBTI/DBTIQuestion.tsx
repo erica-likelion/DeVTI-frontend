@@ -24,7 +24,7 @@ export default function DBTIQuestion({ questionNumber, question, onAnswer, selec
       
       <S.LikertScale>
         <S.LeftLabel>
-          <span>매우</span>
+          <span>매우 </span>
           <span>아니다</span>
         </S.LeftLabel>
         
@@ -39,7 +39,7 @@ export default function DBTIQuestion({ questionNumber, question, onAnswer, selec
         </S.ButtonGroup>
         
         <S.RightLabel>
-          <span>매우</span>
+          <span>매우 </span>
           <span>그렇다</span>
         </S.RightLabel>
       </S.LikertScale>

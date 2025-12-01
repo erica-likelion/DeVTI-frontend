@@ -6,14 +6,19 @@ interface WtMButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   children: React.ReactNode;
+  isClicked?: boolean;
 }
 
-export default function WtMButton({ className, onClick, disabled = false, children }: WtMButtonProps) {
-  const [isClicked, setIsClicked] = useState(false);
+export default function WtMButton({ className, onClick, disabled = false, children, isClicked: externalIsClicked }: WtMButtonProps) {
+  const [internalIsClicked, setInternalIsClicked] = useState(false);
+  
+  const isClicked = externalIsClicked !== undefined ? externalIsClicked : internalIsClicked;
 
   const handleClick = () => {
     if (!disabled && onClick) {
-      setIsClicked(!isClicked);
+      if (externalIsClicked === undefined) {
+        setInternalIsClicked(!internalIsClicked);
+      }
       onClick();
     }
   };

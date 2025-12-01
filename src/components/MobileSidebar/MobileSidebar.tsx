@@ -1,7 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
-import UserProfile from '@/components/UserProfile/UserProfile';
 import LoginButton from '@/components/LoginButton';
+import WtMIconButton from '@/components/ButtonStatic/WtMIconButton';
+import WtMButton from '@/components/ButtonDynamic/WtMButton';
+import CloseIcon from '@/assets/icons/Close.svg';
 import * as S from './MobileSidebar.styles';
 
 interface MobileSidebarProps {
@@ -11,58 +13,57 @@ interface MobileSidebarProps {
 
 export default function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuthStore();
+  const location = useLocation();
+  const { isLoggedIn} = useAuthStore();
 
   const handleNavigation = (path: string) => {
     navigate(path);
     onClose();
   };
 
-  const handleLogout = () => {
-    logout();
-    onClose();
-    navigate('/');
+  const isCurrentPath = (path: string) => {
+    return location.pathname === path || location.pathname.startsWith(path);
   };
+
+
 
   return (
     <>
       <S.Overlay $isOpen={isOpen} onClick={onClose} />
       <S.Container $isOpen={isOpen}>
         <S.Header>
-          <S.CloseButton onClick={onClose}>✕</S.CloseButton>
+          <WtMIconButton onClick={onClose} disabled={false}>
+            <img src={CloseIcon} alt="Close" />
+          </WtMIconButton>
         </S.Header>
         
-        <S.Content>
-          {isLoggedIn ? (
-            <>
-              <S.UserSection>
-                <UserProfile showTextOnMobile={true} />
-              </S.UserSection>
-              
-              <S.MenuSection>
-                <S.MenuItem onClick={() => handleNavigation('/chat/new')}>
-                  새 채팅룸
-                </S.MenuItem>
-                <S.MenuItem onClick={() => handleNavigation('/chat/join')}>
-                  채팅룸 참여
-                </S.MenuItem>
-                <S.MenuItem onClick={() => handleNavigation('/chat/manage')}>
-                  채팅룸 관리
-                </S.MenuItem>
-              </S.MenuSection>
-              
-              <S.LogoutSection>
-                <S.LogoutButton onClick={handleLogout}>
-                  로그아웃
-                </S.LogoutButton>
-              </S.LogoutSection>
-            </>
-          ) : (
-            <S.LoginSection>
-              <LoginButton />
-            </S.LoginSection>
-          )}
-        </S.Content>
+        {isLoggedIn ? (
+          <S.MenuSection>
+            <WtMButton 
+              onClick={() => handleNavigation('/new-room')}
+              isClicked={isCurrentPath('/new-room')}
+            >
+              새 매칭룸
+            </WtMButton>
+            <WtMButton 
+              onClick={() => handleNavigation('/home')}
+              isClicked={isCurrentPath('/home')}
+            >
+              매칭룸 참여
+            </WtMButton>
+            <WtMButton 
+              onClick={() => handleNavigation('/')}
+              isClicked={location.pathname === '/'}
+            >
+              매칭룸 관리
+            </WtMButton>
+          </S.MenuSection>
+        ) : (
+          <S.LoginSection>
+            {/* 로그인 안하고 해당 경로를 들어갔을 때 상태 확인용 (이후 제거) */}
+            <LoginButton /> 
+          </S.LoginSection>
+        )}
       </S.Container>
     </>
   );
