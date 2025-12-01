@@ -531,6 +531,15 @@ const responsive = {
     return borders[type].wide;
   },
 
+  // Overlay Modal width - 값만 반환
+  overlayModalWidth: (breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return overlayModals.width[breakpoint];
+    }
+    return overlayModals.width.wide;
+  },
+
+
   // 전체 속성을 반응형으로 적용하는 유틸리티
   property: {
     gap: (size: keyof typeof gaps) => createResponsiveProperty('gap', {
@@ -591,6 +600,14 @@ const responsive = {
       tablet: sourceWidths[size].tablet,
       mobile: sourceWidths[size].mobile
     }),
+    
+    // Overlay Modal width를 width 속성에 적용
+    overlayModalWidth: () => createResponsiveProperty('width', {
+      wide: overlayModals.width.wide,
+      desktop: overlayModals.width.desktop,
+      tablet: overlayModals.width.tablet,
+      mobile: overlayModals.width.mobile
+    }),
 
     // sourceWidth 크기를 width와 height에 동시 적용
     sourceSize: (size: keyof typeof sourceWidths) => css`
@@ -606,7 +623,11 @@ const responsive = {
         tablet: sourceWidths[size].tablet,
         mobile: sourceWidths[size].mobile
       })}
+
+      
     `
+    
+    
   }
 };
 
