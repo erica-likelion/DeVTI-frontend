@@ -6,6 +6,7 @@ import WtMButton from "@/components/ButtonDynamic/WtMButton";
 import UserProfile from "@/components/UserProfile";
 import LoginButton from "@/components/LoginButton/LoginButton";
 import MobileSidebar from "@/components/MobileSidebar/MobileSidebar";
+import DropBox from "@/components/DropBox/DropBox";
 import * as S from "./TopNav.styles";
 import MainLogo from "@/assets/icons/MainLogo.svg";
 
@@ -92,7 +93,14 @@ export default function TopNav({ className }: TopNavProps) {
         ) : (
           <>
             {!shouldHideNavButtons && (
-              <WtMButton onClick={handleMenuToggle}>☰ 메뉴</WtMButton>
+              <DropBox
+                size="M"
+                value=""
+                placeholder="메뉴"
+                isOpen={isSidebarOpen}
+                onClick={handleMenuToggle}
+                options={[]}
+              />
             )}
             <UserProfile variant={isProfilePage ? "profile" : "default"} />
           </>

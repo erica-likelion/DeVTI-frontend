@@ -78,10 +78,15 @@ export default function BasePortfolioForm({
   };
 
   // textarea 높이 자동 조정
-  const adjustTextareaHeight = (textarea: HTMLTextAreaElement | null) => {
+  const adjustTextareaHeight = (textarea: HTMLTextAreaElement | null, isStrengths = false) => {
     if (textarea) {
-      textarea.style.height = '1.5rem';
-      textarea.style.height = `${Math.max(1.5, textarea.scrollHeight)}px`;
+      // 타블렛에서 강점일 때 최소 높이: 4.25rem - padding(0.625rem * 2) = 3rem = 48px
+      const minHeight = isStrengths && window.matchMedia('(min-width: 45rem) and (max-width: 89.9375rem)').matches 
+        ? 48 // 3rem = 48px
+        : 24; // 1.5rem = 24px
+      
+      textarea.style.height = `${minHeight}px`;
+      textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
     }
   };
 
@@ -101,7 +106,7 @@ export default function BasePortfolioForm({
   const handleStrengthsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     onStrengthsChange(value);
-    adjustTextareaHeight(e.target);
+    adjustTextareaHeight(e.target, true); // 강점임을 표시
   };
 
   // 경력 내용이 변경될 때 높이 조정
@@ -111,13 +116,13 @@ export default function BasePortfolioForm({
 
   // 강점 내용이 변경될 때 높이 조정
   useEffect(() => {
-    adjustTextareaHeight(strengthsTextareaRef.current);
+    adjustTextareaHeight(strengthsTextareaRef.current, true); // 강점임을 표시
   }, [strengths]);
 
   // 컴포넌트 마운트 시 초기 높이 설정
   useEffect(() => {
     adjustTextareaHeight(experienceTextareaRef.current);
-    adjustTextareaHeight(strengthsTextareaRef.current);
+    adjustTextareaHeight(strengthsTextareaRef.current, true); // 강점임을 표시
   }, []);
 
   const toggleDailyAvailability = (key: DailyAvailabilityKey) => {
@@ -208,7 +213,7 @@ export default function BasePortfolioForm({
         <S.StrengthsSection>
           <S.SectionTitle>강점</S.SectionTitle>
           <S.InputWrapper>
-            <S.TextAreaWrapper>
+            <S.StrengthsTextAreaWrapper>
               <S.TextAreaField
                 ref={strengthsTextareaRef}
                 value={strengths}
@@ -216,7 +221,7 @@ export default function BasePortfolioForm({
                 placeholder=""
                 disabled={false}
               />
-            </S.TextAreaWrapper>
+            </S.StrengthsTextAreaWrapper>
           </S.InputWrapper>
         </S.StrengthsSection>
 

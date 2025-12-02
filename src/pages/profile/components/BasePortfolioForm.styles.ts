@@ -5,8 +5,9 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
-  max-width: 100%;
+  width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
+  max-width: none; /* max-width 제한 제거 */
+  overflow-x: visible; /* 카드 그림자가 잘리지 않도록 */
 `;
 
 export const Header = styled.header`
@@ -16,6 +17,10 @@ export const Header = styled.header`
   justify-content: space-between;
   width: 100%;
   margin-bottom: 2.75rem;
+  
+  ${({ theme }) => theme.media.tablet} {
+    padding-right: var(--General-Margin, 2rem);
+  }
 `;
 
 export const ContentFrame = styled.div`
@@ -23,9 +28,24 @@ export const ContentFrame = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 2.75rem;
-  width: 100%;
+  width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
   padding-left: ${({ theme }) => theme.responsive.gap('M')};
   padding-right: ${({ theme }) => theme.responsive.gap('M')};
+  overflow-x: visible; /* 카드 그림자가 잘리지 않도록 */
+  
+  ${({ theme }) => theme.media.tablet} {
+    padding-left: 0.75rem;
+    padding-right: ${({ theme }) => theme.responsive.gap('M')};
+  }
+  
+  ${({ theme }) => theme.media.mobile} {
+    display: flex;
+    padding: 0 ${({ theme }) => theme.gaps.R.mobile}; /* 상하 0, 좌우 Gap-R(0.625rem) */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.75rem;
+    align-self: stretch;
+  }
 `;
 
 export const PortfolioTitle = styled.h2`
@@ -43,6 +63,10 @@ export const PortfolioTitle = styled.h2`
 
 export const RegisterButtonWrapper = styled.div`
   flex-shrink: 0;
+  
+  ${({ theme }) => theme.media.tablet} {
+    margin-right: -0.75rem; /* 기존 패딩보다 0.75rem 바깥으로 */
+  }
 `;
 
 export const Section = styled.section`
@@ -77,6 +101,7 @@ export const StrengthsSection = styled.div`
   gap: ${({ theme }) => theme.responsive.gap('S')};
   width: 100%;
   margin-top: 2.75rem;
+  
 `;
 
 export const InputWrapper = styled.div`
@@ -144,12 +169,24 @@ export const TextAreaWrapper = styled.div`
   }
 `;
 
+export const StrengthsTextAreaWrapper = styled(TextAreaWrapper)`
+  ${({ theme }) => theme.media.tablet} {
+    min-height: 4.25rem;
+    
+    /* 강점 textarea의 기본 높이와 최소 높이를 wrapper 높이에서 padding을 뺀 값으로 설정 */
+    ${TextAreaField} {
+      min-height: calc(4.25rem - ${({ theme }) => theme.gaps.S.tablet} * 2); /* wrapper 높이 - 상하 padding */
+      height: calc(4.25rem - ${({ theme }) => theme.gaps.S.tablet} * 2); /* 기본 높이 */
+    }
+  }
+`;
+
 export const CheckboxWrapper = styled.div`
   margin-top: ${({ theme }) => theme.responsive.gap('S')};
 `;
 
 export const TimeAvailabilitySection = styled(Section)`
-  gap: 1.5rem;
+  gap: 1rem;
 `;
 
 export const TimeRowContainer = styled.div`
@@ -158,6 +195,26 @@ export const TimeRowContainer = styled.div`
   gap: 7.5rem;
   flex-wrap: nowrap;
   width: 100%;
+  
+  ${({ theme }) => theme.media.tablet} {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    padding-left: 0.5rem; /* 첫 번째 요소 왼쪽 그림자 공간 확보 */
+    padding-right: 0; /* 스크롤 전에는 오른쪽 간격 없음 */
+    gap: 7.5rem; /* 타블렛에서 gap 조정 */
+    width: 100%;
+  }
+  
+  ${({ theme }) => theme.media.mobile} {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    padding-left: 0.5rem; /* 첫 번째 요소 왼쪽 그림자 공간 확보 */
+    padding-right: 0; /* 스크롤 전에는 오른쪽 간격 없음 */
+    gap: 7.5rem; /* 모바일에서 gap 조정 */
+    width: 100%;
+  }
 `;
 
 export const TimeFrame = styled.div<{ $isDaily?: boolean }>`
@@ -167,14 +224,44 @@ export const TimeFrame = styled.div<{ $isDaily?: boolean }>`
   gap: 1rem;
   flex: 1 1 0;
   min-width: 0;
-  
-  /* 1일 기준만 오른쪽으로 gap('XS')만큼 이동 */
-  ${({ $isDaily, theme }) => $isDaily && `margin-left: ${theme.responsive.gap('XS')};`}
+  margin-left: 0; /* 모든 화면에서 margin 제거 - TimeRowContainer의 gap으로 간격 관리 */
   
   /* SegmentControlTight의 고정 너비를 조정 */
   & > div {
     flex: 1 1 0;
     min-width: 0;
+  }
+  
+  ${({ theme }) => theme.media.tablet} {
+    flex: 0 0 auto; /* 타블렛에서 고정 너비 */
+    min-width: auto;
+    
+    /* 마지막 요소에만 오른쪽 간격 추가 (스크롤 끝에 도달했을 때만 보임) */
+    &:last-child {
+      margin-right: 2rem; /* General-Margin: 2rem */
+    }
+    
+    /* SegmentControlTight의 고정 너비를 조정 */
+    & > div {
+      flex: 0 0 auto;
+      min-width: auto;
+    }
+  }
+  
+  ${({ theme }) => theme.media.mobile} {
+    flex: 0 0 auto; /* 모바일에서 고정 너비 */
+    min-width: auto;
+    
+    /* 마지막 요소에만 오른쪽 간격 추가 (스크롤 끝에 도달했을 때만 보임) */
+    &:last-child {
+      margin-right: 2.5rem; /* General-Margin: 2.5rem */
+    }
+    
+    /* SegmentControlTight의 고정 너비를 조정 */
+    & > div {
+      flex: 0 0 auto;
+      min-width: auto;
+    }
   }
 `;
 
@@ -186,5 +273,8 @@ export const TimeRowLabel = styled.span`
   font-weight: 600;
   line-height: 1.75rem; /* 155.556% */
   letter-spacing: -0.0225rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-block;
 `;
 

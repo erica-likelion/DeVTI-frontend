@@ -4,8 +4,17 @@ import { theme } from "@/styles/theme";
 export const Group = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
+  gap: 1rem;
+  width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
+  overflow-x: visible; /* 카드 그림자가 잘리지 않도록 */
+  
+  ${({ theme }) => theme.media.tablet} {
+    width: 100%; /* 타블렛에서 평점과 정렬되도록 너비 조정 */
+  }
+  
+  ${({ theme }) => theme.media.mobile} {
+    width: 100%; /* 모바일에서 평점과 정렬되도록 너비 조정 */
+  }
 `;
 
 export const GroupTitle = styled.h3`
@@ -23,24 +32,74 @@ export const GroupTitle = styled.h3`
 export const CardGrid = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap; /* 카드가 가로로 배치되도록 줄바꿈 방지 */
   ${({ theme }) => theme.responsive.property.gap('M')}
   width: 100%;
   overflow-x: auto;
+  overflow-y: visible; /* 세로 방향 그림자가 잘리지 않도록 */
   padding-top: 0.5rem; /* 위쪽 그림자 공간 확보 */
   padding-bottom: 0.5rem; /* 아래쪽 그림자 공간 확보 */
-  padding-left: 0.5rem; /* 첫 번째 카드 왼쪽 그림자 공간 확보 */
+  padding-left: 0; /* 스크롤 시 패딩 없이 이어지도록 */
+  padding-right: 0; /* 스크롤 시 패딩 없이 이어지도록 */
+  
+  ${({ theme }) => theme.media.mobile} {
+    /* 스크롤 끝에 도달했을 때만 오른쪽 간격을 위해 마지막 카드에 margin 추가 필요 */
+  }
 `;
 
 export const CardWrapper = styled.div`
   flex: 0 0 auto;
   min-width: 0;
+  /* 카드가 가로로 배치되도록 고정 너비 설정 (피그마 디자인에 맞춤) */
   width: calc((100% - 2 * ${({ theme }) => theme.responsive.gap('M')}) / 3);
-  max-width: calc((100% - 2 * ${({ theme }) => theme.responsive.gap('M')}) / 3);
+  min-width: 15rem; /* 최소 너비 설정으로 모바일에서도 가로 배치 유지 */
+  
+  ${({ theme }) => theme.media.wide} {
+    width: 28rem; /* Component-Width-Medium */
+    min-width: 28rem;
+  }
+
+  ${({ theme }) => theme.media.desktop} {
+    width: 28rem; /* Component-Width-Medium */
+    min-width: 28rem;
+  }
+  
+  ${({ theme }) => theme.media.tablet} {
+    width: var(--Component-Width-Medium, 20rem);
+    min-width: var(--Component-Width-Medium, 20rem);
+  }
+  
+  ${({ theme }) => theme.media.mobile} {
+    width: ${({ theme }) => theme.componentWidths.medium.mobile}; /* Component-Width-Medium: 11.375rem */
+    min-width: ${({ theme }) => theme.componentWidths.medium.mobile};
+  }
   
   /* Card 컴포넌트 내부 너비 제한 */
   & > * {
     width: 100% !important;
     max-width: 100% !important;
+  }
+  
+  /* 첫 번째 카드: 왼쪽 끝 패딩 */
+  &:first-child {
+    margin-left: ${({ theme }) => theme.responsive.gap('M')};
+    
+    ${({ theme }) => theme.media.tablet} {
+      margin-left: 0; /* 타블렛에서 평점과 정렬되도록 margin 제거 */
+    }
+    
+    ${({ theme }) => theme.media.mobile} {
+      margin-left: 0; /* 모바일에서 평점과 정렬되도록 margin 제거 */
+    }
+  }
+  
+  /* 마지막 카드: 오른쪽 끝 패딩 */
+  &:last-child {
+    margin-right: ${({ theme }) => theme.responsive.gap('M')};
+    
+    ${({ theme }) => theme.media.mobile} {
+      margin-right: ${({ theme }) => theme.gaps.R.mobile}; /* ContentFrame의 padding과 동일 */
+    }
   }
 `;
 
@@ -53,6 +112,26 @@ export const Card = styled.div`
   background: ${theme.colors.grayScale.white};
   box-shadow: ${theme.effects.dropShadows.DS100};
   border: 1px solid ${theme.colors.grayScale.gray100};
+  
+  ${({ theme }) => theme.media.tablet} {
+    display: flex;
+    width: var(--Component-Width-Medium, 20rem);
+    height: 15.5rem;
+    padding: var(--Gap-R, 0.75rem);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--Gap-XS, 0.5rem);
+  }
+  
+  ${({ theme }) => theme.media.mobile} {
+    display: flex;
+    width: ${({ theme }) => theme.componentWidths.medium.mobile}; /* Component-Width-Medium: 11.375rem */
+    height: 15.5rem;
+    padding: ${({ theme }) => theme.gaps.R.mobile}; /* Gap-R: 0.625rem */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.gaps.XS.mobile}; /* Gap-XS: 0.375rem */
+  }
 `;
 
 export const CardTitle = styled.h4`

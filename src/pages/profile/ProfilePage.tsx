@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import * as S from "./ProfilePage.styles";
 import PMPortfolioForm from "./components/PMPortfolioForm";
@@ -17,13 +17,40 @@ import GroupIcon from "@/assets/icons/Group.svg";
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
 type PartOption = (typeof PART_OPTIONS)[number];
 
+// URL slug를 PartOption으로 변환하는 맵 (컴포넌트 외부로 이동)
+const slugToPart: Record<string, PartOption> = {
+  'pm': 'PM',
+  'design': '디자인',
+  'frontend': '프론트엔드',
+  'backend': '백엔드'
+};
+
 export default function ProfilePage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuthStore();
-  const [isEditMode, setIsEditMode] = useState(false);
+  
+  // URL에서 상태 복원
+  const isEditMode = location.pathname.startsWith('/profile/edit');
+  const pathPart = location.pathname.split('/').pop();
+  const partFromUrl = pathPart && slugToPart[pathPart] ? slugToPart[pathPart] : null;
+  
   const [isPartDropdownOpen, setIsPartDropdownOpen] = useState(false);
   const [selectedParts, setSelectedParts] = useState<PartOption[]>([]);
-  const [activePart, setActivePart] = useState<PartOption | null>(null);
+  const [activePart, setActivePart] = useState<PartOption | null>(partFromUrl);
+  
+  // URL 변경 시 activePart 업데이트
+  useEffect(() => {
+    const currentPathPart = location.pathname.split('/').pop();
+    const currentPartFromUrl = currentPathPart && slugToPart[currentPathPart] ? slugToPart[currentPathPart] : null;
+    
+    if (currentPartFromUrl) {
+      setActivePart(currentPartFromUrl);
+    } else if (location.pathname.startsWith('/profile/edit') && (currentPathPart === 'edit' || !currentPathPart)) {
+      // /profile/edit일 때는 activePart를 null로
+      setActivePart(null);
+    }
+  }, [location.pathname]);
   const [profileImage, setProfileImage] = useState<string | null>(user?.profileImage || null);
   const [name, setName] = useState<string>(user?.name || "");
   const [intro, setIntro] = useState<string>("");
@@ -59,13 +86,13 @@ export default function ProfilePage() {
   }, [isPartDropdownOpen]);
 
   const handleRegisterProfile = () => {
-    setIsEditMode(true);
+    navigate('/profile/edit', { replace: false });
   };
 
   const handleSave = () => {
     // TODO: 프로필 저장 로직
     console.log("프로필 저장");
-    setIsEditMode(false);
+    navigate('/profile', { replace: false });
   };
 
   const handleImageUpload = () => {
@@ -121,10 +148,13 @@ export default function ProfilePage() {
   }
 
   // 편집 모드
+  // pathPart가 'edit'이면 Side Section만, 그 외 파트 slug면 포트폴리오 섹션만
+  const hasActivePart = partFromUrl !== null;
+  
   return (
     <S.EditWrapper>
       <S.EditContainer>
-        <S.LeftPanel>
+        <S.LeftPanel $hideOnMobile={hasActivePart}>
         <S.EditProfileSection>
           <S.EditProfileImageWrapper>
             {profileImage ? (
@@ -186,7 +216,15 @@ export default function ProfilePage() {
                   <WtLPawButton
                     key={`${part}-${activePart}`}
                     onClick={() => {
+                      const partMap: Record<PartOption, string> = {
+                        'PM': 'pm',
+                        '디자인': 'design',
+                        '프론트엔드': 'frontend',
+                        '백엔드': 'backend'
+                      };
+                      const partSlug = partMap[part];
                       setActivePart(part);
+                      navigate(`/profile/edit/${partSlug}`, { replace: false });
                     }}
                     disabled={false}
                   >
@@ -205,8 +243,17 @@ export default function ProfilePage() {
                   onClick={() => setIsPartDropdownOpen((prev) => !prev)}
                   onSelectOption={(option) => {
                     if (!selectedParts.includes(option as PartOption)) {
-                      setSelectedParts((prev) => [...prev, option as PartOption]);
-                      setActivePart(option as PartOption);
+                      const selectedPart = option as PartOption;
+                      setSelectedParts((prev) => [...prev, selectedPart]);
+                      const partMap: Record<PartOption, string> = {
+                        'PM': 'pm',
+                        '디자인': 'design',
+                        '프론트엔드': 'frontend',
+                        '백엔드': 'backend'
+                      };
+                      const partSlug = partMap[selectedPart];
+                      setActivePart(selectedPart);
+                      navigate(`/profile/edit/${partSlug}`, { replace: false });
                     }
                     setIsPartDropdownOpen(false);
                   }}
@@ -223,14 +270,19 @@ export default function ProfilePage() {
         </S.EditProfileSection>
       </S.LeftPanel>
 
-      <S.RightPanel>
-        {activePart === "PM" ? (
-          <PMPortfolioForm />
-        ) : activePart === "디자인" ? (
+      <S.RightPanel $hideOnMobile={!hasActivePart}>
+        {activePart === "PM" || pathPart === 'pm' ? (
+          <PMPortfolioForm 
+            name={name}
+            intro={intro}
+            dbtiInfo={dbtiInfo}
+            profileImage={profileImage}
+          />
+        ) : activePart === "디자인" || pathPart === 'design' ? (
           <DesignPortfolioForm />
-        ) : activePart === "프론트엔드" ? (
+        ) : activePart === "프론트엔드" || pathPart === 'frontend' ? (
           <FrontendPortfolioForm />
-        ) : activePart === "백엔드" ? (
+        ) : activePart === "백엔드" || pathPart === 'backend' ? (
           <BackendPortfolioForm />
         ) : (
           <S.EmptyMessageWrapper>

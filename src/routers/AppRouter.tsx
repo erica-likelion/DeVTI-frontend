@@ -58,6 +58,22 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "profile/edit",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/edit/:part",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "profile/pm/view",
         element: (
           <ProtectedRoute>

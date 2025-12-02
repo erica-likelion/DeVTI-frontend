@@ -72,7 +72,19 @@ const DEVELOPMENT_ITEMS: SelfAssessmentItem[] = [
   },
 ] as const;
 
-export default function PMPortfolioForm() {
+interface PMPortfolioFormProps {
+  name?: string;
+  intro?: string;
+  dbtiInfo?: string | null;
+  profileImage?: string | null;
+}
+
+export default function PMPortfolioForm({ 
+  name, 
+  intro, 
+  dbtiInfo, 
+  profileImage 
+}: PMPortfolioFormProps) {
   const navigate = useNavigate();
   const [experienceSummary, setExperienceSummary] = useState("");
   const [strengths, setStrengths] = useState("");
@@ -119,6 +131,10 @@ export default function PMPortfolioForm() {
     // 등록 후 페이지로 이동 (상태를 URL 파라미터나 state로 전달)
     navigate("/profile/pm/view", {
       state: {
+        name,
+        intro,
+        dbtiInfo,
+        profileImage,
         experienceSummary,
         strengths,
         dailyAvailability,

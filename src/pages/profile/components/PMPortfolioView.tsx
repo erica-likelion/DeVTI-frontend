@@ -154,7 +154,7 @@ export default function PMPortfolioView({
         <S.ExperienceSection>
           <S.SectionTitle>경력사항</S.SectionTitle>
           <InputField
-            value={isNewcomer ? "신입" : experienceSummary || ""}
+            value={experienceSummary || ""}
             variant="output"
             disabled={true}
           />
@@ -162,7 +162,8 @@ export default function PMPortfolioView({
             <CheckboxButton
               checked={isNewcomer}
               onChange={() => {}}
-              disabled={true}
+              disabled={false}
+              onClick={(e) => e.preventDefault()}
             >
               신입
             </CheckboxButton>

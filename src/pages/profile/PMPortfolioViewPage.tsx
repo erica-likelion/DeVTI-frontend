@@ -1,13 +1,27 @@
+import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import PMPortfolioView from "./components/PMPortfolioView";
 import * as S from "./ProfilePage.styles";
+import InputField from "@/components/Input/InputField";
+import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
+import WtMIconButton from "@/components/ButtonStatic/WtMIconButton";
+import WtLPawButton from "@/components/ButtonDynamic/WtLPawButton";
+import DropBox from "@/components/DropBox";
+import GroupIcon from "@/assets/icons/Group.svg";
 import type {
   DailyAvailabilityKey,
   WeeklyAvailabilityKey,
 } from "./components/BasePortfolioForm";
 
+const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
+type PartOption = (typeof PART_OPTIONS)[number];
+
 interface LocationState {
+  name?: string;
+  intro?: string;
+  dbtiInfo?: string | null;
+  profileImage?: string | null;
   experienceSummary: string;
   strengths: string;
   dailyAvailability: DailyAvailabilityKey | null;
@@ -29,42 +43,166 @@ export default function PMPortfolioViewPage() {
     return null;
   }
 
+  // 편집 모드 상태 관리
+  const [profileImage, setProfileImage] = useState<string | null>(state.profileImage || null);
+  const [name, setName] = useState<string>(state.name || "");
+  const [intro, setIntro] = useState<string>(state.intro || "");
+  const [dbtiInfo, setDbtiInfo] = useState<string | null>(state.dbtiInfo || null);
+  const [selectedParts, setSelectedParts] = useState<PartOption[]>(["PM"]);
+  const [activePart, setActivePart] = useState<PartOption>("PM");
+  const [isPartDropdownOpen, setIsPartDropdownOpen] = useState(false);
+  const partSelectorRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!isPartDropdownOpen) {
+      return;
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        partSelectorRef.current &&
+        !partSelectorRef.current.contains(event.target as Node)
+      ) {
+        setIsPartDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isPartDropdownOpen]);
+
+  const handleImageUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDBTIClick = () => {
+    if (!dbtiInfo) {
+      setDbtiInfo("test"); // 임시 값
+      console.log("센터 시트 열기");
+    } else {
+      navigate("/profile/edit/dbti");
+    }
+  };
+
+  const handleSave = () => {
+    // TODO: 프로필 저장 로직
+    console.log("프로필 저장");
+  };
+
   return (
     <S.EditWrapper>
       <S.EditContainer>
-        <S.LeftPanel>
+        <S.LeftPanel $hideOnMobile={true}>
           <S.EditProfileSection>
             <S.EditProfileImageWrapper>
-              {user?.profileImage ? (
-                <S.EditProfileImage src={user.profileImage} alt={user.name} />
+              {profileImage ? (
+                <S.EditProfileImage src={profileImage} alt={name || "프로필"} />
               ) : (
                 <S.EditProfileImagePlaceholder />
               )}
+              <S.UploadButtonWrapper>
+                <WtMIconButton onClick={handleImageUpload} disabled={false}>
+                  <img src={GroupIcon} alt="Upload" />
+                </WtMIconButton>
+              </S.UploadButtonWrapper>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
             </S.EditProfileImageWrapper>
 
             <S.FormSection>
               <S.FormLabel>이름</S.FormLabel>
-              <S.ReadOnlyText>{user?.name || "사용자"}</S.ReadOnlyText>
+              <InputField
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="이름을 입력하세요"
+                icon={null}
+              />
             </S.FormSection>
 
             <S.FormSection>
               <S.FormLabel>한 줄 소개</S.FormLabel>
-              <S.ReadOnlyText>{user?.intro || "-"}</S.ReadOnlyText>
+              <InputField
+                value={intro}
+                onChange={(e) => setIntro(e.target.value)}
+                placeholder="미래 팀원들에게"
+                icon={null}
+              />
             </S.FormSection>
 
             <S.FormSection>
               <S.FormLabel>DBTI (프로젝트 성향 테스트)</S.FormLabel>
-              <S.ReadOnlyText>{user?.dbti || "-"}</S.ReadOnlyText>
+              <S.DBTIButtonWrapper>
+                <WtLPawButton onClick={handleDBTIClick}>
+                  테스트
+                </WtLPawButton>
+              </S.DBTIButtonWrapper>
             </S.FormSection>
 
             <S.FormSection>
               <S.FormLabel>파트</S.FormLabel>
               <S.PartSelectionWrapper>
-                <S.PartButtonWrapper $isActive={true}>
-                  <S.ReadOnlyPartButton>PM</S.ReadOnlyPartButton>
-                </S.PartButtonWrapper>
+                {selectedParts.map((part) => (
+                  <S.PartButtonWrapper 
+                    key={part} 
+                    $isActive={activePart === part}
+                  >
+                    <WtLPawButton
+                      key={`${part}-${activePart}`}
+                      onClick={() => {
+                        setActivePart(part);
+                      }}
+                      disabled={false}
+                    >
+                      {part}
+                    </WtLPawButton>
+                  </S.PartButtonWrapper>
+                ))}
+                <div ref={partSelectorRef}>
+                  <DropBox
+                    size="L"
+                    value=""
+                    placeholder="파트 추가"
+                    isOpen={isPartDropdownOpen}
+                    options={[...PART_OPTIONS]}
+                    disabledOptions={selectedParts}
+                    onClick={() => setIsPartDropdownOpen((prev) => !prev)}
+                    onSelectOption={(option) => {
+                      if (!selectedParts.includes(option as PartOption)) {
+                        setSelectedParts((prev) => [...prev, option as PartOption]);
+                        setActivePart(option as PartOption);
+                      }
+                      setIsPartDropdownOpen(false);
+                    }}
+                  />
+                </div>
               </S.PartSelectionWrapper>
             </S.FormSection>
+
+            <S.SaveButtonWrapper>
+              <BkMTextButton onClick={handleSave} disabled={false}>
+                저장
+              </BkMTextButton>
+            </S.SaveButtonWrapper>
           </S.EditProfileSection>
         </S.LeftPanel>
 
