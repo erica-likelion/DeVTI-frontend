@@ -93,9 +93,8 @@ export default function TopNav({ className }: TopNavProps) {
         ) : (
           <>
             {!shouldHideNavButtons && (
-              <DropBox
+              <DropBox 
                 size="M"
-                value=""
                 placeholder="메뉴"
                 isOpen={isSidebarOpen}
                 onClick={handleMenuToggle}

@@ -33,7 +33,7 @@ export const InputWrapper = styled.div`
 `;
 
 export const Label = styled.div`
-  ${({ theme }) => theme.fonts.heading.h2}
+  ${({ theme }) => theme.fonts.heading.h3}
   ${({ theme }) => theme.responsive.property.width('min')};
   margin: 0;
   padding:0;

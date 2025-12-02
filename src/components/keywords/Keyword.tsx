@@ -10,9 +10,9 @@ export const Keyword = ({ items, color = 'green', size = 'm' }: KeywordProps) =>
   const isSingle = items.length === 1;
 
   return (
-    <S.Container color={color} isSingle={isSingle} size={size}>
+    <S.Container $color={color} $isSingle={isSingle} $size={size}>
       {items.map((item, i) => (
-        <S.Text key={i} divide={!isSingle && i === 0} size={size}>
+        <S.Text key={i} $divide={!isSingle && i === 0} $size={size}>
           {item}
         </S.Text>
       ))}

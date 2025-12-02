@@ -6,7 +6,7 @@ export const Container = styled.div`
   align-items: center;
   gap: 2.5rem;
   width: 100%;
-  margin: 0;
+  margin-top: 2.5rem;
 `;
 
 export const Title = styled.h1`
@@ -18,7 +18,7 @@ export const Title = styled.h1`
 
 export const Subtitle = styled.p`
   ${({ theme }) => theme.fonts.body.l500}
-  color: ${({ theme }) => theme.colors.grayScale.gray500};
+  color: ${({ theme }) => theme.colors.grayScale.black};
   margin: 0;
   text-align: center;
 `;
@@ -29,7 +29,6 @@ export const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-top: 2.5rem;
   
 `;
 
@@ -63,4 +62,11 @@ export const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`;
+
+export const KeywordContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
 `;

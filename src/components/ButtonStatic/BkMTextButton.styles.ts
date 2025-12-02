@@ -3,7 +3,11 @@ import styled from 'styled-components';
 export const StyledButton = styled.button`
   ${({ theme }) => theme.fonts.heading.h4}
   display: flex;
-  padding: ${({ theme }) => theme.responsive.padding('XXS')} 0;
+  padding: ${({ theme }) => theme.responsive.gap('XXS')} 0;
+
+  ${({ theme }) => theme.media.mobile} {
+    padding: ${({ theme }) => theme.responsive.gap('XXS', 'mobile')} 0;
+  }
   justify-content: center;
   align-items: center;
   background: ${({ theme }) => theme.colors.grayScale.black};
@@ -16,6 +20,7 @@ export const StyledButton = styled.button`
   ${({ theme }) => theme.media.mobile} {
     width: auto;
     min-width: ${({ theme }) => theme.responsive.width('min', 'mobile')};
+    border-radius: ${({ theme }) => theme.responsive.borderRadius('sharp', 'mobile')};
   }
 
   &:hover:not(:disabled) {
