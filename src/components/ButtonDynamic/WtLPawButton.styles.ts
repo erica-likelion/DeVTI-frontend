@@ -1,31 +1,33 @@
 import styled from "styled-components";
-import { theme } from "@/styles/theme";
 
 export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean; $isActive?: boolean }>`
   display: inline-flex;
-  padding: 0.75rem 1.25rem 0.75rem 1rem;
-  justify-content: center;
+  ${({ theme }) => theme.responsive.property.paddingComplex('XS', 'M', 'XS', 'S')}
+  justify-content: flex-start;
   align-items: center;
-  gap: 0.75rem;
+  ${({ theme }) => theme.responsive.property.gap('XS')}
   border: none;
-  border-radius: ${theme.borders.sharp};
-  background: ${theme.colors.grayScale.white};
+  border-radius: ${({ theme }) => theme.responsive.property.borderRadius('sharp')};
+  background: ${({ theme }) => theme.colors.grayScale.white};
   box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
-  color: ${theme.colors.grayScale.black};
-  ${theme.fonts.heading.h4}
-
+  color: ${({ theme }) => theme.colors.grayScale.black};
+  cursor: pointer;
+  ${({ theme }) => theme.fonts.heading.h4}
+  width: 100%;
+  height: 3rem;
   
   &:hover:not(:disabled) {
-    color: ${theme.colors.secondary.VT700};
+    color: ${({ theme }) => theme.colors.secondary.VT700};
   }
 
   &:active:not(:disabled) {
-    background: ${theme.colors.secondary.VT100};
-    color: ${theme.colors.grayScale.black};
+    background: ${({ theme }) => theme.colors.secondary.VT100};
+    color: ${({ theme }) => theme.colors.grayScale.black};
   }
 
   &:disabled {
-    color: ${theme.colors.grayScale.gray300};
+    color: ${({ theme }) => theme.colors.grayScale.gray300};
+    cursor: not-allowed;
   }
 
   ${({ $isClicked, theme }) => 
@@ -33,17 +35,17 @@ export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolea
       color: ${theme.colors.secondary.VT700};
       background: ${theme.colors.secondary.VT100};
     `}
+
 `;
 
 export const Icon = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   
   img {
-
     object-fit: contain;
   }
+
 `;

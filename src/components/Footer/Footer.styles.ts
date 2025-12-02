@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 interface ContainerProps {
   $isLoginPage: boolean;
+  $isProfileRoute: boolean;
 }
 
 interface CopyrightTextProps {
@@ -16,12 +17,14 @@ export const Container = styled.footer<ContainerProps>`
   width: 100%;
   z-index: 1000;
   height: 4.5rem;
+  background: ${({ $isProfileRoute, theme }) =>
+    $isProfileRoute ? theme.colors.grayScale.gray50 : 'transparent'};
   
   ${({ theme }) => theme.media.mobile} {
     display: flex;
     width: 100vw;
     height: 3.75rem;
-    padding: 0.75rem 2rem;
+    padding: 0.75rem 1rem;
     align-items: flex-start;
     gap: 0.625rem;
     flex-shrink: 0;
@@ -33,6 +36,14 @@ export const Content = styled.div`
   display: flex;
   justify-content: left;
   align-items: left;
+  
+  ${({ theme }) => theme.media.tablet} {
+    padding: 0.75rem 2rem 1.5rem;
+  }
+  
+  ${({ theme }) => theme.media.desktop} {
+    padding: 0.75rem 2rem 1.5rem;
+  }
   
   ${({ theme }) => theme.media.mobile} {
     padding: 0;

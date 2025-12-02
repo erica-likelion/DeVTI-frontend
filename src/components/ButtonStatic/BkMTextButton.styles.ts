@@ -3,15 +3,25 @@ import styled from 'styled-components';
 export const StyledButton = styled.button`
   ${({ theme }) => theme.fonts.heading.h4}
   display: flex;
-  width: 8.25rem;
-  padding: 0.5rem 0.75rem;
+  padding: ${({ theme }) => theme.responsive.gap('XXS')} 0;
+
+  ${({ theme }) => theme.media.mobile} {
+    padding: ${({ theme }) => theme.responsive.gap('XXS', 'mobile')} 0;
+  }
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
   background: ${({ theme }) => theme.colors.grayScale.black};
   color: ${({ theme }) => theme.colors.grayScale.white};
   border: none;
-  border-radius: ${({ theme }) => theme.borders.sharp};
+  
+  ${({ theme }) => theme.responsive.property.width('min')}
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
+
+  ${({ theme }) => theme.media.mobile} {
+    width: auto;
+    min-width: ${({ theme }) => theme.responsive.width('min', 'mobile')};
+    border-radius: ${({ theme }) => theme.responsive.borderRadius('sharp', 'mobile')};
+  }
 
   &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors.primary.VT500};
@@ -28,10 +38,5 @@ export const StyledButton = styled.button`
   &:disabled {
     background: ${({ theme }) => theme.colors.grayScale.gray300};
     cursor: not-allowed;
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    width: auto;
-    min-width: 8.25rem;
   }
 `;

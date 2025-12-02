@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface ContainerProps {
   $isImageBackground: boolean;
@@ -23,6 +23,7 @@ export const Container = styled.div<ContainerProps>`
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        background-attachment: fixed;
       `;
     }
     
@@ -45,12 +46,53 @@ export const Container = styled.div<ContainerProps>`
   }}
 `;
 
-export const Main = styled.main`
-  height: 100vh;
-  overflow: hidden;
-  padding: 4.5rem 2.5rem 4rem;
+export const Main = styled.main<{ $pathname: string }>`
+  height:100%;
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+  margin-top: 0;
+  
+  ${({ theme }) => theme.layouts.mobileCommon}
+
+  ${({ theme }) => theme.media.tablet} {
+    padding-top: calc(4.5rem + ${({ theme }) => theme.gaps.R.tablet});
+    padding-bottom: 4.5rem;
+  }
+
+  ${({ theme }) => theme.media.desktop} {
+    ${({ theme }) => theme.layouts.desktopCommon}
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+  }
+  
+  ${({ theme }) => theme.media.wide} {
+    ${({ theme }) => theme.layouts.wideCommon}
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+  }
   
   ${({ theme }) => theme.media.mobile} {
-    padding: 4.5rem 1rem 4.5rem;
+    padding-top: calc(4.5rem + ${({ theme }) => theme.gaps.R.mobile});
+    padding-bottom: 3.75rem;
   }
+
+  ${({ $pathname }) => $pathname.includes('/profile') && css`
+    padding-left: 0;
+    padding-right: 0;
+
+    ${({ theme }) => theme.media.desktop} {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    
+    ${({ theme }) => theme.media.wide} {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    
+    ${({ theme }) => theme.media.mobile} {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  `}
 `;

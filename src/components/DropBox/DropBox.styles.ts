@@ -3,27 +3,27 @@ import { theme } from "@/styles/theme";
 
 export const Container = styled.div<{ $size?: "L" | "M" }>`
   display: flex;
-  width: ${({ $size }) => ($size === "M" ? "auto" : "33.25rem")};
-  max-width: ${({ $size }) =>
-    $size === "M" ? "none" : "var(--Component-Width-Large, 42.5rem)"};
+  width: ${({ $size }) => ($size === "M" ? "auto" : "100%")};
+  max-width: ${({ $size }) => ($size === "M" ? "auto" : "33.25rem")};
   flex-direction: column;
   align-items: flex-start;
-  gap: ${({ $size }) => ($size === "M" ? "0" : "0.5rem")};
-  border-radius: ${theme.borders.sharp};
+  ${({ theme }) => theme.responsive.property.gap('XXS')}
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
 `;
 
+
 export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boolean }>`
-  display: ${({ $size }) => ($size === "M" ? "inline-flex" : "flex")};
+  display: inline-flex;
   align-items: center;
   justify-content: ${({ $size }) => ($size === "M" ? "center" : "flex-start")};
-  width: ${({ $size }) => ($size === "M" ? "auto" : "100%")};
-  padding: ${({ $size }) =>
+  width: 100%;
+  padding: ${({ $size, theme }) =>
     $size === "M"
-      ? "0.5rem 0.5rem 0.5rem 0.75rem"
-      : "1rem 1.25rem 1rem 1.25rem"};
+      ? `${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XS')}`
+      : `${theme.responsive.gap('S')} ${theme.responsive.gap('M')} ${theme.responsive.gap('S')} ${theme.responsive.gap('M')}`};
   border: none;
-  border-radius: ${({ $size }) =>
-    $size === "M" ? theme.borders.sharp : theme.borders.smooth};
+  border-radius: ${({ $size, theme }) =>
+    $size === "M" ? theme.responsive.borderRadius('sharp') : theme.responsive.borderRadius('smooth')};
   background: ${({ $size, $disabled, theme }) =>
     $size === "M" && $disabled
       ? "transparent"
@@ -31,10 +31,12 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
   box-shadow: ${({ $size }) =>
     $size === "M" ? "none" : "0 0 4px 0 rgba(25, 24, 29, 0.1)"};
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
-  gap: ${({ $size }) => ($size === "M" ? "0.5rem" : "1.25rem")};
-  height: ${({ $size }) => ($size === "M" ? "auto" : "3.5rem")};
-  align-self: ${({ $size }) => ($size === "M" ? "auto" : "stretch")};
+  gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XXS') : theme.responsive.gap('S'))};
+  height: ${({ $size}) => ($size === "M" ? "2.5rem" : "3.5rem")};
+  align-self: stretch;
   transition: background-color 0.2s ease;
+
+
 
   &:hover:not(:disabled) {
     background: ${({ $size, $disabled, theme }) =>
@@ -64,8 +66,7 @@ export const OptionText = styled.span<{ $size?: "L" | "M" }>`
 `;
 
 export const ArrowIcon = styled.span<{ $isOpen: boolean }>`
-  width: 1.5rem;
-  height: 1.5rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('S')}
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
@@ -84,21 +85,25 @@ export const DropdownList = styled.div`
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  border-radius: ${theme.borders.smooth};
+  ${({ theme }) => theme.responsive.property.borderRadius('smooth')}
   box-shadow: 0 0 4px 0 rgba(25, 24, 29, 0.1);
   background: ${theme.colors.grayScale.white};
   overflow: hidden;
 `;
 
-export const DropOption = styled.div<{ $isActive?: boolean; $isSelected?: boolean }>`
+export const DropOption = styled.div<{ $size?: "L" | "M"; $isActive?: boolean; $isSelected?: boolean }>`
   display: flex;
   height: 3.5rem;
-  padding: 1rem 1.25rem;
   align-items: center;
   align-self: stretch;
+  padding: ${({ $size, theme }) =>
+    $size === "M"
+      ? `${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XS')}`
+      : `${theme.responsive.gap('S')} ${theme.responsive.gap('M')} ${theme.responsive.gap('S')} ${theme.responsive.gap('M')}`};
   background: ${theme.colors.grayScale.white};
   cursor: ${({ $isActive }) => ($isActive ? "default" : "pointer")};
   transition: background-color 0.2s ease;
+
 
   /* Default 상태: 배경 흰색, 글씨 검은색 (이미 적용됨) */
 

@@ -32,6 +32,7 @@ export const GlobalStyle = createGlobalStyle`
     height: 100vh;
     margin: 0;
     padding: 0;
+    overflow: hidden;
     
     /* TODO: 프로젝트 특성에 맞는 기본 폰트 설정 */
     font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -45,6 +46,7 @@ export const GlobalStyle = createGlobalStyle`
   #root {
     width: 100%;
     height: 100%;
+    overflow: hidden;
     background: transparent;
   }
 

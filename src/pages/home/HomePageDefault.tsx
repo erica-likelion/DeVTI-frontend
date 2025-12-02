@@ -1,12 +1,14 @@
 import * as S from './HomePageDefault.styles';
+import WtLMemberList from '../../components/list/WtLMemberList';
+import img from '/DefaultIMG_Profile.webp';
 
 export default function HomePage() {
   return (
     <S.Container>
-      <S.Title>참여 중인 매칭룸</S.Title>
+      <S.Title>참여중인 매칭룸</S.Title>
       <S.ListWrapper>
-        {/* TODO: 매칭룸 리스트 구현 */}
+        
       </S.ListWrapper>
     </S.Container>
   );
-}
+};

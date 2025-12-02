@@ -10,16 +10,16 @@ export const Container = styled.div`
 export const StarContainer = styled.div`
   display: inline-flex;
   align-items: center;
-  gap: var(--Gap-XXS, 0.5rem);
+  ${({ theme }) => theme.responsive.property.gap('XXS')}
 `;
 
 export const StarButton = styled.button<{ $isFilled?: boolean; $disabled?: boolean }>`
   display: inline-flex;
-  padding: var(--Gap-XXS, 0.5rem);
+  ${({ theme }) => theme.responsive.property.padding('XXS')}
   justify-content: center;
   align-items: center;
-  gap: var(--Gap-XXS, 0.5rem);
-  border-radius: ${theme.borders.sharp};
+  ${({ theme }) => theme.responsive.property.gap('XXS')}
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
   background: ${theme.colors.grayScale.white};
   border: none;
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
@@ -27,15 +27,8 @@ export const StarButton = styled.button<{ $isFilled?: boolean; $disabled?: boole
   transition: background-color 0.2s ease;
 
   img {
-    width: 1.5rem;
-    height: 1.5rem;
+    ${({ theme }) => theme.responsive.property.sourceSize('R')}
     object-fit: contain;
-    ${({ $isFilled }) =>
-      $isFilled
-        ? `
-      filter: brightness(0) saturate(100%) invert(37%) sepia(89%) saturate(2000%) hue-rotate(250deg) brightness(0.9) contrast(1.1);
-    `
-        : ""}
   }
 
   &:disabled {

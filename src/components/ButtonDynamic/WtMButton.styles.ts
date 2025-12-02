@@ -2,29 +2,32 @@ import styled from 'styled-components';
 
 export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean }>`
   display: inline-flex;
-  padding: 0.5rem 1rem;
+  ${({ theme }) => theme.responsive.property.paddingComplex('XXS', 'S', 'XXS', 'S')}
   justify-content: center;
   align-items: center;
+  border: none;
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
   background-color: ${({ theme }) => theme.colors.grayScale.white};
-  border-radius: ${({ theme }) => theme.borders.sharp};
-  ${({ theme }) => theme.fonts.heading.h4};
   color: ${({ theme }) => theme.colors.grayScale.black};
+  cursor: pointer;
+  ${({ theme }) => theme.fonts.heading.h4};
   
-  &:hover {
-    color: ${({ theme, disabled }) => 
-      disabled ? theme.colors.grayScale.black : theme.colors.secondary.VT700};
+  &:hover:not(:disabled) {
+    color: ${({ theme }) => theme.colors.secondary.VT700};
   }
 
-  &:active {
-    background-color: ${({ theme, disabled }) => 
-      disabled ? theme.colors.grayScale.white : theme.colors.secondary.VT100};
-    color: ${({ theme, disabled }) => 
-      disabled ? theme.colors.grayScale.black : theme.colors.grayScale.black};
+  &:active:not(:disabled) {
+    background-color: ${({ theme }) => theme.colors.secondary.VT100};
+    color: ${({ theme }) => theme.colors.grayScale.black};
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.grayScale.gray300};
+    cursor: not-allowed;
   }
 
   ${({ $isClicked, theme }) => $isClicked && `
     background-color: ${theme.colors.secondary.VT100};
     color: ${theme.colors.secondary.VT700};
   `}
-
 `;

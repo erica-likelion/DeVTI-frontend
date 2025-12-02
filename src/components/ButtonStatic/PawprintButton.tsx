@@ -8,23 +8,28 @@ interface PawprintButtonProps {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  selected?: boolean;
 }
 
-export default function PawprintButton({ className, onClick, disabled = false }: PawprintButtonProps) {
-  const [isClicked, setIsClicked] = useState(false);
+export default function PawprintButton({ className, onClick, disabled = false, selected }: PawprintButtonProps) {
+  const [internalSelected, setInternalSelected] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
+  const isSelected = selected !== undefined ? selected : internalSelected;
+
   const handleClick = () => {
     if (!disabled && onClick) {
-      setIsClicked(!isClicked);
+      if (selected === undefined) {
+        setInternalSelected(!internalSelected);
+      }
       onClick();
     }
   };
 
   const getIcon = () => {
     if (disabled) return CircleGray;
-    if (isClicked) return FootPupple;
+    if (isSelected) return FootPupple;
     if (isActive) return CirclePupple;
     if (isHovered) return CirclePupple;
     return CircleGray;
@@ -39,7 +44,7 @@ export default function PawprintButton({ className, onClick, disabled = false }:
       onMouseDown={() => setIsActive(true)}
       onMouseUp={() => setIsActive(false)}
       $disabled={disabled}
-      $isClicked={isClicked}
+      $isClicked={isSelected}
     >
       <S.Icon>
         <img src={getIcon()} alt="Pawprint" />

@@ -1,29 +1,29 @@
 import styled from "styled-components";
-import { theme } from "@/styles/theme";
 
 export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean }>`
   display: inline-flex;
-  padding: 0.5rem 0.75rem 0.5rem 1rem;
+  ${({ theme }) => theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'S')}
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  ${({ theme }) => theme.responsive.property.gap('XXS')}
   border: none;
-  border-radius: ${theme.borders.sharp};
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
   background: none;
-  color: ${theme.colors.grayScale.black};
-  ${theme.fonts.body.m500}
+  color: ${({ theme }) => theme.colors.grayScale.black};
+  cursor: pointer;
+  ${({ theme }) => theme.fonts.body.m500}
 
-  
   &:hover:not(:disabled) {
-    color: ${theme.colors.secondary.VT700};
+    color: ${({ theme }) => theme.colors.secondary.VT700};
   }
 
   &:active:not(:disabled) {
-    background: ${theme.colors.secondary.VT100};
+    background: ${({ theme }) => theme.colors.secondary.VT100};
   }
 
   &:disabled {
-    color: ${theme.colors.grayScale.gray300};
+    color: ${({ theme }) => theme.colors.grayScale.gray300};
+    cursor: not-allowed;
   }
 
   ${({ $isClicked, theme }) => 
@@ -31,17 +31,17 @@ export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolea
       color: ${theme.colors.secondary.VT700};
       background: ${theme.colors.grayScale.white};
     `}
+
 `;
 
 export const Icon = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   
   img {
-
     object-fit: contain;
   }
+
 `;

@@ -88,16 +88,25 @@ const colors = {
     black: '#19181D',
   },
   transparents: {
-    BL100: 'var(--Colors-Transparent-BL100, rgba(25, 24, 29, 0.10))',
-    BL200: 'var(--Colors-Transparent-BL200, rgba(25, 24, 29, 0.20))',
-    WH200: 'var(--Colors-Transparent-WH200, rgba(252, 252, 255, 0.20))',
-    WH300: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.30))',
+    BL100: 'rgba(25, 24, 29, 0.10)',
+    BL200: 'rgba(25, 24, 29, 0.20)',
+    WH200: 'rgba(252, 252, 255, 0.20)',
+    WH300: 'rgba(252, 252, 255, 0.30)',
   },
   inner: {
-    gl100: {
-      background: 'var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.08))',
-      backdropFilter: 'blur(0.6rem)',
-      boxShadow: 'inset 0 0 1rem 0 rgba(0, 0, 0, 0.1)',
+    GL100: {
+      background: 'rgba(252, 252, 255, 0.30)',
+      backdropFilter: 'blur(0.125rem)',
+    },
+    GL200: {
+      background: 'rgba(252, 252, 255, 0.30)',
+      boxShadow: '0 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.25)',
+      backdropFilter: 'blur(0.625rem)',
+    },
+    Gl_DS_VT: {
+      background: 'rgba(252, 252, 255, 0.30)',
+      boxShadow: '-0.0125rem 0 0.0625rem 0 #FCFCFF inset, 0 -0.0625rem 0.625rem 0 rgba(252, 252, 255, 0.30) inset, 0.01875rem 0.01875rem 0.03125rem 0 #FCFCFF inset, 0 0 0.5rem 0 rgba(25, 24, 29, 0.08) inset, 0 0.0625rem 0.75rem 0 rgba(151, 62, 233, 0.30)',
+      backdropFilter: 'blur(0.625rem)',
     },
   },
   systems: {
@@ -146,13 +155,196 @@ const withShade = (color: string, amount: number) => {
   return `#${shadeR.toString(16).padStart(2, '0')}${shadeG.toString(16).padStart(2, '0')}${shadeB.toString(16).padStart(2, '0')}`;
 };
 
-// Shape 유틸리티 (border-radius)
+// Shape 유틸리티 (border-radius) - 반응형
 const borders = {
-  hard: '0.5rem',
-  sharp: '0.75rem',
-  smooth: '1.125rem',
-  soft: '1.5rem',
-  round: '2.25rem',
+  hard: {
+    wide: '0.5rem',       // 8px
+    desktop: '0.5rem',    // 8px
+    tablet: '0.5rem',     // 8px
+    mobile: '0.375rem',   // 6px
+  },
+  sharp: {
+    wide: '0.75rem',      // 12px
+    desktop: '0.75rem',   // 12px
+    tablet: '0.75rem',    // 12px
+    mobile: '0.5rem',     // 8px
+  },
+  smooth: {
+    wide: '1.125rem',     // 18px
+    desktop: '1.125rem',  // 18px
+    tablet: '1.125rem',   // 18px
+    mobile: '0.75rem',    // 12px
+  },
+  soft: {
+    wide: '1.5rem',       // 24px
+    desktop: '1.5rem',    // 24px
+    tablet: '1.5rem',     // 24px
+    mobile: '1.125rem',   // 18px
+  },
+  round: {
+    wide: '2.25rem',      // 36px
+    desktop: '2.25rem',   // 36px
+    tablet: '2.25rem',    // 36px
+    mobile: '1.5rem',     // 24px
+  },
+} as const;
+
+// Gap 유틸리티 (spacing) - 반응형
+const gaps = {
+  none: {
+    wide: '0',       // 0px
+    desktop: '0',    // 0px
+    tablet: '0',     // 0px
+    mobile: '0',     // 0px
+  },
+  XXXS: {
+    wide: '0.25rem',    // 4px
+    desktop: '0.25rem', // 4px
+    tablet: '0.25rem',  // 4px
+    mobile: '0.125rem', // 2px
+  },
+  XXS: {
+    wide: '0.5rem',     // 8px
+    desktop: '0.5rem',  // 8px
+    tablet: '0.375rem', // 6px
+    mobile: '0.25rem',  // 4px
+  },
+  XS: {
+    wide: '0.75rem',    // 12px
+    desktop: '0.75rem', // 12px
+    tablet: '0.5rem',   // 8px
+    mobile: '0.375rem', // 6px
+  },
+  S: {
+    wide: '1rem',       // 16px
+    desktop: '1rem',    // 16px
+    tablet: '0.625rem', // 10px
+    mobile: '0.5rem',   // 8px
+  },
+  R: {
+    wide: '1.25rem',    // 20px
+    desktop: '1.25rem', // 20px
+    tablet: '0.75rem',  // 12px
+    mobile: '0.625rem', // 10px
+  },
+  M: {
+    wide: '1.5rem',     // 24px
+    desktop: '1.5rem',  // 24px
+    tablet: '0.875rem', // 14px
+    mobile: '0.75rem',  // 12px
+  },
+  L: {
+    wide: '1.75rem',    // 28px
+    desktop: '1.75rem', // 28px
+    tablet: '1rem',     // 16px
+    mobile: '0.875rem', // 14px
+  },
+  XL: {
+    wide: '2rem',       // 32px
+    desktop: '2rem',    // 32px
+    tablet: '1.25rem',  // 20px
+    mobile: '1rem',     // 16px
+  },
+  XXL: {
+    wide: '2.75rem',    // 44px
+    desktop: '2.75rem', // 44px
+    tablet: '1.25rem',  // 20px
+    mobile: '1rem',     // 16px
+  },
+  CenterSheet: {
+    wide: '8.25rem',       // 132px
+    desktop: '7.25rem',    // 116px
+    tablet: '3rem',        // 48px
+    mobile: '0.75rem',     // 12px
+  },
+  GeneralMargin: {
+    wide: '2rem',          // 32px
+    desktop: '2rem',       // 32px
+    tablet: '2rem',        // 32px
+    mobile: '1rem',        // 16px
+  },
+} as const;
+
+// Component Width 유틸리티 (component widths) - 반응형
+const componentWidths = {
+  min: {
+    wide: '8.25rem',      // 132px
+    desktop: '8.25rem',   // 132px
+    tablet: '8rem',       // 128px
+    mobile: '6.0625rem',  // 97px
+  },
+  small: {
+    wide: '15.5rem',      // 248px
+    desktop: '15.5rem',   // 248px
+    tablet: '14rem',      // 224px
+    mobile: '8.0625rem',  // 129px
+  },
+  medium: {
+    wide: '28rem',        // 448px
+    desktop: '28rem',     // 448px
+    tablet: '20rem',      // 320px
+    mobile: '11.375rem',  // 182px
+  },
+  large: {
+    wide: '42.5rem',      // 680px
+    desktop: '42.5rem',   // 680px
+    tablet: '41rem',      // 656px
+    mobile: '20.5rem',    // 328px
+  },
+  max: {
+    wide: '71.5rem',      // 1144px
+    desktop: '71.5rem',   // 1144px
+    tablet: '41rem',      // 656px
+    mobile: '20.5rem',    // 328px
+  },
+} as const;
+
+// Overlay Sheets Width 유틸리티 (modal/sheet widths) - 반응형
+const overlaySheets = {
+  width: {
+    wide: '66.75rem',     // 1068px
+    desktop: '51.75rem',  // 828px
+    tablet: '36.25rem',   // 580px
+    mobile: '22.5rem',    // 360px
+  },
+} as const;
+
+// Overlay Modals Width 유틸리티 (modal widths) - 반응형
+const overlayModals = {
+  width: {
+    wide: '35.25rem',     // 564px
+    desktop: '35.25rem',  // 564px
+    tablet: '27rem',      // 432px
+    mobile: '20.5rem',    // 328px
+  },
+} as const;
+
+// Source Width 유틸리티 (image/media source widths) - 반응형
+const sourceWidths = {
+  S: {
+    wide: '1.25rem',      // 20px
+    desktop: '1.25rem',   // 20px
+    tablet: '1.125rem',   // 18px
+    mobile: '1rem',       // 16px
+  },
+  R: {
+    wide: '1.5rem',       // 24px
+    desktop: '1.5rem',    // 24px
+    tablet: '1.375rem',   // 22px
+    mobile: '1.25rem',    // 20px
+  },
+  M: {
+    wide: '1.75rem',      // 28px
+    desktop: '1.75rem',   // 28px
+    tablet: '1.5rem',     // 24px
+    mobile: '1.375rem',   // 22px
+  },
+  L: {
+    wide: '2.5rem',       // 40px
+    desktop: '2.5rem',    // 40px
+    tablet: '2.25rem',    // 36px
+    mobile: '2rem',       // 32px
+  },
 } as const;
 
 
@@ -252,9 +444,9 @@ const fonts = {
 // dropshadows / 배경 블러: Backdrop blur / gradients
 const effects = {
   dropShadows: {
-    DS100: '0 0 0.25rem 0 var(--Colors-Gray-Scale-GY100, #EEF0F5)',
-    DS200: '0 0.0625rem 0.75rem 0 var(--Colors-Gray-Scale-GY200, #E1E4EB)',
-    DS300: '0 0.125rem 1.125rem 0 var(--Colors-Gray-Scale-GY300, #D0D2DC)',
+    DS100: '0 0 0.25rem 0 #EEF0F5',
+    DS200: '0 0.0625rem 0.75rem 0 #E1E4EB',
+    DS300: '0 0.125rem 1.125rem 0 #D0D2DC',
     DS200_VT: '0 0.0625rem 0.75rem 0 rgba(151, 62, 233, 0.30)',
   },
   
@@ -265,9 +457,178 @@ const effects = {
     BG400: 'backdrop-filter: blur(1.5rem)',
   },
   gradients: {
-    primary: 'linear-gradient(83deg, var(--Colors-Primary-VT500, #973EE9) 9.02%, var(--Colors-Secondary-MT500, #66D7BC) 90.81%)',
-    grayscale: 'linear-gradient(83deg, var(--Colors-Gray-Scale-GY300, #D0D2DC) 9.02%, var(--Colors-Gray-Scale-GY700, #6F7587) 90.81%)',
+    primary: 'linear-gradient(83deg, #973EE9 9.02%, #66D7BC 90.81%)',
+    grayscale: 'linear-gradient(83deg, #D0D2DC 9.02%, #6F7587 90.81%)',
   },
+};
+
+// 반응형 값을 자동으로 적용하는 유틸리티 (속성값 전용)
+const createResponsiveProperty = (property: string, values: { wide: string; desktop?: string; tablet?: string; mobile: string }) => {
+  return css`
+    ${property}: ${values.wide};
+
+    ${media.desktop} {
+      ${property}: ${values.desktop || values.wide};
+    }
+
+    ${media.tablet} {
+      ${property}: ${values.tablet || values.desktop || values.wide};
+    }
+
+    ${media.mobile} {
+      ${property}: ${values.mobile};
+    }
+  `;
+};
+
+// 반응형 값만 반환하는 유틸리티 (값 자체만 필요한 경우)
+const responsive = {
+  // gaps - 값만 반환 (기본값은 wide)
+  gap: (size: keyof typeof gaps, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return gaps[size][breakpoint];
+    }
+    return gaps[size].wide;
+  },
+  
+  // borders - 값만 반환
+  border: (type: keyof typeof borders, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return borders[type][breakpoint];
+    }
+    return borders[type].wide;
+  },
+  
+  // componentWidths - 값만 반환
+  width: (size: keyof typeof componentWidths, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return componentWidths[size][breakpoint];
+    }
+    return componentWidths[size].wide;
+  },
+  
+  // sourceWidths - 값만 반환
+  sourceWidth: (size: keyof typeof sourceWidths, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return sourceWidths[size][breakpoint];
+    }
+    return sourceWidths[size].wide;
+  },
+
+  // padding 값만 반환 (gaps와 동일)
+  padding: (size: keyof typeof gaps, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return gaps[size][breakpoint];
+    }
+    return gaps[size].wide;
+  },
+
+  // borderRadius 값만 반환
+  borderRadius: (type: keyof typeof borders, breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return borders[type][breakpoint];
+    }
+    return borders[type].wide;
+  },
+
+  // Overlay Modal width - 값만 반환
+  overlayModalWidth: (breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return overlayModals.width[breakpoint];
+    }
+    return overlayModals.width.wide;
+  },
+
+
+  // 전체 속성을 반응형으로 적용하는 유틸리티
+  property: {
+    gap: (size: keyof typeof gaps) => createResponsiveProperty('gap', {
+      wide: gaps[size].wide,
+      desktop: gaps[size].desktop,
+      tablet: gaps[size].tablet,
+      mobile: gaps[size].mobile
+    }),
+    
+    padding: (size: keyof typeof gaps) => createResponsiveProperty('padding', {
+      wide: gaps[size].wide,
+      desktop: gaps[size].desktop,
+      tablet: gaps[size].tablet,
+      mobile: gaps[size].mobile
+    }),
+
+    // 복잡한 padding 값들을 위한 유틸리티 (top right bottom left 순서)
+    paddingComplex: (top: keyof typeof gaps, right: keyof typeof gaps, bottom: keyof typeof gaps, left: keyof typeof gaps) => createResponsiveProperty('padding', {
+      wide: `${gaps[top].wide} ${gaps[right].wide} ${gaps[bottom].wide} ${gaps[left].wide}`,
+      desktop: `${gaps[top].desktop} ${gaps[right].desktop} ${gaps[bottom].desktop} ${gaps[left].desktop}`,
+      tablet: `${gaps[top].tablet} ${gaps[right].tablet} ${gaps[bottom].tablet} ${gaps[left].tablet}`,
+      mobile: `${gaps[top].mobile} ${gaps[right].mobile} ${gaps[bottom].mobile} ${gaps[left].mobile}`
+    }),
+    
+    borderRadius: (type: keyof typeof borders) => createResponsiveProperty('border-radius', {
+      wide: borders[type].wide,
+      desktop: borders[type].desktop,
+      tablet: borders[type].tablet,
+      mobile: borders[type].mobile
+    }),
+    
+    width: (size: keyof typeof componentWidths) => createResponsiveProperty('width', {
+      wide: componentWidths[size].wide,
+      desktop: componentWidths[size].desktop,
+      tablet: componentWidths[size].tablet,
+      mobile: componentWidths[size].mobile
+    }),
+
+    height: (size: keyof typeof componentWidths) => createResponsiveProperty('height', {
+      wide: componentWidths[size].wide,
+      desktop: componentWidths[size].desktop,
+      tablet: componentWidths[size].tablet,
+      mobile: componentWidths[size].mobile
+    }),
+
+    // sourceWidth를 width 속성에 적용
+    sourceWidth: (size: keyof typeof sourceWidths) => createResponsiveProperty('width', {
+      wide: sourceWidths[size].wide,
+      desktop: sourceWidths[size].desktop,
+      tablet: sourceWidths[size].tablet,
+      mobile: sourceWidths[size].mobile
+    }),
+
+    // sourceWidth를 height 속성에 적용
+    sourceHeight: (size: keyof typeof sourceWidths) => createResponsiveProperty('height', {
+      wide: sourceWidths[size].wide,
+      desktop: sourceWidths[size].desktop,
+      tablet: sourceWidths[size].tablet,
+      mobile: sourceWidths[size].mobile
+    }),
+    
+    // Overlay Modal width를 width 속성에 적용
+    overlayModalWidth: () => createResponsiveProperty('width', {
+      wide: overlayModals.width.wide,
+      desktop: overlayModals.width.desktop,
+      tablet: overlayModals.width.tablet,
+      mobile: overlayModals.width.mobile
+    }),
+
+    // sourceWidth 크기를 width와 height에 동시 적용
+    sourceSize: (size: keyof typeof sourceWidths) => css`
+      ${createResponsiveProperty('width', {
+        wide: sourceWidths[size].wide,
+        desktop: sourceWidths[size].desktop,
+        tablet: sourceWidths[size].tablet,
+        mobile: sourceWidths[size].mobile
+      })}
+      ${createResponsiveProperty('height', {
+        wide: sourceWidths[size].wide,
+        desktop: sourceWidths[size].desktop,
+        tablet: sourceWidths[size].tablet,
+        mobile: sourceWidths[size].mobile
+      })}
+
+      
+    `
+    
+    
+  }
 };
 
 // 반응형 레이아웃 공통 스타일 정의 (theme.layouts.mobileCommon 형태로 사용)
@@ -322,6 +683,12 @@ export const theme = {
   layouts,
   media,
   borders,
+  gaps,
+  componentWidths,
+  sourceWidths,
+  overlaySheets,
+  overlayModals,
+  responsive,
   withOpacity,
   withTint,
   withShade,

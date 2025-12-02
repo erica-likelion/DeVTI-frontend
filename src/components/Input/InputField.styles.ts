@@ -4,33 +4,54 @@ export const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
   width: 100%;
 `;
 
 export const InputWrapper = styled.div<{ 
   $hasIcon?: boolean; 
 }>`
+  ${({ theme, $hasIcon }) => $hasIcon 
+    ? theme.responsive.property.paddingComplex('S', 'S', 'S', 'S')
+    : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: ${({ $hasIcon }) => $hasIcon ? 'space-between' : 'center'};
   width: 100%;
+  background: ${({ theme }) => theme.colors.grayScale.white};
+  box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
+  border-radius: ${({ theme }) => theme.borders.smooth.wide};
+  
+  ${({ theme }) => theme.media.desktop} {
+    border-radius: ${({ theme }) => theme.borders.smooth.desktop};
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    border-radius: ${({ theme }) => theme.borders.smooth.tablet};
+  }
+
+  ${({ theme }) => theme.media.mobile} {
+    border-radius: ${({ theme }) => theme.borders.smooth.mobile};
+  }
+`;
+
+export const ContentWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
 `;
 
 export const IconContainer = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  position: absolute;
-  right: 1rem;
-  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   
-  svg {
-    width: 1.25rem;
-    height: 1.25rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
+  
+  svg, img {
+    width: 100%;
+    height: 100%;
   }
 `;
 
@@ -40,26 +61,21 @@ export const StyledInput = styled.input<{
   $hasIcon?: boolean;
   $isActive?: boolean;
   $readOnly?: boolean;
+  $variant?: 'input' | 'output';
 }>`
   ${({ theme }) => theme.fonts.body.l500}
   height: auto;
-  padding: 1rem ${({ $hasIcon }) => 
-    $hasIcon ? '1rem' : '1.5rem'};
   color: ${({ theme }) => theme.colors.grayScale.black};
-  border-radius: ${({ theme }) => theme.borders.smooth};
-  background: ${({ theme }) => theme.colors.grayScale.white};
-  box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
+  background: transparent;
   width: 100%;
+  border: none;
+  outline: none;
   
   &::placeholder {
     color: ${({ theme }) => theme.colors.grayScale.gray700};
   }
-  
-  
 
   ${({ $hasIcon, $isActive, $readOnly }) => ($hasIcon || $isActive) && !$readOnly && css`
-    
-    
     &:focus {
       ${({ theme }) => theme.fonts.heading.h3}
       background: ${({ theme }) => theme.colors.grayScale.white};
@@ -70,4 +86,5 @@ export const StyledInput = styled.input<{
       }
     }
   `}
+
 `;

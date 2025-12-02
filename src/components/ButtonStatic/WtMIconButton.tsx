@@ -6,9 +6,10 @@ interface WhiteLeftArrowButtonProps {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  children?: React.ReactNode;
 }
 
-export default function WhiteLeftArrowButton({ className, onClick, disabled = true }: WhiteLeftArrowButtonProps) {
+export default function WhiteLeftArrowButton({ className, onClick, disabled = true, children }: WhiteLeftArrowButtonProps) {
   const handleClick = () => {
     if (!disabled && onClick) {
       onClick();
@@ -18,7 +19,7 @@ export default function WhiteLeftArrowButton({ className, onClick, disabled = tr
   return (
     <S.Container className={className} onClick={handleClick} disabled={disabled}>
       <S.Icon>
-        <img src={disabled ? ArrowLeftGray : ArrowLeftBlack} alt="Left Arrow" />
+        {children ? children : <img src={disabled ? ArrowLeftGray : ArrowLeftBlack} alt="Left Arrow" />}
       </S.Icon>
     </S.Container>
   );

@@ -21,7 +21,6 @@ export default function CheckboxButton({
   onChange
 }: CheckboxButtonProps) {
   const [isChecked, setIsChecked] = useState(checked);
-  const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
   const handleClick = () => {
@@ -50,8 +49,6 @@ export default function CheckboxButton({
       onClick={handleClick}
       disabled={disabled}
       $isClicked={isChecked}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onMouseDown={() => setIsActive(true)}
       onMouseUp={() => setIsActive(false)}
     >

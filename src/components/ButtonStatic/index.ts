@@ -1,5 +1,4 @@
 export { default as BkLTextButton } from './BkLTextButton';
-export { default as BkMButton } from './BkMButton';
 export { default as BkMTextButton } from './BkMTextButton';
 export { default as WtMTextButton } from './WtMTextButton';
 export { default as WtMIconButton } from './WtMIconButton';
