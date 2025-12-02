@@ -92,9 +92,9 @@ export const ButtonWrapper = styled.div`
 export const EditWrapper = styled.div`
   position: relative;
   min-height: ${VIEWPORT_AVAILABLE_HEIGHT};
-  margin-left: -2.5rem;
-  margin-right: -2.5rem;
-  width: calc(100% + 5rem);
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
   background: ${theme.colors.grayScale.white} !important;
   z-index: 1;
   height: calc(100% - 9rem); /* Main의 padding-top(4.5rem) + padding-bottom(4.5rem) 제외 */
@@ -108,9 +108,9 @@ export const EditWrapper = styled.div`
   }
 
   ${theme.media.tablet} {
-    margin-left: -2rem;
-    margin-right: -2rem;
-    width: calc(100% + 4rem);
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
     height: calc(100% - calc(4.5rem + ${({ theme }) => theme.gaps.R?.tablet || '0rem'}) - 3.75rem - 4.5rem); /* Main의 padding-top + padding-bottom + Footer 높이 제외 */
     overflow: visible; /* 타블렛에서 overflow visible로 변경하여 잘림 방지 */
   }
@@ -230,16 +230,24 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
   z-index: 1;
 
   ${theme.media.wide} {
-    padding: 3.75rem 2rem; /* 상하 3.75rem, 좌우 2rem(General-Margin) */
-    justify-content: flex-start;
+    display: flex;
+    padding: 3.75rem 2.5rem; /* 상하 3.75rem, 좌우 2.5rem(General-Margin) */
+    flex-direction: column;
     align-items: flex-start;
+    gap: 2.75rem;
+    flex: 1 0 0;
+    align-self: stretch;
     width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
   }
 
   ${theme.media.desktop} {
-    padding: 3.75rem 2rem; /* 상하 3.75rem, 좌우 2rem(General-Margin) */
-    justify-content: flex-start;
+    display: flex;
+    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.desktop}; /* 상하 3.75rem, 좌우 2rem(General-Margin) */
+    flex-direction: column;
     align-items: flex-start;
+    gap: 2.75rem;
+    flex: 1 0 0;
+    align-self: stretch;
     width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
   }
 

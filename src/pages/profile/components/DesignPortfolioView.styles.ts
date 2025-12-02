@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
+import WtLCloseButton from "@/components/ButtonDynamic/WtLCloseButton";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -17,7 +18,6 @@ export const Header = styled.header`
   justify-content: space-between;
   width: 100%;
   margin-bottom: 2.75rem;
-  /* 등록 버튼 오른쪽 간격: RightPanel의 padding(2.5rem)만 적용, 추가 padding 없음 */
   
   ${({ theme }) => theme.media.tablet} {
     flex-direction: column;
@@ -48,12 +48,16 @@ export const PortfolioTitle = styled.h2`
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  gap: 1rem; /* 모든 화면에서 수정/삭제 버튼 사이 간격 1rem */
+  gap: ${({ theme }) => theme.gaps.S.wide}; /* 모든 화면에서 수정/삭제 버튼 사이 간격 1rem */
   flex-shrink: 0;
+  
+  ${({ theme }) => theme.media.tablet} {
+    gap: ${({ theme }) => theme.gaps.S.tablet}; /* 0.625rem */
+  }
   
   ${({ theme }) => theme.media.mobile} {
     flex-direction: column;
-    gap: 1rem; /* 수정/삭제 버튼 사이 간격 1rem */
+    gap: ${({ theme }) => theme.gaps.S.mobile}; /* 수정/삭제 버튼 사이 간격 0.5rem */
   }
 `;
 
@@ -148,72 +152,43 @@ export const StrengthsSection = styled.div`
   margin-top: 2.75rem;
 `;
 
-export const TimeAvailabilitySection = styled.div`
+export const DesignWorkSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: ${({ theme }) => theme.gaps.S.wide}; /* 1rem */
   width: 100%;
   margin-top: 2.75rem;
   
   ${({ theme }) => theme.media.tablet} {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem; /* 할애할 수 있는 시간 글씨 아래 1rem gap */
+    gap: ${({ theme }) => theme.gaps.S.tablet}; /* 0.625rem */
   }
   
   ${({ theme }) => theme.media.mobile} {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem; /* 할애할 수 있는 시간 글씨 아래 1rem gap */
+    gap: ${({ theme }) => theme.gaps.S.mobile}; /* 0.5rem */
   }
 `;
 
-export const TimeRowContainer = styled.div`
+export const FileButtonWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 7.5rem;
-  flex-wrap: nowrap;
-  width: 100%;
   
-  ${({ theme }) => theme.media.tablet} {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: ${({ theme }) => theme.gaps.S.tablet}; /* 1일 기준과 1주 기준 사이 거리 1 (0.625rem) */
-    width: auto;
-    margin-left: 0.75rem; /* 할애할 수 있는 시간 제목보다 오른쪽으로 0.75rem 간격 */
-  }
-  
+  /* 모바일에서 다운로드 아이콘 크기 조정 */
   ${({ theme }) => theme.media.mobile} {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: ${({ theme }) => theme.gaps.S.mobile}; /* 1일 기준과 1주 기준 사이 거리 1 (0.625rem) */
-    width: auto;
-    margin-left: 0.75rem; /* 할애할 수 있는 시간 제목보다 오른쪽으로 0.75rem 간격 */
+    button span:last-child {
+      display: flex;
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: 0.125rem;
+      justify-content: center;
+      align-items: center;
+      aspect-ratio: 1/1;
+      
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
-`;
-
-export const TimeFrame = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-  flex-shrink: 0;
-  
-  ${({ theme }) => theme.media.tablet} {
-    gap: ${({ theme }) => theme.gaps.S.tablet}; /* 1일 기준과 선택한 시간 사이 gap 1 (0.625rem) */
-  }
-  
-  ${({ theme }) => theme.media.mobile} {
-    gap: ${({ theme }) => theme.gaps.S.mobile}; /* 1일 기준과 선택한 시간 사이 gap 1 (0.625rem) */
-  }
-`;
-
-export const TimeRowLabel = styled.span`
-  ${theme.fonts.heading.h3}
-  color: ${theme.colors.grayScale.black};
-  white-space: nowrap;
-  flex-shrink: 0;
-  display: inline-block;
 `;
 
 export const EmptyText = styled.span`
@@ -224,9 +199,18 @@ export const EmptyText = styled.span`
 export const SelfAssessmentSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: ${({ theme }) => theme.gaps.S.wide}; /* 1rem */
   width: 100%;
   margin-top: 2.75rem;
+  
+  ${({ theme }) => theme.media.tablet} {
+    gap: ${({ theme }) => theme.gaps.S.tablet}; /* 0.625rem */
+  }
+  
+  ${({ theme }) => theme.media.mobile} {
+    gap: ${({ theme }) => theme.gaps.S.mobile}; /* 0.5rem */
+    margin-top: 2.75rem;
+  }
 `;
 
 export const SelfAssessmentHeader = styled.div`
@@ -234,18 +218,18 @@ export const SelfAssessmentHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  gap: 1rem;
+  gap: ${({ theme }) => theme.gaps.S.wide}; /* 1rem */
   
   ${({ theme }) => theme.media.tablet} {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem; /* ~에 대한 이해도 자가평가 글씨 아래 gap 1 */
+    gap: ${({ theme }) => theme.gaps.S.tablet}; /* ~에 대한 이해도 자가평가 글씨 아래 gap 1 */
   }
   
   ${({ theme }) => theme.media.mobile} {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem; /* ~에 대한 이해도 자가평가 글씨 아래 gap 1 */
+    gap: ${({ theme }) => theme.gaps.S.mobile}; /* ~에 대한 이해도 자가평가 글씨 아래 gap 1 */
   }
 `;
 

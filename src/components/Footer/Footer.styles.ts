@@ -17,8 +17,7 @@ export const Container = styled.footer<ContainerProps>`
   width: 100%;
   z-index: 1000;
   height: 4.5rem;
-  background: ${({ $isProfileRoute, theme }) =>
-    $isProfileRoute ? theme.colors.grayScale.gray50 : 'transparent'};
+  background: transparent; /* Footer는 항상 투명, Layout 배경을 받음 */
   
   ${({ theme }) => theme.media.mobile} {
     display: flex;
@@ -28,6 +27,7 @@ export const Container = styled.footer<ContainerProps>`
     align-items: flex-start;
     gap: 0.625rem;
     flex-shrink: 0;
+    background: transparent; /* 모바일에서도 투명 */
   }
 `;
 

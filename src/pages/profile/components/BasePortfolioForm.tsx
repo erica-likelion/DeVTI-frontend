@@ -39,6 +39,8 @@ interface BasePortfolioFormProps {
   isFormValid?: boolean; // 폼 유효성 검사 결과
   onRegister?: (isNewcomer: boolean) => void; // 등록 버튼 클릭 시 호출 (isNewcomer 전달)
   children?: ReactNode; // 파트별 특화 섹션들
+  initialIsNewcomer?: boolean; // 초기 신입 여부
+  showTimeAvailability?: boolean; // 할애할 수 있는 시간 섹션 표시 여부 (기본값: true)
 }
 
 export default function BasePortfolioForm({
@@ -56,8 +58,10 @@ export default function BasePortfolioForm({
   isFormValid = false,
   onRegister,
   children,
+  initialIsNewcomer = false,
+  showTimeAvailability = true,
 }: BasePortfolioFormProps) {
-  const [isNewcomer, setIsNewcomer] = useState(false);
+  const [isNewcomer, setIsNewcomer] = useState(initialIsNewcomer);
   const isNewcomerRef = useRef(false);
   const experienceTextareaRef = useRef<HTMLTextAreaElement>(null);
   const strengthsTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -163,12 +167,11 @@ export default function BasePortfolioForm({
     onRegister?.(isNewcomer);
   };
 
-  // 기본 유효성 검사: 경력사항(또는 신입 체크), 강점, 시간 선택
+  // 기본 유효성 검사: 경력사항(또는 신입 체크), 강점, 시간 선택 (showTimeAvailability가 true일 때만)
   const baseValidation = 
     (experienceSummary.trim() !== "" || isNewcomer) &&
     strengths.trim() !== "" &&
-    dailyAvailability !== null &&
-    weeklyAvailability !== null;
+    (!showTimeAvailability || (dailyAvailability !== null && weeklyAvailability !== null));
 
   // 전체 유효성 검사: 기본 검사 + 파트별 특화 검사
   const isValid = baseValidation && isFormValid;
@@ -226,29 +229,31 @@ export default function BasePortfolioForm({
         </S.StrengthsSection>
 
       {/* 할애할 수 있는 시간 */}
-      <S.TimeAvailabilitySection>
-        <S.SectionTitle>할애할 수 있는 시간</S.SectionTitle>
+      {showTimeAvailability && (
+        <S.TimeAvailabilitySection>
+          <S.SectionTitle>할애할 수 있는 시간</S.SectionTitle>
 
-        <S.TimeRowContainer>
-          <S.TimeFrame $isDaily={true}>
-            <S.TimeRowLabel>1일 기준</S.TimeRowLabel>
-            <SegmentControlTight
-              options={DAILY_OPTION_LABELS}
-              value={dailySelectedLabel}
-              onChange={handleDailyChange}
-            />
-          </S.TimeFrame>
+          <S.TimeRowContainer>
+            <S.TimeFrame $isDaily={true}>
+              <S.TimeRowLabel>1일 기준</S.TimeRowLabel>
+              <SegmentControlTight
+                options={DAILY_OPTION_LABELS}
+                value={dailySelectedLabel}
+                onChange={handleDailyChange}
+              />
+            </S.TimeFrame>
 
-          <S.TimeFrame>
-            <S.TimeRowLabel>1주 기준</S.TimeRowLabel>
-            <SegmentControlTight
-              options={WEEKLY_OPTION_LABELS}
-              value={weeklySelectedLabel}
-              onChange={handleWeeklyChange}
-            />
-          </S.TimeFrame>
-        </S.TimeRowContainer>
-      </S.TimeAvailabilitySection>
+            <S.TimeFrame>
+              <S.TimeRowLabel>1주 기준</S.TimeRowLabel>
+              <SegmentControlTight
+                options={WEEKLY_OPTION_LABELS}
+                value={weeklySelectedLabel}
+                onChange={handleWeeklyChange}
+              />
+            </S.TimeFrame>
+          </S.TimeRowContainer>
+        </S.TimeAvailabilitySection>
+      )}
 
         {/* 파트별 특화 섹션들 */}
         {children}

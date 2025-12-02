@@ -16,6 +16,7 @@ import LandingPage from "@/pages/landing/LandingPage";
 import LoginPage from "@/pages/login/LoginPage";
 import ProfilePage from "@/pages/profile/ProfilePage";
 import PMPortfolioViewPage from "@/pages/profile/PMPortfolioViewPage";
+import DesignPortfolioViewPage from "@/pages/profile/DesignPortfolioViewPage";
 import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 import JoinRoom from "@/pages/joinroom/JoinRoom";
 import NewRoom from "@/pages/newroom/NewRoom";
@@ -82,6 +83,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <PMPortfolioViewPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/design/view",
+        element: (
+          <ProtectedRoute>
+            <DesignPortfolioViewPage />
           </ProtectedRoute>
         ),
       },

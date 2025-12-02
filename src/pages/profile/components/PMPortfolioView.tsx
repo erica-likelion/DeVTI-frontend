@@ -1,10 +1,12 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as S from "./PMPortfolioView.styles";
 import { Keyword } from "@/components/keywords/Keyword";
 import SelfAssessmentGroup from "./SelfAssessmentGroup";
 import StarDisplay from "@/components/StarDisplay/StarDisplay";
 import InputField from "@/components/Input/InputField";
 import CheckboxButton from "@/components/ButtonDynamic/CheckboxButton";
+import Modal from "@/components/modal/Modal";
 import type { SelfAssessmentItem } from "./SelfAssessmentGroup";
 import type {
   DailyAvailabilityKey,
@@ -87,6 +89,10 @@ interface PMPortfolioViewProps {
   designAssessment: Record<string, number>;
   developmentAssessment: Record<string, number>;
   isNewcomer: boolean;
+  name?: string;
+  intro?: string;
+  dbtiInfo?: string | null;
+  profileImage?: string | null;
 }
 
 /**
@@ -114,6 +120,10 @@ export default function PMPortfolioView({
   designAssessment,
   developmentAssessment,
   isNewcomer,
+  name,
+  intro,
+  dbtiInfo,
+  profileImage,
 }: PMPortfolioViewProps) {
   // 할애할 수 있는 시간을 Keyword로 변환
   const dailyKeyword = useMemo(() => {
@@ -139,15 +149,59 @@ export default function PMPortfolioView({
     [developmentAssessment]
   );
 
+  const navigate = useNavigate();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const handleEditClick = () => {
+    navigate('/profile/edit/pm', {
+      state: {
+        name,
+        intro,
+        dbtiInfo,
+        profileImage,
+        experienceSummary,
+        strengths,
+        dailyAvailability,
+        weeklyAvailability,
+        designAssessment,
+        developmentAssessment,
+        isNewcomer,
+      },
+    });
+  };
+
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleDeleteConfirm = () => {
+    // TODO: 삭제 로직 구현
+    setIsDeleteModalOpen(false);
+  };
+
   return (
     <S.Wrapper>
       <S.Header>
         <S.PortfolioTitle>PM 포트폴리오</S.PortfolioTitle>
         <S.ButtonWrapper>
-          <S.EditButton>수정</S.EditButton>
-          <S.DeleteButton>삭제</S.DeleteButton>
+          <S.EditButton onClick={handleEditClick}>수정</S.EditButton>
+          <S.DeleteButton onClick={handleDeleteClick}>삭제</S.DeleteButton>
         </S.ButtonWrapper>
       </S.Header>
+
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteModalClose}
+        onPrimary={handleDeleteConfirm}
+        buttonLabel="확인"
+      >
+        <div>포트폴리오를 삭제하시겠어요?</div>
+        <div>이 작업은 복구할 수 없습니다.</div>
+      </Modal>
 
       <S.ContentFrame>
         {/* 경력사항 */}

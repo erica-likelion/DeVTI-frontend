@@ -30,8 +30,8 @@ export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolea
     cursor: not-allowed;
   }
 
-  ${({ $isClicked, theme }) => 
-    $isClicked && `
+  ${({ $isClicked, disabled, theme }) => 
+    $isClicked && !disabled && `
       color: ${theme.colors.secondary.VT700};
       background: ${theme.colors.secondary.VT100};
     `}

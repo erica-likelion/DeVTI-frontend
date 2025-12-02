@@ -80,26 +80,14 @@ export const CardWrapper = styled.div`
     max-width: 100% !important;
   }
   
-  /* 첫 번째 카드: 왼쪽 끝 패딩 */
+  /* 첫 번째 카드: margin 제거 */
   &:first-child {
-    margin-left: ${({ theme }) => theme.responsive.gap('M')};
-    
-    ${({ theme }) => theme.media.tablet} {
-      margin-left: 0; /* 타블렛에서 평점과 정렬되도록 margin 제거 */
-    }
-    
-    ${({ theme }) => theme.media.mobile} {
-      margin-left: 0; /* 모바일에서 평점과 정렬되도록 margin 제거 */
-    }
+    margin-left: 0;
   }
   
-  /* 마지막 카드: 오른쪽 끝 패딩 */
+  /* 마지막 카드: margin 제거 */
   &:last-child {
-    margin-right: ${({ theme }) => theme.responsive.gap('M')};
-    
-    ${({ theme }) => theme.media.mobile} {
-      margin-right: ${({ theme }) => theme.gaps.R.mobile}; /* ContentFrame의 padding과 동일 */
-    }
+    margin-right: 0;
   }
 `;
 

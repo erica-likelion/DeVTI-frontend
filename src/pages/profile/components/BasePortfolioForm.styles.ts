@@ -20,6 +20,7 @@ export const Header = styled.header`
   
   ${({ theme }) => theme.media.tablet} {
     padding-right: var(--General-Margin, 2rem);
+    gap: ${({ theme }) => theme.gaps.S.wide}; /* 1rem */
   }
 `;
 
@@ -50,13 +51,8 @@ export const ContentFrame = styled.div`
 
 export const PortfolioTitle = styled.h2`
   flex: 1 0 0;
+  ${theme.fonts.heading.h1}
   color: ${theme.colors.grayScale.black};
-  font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 1.75rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 2.625rem; /* 150% */
-  letter-spacing: -0.035rem;
   margin: 0;
   white-space: nowrap;
 `;
@@ -77,13 +73,8 @@ export const Section = styled.section`
 `;
 
 export const SectionTitle = styled.h3`
+  ${theme.fonts.heading.h2}
   color: ${theme.colors.grayScale.black};
-  font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 2rem; /* 160% */
-  letter-spacing: -0.025rem;
   margin: 0;
   white-space: nowrap;
 `;
@@ -266,13 +257,8 @@ export const TimeFrame = styled.div<{ $isDaily?: boolean }>`
 `;
 
 export const TimeRowLabel = styled.span`
+  ${theme.fonts.heading.h3}
   color: ${theme.colors.grayScale.black};
-  font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 1.125rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 1.75rem; /* 155.556% */
-  letter-spacing: -0.0225rem;
   white-space: nowrap;
   flex-shrink: 0;
   display: inline-block;

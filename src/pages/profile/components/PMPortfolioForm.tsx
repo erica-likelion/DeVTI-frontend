@@ -77,27 +77,39 @@ interface PMPortfolioFormProps {
   intro?: string;
   dbtiInfo?: string | null;
   profileImage?: string | null;
+  portfolioData?: {
+    experienceSummary?: string;
+    strengths?: string;
+    dailyAvailability?: DailyAvailabilityKey | null;
+    weeklyAvailability?: WeeklyAvailabilityKey | null;
+    designAssessment?: Record<string, number>;
+    developmentAssessment?: Record<string, number>;
+    isNewcomer?: boolean;
+  } | null;
+  onRegister?: () => void; // 등록 버튼 클릭 시 호출 (파트 추가를 위해)
 }
 
 export default function PMPortfolioForm({ 
   name, 
   intro, 
   dbtiInfo, 
-  profileImage 
+  profileImage,
+  portfolioData,
+  onRegister
 }: PMPortfolioFormProps) {
   const navigate = useNavigate();
-  const [experienceSummary, setExperienceSummary] = useState("");
-  const [strengths, setStrengths] = useState("");
+  const [experienceSummary, setExperienceSummary] = useState(portfolioData?.experienceSummary || "");
+  const [strengths, setStrengths] = useState(portfolioData?.strengths || "");
   const [dailyAvailability, setDailyAvailability] =
-    useState<DailyAvailabilityKey | null>(null);
+    useState<DailyAvailabilityKey | null>(portfolioData?.dailyAvailability || null);
   const [weeklyAvailability, setWeeklyAvailability] =
-    useState<WeeklyAvailabilityKey | null>(null);
+    useState<WeeklyAvailabilityKey | null>(portfolioData?.weeklyAvailability || null);
   const [designAssessment, setDesignAssessment] = useState<
     Record<string, number>
-  >({});
+  >(portfolioData?.designAssessment || {});
   const [developmentAssessment, setDevelopmentAssessment] = useState<
     Record<string, number>
-  >({});
+  >(portfolioData?.developmentAssessment || {});
 
   const strengthsPlaceholder =
     "PM으로서의 강점을 사례 중심으로 적어보세요. (ex. 리서치, 문서화, 이해관계자 조율 등)";
@@ -128,22 +140,44 @@ export default function PMPortfolioForm({
   const isSelfAssessmentValid = isDesignAssessmentComplete && isDevelopmentAssessmentComplete;
 
   const handleRegister = (isNewcomerValue: boolean) => {
-    // 등록 후 페이지로 이동 (상태를 URL 파라미터나 state로 전달)
-    navigate("/profile/pm/view", {
-      state: {
-        name,
-        intro,
-        dbtiInfo,
-        profileImage,
-        experienceSummary,
-        strengths,
-        dailyAvailability,
-        weeklyAvailability,
-        designAssessment,
-        developmentAssessment,
-        isNewcomer: isNewcomerValue,
-      },
-    });
+    // 등록 버튼 클릭 시 파트 추가를 위해 부모 컴포넌트에 알림
+    if (onRegister) {
+      // onRegister 콜백 실행 (selectedParts에 파트 추가 및 저장 버튼 활성화)
+      onRegister();
+      // 등록 후 페이지로 이동
+      navigate("/profile/pm/view", {
+        state: {
+          name,
+          intro,
+          dbtiInfo,
+          profileImage,
+          experienceSummary,
+          strengths,
+          dailyAvailability,
+          weeklyAvailability,
+          designAssessment,
+          developmentAssessment,
+          isNewcomer: isNewcomerValue,
+        },
+      });
+    } else {
+      // onRegister가 없으면 바로 페이지 이동
+      navigate("/profile/pm/view", {
+        state: {
+          name,
+          intro,
+          dbtiInfo,
+          profileImage,
+          experienceSummary,
+          strengths,
+          dailyAvailability,
+          weeklyAvailability,
+          designAssessment,
+          developmentAssessment,
+          isNewcomer: isNewcomerValue,
+        },
+      });
+    }
   };
 
   return (
@@ -160,6 +194,7 @@ export default function PMPortfolioForm({
       onDailyAvailabilityChange={toggleDailyAvailability}
       onWeeklyAvailabilityChange={toggleWeeklyAvailability}
       onRegister={handleRegister}
+      initialIsNewcomer={portfolioData?.isNewcomer || false}
     >
       <SelfAssessmentGroup
         title="디자인에 대한 이해도 자가평가"

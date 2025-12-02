@@ -50,6 +50,11 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
   height: auto;
   align-self: stretch;
   transition: background-color 0.2s ease;
+  
+  ${({ theme }) => theme.media.mobile} {
+    padding: ${({ theme }) => `${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('R', 'mobile')}`};
+    gap: ${({ theme }) => theme.responsive.gap('S', 'mobile')};
+  }
 
 
 

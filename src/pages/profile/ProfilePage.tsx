@@ -12,6 +12,7 @@ import WtMIconButton from "@/components/ButtonStatic/WtMIconButton";
 import InputField from "@/components/Input/InputField";
 import WtLPawButton from "@/components/ButtonDynamic/WtLPawButton";
 import DropBox from "@/components/DropBox";
+import Modal from "@/components/modal/Modal";
 import GroupIcon from "@/assets/icons/Group.svg";
 
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
@@ -25,10 +26,25 @@ const slugToPart: Record<string, PartOption> = {
   'backend': '백엔드'
 };
 
+interface PortfolioState {
+  name?: string;
+  intro?: string;
+  dbtiInfo?: string | null;
+  profileImage?: string | null;
+  experienceSummary?: string;
+  strengths?: string;
+  dailyAvailability?: any;
+  weeklyAvailability?: any;
+  designAssessment?: Record<string, number>;
+  developmentAssessment?: Record<string, number>;
+  isNewcomer?: boolean;
+}
+
 export default function ProfilePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuthStore();
+  const portfolioState = location.state as PortfolioState | null;
   
   // URL에서 상태 복원
   const isEditMode = location.pathname.startsWith('/profile/edit');
@@ -36,25 +52,38 @@ export default function ProfilePage() {
   const partFromUrl = pathPart && slugToPart[pathPart] ? slugToPart[pathPart] : null;
   
   const [isPartDropdownOpen, setIsPartDropdownOpen] = useState(false);
-  const [selectedParts, setSelectedParts] = useState<PartOption[]>([]);
+  const [selectedParts, setSelectedParts] = useState<PartOption[]>(partFromUrl ? [partFromUrl] : []);
   const [activePart, setActivePart] = useState<PartOption | null>(partFromUrl);
+  const [isEditModeFromView, setIsEditModeFromView] = useState(!!portfolioState); // 수정 버튼을 통해 들어온 경우 추적
   
-  // URL 변경 시 activePart 업데이트
+  // URL 변경 시 activePart와 selectedParts 업데이트
   useEffect(() => {
     const currentPathPart = location.pathname.split('/').pop();
     const currentPartFromUrl = currentPathPart && slugToPart[currentPathPart] ? slugToPart[currentPathPart] : null;
+    const currentPortfolioState = location.state as PortfolioState | null;
+    
+    // portfolioState가 있으면 수정 모드로 표시
+    setIsEditModeFromView(!!currentPortfolioState);
     
     if (currentPartFromUrl) {
       setActivePart(currentPartFromUrl);
+      // URL에 파트가 있으면 selectedParts에 포함 (수정 모드에서도 파트 선택 유지)
+      setSelectedParts((prev) => {
+        if (!prev.includes(currentPartFromUrl)) {
+          return [...prev, currentPartFromUrl];
+        }
+        return prev;
+      });
     } else if (location.pathname.startsWith('/profile/edit') && (currentPathPart === 'edit' || !currentPathPart)) {
       // /profile/edit일 때는 activePart를 null로
       setActivePart(null);
     }
-  }, [location.pathname]);
-  const [profileImage, setProfileImage] = useState<string | null>(user?.profileImage || null);
-  const [name, setName] = useState<string>(user?.name || "");
-  const [intro, setIntro] = useState<string>("");
-  const [dbtiInfo, setDbtiInfo] = useState<string | null>(null); // DBTI 정보 상태
+  }, [location.pathname, location.state]);
+  const [profileImage, setProfileImage] = useState<string | null>(portfolioState?.profileImage || user?.profileImage || null);
+  const [name, setName] = useState<string>(portfolioState?.name || user?.name || "");
+  const [intro, setIntro] = useState<string>(portfolioState?.intro || "");
+  const [dbtiInfo, setDbtiInfo] = useState<string | null>(portfolioState?.dbtiInfo || null); // DBTI 정보 상태
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -62,7 +91,8 @@ export default function ProfilePage() {
   const isNameEmpty = !name.trim();
   
   // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI, 파트 전부 입력/선택되어야 함
-  const isSaveDisabled = isNameEmpty || !intro.trim() || !dbtiInfo || selectedParts.length === 0;
+  // isEditModeFromView가 true이면 수정 모드이므로 저장 버튼 비활성화
+  const isSaveDisabled = isNameEmpty || !intro.trim() || !dbtiInfo || selectedParts.length === 0 || isEditModeFromView;
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
@@ -90,9 +120,17 @@ export default function ProfilePage() {
   };
 
   const handleSave = () => {
+    setIsSaveModalOpen(true);
+  };
+
+  const handleSaveModalClose = () => {
+    setIsSaveModalOpen(false);
+  };
+
+  const handleSaveConfirm = () => {
     // TODO: 프로필 저장 로직
-    console.log("프로필 저장");
-    navigate('/profile', { replace: false });
+    setIsSaveModalOpen(false);
+    navigate('/profile/Default', { replace: false });
   };
 
   const handleImageUpload = () => {
@@ -111,13 +149,9 @@ export default function ProfilePage() {
   };
 
   const handleDBTIClick = () => {
-    // DBTI 정보가 없으면 센터 시트 열기
+    // DBTI 정보가 없으면 DBTI 테스트 페이지로 이동
     if (!dbtiInfo) {
-      // TODO: 센터 시트 열기 (아직 구현되지 않음)
-      // 임시로 DBTI 정보 설정 (DBTI 페이지가 만들어지면 제거)
-      setDbtiInfo("test"); // 임시 값
-      console.log("센터 시트 열기");
-      // 예: setIsCenterSheetOpen(true);
+      navigate("/profile/DBTI");
     } else {
       // DBTI 정보가 있으면 Profile/Edit/DBTI 페이지로 이동
       navigate("/profile/edit/dbti");
@@ -152,7 +186,18 @@ export default function ProfilePage() {
   const hasActivePart = partFromUrl !== null;
   
   return (
-    <S.EditWrapper>
+    <>
+      <Modal
+        isOpen={isSaveModalOpen}
+        onClose={handleSaveModalClose}
+        onPrimary={handleSaveConfirm}
+        buttonLabel="확인"
+      >
+        <div>프로필을 저장하시겠어요?</div>
+        <div>저장 후, 작성한 프로필로 이동합니다.</div>
+      </Modal>
+      
+      <S.EditWrapper>
       <S.EditContainer>
         <S.LeftPanel $hideOnMobile={hasActivePart}>
         <S.EditProfileSection>
@@ -263,7 +308,10 @@ export default function ProfilePage() {
           </S.FormSection>
 
           <S.SaveButtonWrapper>
-            <BkMTextButton onClick={handleSave} disabled={isSaveDisabled}>
+            <BkMTextButton 
+              onClick={handleSave} 
+              disabled={isSaveDisabled}
+            >
               저장
             </BkMTextButton>
           </S.SaveButtonWrapper>
@@ -277,9 +325,28 @@ export default function ProfilePage() {
             intro={intro}
             dbtiInfo={dbtiInfo}
             profileImage={profileImage}
+            portfolioData={portfolioState}
+            onRegister={() => {
+              // 등록 버튼 클릭 시 PM 파트를 selectedParts에 추가
+              if (!selectedParts.includes("PM")) {
+                setSelectedParts((prev) => [...prev, "PM"]);
+              }
+            }}
           />
         ) : activePart === "디자인" || pathPart === 'design' ? (
-          <DesignPortfolioForm />
+          <DesignPortfolioForm 
+            name={name}
+            intro={intro}
+            dbtiInfo={dbtiInfo}
+            profileImage={profileImage}
+            portfolioData={portfolioState}
+            onRegister={() => {
+              // 등록 버튼 클릭 시 디자인 파트를 selectedParts에 추가
+              if (!selectedParts.includes("디자인")) {
+                setSelectedParts((prev) => [...prev, "디자인"]);
+              }
+            }}
+          />
         ) : activePart === "프론트엔드" || pathPart === 'frontend' ? (
           <FrontendPortfolioForm />
         ) : activePart === "백엔드" || pathPart === 'backend' ? (
@@ -304,5 +371,6 @@ export default function ProfilePage() {
       </S.RightPanel>
       </S.EditContainer>
     </S.EditWrapper>
+    </>
   );
 }

@@ -8,12 +8,16 @@ interface WhiteLCloseButtonProps {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  children?: React.ReactNode;
+  icon?: string; // 커스텀 아이콘 (기본값: X 아이콘)
 }
 
 export default function WhiteLCloseButton({ 
   className, 
   onClick, 
-  disabled = false 
+  disabled = false,
+  children,
+  icon
 }: WhiteLCloseButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -27,6 +31,10 @@ export default function WhiteLCloseButton({
   };
 
   const getIcon = () => {
+    // 커스텀 아이콘이 있으면 항상 그 아이콘 사용
+    if (icon) return icon;
+    
+    // 기본 X 아이콘 로직
     if (disabled) return XgrayIcon;
     if (isClicked) return XpuppleIcon;
     if (isActive) return XblackIcon;
@@ -45,7 +53,7 @@ export default function WhiteLCloseButton({
       onMouseDown={() => setIsActive(true)}
       onMouseUp={() => setIsActive(false)}
     >
-      White L
+      {children || "White L"}
       <S.Icon>
         <img src={getIcon()} alt="Close" />
       </S.Icon>

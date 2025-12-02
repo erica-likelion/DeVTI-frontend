@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
-import PMPortfolioView from "./components/PMPortfolioView";
+import DesignPortfolioView from "./components/DesignPortfolioView";
 import * as S from "./ProfilePage.styles";
 import InputField from "@/components/Input/InputField";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
@@ -10,10 +10,6 @@ import WtLPawButton from "@/components/ButtonDynamic/WtLPawButton";
 import DropBox from "@/components/DropBox";
 import Modal from "@/components/modal/Modal";
 import GroupIcon from "@/assets/icons/Group.svg";
-import type {
-  DailyAvailabilityKey,
-  WeeklyAvailabilityKey,
-} from "./components/BasePortfolioForm";
 
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
 type PartOption = (typeof PART_OPTIONS)[number];
@@ -25,14 +21,12 @@ interface LocationState {
   profileImage?: string | null;
   experienceSummary: string;
   strengths: string;
-  dailyAvailability: DailyAvailabilityKey | null;
-  weeklyAvailability: WeeklyAvailabilityKey | null;
-  designAssessment: Record<string, number>;
-  developmentAssessment: Record<string, number>;
+  designWorkFile?: string | null; // 파일명
+  figmaAssessment: Record<string, number>;
   isNewcomer: boolean;
 }
 
-export default function PMPortfolioViewPage() {
+export default function DesignPortfolioViewPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuthStore();
@@ -49,12 +43,12 @@ export default function PMPortfolioViewPage() {
   const [name, setName] = useState<string>(state.name || "");
   const [intro, setIntro] = useState<string>(state.intro || "");
   const [dbtiInfo, setDbtiInfo] = useState<string | null>(state.dbtiInfo || null);
-  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
-  const [selectedParts, setSelectedParts] = useState<PartOption[]>(["PM"]);
-  const [activePart, setActivePart] = useState<PartOption>("PM");
+  const [selectedParts, setSelectedParts] = useState<PartOption[]>(["디자인"]);
+  const [activePart, setActivePart] = useState<PartOption>("디자인");
   const [isPartDropdownOpen, setIsPartDropdownOpen] = useState(false);
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
@@ -228,13 +222,11 @@ export default function PMPortfolioViewPage() {
         </S.LeftPanel>
 
         <S.RightPanel>
-          <PMPortfolioView
+          <DesignPortfolioView
             experienceSummary={state.experienceSummary}
             strengths={state.strengths}
-            dailyAvailability={state.dailyAvailability}
-            weeklyAvailability={state.weeklyAvailability}
-            designAssessment={state.designAssessment}
-            developmentAssessment={state.developmentAssessment}
+            designWorkFile={state.designWorkFile || null}
+            figmaAssessment={state.figmaAssessment}
             isNewcomer={state.isNewcomer}
             name={name}
             intro={intro}
