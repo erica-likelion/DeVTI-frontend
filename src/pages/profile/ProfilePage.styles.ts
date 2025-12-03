@@ -194,9 +194,9 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean }>`
 
   ${theme.media.tablet} {
     display: flex;
-    width: var(--Component-Width-Medium, 20rem);
+    width: ${({ theme }) => theme.componentWidths.medium.tablet};
     height: 59.25rem;
-    padding: 5rem var(--General-Margin, 2rem) 2.5rem var(--General-Margin, 2rem);
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet};
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
