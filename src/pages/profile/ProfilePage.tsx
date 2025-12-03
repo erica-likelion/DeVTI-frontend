@@ -31,12 +31,15 @@ interface PortfolioState {
   intro?: string;
   dbtiInfo?: string | null;
   profileImage?: string | null;
+  part?: PartOption; // 등록 버튼 클릭 시 전달되는 파트 정보
   experienceSummary?: string;
   strengths?: string;
   dailyAvailability?: any;
   weeklyAvailability?: any;
   designAssessment?: Record<string, number>;
   developmentAssessment?: Record<string, number>;
+  designWorkFile?: string | null; // 디자인 포트폴리오용
+  figmaAssessment?: Record<string, number>; // 디자인 포트폴리오용
   isNewcomer?: boolean;
 }
 
@@ -77,6 +80,20 @@ export default function ProfilePage() {
     } else if (location.pathname.startsWith('/profile/edit') && (currentPathPart === 'edit' || !currentPathPart)) {
       // /profile/edit일 때는 activePart를 null로
       setActivePart(null);
+      
+      // 등록 버튼을 통해 들어온 경우 state의 part 정보를 사용하여 selectedParts에 추가
+      // 등록한 파트는 보라색(clicked 상태)으로 표시되지만 activePart는 null로 유지 (LeftPanel만 보이도록)
+      if (currentPortfolioState?.part) {
+        const registeredPart = currentPortfolioState.part;
+        setSelectedParts((prev) => {
+          if (!prev.includes(registeredPart)) {
+            return [...prev, registeredPart];
+          }
+          return prev;
+        });
+        // activePart는 null로 유지하여 LeftPanel만 보이도록 함
+        // 하지만 파트 버튼은 PartButtonWrapper의 $isActive로 clicked 상태 표시
+      }
     }
   }, [location.pathname, location.state]);
   const [profileImage, setProfileImage] = useState<string | null>(portfolioState?.profileImage || user?.profileImage || null);
@@ -253,30 +270,39 @@ export default function ProfilePage() {
           <S.FormSection>
             <S.FormLabel>파트</S.FormLabel>
             <S.PartSelectionWrapper>
-              {selectedParts.map((part) => (
-                <S.PartButtonWrapper 
-                  key={part} 
-                  $isActive={activePart === part}
-                >
-                  <WtLPawButton
-                    key={`${part}-${activePart}`}
-                    onClick={() => {
-                      const partMap: Record<PartOption, string> = {
-                        'PM': 'pm',
-                        '디자인': 'design',
-                        '프론트엔드': 'frontend',
-                        '백엔드': 'backend'
-                      };
-                      const partSlug = partMap[part];
-                      setActivePart(part);
-                      navigate(`/profile/edit/${partSlug}`, { replace: false });
-                    }}
-                    disabled={false}
+              {selectedParts.map((part) => {
+                // 등록 버튼을 통해 추가된 파트인지 확인 (state의 part 정보와 비교)
+                const isRegisteredPart = portfolioState?.part === part && activePart === null;
+                return (
+                  <S.PartButtonWrapper 
+                    key={part} 
+                    $isActive={activePart === part}
+                    $isRegistered={isRegisteredPart}
                   >
-                    {part}
-                  </WtLPawButton>
-                </S.PartButtonWrapper>
-              ))}
+                    <WtLPawButton
+                      key={`${part}-${activePart}`}
+                      onClick={() => {
+                        const partMap: Record<PartOption, string> = {
+                          'PM': 'pm',
+                          '디자인': 'design',
+                          '프론트엔드': 'frontend',
+                          '백엔드': 'backend'
+                        };
+                        const partSlug = partMap[part];
+                        setActivePart(part);
+                        // 등록된 상태라면 state를 유지하여 view 모드로 표시
+                        navigate(`/profile/edit/${partSlug}`, { 
+                          replace: false,
+                          state: portfolioState || undefined
+                        });
+                      }}
+                      disabled={false}
+                    >
+                      {part}
+                    </WtLPawButton>
+                  </S.PartButtonWrapper>
+                );
+              })}
               <div ref={partSelectorRef}>
                 <DropBox
                   size="L"

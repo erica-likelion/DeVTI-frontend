@@ -49,12 +49,48 @@ export const ContentFrame = styled.div`
   }
 `;
 
-export const PortfolioTitle = styled.h2`
+export const PortfolioTitle = styled.h2<{ $isDesignPortfolio?: boolean }>`
   flex: 1 0 0;
   ${theme.fonts.heading.h1}
   color: ${theme.colors.grayScale.black};
   margin: 0;
   white-space: nowrap;
+  
+  ${({ $isDesignPortfolio, theme }) => 
+    $isDesignPortfolio && theme.media.tablet && `
+    white-space: normal;
+  `}
+  
+  /* 디자인 포트폴리오일 때 타블렛이 아닌 경우 공백 제거 */
+  ${({ $isDesignPortfolio, theme }) => 
+    $isDesignPortfolio && `
+    font-size: 0;
+    
+    ${theme.media.desktop} {
+      font-size: inherit;
+      white-space: nowrap;
+    }
+    
+    ${theme.media.wide} {
+      font-size: inherit;
+      white-space: nowrap;
+    }
+    
+    ${theme.media.mobile} {
+      font-size: inherit;
+      white-space: nowrap;
+    }
+  `}
+`;
+
+export const PortfolioTitleLine = styled.span`
+  ${theme.fonts.heading.h1}
+  color: ${theme.colors.grayScale.black};
+  display: inline;
+  
+  ${({ theme }) => theme.media.tablet} {
+    display: block;
+  }
 `;
 
 export const RegisterButtonWrapper = styled.div`

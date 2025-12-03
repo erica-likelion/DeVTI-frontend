@@ -3,6 +3,7 @@ import styled from 'styled-components';
 interface ContainerProps {
   $isLoginPage: boolean;
   $isProfileRoute: boolean;
+  $isProfileDefault?: boolean;
 }
 
 interface CopyrightTextProps {
@@ -17,7 +18,8 @@ export const Container = styled.footer<ContainerProps>`
   width: 100%;
   z-index: 1000;
   height: 4.5rem;
-  background: transparent; /* Footer는 항상 투명, Layout 배경을 받음 */
+  background: ${({ $isProfileDefault, theme }) => 
+    $isProfileDefault ? theme.colors.grayScale.white : 'transparent'}; /* profile/default에서 흰색 배경 */
   
   ${({ theme }) => theme.media.mobile} {
     display: flex;
@@ -27,7 +29,8 @@ export const Container = styled.footer<ContainerProps>`
     align-items: flex-start;
     gap: 0.625rem;
     flex-shrink: 0;
-    background: transparent; /* 모바일에서도 투명 */
+    background: ${({ $isProfileDefault, theme }) => 
+      $isProfileDefault ? theme.colors.grayScale.white : 'transparent'}; /* profile/default에서 흰색 배경 */
   }
 `;
 

@@ -16,6 +16,10 @@ export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolea
   width: 100%;
   height: 3rem;
   
+  ${({ theme }) => theme.media.mobile} {
+    height: 2rem;
+  }
+  
   &:hover:not(:disabled) {
     color: ${({ theme }) => theme.colors.secondary.VT700};
   }

@@ -144,7 +144,7 @@ export default function PMPortfolioForm({
     if (onRegister) {
       // onRegister 콜백 실행 (selectedParts에 파트 추가 및 저장 버튼 활성화)
       onRegister();
-      // 등록 후 페이지로 이동
+      // 등록 후 view 화면으로 이동 (포트폴리오 섹션에 수정/삭제 버튼, LeftPanel에 저장 버튼 활성화)
       navigate("/profile/pm/view", {
         state: {
           name,

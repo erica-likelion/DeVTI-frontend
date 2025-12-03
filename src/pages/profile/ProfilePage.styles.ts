@@ -231,10 +231,10 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
 
   ${theme.media.wide} {
     display: flex;
-    padding: 3.75rem 2.5rem; /* 상하 3.75rem, 좌우 2.5rem(General-Margin) */
+    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.wide}; /* 상하 3.75rem, 좌우 General-Margin */
     flex-direction: column;
     align-items: flex-start;
-    gap: 2.75rem;
+    gap: ${({ theme }) => theme.gaps.XXL.wide};
     flex: 1 0 0;
     align-self: stretch;
     width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
@@ -242,10 +242,10 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
 
   ${theme.media.desktop} {
     display: flex;
-    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.desktop}; /* 상하 3.75rem, 좌우 2rem(General-Margin) */
+    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.desktop}; /* 상하 3.75rem, 좌우 General-Margin */
     flex-direction: column;
     align-items: flex-start;
-    gap: 2.75rem;
+    gap: ${({ theme }) => theme.gaps.XXL.desktop};
     flex: 1 0 0;
     align-self: stretch;
     width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
@@ -253,10 +253,10 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
 
   ${theme.media.tablet} {
     display: flex;
-    padding: 3.75rem var(--General-Margin, 2rem);
+    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.tablet};
     flex-direction: column;
     align-items: flex-start;
-    gap: 2.75rem;
+    gap: ${({ theme }) => theme.gaps.XXL.desktop}; /* tablet에서도 2.75rem 사용 (XXL.desktop 값) */
     flex: 1 0 0;
     align-self: stretch;
   }
@@ -266,11 +266,12 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
     ${({ $hideOnMobile, theme }) => 
       !$hideOnMobile && `
         display: flex;
-        padding: 3.75rem ${theme.gaps.S.desktop};
+        padding: 3.75rem ${theme.gaps.GeneralMargin.mobile};
         flex-direction: column;
         align-items: flex-start;
-        gap: ${theme.gaps.XXL.mobile};
+        gap: ${theme.gaps.XXL.desktop}; /* mobile에서도 2.75rem 사용 (XXL.desktop 값) */
         flex: 1 0 0;
+        align-self: stretch;
         width: 100%;
         height: calc(100vh - 4.5rem - 4rem);
       `
@@ -505,7 +506,7 @@ export const PartSelectionWrapper = styled.div`
   width: 100%;
 `;
 
-export const PartButtonWrapper = styled.div<{ $isActive?: boolean }>`
+export const PartButtonWrapper = styled.div<{ $isActive?: boolean; $isRegistered?: boolean }>`
   width: 100%;
   position: relative;
   isolation: isolate;
@@ -521,8 +522,8 @@ export const PartButtonWrapper = styled.div<{ $isActive?: boolean }>`
       display: none;
     }
     
-    ${({ $isActive, theme }) =>
-      $isActive &&
+    ${({ $isActive, $isRegistered, theme }) =>
+      ($isActive || $isRegistered) &&
       `
       color: ${theme.colors.secondary.VT700};
       background: ${theme.colors.secondary.VT100};

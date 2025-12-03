@@ -93,6 +93,7 @@ interface PMPortfolioViewProps {
   intro?: string;
   dbtiInfo?: string | null;
   profileImage?: string | null;
+  showEditButtons?: boolean; // 수정/삭제 버튼 표시 여부 (기본값: true)
 }
 
 /**
@@ -124,6 +125,7 @@ export default function PMPortfolioView({
   intro,
   dbtiInfo,
   profileImage,
+  showEditButtons = true,
 }: PMPortfolioViewProps) {
   // 할애할 수 있는 시간을 Keyword로 변환
   const dailyKeyword = useMemo(() => {
@@ -187,10 +189,12 @@ export default function PMPortfolioView({
     <S.Wrapper>
       <S.Header>
         <S.PortfolioTitle>PM 포트폴리오</S.PortfolioTitle>
-        <S.ButtonWrapper>
-          <S.EditButton onClick={handleEditClick}>수정</S.EditButton>
-          <S.DeleteButton onClick={handleDeleteClick}>삭제</S.DeleteButton>
-        </S.ButtonWrapper>
+        {showEditButtons && (
+          <S.ButtonWrapper>
+            <S.EditButton onClick={handleEditClick}>수정</S.EditButton>
+            <S.DeleteButton onClick={handleDeleteClick}>삭제</S.DeleteButton>
+          </S.ButtonWrapper>
+        )}
       </S.Header>
 
       <Modal

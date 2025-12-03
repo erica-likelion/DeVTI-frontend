@@ -176,10 +176,23 @@ export default function BasePortfolioForm({
   // 전체 유효성 검사: 기본 검사 + 파트별 특화 검사
   const isValid = baseValidation && isFormValid;
 
+  // 타블렛에서 디자인 포트폴리오 제목을 두 줄로 나누기
+  const renderTitle = () => {
+    if (title === "디자인 포트폴리오") {
+      return (
+        <S.PortfolioTitle $isDesignPortfolio={true}>
+          <S.PortfolioTitleLine>디자인</S.PortfolioTitleLine>
+          <S.PortfolioTitleLine>포트폴리오</S.PortfolioTitleLine>
+        </S.PortfolioTitle>
+      );
+    }
+    return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
+  };
+
   return (
     <S.Wrapper>
       <S.Header>
-        <S.PortfolioTitle>{title}</S.PortfolioTitle>
+        {renderTitle()}
         <S.RegisterButtonWrapper>
           <BkMTextButton onClick={handleRegister} disabled={!isValid}>
             등록

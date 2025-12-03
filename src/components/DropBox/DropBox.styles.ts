@@ -52,7 +52,7 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
   transition: background-color 0.2s ease;
   
   ${({ theme }) => theme.media.mobile} {
-    padding: ${({ theme }) => `${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('R', 'mobile')}`};
+    padding: ${({ theme }) => `${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('M', 'mobile')} ${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('M', 'mobile')}`};
     gap: ${({ theme }) => theme.responsive.gap('S', 'mobile')};
   }
 

@@ -44,7 +44,7 @@ export default function DesignPortfolioViewPage() {
   const [intro, setIntro] = useState<string>(state.intro || "");
   const [dbtiInfo, setDbtiInfo] = useState<string | null>(state.dbtiInfo || null);
   const [selectedParts, setSelectedParts] = useState<PartOption[]>(["디자인"]);
-  const [activePart, setActivePart] = useState<PartOption>("디자인");
+  const [activePart, setActivePart] = useState<PartOption | null>(null); // 모바일에서 LeftPanel만 보이도록 초기값 null
   const [isPartDropdownOpen, setIsPartDropdownOpen] = useState(false);
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -70,6 +70,22 @@ export default function DesignPortfolioViewPage() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isPartDropdownOpen]);
+
+  // 브라우저 뒤로가기 버튼 처리 (모바일에서 RightPanel에서 LeftPanel로 돌아가기)
+  useEffect(() => {
+    const handlePopState = () => {
+      // 뒤로가기 시 activePart를 null로 설정하여 LeftPanel 표시
+      if (activePart !== null) {
+        setActivePart(null);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [activePart]);
 
   const handleImageUpload = () => {
     fileInputRef.current?.click();
@@ -105,7 +121,21 @@ export default function DesignPortfolioViewPage() {
   const handleSaveConfirm = () => {
     // TODO: 프로필 저장 로직
     setIsSaveModalOpen(false);
-    navigate('/profile/Default', { replace: false });
+    navigate('/profile/Default', { 
+      replace: false,
+      state: {
+        part: "디자인" as const,
+        experienceSummary: state.experienceSummary,
+        strengths: state.strengths,
+        designWorkFile: state.designWorkFile || null,
+        figmaAssessment: state.figmaAssessment,
+        isNewcomer: state.isNewcomer,
+        name,
+        intro,
+        dbtiInfo,
+        profileImage,
+      }
+    });
   };
 
   return (
@@ -122,7 +152,7 @@ export default function DesignPortfolioViewPage() {
       
       <S.EditWrapper>
       <S.EditContainer>
-        <S.LeftPanel $hideOnMobile={true}>
+        <S.LeftPanel $hideOnMobile={activePart !== null}>
           <S.EditProfileSection>
             <S.EditProfileImageWrapper>
               {profileImage ? (
@@ -176,22 +206,29 @@ export default function DesignPortfolioViewPage() {
             <S.FormSection>
               <S.FormLabel>파트</S.FormLabel>
               <S.PartSelectionWrapper>
-                {selectedParts.map((part) => (
+              {selectedParts.map((part) => {
+                // 등록된 파트는 보라색으로 표시 (activePart가 null이고 selectedParts에 포함된 경우)
+                const isRegisteredPart = activePart === null && selectedParts.includes(part);
+                return (
                   <S.PartButtonWrapper 
                     key={part} 
                     $isActive={activePart === part}
+                    $isRegistered={isRegisteredPart}
                   >
                     <WtLPawButton
                       key={`${part}-${activePart}`}
                       onClick={() => {
                         setActivePart(part);
+                        // 모바일에서 RightPanel로 이동할 때 히스토리 추가
+                        window.history.pushState({ part }, '', window.location.pathname);
                       }}
                       disabled={false}
                     >
                       {part}
                     </WtLPawButton>
                   </S.PartButtonWrapper>
-                ))}
+                );
+              })}
                 <div ref={partSelectorRef}>
                   <DropBox
                     size="L"
@@ -221,7 +258,7 @@ export default function DesignPortfolioViewPage() {
           </S.EditProfileSection>
         </S.LeftPanel>
 
-        <S.RightPanel>
+        <S.RightPanel $hideOnMobile={activePart === null}>
           <DesignPortfolioView
             experienceSummary={state.experienceSummary}
             strengths={state.strengths}
