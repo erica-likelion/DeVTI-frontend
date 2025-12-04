@@ -19,6 +19,7 @@ interface LocationState {
   intro?: string;
   dbtiInfo?: string | null;
   profileImage?: string | null;
+  selectedParts?: PartOption[];
   experienceSummary: string;
   strengths: string;
   designWorkFile?: string | null; // 파일명
@@ -38,17 +39,48 @@ export default function DesignPortfolioViewPage() {
     return null;
   }
 
+  // localStorage에서 디자인 포트폴리오 데이터 가져오기
+  const getStoredPortfolioData = (): LocationState | null => {
+    try {
+      const stored = localStorage.getItem('portfolio_디자인');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  // state 또는 localStorage에서 데이터 가져오기
+  const storedData = getStoredPortfolioData();
+  const portfolioData = storedData || state;
+
   // 편집 모드 상태 관리
-  const [profileImage, setProfileImage] = useState<string | null>(state.profileImage || null);
-  const [name, setName] = useState<string>(state.name || "");
-  const [intro, setIntro] = useState<string>(state.intro || "");
-  const [dbtiInfo, setDbtiInfo] = useState<string | null>(state.dbtiInfo || null);
-  const [selectedParts, setSelectedParts] = useState<PartOption[]>(["디자인"]);
+  const [profileImage, setProfileImage] = useState<string | null>(portfolioData.profileImage || null);
+  const [name, setName] = useState<string>(portfolioData.name || "");
+  const [intro, setIntro] = useState<string>(portfolioData.intro || "");
+  const [dbtiInfo, setDbtiInfo] = useState<string | null>(portfolioData.dbtiInfo || null);
+  const [selectedParts, setSelectedParts] = useState<PartOption[]>(portfolioData.selectedParts || ["디자인"]);
   const [activePart, setActivePart] = useState<PartOption | null>(null); // 모바일에서 LeftPanel만 보이도록 초기값 null
   const [isPartDropdownOpen, setIsPartDropdownOpen] = useState(false);
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+
+  // 디자인 포트폴리오 데이터를 localStorage에 저장
+  useEffect(() => {
+    const designData: LocationState = {
+      name,
+      intro,
+      dbtiInfo,
+      profileImage,
+      selectedParts,
+      experienceSummary: portfolioData.experienceSummary,
+      strengths: portfolioData.strengths,
+      designWorkFile: portfolioData.designWorkFile || null,
+      figmaAssessment: portfolioData.figmaAssessment,
+      isNewcomer: portfolioData.isNewcomer,
+    };
+    localStorage.setItem('portfolio_디자인', JSON.stringify(designData));
+  }, [name, intro, dbtiInfo, profileImage, selectedParts, portfolioData.experienceSummary, portfolioData.strengths, portfolioData.designWorkFile, portfolioData.figmaAssessment, portfolioData.isNewcomer]);
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
@@ -121,19 +153,36 @@ export default function DesignPortfolioViewPage() {
   const handleSaveConfirm = () => {
     // TODO: 프로필 저장 로직
     setIsSaveModalOpen(false);
+    
+    // 디자인 포트폴리오 데이터를 localStorage에 저장
+    const designData: LocationState = {
+      name,
+      intro,
+      dbtiInfo,
+      profileImage,
+      selectedParts,
+      experienceSummary: portfolioData.experienceSummary,
+      strengths: portfolioData.strengths,
+      designWorkFile: portfolioData.designWorkFile || null,
+      figmaAssessment: portfolioData.figmaAssessment,
+      isNewcomer: portfolioData.isNewcomer,
+    };
+    localStorage.setItem('portfolio_디자인', JSON.stringify(designData));
+    
     navigate('/profile/Default', { 
       replace: false,
       state: {
         part: "디자인" as const,
-        experienceSummary: state.experienceSummary,
-        strengths: state.strengths,
-        designWorkFile: state.designWorkFile || null,
-        figmaAssessment: state.figmaAssessment,
-        isNewcomer: state.isNewcomer,
+        experienceSummary: portfolioData.experienceSummary,
+        strengths: portfolioData.strengths,
+        designWorkFile: portfolioData.designWorkFile || null,
+        figmaAssessment: portfolioData.figmaAssessment,
+        isNewcomer: portfolioData.isNewcomer,
         name,
         intro,
         dbtiInfo,
         profileImage,
+        selectedParts, // selectedParts 전달
       }
     });
   };
@@ -207,8 +256,8 @@ export default function DesignPortfolioViewPage() {
               <S.FormLabel>파트</S.FormLabel>
               <S.PartSelectionWrapper>
               {selectedParts.map((part) => {
-                // 등록된 파트는 보라색으로 표시 (activePart가 null이고 selectedParts에 포함된 경우)
-                const isRegisteredPart = activePart === null && selectedParts.includes(part);
+                // 현재 페이지가 디자인 포트폴리오 view 페이지이므로, 디자인 파트만 clicked 상태로 표시
+                const isRegisteredPart = activePart === null && part === "디자인";
                 return (
                   <S.PartButtonWrapper 
                     key={part} 
@@ -218,9 +267,57 @@ export default function DesignPortfolioViewPage() {
                     <WtLPawButton
                       key={`${part}-${activePart}`}
                       onClick={() => {
-                        setActivePart(part);
-                        // 모바일에서 RightPanel로 이동할 때 히스토리 추가
-                        window.history.pushState({ part }, '', window.location.pathname);
+                        // 다른 파트를 클릭하면 해당 파트의 view 페이지로 이동
+                        if (part !== "디자인") {
+                          const partMap: Record<PartOption, string> = {
+                            'PM': 'pm',
+                            '디자인': 'design',
+                            '프론트엔드': 'frontend',
+                            '백엔드': 'backend'
+                          };
+                          const partSlug = partMap[part];
+                          // 다른 파트로 이동할 때는 localStorage에서 해당 파트의 데이터를 가져와서 전달
+                          const getStoredPartData = (partName: string): any => {
+                            try {
+                              const stored = localStorage.getItem(`portfolio_${partName}`);
+                              return stored ? JSON.parse(stored) : null;
+                            } catch {
+                              return null;
+                            }
+                          };
+
+                          const partData = getStoredPartData(part === "PM" ? "PM" : part === "디자인" ? "디자인" : part);
+                          
+                          navigate(`/profile/${partSlug}/view`, {
+                            replace: false,
+                            state: {
+                              name: portfolioData.name,
+                              intro: portfolioData.intro,
+                              dbtiInfo: portfolioData.dbtiInfo,
+                              profileImage: portfolioData.profileImage,
+                              selectedParts,
+                              // localStorage에서 해당 파트의 데이터를 가져오거나 기본값 사용
+                              experienceSummary: partData?.experienceSummary || "",
+                              strengths: partData?.strengths || "",
+                              ...(part === "PM" ? {
+                                dailyAvailability: partData?.dailyAvailability || null,
+                                weeklyAvailability: partData?.weeklyAvailability || null,
+                                designAssessment: partData?.designAssessment || {},
+                                developmentAssessment: partData?.developmentAssessment || {},
+                                isNewcomer: partData?.isNewcomer || false,
+                              } : part === "디자인" ? {
+                                designWorkFile: partData?.designWorkFile || null,
+                                figmaAssessment: partData?.figmaAssessment || {},
+                                isNewcomer: partData?.isNewcomer || false,
+                              } : {})
+                            }
+                          });
+                        } else {
+                          // 디자인 파트를 클릭하면 현재 페이지에서 activePart만 변경
+                          setActivePart(part);
+                          // 모바일에서 RightPanel로 이동할 때 히스토리 추가
+                          window.history.pushState({ part }, '', window.location.pathname);
+                        }
                       }}
                       disabled={false}
                     >
@@ -240,8 +337,27 @@ export default function DesignPortfolioViewPage() {
                     onClick={() => setIsPartDropdownOpen((prev) => !prev)}
                     onSelectOption={(option) => {
                       if (!selectedParts.includes(option as PartOption)) {
-                        setSelectedParts((prev) => [...prev, option as PartOption]);
-                        setActivePart(option as PartOption);
+                        const selectedPart = option as PartOption;
+                        const updatedSelectedParts = [...selectedParts, selectedPart];
+                        setSelectedParts(updatedSelectedParts);
+                        // 파트 추가 시 해당 파트의 edit 페이지로 이동 (selectedParts를 state로 전달)
+                        const partMap: Record<PartOption, string> = {
+                          'PM': 'pm',
+                          '디자인': 'design',
+                          '프론트엔드': 'frontend',
+                          '백엔드': 'backend'
+                        };
+                        const partSlug = partMap[selectedPart];
+                        navigate(`/profile/edit/${partSlug}`, { 
+                          replace: false,
+                          state: {
+                            selectedParts: updatedSelectedParts,
+                            name,
+                            intro,
+                            dbtiInfo,
+                            profileImage,
+                          }
+                        });
                       }
                       setIsPartDropdownOpen(false);
                     }}
@@ -260,15 +376,16 @@ export default function DesignPortfolioViewPage() {
 
         <S.RightPanel $hideOnMobile={activePart === null}>
           <DesignPortfolioView
-            experienceSummary={state.experienceSummary}
-            strengths={state.strengths}
-            designWorkFile={state.designWorkFile || null}
-            figmaAssessment={state.figmaAssessment}
-            isNewcomer={state.isNewcomer}
+            experienceSummary={portfolioData.experienceSummary}
+            strengths={portfolioData.strengths}
+            designWorkFile={portfolioData.designWorkFile || null}
+            figmaAssessment={portfolioData.figmaAssessment}
+            isNewcomer={portfolioData.isNewcomer}
             name={name}
             intro={intro}
             dbtiInfo={dbtiInfo}
             profileImage={profileImage}
+            selectedParts={selectedParts}
           />
         </S.RightPanel>
       </S.EditContainer>

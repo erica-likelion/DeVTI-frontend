@@ -282,6 +282,8 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
 export const EditProfileSection = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   gap: 0;
   max-width: 100%;
   width: 100%;
@@ -291,13 +293,13 @@ export const EditProfileSection = styled.div`
   min-height: 0;
 `;
 
-export const EditProfileImageWrapper = styled.div`
+export const EditProfileImageWrapper = styled.div<{ $isInDefaultPage?: boolean }>`
   position: relative;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  margin-bottom: calc(${({ theme }) => theme.responsive.gap('S')} + ${({ theme }) => theme.responsive.gap('M')}); /* 업로드 버튼 하단(bottom: -1.25rem + 버튼높이)부터 "이름" 텍스트까지 2rem 간격 */
+  margin-bottom: ${({ $isInDefaultPage }) => $isInDefaultPage ? '0' : '2rem'}; /* 프로필 이미지와 이름 글씨 사이 간격 (edit 페이지: 2rem, default 페이지: 0 - DefaultInfoSection의 gap으로 관리) */
   width: auto;
 `;
 
@@ -517,6 +519,19 @@ export const PartButtonWrapper = styled.div<{ $isActive?: boolean; $isRegistered
     position: relative;
     z-index: 1;
     pointer-events: auto;
+    border-radius: ${({ theme }) => theme.borders.sharp.wide} !important; /* WtLPawButton의 기본 border-radius 유지 */
+    
+    ${({ theme }) => theme.media.desktop} {
+      border-radius: ${({ theme }) => theme.borders.sharp.desktop} !important;
+    }
+    
+    ${({ theme }) => theme.media.tablet} {
+      border-radius: ${({ theme }) => theme.borders.sharp.tablet} !important;
+    }
+    
+    ${({ theme }) => theme.media.mobile} {
+      border-radius: ${({ theme }) => theme.borders.sharp.mobile} !important;
+    }
     
     & > span:first-child {
       display: none;
@@ -721,4 +736,219 @@ export const ReadOnlyPartButton = styled.div`
   color: ${theme.colors.secondary.VT700};
   border: none;
   cursor: default;
+`;
+
+// ProfileDefaultPage Left Panel 스타일
+export const DefaultLeftPanel = styled.div`
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background: ${theme.colors.secondary.VT50};
+
+  ${theme.media.wide} {
+    width: ${({ theme }) => theme.componentWidths.medium.wide}; /* 28rem */
+    height: 59.25rem;
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.wide} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.wide}; /* 상 5rem(theme 없음), 좌우 General-Margin(2rem), 하 2.5rem(theme 없음) */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  ${theme.media.desktop} {
+    width: ${({ theme }) => theme.componentWidths.medium.desktop}; /* 28rem */
+    height: 59.25rem;
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.desktop} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.desktop}; /* 상 5rem(theme 없음), 좌우 General-Margin(2rem), 하 2.5rem(theme 없음) */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  ${theme.media.tablet} {
+    width: ${({ theme }) => theme.componentWidths.medium.tablet}; /* 20rem */
+    height: 59.25rem;
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet}; /* 상 5rem(theme 없음), 좌우 General-Margin(2rem), 하 2.5rem(theme 없음) */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  ${theme.media.mobile} {
+    height: 59.25rem;
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile}; /* 상 5rem(theme 없음), 좌우 General-Margin(1rem), 하 2.5rem(theme 없음) */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1 0 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+`;
+
+export const DefaultInfoSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2.5rem; /* theme에 없음 */
+  align-self: stretch;
+`;
+
+export const DefaultTextFrame = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem; /* theme에 없음 */
+  align-self: stretch;
+`;
+
+export const DefaultUserName = styled.h2`
+  ${theme.fonts.heading.h2}
+  color: ${theme.colors.grayScale.black};
+  margin: 0;
+  text-align: center;
+`;
+
+export const DefaultIntro = styled.h4`
+  ${theme.fonts.heading.h4}
+  color: ${theme.colors.grayScale.black};
+  margin: 0;
+  text-align: center;
+`;
+
+export const DefaultDBTIFrame = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem; /* theme에 없음 */
+  align-self: stretch;
+`;
+
+export const DefaultDBTITitle = styled.h4`
+  ${theme.fonts.heading.h4}
+  color: ${theme.colors.grayScale.black};
+  margin: 0;
+`;
+
+export const DefaultPartFrame = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  align-self: stretch;
+`;
+
+export const DefaultPartTitle = styled.h4`
+  ${theme.fonts.heading.h4}
+  color: ${theme.colors.grayScale.black};
+  margin: 0;
+`;
+
+export const DefaultEditButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 0;
+`;
+
+export const DefaultPartButton = styled.button<{ $isActive?: boolean }>`
+  display: inline-flex;
+  ${({ theme }) => theme.responsive.property.paddingComplex('XS', 'M', 'XS', 'S')}
+  justify-content: flex-start;
+  align-items: center;
+  border: none;
+  border-radius: ${({ theme }) => theme.responsive.property.borderRadius('sharp')};
+  background: ${({ theme }) => theme.colors.grayScale.white};
+  box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
+  color: ${({ theme }) => theme.colors.grayScale.black};
+  cursor: pointer;
+  ${({ theme }) => theme.fonts.heading.h4}
+  width: 100%;
+  height: 3rem;
+  
+  ${({ theme }) => theme.media.mobile} {
+    height: 2rem;
+  }
+  
+  &:hover:not(:disabled) {
+    ${({ $isActive, theme }) => 
+      !$isActive && `
+        color: ${theme.colors.secondary.VT700};
+      `}
+  }
+
+  &:active:not(:disabled) {
+    ${({ $isActive, theme }) => 
+      !$isActive && `
+        background: ${theme.colors.secondary.VT100};
+        color: ${theme.colors.grayScale.black};
+      `}
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.grayScale.gray300};
+    cursor: not-allowed;
+  }
+
+  ${({ $isActive, theme }) => 
+    $isActive && `
+      color: ${theme.colors.secondary.VT700};
+      background: ${theme.colors.secondary.VT100};
+    `}
+`;
+
+export const DefaultDBTIButton = styled.button<{ $isActive?: boolean }>`
+  display: inline-flex;
+  ${({ theme }) => theme.responsive.property.paddingComplex('XS', 'M', 'XS', 'S')}
+  justify-content: flex-start;
+  align-items: center;
+  border: none;
+  border-radius: ${({ theme }) => theme.responsive.property.borderRadius('sharp')};
+  background: ${({ theme }) => theme.colors.grayScale.white};
+  box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
+  color: ${({ theme }) => theme.colors.grayScale.black};
+  cursor: pointer;
+  ${({ theme }) => theme.fonts.heading.h4}
+  width: 100%;
+  height: 3rem;
+  
+  ${({ theme }) => theme.media.mobile} {
+    height: 2rem;
+  }
+  
+  &:hover:not(:disabled) {
+    ${({ $isActive, theme }) => 
+      !$isActive && `
+        color: ${theme.colors.secondary.VT700};
+      `}
+  }
+
+  &:active:not(:disabled) {
+    ${({ $isActive, theme }) => 
+      !$isActive && `
+        background: ${theme.colors.secondary.VT100};
+        color: ${theme.colors.grayScale.black};
+      `}
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.grayScale.gray300};
+    cursor: not-allowed;
+  }
+
+  ${({ $isActive, theme }) => 
+    $isActive && `
+      color: ${theme.colors.secondary.VT700};
+      background: ${theme.colors.secondary.VT100};
+    `}
 `;

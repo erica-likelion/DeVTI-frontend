@@ -39,10 +39,23 @@ export const PortfolioTitle = styled.h2`
   ${theme.fonts.heading.h1}
   color: ${theme.colors.grayScale.black};
   margin: 0;
-  white-space: nowrap;
+  white-space: normal !important; /* 띄어쓰기 허용 */
   
   ${({ theme }) => theme.media.tablet} {
     align-self: flex-start; /* 왼쪽 정렬 */
+    white-space: normal !important; /* 띄어쓰기 허용 */
+  }
+  
+  ${({ theme }) => theme.media.desktop} {
+    white-space: normal !important; /* 띄어쓰기 허용 */
+  }
+  
+  ${({ theme }) => theme.media.wide} {
+    white-space: normal !important; /* 띄어쓰기 허용 */
+  }
+  
+  ${({ theme }) => theme.media.mobile} {
+    white-space: normal !important; /* 띄어쓰기 허용 */
   }
 `;
 

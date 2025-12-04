@@ -32,6 +32,7 @@ interface PortfolioState {
   dbtiInfo?: string | null;
   profileImage?: string | null;
   part?: PartOption; // 등록 버튼 클릭 시 전달되는 파트 정보
+  selectedParts?: PartOption[]; // view 페이지에서 전달되는 선택된 파트 목록
   experienceSummary?: string;
   strengths?: string;
   dailyAvailability?: any;
@@ -55,7 +56,9 @@ export default function ProfilePage() {
   const partFromUrl = pathPart && slugToPart[pathPart] ? slugToPart[pathPart] : null;
   
   const [isPartDropdownOpen, setIsPartDropdownOpen] = useState(false);
-  const [selectedParts, setSelectedParts] = useState<PartOption[]>(partFromUrl ? [partFromUrl] : []);
+  const [selectedParts, setSelectedParts] = useState<PartOption[]>(
+    portfolioState?.selectedParts || (partFromUrl ? [partFromUrl] : [])
+  );
   const [activePart, setActivePart] = useState<PartOption | null>(partFromUrl);
   const [isEditModeFromView, setIsEditModeFromView] = useState(!!portfolioState); // 수정 버튼을 통해 들어온 경우 추적
   
@@ -67,6 +70,11 @@ export default function ProfilePage() {
     
     // portfolioState가 있으면 수정 모드로 표시
     setIsEditModeFromView(!!currentPortfolioState);
+    
+    // location.state에서 selectedParts가 있으면 사용
+    if (currentPortfolioState?.selectedParts) {
+      setSelectedParts(currentPortfolioState.selectedParts);
+    }
     
     if (currentPartFromUrl) {
       setActivePart(currentPartFromUrl);
@@ -271,8 +279,12 @@ export default function ProfilePage() {
             <S.FormLabel>파트</S.FormLabel>
             <S.PartSelectionWrapper>
               {selectedParts.map((part) => {
-                // 등록 버튼을 통해 추가된 파트인지 확인 (state의 part 정보와 비교)
-                const isRegisteredPart = portfolioState?.part === part && activePart === null;
+                // 등록 버튼을 통해 추가된 파트인지 확인 (location.state의 part 정보와 비교)
+                // location.state를 직접 사용하여 최신 상태 반영
+                // /profile/edit 경로에서는 마지막에 저장한 파트만 clicked 상태로 표시
+                const currentState = location.state as PortfolioState | null;
+                // activePart가 null이고, 현재 파트가 location.state의 part와 일치할 때만 clicked 상태
+                const isRegisteredPart = activePart === null && currentState?.part === part;
                 return (
                   <S.PartButtonWrapper 
                     key={part} 
@@ -351,12 +363,24 @@ export default function ProfilePage() {
             intro={intro}
             dbtiInfo={dbtiInfo}
             profileImage={profileImage}
-            portfolioData={portfolioState}
+            selectedParts={selectedParts}
+            portfolioData={
+              // portfolioState에 PM 포트폴리오 데이터가 있으면 전달 (part 정보와 무관하게)
+              portfolioState && 
+              (portfolioState.part === "PM" || 
+               (portfolioState.experienceSummary !== undefined && 
+                portfolioState.dailyAvailability !== undefined)) 
+                ? portfolioState 
+                : null
+            }
             onRegister={() => {
               // 등록 버튼 클릭 시 PM 파트를 selectedParts에 추가
               if (!selectedParts.includes("PM")) {
-                setSelectedParts((prev) => [...prev, "PM"]);
+                const updated = [...selectedParts, "PM"];
+                setSelectedParts(updated);
+                return updated;
               }
+              return selectedParts;
             }}
           />
         ) : activePart === "디자인" || pathPart === 'design' ? (
@@ -365,12 +389,24 @@ export default function ProfilePage() {
             intro={intro}
             dbtiInfo={dbtiInfo}
             profileImage={profileImage}
-            portfolioData={portfolioState}
+            selectedParts={selectedParts}
+            portfolioData={
+              // portfolioState에 디자인 포트폴리오 데이터가 있으면 전달 (part 정보와 무관하게)
+              portfolioState && 
+              (portfolioState.part === "디자인" || 
+               (portfolioState.experienceSummary !== undefined && 
+                portfolioState.figmaAssessment !== undefined)) 
+                ? portfolioState 
+                : null
+            }
             onRegister={() => {
               // 등록 버튼 클릭 시 디자인 파트를 selectedParts에 추가
               if (!selectedParts.includes("디자인")) {
-                setSelectedParts((prev) => [...prev, "디자인"]);
+                const updated = [...selectedParts, "디자인"];
+                setSelectedParts(updated);
+                return updated;
               }
+              return selectedParts;
             }}
           />
         ) : activePart === "프론트엔드" || pathPart === 'frontend' ? (

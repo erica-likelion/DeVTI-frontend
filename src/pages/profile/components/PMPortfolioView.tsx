@@ -93,7 +93,9 @@ interface PMPortfolioViewProps {
   intro?: string;
   dbtiInfo?: string | null;
   profileImage?: string | null;
+  selectedParts?: string[]; // 선택된 파트 목록
   showEditButtons?: boolean; // 수정/삭제 버튼 표시 여부 (기본값: true)
+  onBack?: () => void; // 뒤로가기 버튼 클릭 핸들러
 }
 
 /**
@@ -125,7 +127,9 @@ export default function PMPortfolioView({
   intro,
   dbtiInfo,
   profileImage,
+  selectedParts = [],
   showEditButtons = true,
+  onBack,
 }: PMPortfolioViewProps) {
   // 할애할 수 있는 시간을 Keyword로 변환
   const dailyKeyword = useMemo(() => {
@@ -161,6 +165,8 @@ export default function PMPortfolioView({
         intro,
         dbtiInfo,
         profileImage,
+        selectedParts, // selectedParts 전달
+        part: "PM" as const, // 현재 파트 정보
         experienceSummary,
         strengths,
         dailyAvailability,

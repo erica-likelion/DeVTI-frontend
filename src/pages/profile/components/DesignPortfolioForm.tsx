@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import BasePortfolioForm from "./BasePortfolioForm";
 import SelfAssessmentGroup from "./SelfAssessmentGroup";
 import type { SelfAssessmentItem } from "./SelfAssessmentGroup";
@@ -41,6 +41,7 @@ interface DesignPortfolioFormProps {
   intro?: string;
   dbtiInfo?: string | null;
   profileImage?: string | null;
+  selectedParts?: string[]; // 현재 선택된 파트 목록
   portfolioData?: {
     experienceSummary?: string;
     strengths?: string;
@@ -48,7 +49,7 @@ interface DesignPortfolioFormProps {
     figmaAssessment?: Record<string, number>;
     isNewcomer?: boolean;
   } | null;
-  onRegister?: () => void; // 등록 버튼 클릭 시 호출 (파트 추가를 위해)
+  onRegister?: () => string[]; // 등록 버튼 클릭 시 호출 (파트 추가를 위해), 업데이트된 selectedParts 반환
 }
 
 export default function DesignPortfolioForm({ 
@@ -56,10 +57,15 @@ export default function DesignPortfolioForm({
   intro, 
   dbtiInfo, 
   profileImage,
+  selectedParts: propSelectedParts,
   portfolioData,
   onRegister
 }: DesignPortfolioFormProps) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const locationState = location.state as { selectedParts?: string[] } | null;
+  // prop으로 전달된 selectedParts를 우선 사용, 없으면 location.state에서 가져오기
+  const currentSelectedParts = propSelectedParts || locationState?.selectedParts || [];
   const [experienceSummary, setExperienceSummary] = useState(portfolioData?.experienceSummary || "");
   const [strengths, setStrengths] = useState(portfolioData?.strengths || "");
   const [designWorkFile, setDesignWorkFile] = useState<File | null>(null);
@@ -104,39 +110,40 @@ export default function DesignPortfolioForm({
 
   const handleRegister = (isNewcomerValue: boolean) => {
     // 등록 버튼 클릭 시 파트 추가를 위해 부모 컴포넌트에 알림
+    let updatedSelectedParts = currentSelectedParts;
     if (onRegister) {
       // onRegister 콜백 실행 (selectedParts에 파트 추가 및 저장 버튼 활성화)
-      onRegister();
-      // 등록 후 view 화면으로 이동 (포트폴리오 섹션에 수정/삭제 버튼, LeftPanel에 저장 버튼 활성화)
-      navigate("/profile/design/view", {
-        state: {
-          name,
-          intro,
-          dbtiInfo,
-          profileImage,
-          experienceSummary,
-          strengths,
-          designWorkFile: designWorkFileName, // 파일명만 전달
-          figmaAssessment,
-          isNewcomer: isNewcomerValue,
-        },
-      });
+      // 업데이트된 selectedParts를 반환받음
+      updatedSelectedParts = onRegister();
     } else {
-      // onRegister가 없으면 바로 페이지 이동
-      navigate("/profile/design/view", {
-        state: {
-          name,
-          intro,
-          dbtiInfo,
-          profileImage,
-          experienceSummary,
-          strengths,
-          designWorkFile: designWorkFileName,
-          figmaAssessment,
-          isNewcomer: isNewcomerValue,
-        },
-      });
+      // onRegister가 없으면 직접 업데이트
+      updatedSelectedParts = currentSelectedParts.includes("디자인") 
+        ? currentSelectedParts 
+        : [...currentSelectedParts, "디자인"];
     }
+    
+    // 디자인 포트폴리오 데이터를 localStorage에 저장
+    const designData = {
+      name,
+      intro,
+      dbtiInfo,
+      profileImage,
+      selectedParts: updatedSelectedParts,
+      experienceSummary,
+      strengths,
+      designWorkFile: designWorkFileName, // 파일명만 전달
+      figmaAssessment,
+      isNewcomer: isNewcomerValue,
+    };
+    localStorage.setItem('portfolio_디자인', JSON.stringify(designData));
+    
+    // 등록 후 view 화면으로 이동 (포트폴리오 섹션에 수정/삭제 버튼, LeftPanel에 저장 버튼 활성화)
+    navigate("/profile/design/view", {
+      state: {
+        ...designData,
+        part: "디자인" as const, // 마지막에 저장한 파트 정보
+      },
+    });
   };
 
   return (

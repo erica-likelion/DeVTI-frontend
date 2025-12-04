@@ -66,17 +66,17 @@ export const PortfolioTitle = styled.h2<{ $isDesignPortfolio?: boolean }>`
     
     ${theme.media.desktop} {
       font-size: inherit;
-      white-space: nowrap;
+      white-space: normal;
     }
     
     ${theme.media.wide} {
       font-size: inherit;
-      white-space: nowrap;
+      white-space: normal;
     }
     
     ${theme.media.mobile} {
       font-size: inherit;
-      white-space: nowrap;
+      white-space: normal;
     }
   `}
 `;
