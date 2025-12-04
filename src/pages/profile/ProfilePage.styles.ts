@@ -112,7 +112,6 @@ export const EditWrapper = styled.div`
     margin-right: 0;
     width: 100%;
     height: calc(100% - calc(4.5rem + ${({ theme }) => theme.gaps.R?.tablet || '0rem'}) - 3.75rem - 4.5rem); /* Main의 padding-top + padding-bottom + Footer 높이 제외 */
-    overflow: visible; /* 타블렛에서 overflow visible로 변경하여 잘림 방지 */
   }
 
   ${theme.media.mobile} {
@@ -137,28 +136,23 @@ export const EditContainer = styled.div`
   width: 100%;
   border-radius: 2rem; /* 고정 크기 - 컨테이너 border-radius는 반응형 불필요 */
   background: ${theme.colors.grayScale.white} !important;
-  overflow: hidden;
-  overflow-x: visible; /* 카드 그림자가 잘리지 않도록 */
   position: relative;
   z-index: 1;
 
   ${theme.media.wide} {
     display: grid;
     grid-template-columns: 28rem 1fr;
-    overflow-x: visible; /* 카드 그림자가 잘리지 않도록 */
   }
 
   ${theme.media.desktop} {
     display: grid;
     grid-template-columns: 28rem 1fr;
-    overflow-x: visible; /* 카드 그림자가 잘리지 않도록 */
   }
 
   ${theme.media.tablet} {
     display: grid;
     grid-template-columns: 20rem 1fr;
-    border-radius: 0; /* 타블렛에서 border-radius 제거하여 잘림 방지 */
-    overflow: visible; /* 타블렛에서 overflow visible로 변경하여 잘림 방지 */
+    border-radius: 0;
   }
 
   ${theme.media.mobile} {
@@ -177,19 +171,21 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean }>`
   justify-content: space-between;
   align-items: center;
   background: ${theme.colors.secondary.VT50};
-  overflow-y: auto;
-  overflow-x: hidden;
 
   ${theme.media.wide} {
     width: 28rem; /* Component-Width-Medium */
     height: 100%;
     padding: 5rem 2rem 2.5rem 2rem; /* 상 5rem, 좌우 2rem(General-Margin), 하 2.5rem */
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   ${theme.media.desktop} {
     width: 28rem; /* Component-Width-Medium */
     height: 100%;
     padding: 5rem 2rem 2.5rem 2rem; /* 상 5rem, 좌우 2rem(General-Margin), 하 2.5rem */
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   ${theme.media.tablet} {
@@ -200,6 +196,9 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean }>`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    background: ${theme.colors.secondary.VT50};
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   ${theme.media.mobile} {
@@ -225,8 +224,6 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
   background: ${theme.colors.grayScale.white} !important;
   height: 100%;
   width: 100%;
-  overflow-y: auto;
-  overflow-x: visible; /* 가로 방향 그림자가 잘리지 않도록 */
   z-index: 1;
 
   ${theme.media.wide} {
@@ -237,7 +234,7 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
     gap: ${({ theme }) => theme.gaps.XXL.wide};
     flex: 1 0 0;
     align-self: stretch;
-    width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
+    overflow-y: auto;
   }
 
   ${theme.media.desktop} {
@@ -248,7 +245,7 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
     gap: ${({ theme }) => theme.gaps.XXL.desktop};
     flex: 1 0 0;
     align-self: stretch;
-    width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
+    overflow-y: auto;
   }
 
   ${theme.media.tablet} {
@@ -256,9 +253,12 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
     padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.tablet};
     flex-direction: column;
     align-items: flex-start;
-    gap: ${({ theme }) => theme.gaps.XXL.desktop}; /* tablet에서도 2.75rem 사용 (XXL.desktop 값) */
+    gap: ${({ theme }) => theme.gaps.XXL.desktop};
     flex: 1 0 0;
     align-self: stretch;
+    background: ${theme.colors.grayScale.white};
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   ${theme.media.mobile} {

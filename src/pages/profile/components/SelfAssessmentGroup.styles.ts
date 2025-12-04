@@ -5,8 +5,7 @@ export const Group = styled.section`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
-  overflow-x: visible; /* 카드 그림자가 잘리지 않도록 */
+  width: 100%;
   
   ${({ theme }) => theme.media.tablet} {
     width: 100%; /* 타블렛에서 평점과 정렬되도록 너비 조정 */
@@ -36,11 +35,10 @@ export const CardGrid = styled.div`
   ${({ theme }) => theme.responsive.property.gap('M')}
   width: 100%;
   overflow-x: auto;
-  overflow-y: visible; /* 세로 방향 그림자가 잘리지 않도록 */
   padding-top: 0.5rem; /* 위쪽 그림자 공간 확보 */
   padding-bottom: 0.5rem; /* 아래쪽 그림자 공간 확보 */
-  padding-left: 0; /* 스크롤 시 패딩 없이 이어지도록 */
-  padding-right: 0; /* 스크롤 시 패딩 없이 이어지도록 */
+  padding-left: 0.5rem; /* 첫 번째 카드 왼쪽 그림자 공간 확보 */
+  padding-right: 0.5rem; /* 마지막 카드 오른쪽 그림자 공간 확보 */
   
   ${({ theme }) => theme.media.mobile} {
     /* 스크롤 끝에 도달했을 때만 오른쪽 간격을 위해 마지막 카드에 margin 추가 필요 */

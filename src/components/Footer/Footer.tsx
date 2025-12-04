@@ -8,10 +8,11 @@ const Footer = ({ pathname }: FooterProps) => {
   const currentYear = new Date().getFullYear();
   const isLoginPage = pathname === '/login';
   const isProfileRoute = pathname?.includes('/profile') || false;
-  const isProfileDefault = pathname === '/profile' || pathname === '/profile/Default' || pathname === '/profile/default';
+  const isProfileOnly = pathname === '/profile';
+  const isProfileEditPart = pathname?.startsWith('/profile/edit/') || false; // /profile/edit/pm, /profile/edit/design 등
 
   return (
-    <S.Container $isLoginPage={isLoginPage} $isProfileRoute={isProfileRoute} $isProfileDefault={isProfileDefault}>
+    <S.Container $isLoginPage={isLoginPage} $isProfileRoute={isProfileRoute} $isProfileOnly={isProfileOnly} $isProfileEditPart={isProfileEditPart}>
       <S.Content>
         <S.CopyrightText $isLoginPage={isLoginPage}>
           Copyright © {currentYear} Team DevTI. All rights reserved.

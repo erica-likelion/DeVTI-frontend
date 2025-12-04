@@ -5,9 +5,8 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
-  max-width: none; /* max-width 제한 제거 */
-  overflow-x: visible; /* 카드 그림자가 잘리지 않도록 */
+  width: 100%;
+  max-width: none;
 `;
 
 export const Header = styled.header`
@@ -29,10 +28,9 @@ export const ContentFrame = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 2.75rem;
-  width: calc(100% + 0.5rem); /* 카드 그림자 공간을 고려한 너비 조정 */
+  width: 100%;
   padding-left: ${({ theme }) => theme.responsive.gap('M')};
   padding-right: ${({ theme }) => theme.responsive.gap('M')};
-  overflow-x: visible; /* 카드 그림자가 잘리지 않도록 */
   
   ${({ theme }) => theme.media.tablet} {
     padding-left: 0.75rem;

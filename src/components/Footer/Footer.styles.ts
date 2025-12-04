@@ -3,7 +3,8 @@ import styled from 'styled-components';
 interface ContainerProps {
   $isLoginPage: boolean;
   $isProfileRoute: boolean;
-  $isProfileDefault?: boolean;
+  $isProfileOnly?: boolean;
+  $isProfileEditPart?: boolean;
 }
 
 interface CopyrightTextProps {
@@ -18,8 +19,12 @@ export const Container = styled.footer<ContainerProps>`
   width: 100%;
   z-index: 1000;
   height: 4.5rem;
-  background: ${({ $isProfileDefault, theme }) => 
-    $isProfileDefault ? theme.colors.grayScale.white : 'transparent'}; /* profile/default에서 흰색 배경 */
+  background: ${({ $isProfileRoute, $isProfileOnly, $isProfileEditPart, theme }) => {
+    if ($isProfileOnly) return 'transparent'; // /profile → 투명
+    if ($isProfileEditPart) return theme.colors.grayScale.white; // /profile/edit/pm, /profile/edit/design 등 → 흰색
+    if ($isProfileRoute) return theme.colors.grayScale.gray50; // 나머지 프로필 페이지 → 회색
+    return 'transparent';
+  }};
   
   ${({ theme }) => theme.media.mobile} {
     display: flex;
@@ -29,8 +34,12 @@ export const Container = styled.footer<ContainerProps>`
     align-items: flex-start;
     gap: 0.625rem;
     flex-shrink: 0;
-    background: ${({ $isProfileDefault, theme }) => 
-      $isProfileDefault ? theme.colors.grayScale.white : 'transparent'}; /* profile/default에서 흰색 배경 */
+    background: ${({ $isProfileRoute, $isProfileOnly, $isProfileEditPart, theme }) => {
+      if ($isProfileOnly) return 'transparent';
+      if ($isProfileEditPart) return theme.colors.grayScale.white;
+      if ($isProfileRoute) return theme.colors.grayScale.gray50;
+      return 'transparent';
+    }};
   }
 `;
 
