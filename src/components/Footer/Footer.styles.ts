@@ -17,8 +17,7 @@ export const Container = styled.footer<ContainerProps>`
   width: 100%;
   z-index: 1000;
   height: 4.5rem;
-  background: ${({ $isProfileRoute, theme }) =>
-    $isProfileRoute ? theme.colors.grayScale.gray50 : 'transparent'};
+  background: transparent;
   
   ${({ theme }) => theme.media.mobile} {
     display: flex;
