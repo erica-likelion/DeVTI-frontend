@@ -8,7 +8,7 @@ interface SegmentControlTransparentProps {
   onChange?: (value: string) => void;
 }
 
-export default function SegmentControlㅆ({
+export default function SegmentControl({
   options,
   value: controlledValue,
   onChange,

@@ -25,6 +25,7 @@ import DBTIEditPage from "@/pages/profile/edit/DBTI/DBTIEditPage";
 import ProfileEditPage from "@/pages/profile/edit/DBTI/ProfileEditPage";
 import DBTIResultPage from "@/pages/profile/edit/DBTI/DBTIResultPage";
 import DBTIPage from "@/pages/profile/DBTI/DBTIPage";
+import ManageRoomMatched from "@/pages/manageroom/ManageRoomMatched";
 
 export const router = createBrowserRouter([
   {
@@ -106,6 +107,12 @@ export const router = createBrowserRouter([
         path: "profile/DBTI",
         element: (
           <DBTIPage />
+        ),
+      },
+      {
+        path: "manage/matched",
+        element: (
+          <ManageRoomMatched />
         ),
       },
       {
