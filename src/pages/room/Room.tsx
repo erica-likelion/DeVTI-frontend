@@ -183,6 +183,7 @@ const Room = () => {
         </S.SubTitle>
       </S.TopSection>
 
+
       <S.AISection>
         <S.AISectionHeader>
           <S.AITitle>
@@ -200,6 +201,8 @@ const Room = () => {
             : '내 팀이 마음에 들지 않는다면, 당근을 흔들어 운영진에게 알릴 수 있어요.'}
         </S.SubTitle>
       </S.AISection>
+
+
 
       <S.ListSection>
         <S.ListHeaderRow>
