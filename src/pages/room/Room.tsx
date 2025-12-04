@@ -4,6 +4,8 @@ import RoleTabs from '@/components/Tabs/RoleTabs';
 import WtLMemberList from '@/components/list/WtLMemberList';
 import InputFieldL from '@/components/Input/InputFieldL';
 import DropBox from '@/components/DropBox/DropBox';
+import VT500SButton from '@/components/ButtonDynamic/VT500SButton';
+import DefaultIMG_Profile from '/public/DefaultIMG_Profile.webp';
 
 import {
   PARTICIPANTS as INITIAL_PARTICIPANTS,
@@ -22,12 +24,17 @@ interface RemainingTime {
   isEnded: boolean;
 }
 
+interface CarrotButtonProps {
+  participantId: number;
+}
+
 // 마감 시간(임시)
-const MATCH_DEADLINE = new Date('2025-12-01T23:59:59+09:00');
+const MATCH_DEADLINE = new Date('2025-12-31T23:59:59+09:00');
 
 type RoleTab = (typeof ROLE_TABS)[number];
 type TeamTab = (typeof TEAM_TABS)[number];
 type TabValue = RoleTab | TeamTab;
+
 
 const calcRemainingTime = (): RemainingTime => {
   const now = new Date().getTime();
@@ -58,6 +65,7 @@ const calcRemainingTime = (): RemainingTime => {
   };
 };
 
+
 const Room = () => {
 
   const [participants, setParticipants] = useState<Participant[]>(INITIAL_PARTICIPANTS);
@@ -69,6 +77,23 @@ const Room = () => {
 
   // 🔹 꼬리 흔들기 상태 (room.state_change → WAGGING 에서 true)
   const [isWagging, setIsWagging] = useState(false);
+  const [isCarrotDisabled, setIsCarrotDisabled] = useState(false);
+
+  const handleCarrotClick = async () => {
+    if (isCarrotDisabled) return; 
+
+    setIsCarrotDisabled(true);
+
+    /*
+    try {
+      await axios.post('/api/matching/carrot/{participant_id}');
+    } catch (error) {
+      console.error('당근 흔들기 API 호출 실패:', error);
+
+      // setIsCarrotDisabled(false);
+    }
+    */
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -155,6 +180,8 @@ const Room = () => {
     }, []);
   */
 
+
+
   return (
     <S.Container>
 
@@ -178,7 +205,7 @@ const Room = () => {
 
         <S.SubTitle>
           {!isEnded
-            ? '아직 팀빌딩이 다 완성되지 않았어요. 팀빌딩을 조금만 기다려볼까요?'
+            ? '아직 팀원들이 다 입장하지 않았어요. 팀원들을 조금만 기다려볼까요?'
             : ''}
         </S.SubTitle>
       </S.TopSection>
@@ -195,11 +222,18 @@ const Room = () => {
           text="Lorem ipsum dolor sit amet consectetur. Hendrerit tellus bibendum risus auctor commodo dolor blandit lacinia. Nulla eu non phasellus et elit. Condimentum et nulla scelerisque justo quisque mauris risus mauris sapien. Fames a et tellus ipsum non arcu bibendum. Amet amet viverra sit felis. Nunc ultrices laoreet purus aliquet lectus dictumst elementum. Molestie molestie neque risus dignissim sed eget aenean eu. Nisl eget dignissim velit consequat eu at mauris neque. Placerat nunc sit ullamcorper in."
         />
 
-        <S.SubTitle>
-          {!isEnded
-            ? ''
-            : '내 팀이 마음에 들지 않는다면, 당근을 흔들어 운영진에게 알릴 수 있어요.'}
-        </S.SubTitle>
+        {isEnded && (
+          <S.MidSection>
+            <S.SubTitle>
+              내 팀이 마음에 들지 않는다면, 당근을 흔들어 운영진에게 알릴 수 있어요.
+            </S.SubTitle>
+            <VT500SButton
+              children="당근 흔들기"
+              disabled={isCarrotDisabled}
+              onClick={handleCarrotClick}
+            />
+          </S.MidSection> 
+        )}
       </S.AISection>
 
 
@@ -212,15 +246,15 @@ const Room = () => {
         <S.MidSection>
           <S.TotalCount>
             {isEnded
-              ? `전체 ${totalMembers}명 / ${teamCount}팀`
+              ? `전체 ${totalMembers}명`
               : `전체 ${filteredParticipants.length}명`}
           </S.TotalCount>
 
           <DropBox
-            value={'AI순'}
+            value={'AI 추천순'}
             size="M"
             isOpen={false}
-            options={['AI순']}
+            options={['AI 추천순']}
             disabled
           />
         </S.MidSection>
@@ -229,7 +263,7 @@ const Room = () => {
           {filteredParticipants.map(participant => (
             <WtLMemberList
               key={participant.id}
-              icon={participant.icon}
+              icon={DefaultIMG_Profile}
               header={participant.username}
               keywords={participant.keywords}
               rightButton={isWagging ? participant.rightButton : false}

@@ -54,7 +54,8 @@ export const MidSection = styled.section`
   display: flex;
 	padding: 0rem ${({ theme }) => theme.responsive.gap('S')};
 	justify-content: space-between;
-	align-items: stretch;
+	align-self: stretch;
+	align-items: center;
 `;
 
 export const ListSection = styled.section``;
