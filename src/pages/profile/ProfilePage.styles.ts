@@ -7,20 +7,27 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 100%;
   min-height: ${VIEWPORT_AVAILABLE_HEIGHT};
-  padding: 0 2.5rem;
+  padding: 15.5rem 46rem 0; /* TopNav(4.5rem) 아래부터 프로필 이미지까지 20rem (4.5rem + 15.5rem = 20rem), 좌우 46rem */
   gap: 3.5rem;
+  margin-left: -2.5rem; /* Layout Main의 좌우 padding 2.5rem 제거 */
+  margin-right: -2.5rem;
+  width: calc(100% + 5rem); /* 좌우 margin을 고려한 width */
 
   ${theme.media.tablet} {
-    padding: 0 2rem;
+    padding: 15.5rem 2rem 0;
+    margin-left: -2rem;
+    margin-right: -2rem;
+    width: calc(100% + 4rem);
     gap: 3rem;
   }
 
   ${theme.media.mobile} {
     min-height: auto;
-    padding: 0 1.5rem;
+    padding: 15.5rem 1.5rem 0;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    width: calc(100% + 2rem);
     gap: 2.5rem;
   }
 `;
@@ -29,7 +36,6 @@ export const ProfileSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 0;
   width: 100%;
 `;
@@ -78,7 +84,7 @@ export const ProfileImagePlaceholder = styled.img.attrs({
 export const UserName = styled.h1`
   ${theme.fonts.heading.h1}
   color: ${theme.colors.grayScale.black};
-  margin: 0 0 4rem;
+  margin: 0 0 7.5rem;
 
   ${theme.media.mobile} {
     margin-bottom: 3rem;
@@ -92,46 +98,6 @@ export const ButtonWrapper = styled.div`
   width: 100%;
 `;
 
-export const TestSection = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 2rem;
-`;
-
-export const ProfileActionButton = styled.button`
-  ${theme.fonts.heading.h3}
-  display: flex;
-  width: 28rem;
-  padding: 0.75rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: ${theme.borders.sharp};
-  background: ${theme.colors.grayScale.black};
-  color: ${theme.colors.grayScale.white};
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover:not(:disabled) {
-    background: ${theme.colors.grayScale.gray800};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  ${theme.media.tablet} {
-    width: 20rem;
-  }
-
-  ${theme.media.mobile} {
-    width: 100%;
-  }
-`;
 
 export const EditContainer = styled.div`
   display: flex;
