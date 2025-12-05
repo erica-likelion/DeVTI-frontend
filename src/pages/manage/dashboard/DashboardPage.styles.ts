@@ -8,8 +8,20 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
   gap: 3.75rem;
-  padding: 5rem 0;
+  padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.wide};
   overflow-y: auto;
+
+  ${theme.media.desktop} {
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.desktop};
+  }
+  
+  ${theme.media.tablet} {
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet};
+  }
+  
+  ${theme.media.mobile} {
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile};
+  }
 `;
 
 export const TextButtonFrame = styled.div`
