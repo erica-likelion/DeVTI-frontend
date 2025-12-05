@@ -89,6 +89,7 @@ export const ButtonWrapper = styled.div`
   align-items: center;
   width: fit-content; /* 버튼 크기에 맞춰 고정 */
 `;
+
 export const EditWrapper = styled.div`
   position: relative;
   min-height: ${VIEWPORT_AVAILABLE_HEIGHT};
