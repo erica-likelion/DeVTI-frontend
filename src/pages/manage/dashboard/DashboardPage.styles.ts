@@ -8,6 +8,7 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
   gap: 3.75rem;
+  padding: 5rem 0;
   overflow-y: auto;
 `;
 
@@ -55,6 +56,7 @@ export const DashBoardSection = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 3rem;
+  padding-bottom: 3.75rem;
 
 `;
 
@@ -202,6 +204,16 @@ export const TeamLabel = styled.h4`
   color: ${({ theme }) => theme.colors.grayScale.black};
 `;
 
+export const BarLegend = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+
+  ${theme.media.mobile} {
+    flex-direction: column;
+    ${({ theme }) => theme.responsive.property.gap('S')};
+  }
+`;
 
 /* RadarLegend 라벨 커스텀 */
 

@@ -143,7 +143,7 @@ export default function DashboardPage({ totalMembers = DEFAULT_TOTAL_MEMBERS, to
           
           <S.PMDesignGraphFrame>
             <S.GraphTitle>팀 별 PM, 디자인 역량 분포</S.GraphTitle>
-            <S.RadarLegend>
+            <S.BarLegend>
                <S.RadarLegendItem>
                     <S.LegendIcon color="#973EE9" />
                     <S.LegendText>PM-디자인 이해도</S.LegendText>
@@ -160,7 +160,7 @@ export default function DashboardPage({ totalMembers = DEFAULT_TOTAL_MEMBERS, to
                     <AverageIcon/>
                     <S.LegendText>역량 평균</S.LegendText>
                </S.RadarLegendItem>
-            </S.RadarLegend>
+            </S.BarLegend>
             <S.ChartContainer>
               <ResponsiveContainer width="100%" height={344}>
                   <BarChart data={PM_UNDERSTANDING_DATA} margin={{top: 20, bottom: 16}} barGap={0} barCategoryGap="35%">
