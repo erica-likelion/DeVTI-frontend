@@ -8,6 +8,7 @@ import LoginButton from "@/components/LoginButton/LoginButton";
 import MobileSidebar from "@/components/MobileSidebar/MobileSidebar";
 import DropBox from "@/components/DropBox/DropBox";
 import * as S from "./TopNav.styles";
+import MainLogo from "@/assets/icons/MainLogo.svg";
 
 interface TopNavProps {
   className?: string;
@@ -55,7 +56,7 @@ export default function TopNav({ className }: TopNavProps) {
   const renderLeftSection = () => (
     <S.LeftSection>
       <S.Logo onClick={handleLogoClick}>
-        <img src="/MainLogo.svg" alt="DevTI Logo" />
+        <img src={MainLogo} alt="DevTI Logo" />
       </S.Logo>
       {!shouldHideNavButtons && (
         <S.NavButtons>
@@ -84,7 +85,7 @@ export default function TopNav({ className }: TopNavProps) {
   const renderMobileNav = () => (
     <>
       <S.Logo onClick={handleLogoClick}>
-        <img src="/MainLogo.svg" alt="DevTI Logo" />
+        <img src={MainLogo} alt="DevTI Logo" />
       </S.Logo>
       <S.MobileRightSection>
         {shouldShowLoggedOut ? (

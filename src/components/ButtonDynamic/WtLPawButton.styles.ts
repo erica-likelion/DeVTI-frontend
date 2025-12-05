@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean; $isActive?: boolean }>`
+export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean; $isActive?: boolean; $hideIcon?: boolean }>`
   display: inline-flex;
   ${({ theme }) => theme.responsive.property.paddingComplex('XS', 'M', 'XS', 'S')}
   justify-content: flex-start;
   align-items: center;
   ${({ theme }) => theme.responsive.property.gap('XS')}
   border: none;
-  border-radius: ${({ theme }) => theme.responsive.property.borderRadius('sharp')};
+  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
   background: ${({ theme }) => theme.colors.grayScale.white};
   box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
   color: ${({ theme }) => theme.colors.grayScale.black};
@@ -15,6 +15,10 @@ export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolea
   ${({ theme }) => theme.fonts.heading.h4}
   width: 100%;
   height: 3rem;
+  
+  ${({ theme }) => theme.media.mobile} {
+    height: 2rem;
+  }
   
   &:hover:not(:disabled) {
     color: ${({ theme }) => theme.colors.secondary.VT700};
@@ -30,8 +34,8 @@ export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolea
     cursor: not-allowed;
   }
 
-  ${({ $isClicked, theme }) => 
-    $isClicked && `
+  ${({ $isClicked, disabled, theme }) => 
+    $isClicked && !disabled && `
       color: ${theme.colors.secondary.VT700};
       background: ${theme.colors.secondary.VT100};
     `}

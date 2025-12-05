@@ -1,19 +1,12 @@
-import { useMemo, useState } from "react";
-import * as S from "./PMPortfolioForm.styles";
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import BasePortfolioForm from "./BasePortfolioForm";
 import SelfAssessmentGroup from "./SelfAssessmentGroup";
 import type { SelfAssessmentItem } from "./SelfAssessmentGroup";
-
-const DAILY_OPTIONS = [
-  { key: "under1h", label: "1시간 이하" },
-  { key: "1to3h", label: "1 - 3시간" },
-  { key: "over3h", label: "3시간 이상" },
-] as const;
-
-const WEEKLY_OPTIONS = [
-  { key: "under10h", label: "10시간 이하" },
-  { key: "10to20h", label: "10 - 20시간" },
-  { key: "over20h", label: "20시간 이상" },
-] as const;
+import type {
+  DailyAvailabilityKey,
+  WeeklyAvailabilityKey,
+} from "./BasePortfolioForm";
 
 const DESIGN_ITEMS: SelfAssessmentItem[] = [
   {
@@ -36,13 +29,13 @@ const DESIGN_ITEMS: SelfAssessmentItem[] = [
     key: "communication",
     title: "커뮤니케이션 역량",
     description:
-      "디자이너와 피드백을 주고받을 때, 디자인 언어(레이아웃, 패턴, 시각적 계층, 컴포넌트 등)를 활용할 수 있다.",
+      "디자이너와 피드백을 주고받을 때, 디자인 언어 (베리어블, 패딩, 시각적 계층, 컴포넌트 등)를 활용할 수 있다.",
   },
   {
     key: "priority",
     title: "우선순위 판단 능력",
     description:
-      "디자인 완성도보다 사용자 가치(목표 달성)에 초점을 맞춰 의사결정을 할 수 있다.",
+      "디자인 완성도보다 사용자 가치(목표 달성)에 초점을 맞춰 의사결정할 수 있다.",
   },
 ] as const;
 
@@ -57,52 +50,72 @@ const DEVELOPMENT_ITEMS: SelfAssessmentItem[] = [
     key: "techContext",
     title: "기술 맥락 파악",
     description:
-      "주요 기술 스택(React, Spring, AWS 등)의 기능과 한계를 개략적으로 설명할 수 있다.",
+      "주요 기술 스택 (React, Spring, AWS 등)의 기능과 한계를 개괄적으로 설명할 수 있다.",
   },
   {
     key: "executionSense",
     title: "일정 / 리소스 감각",
     description:
-      "개발 일정이나 기능 구현 난이도에 대해 현실적으로 고려할 수 있다.",
+      "개발 일정이나 기능 구현 난이도를 대화 중에 현실적으로 고려할 수 있다.",
   },
   {
     key: "devCommunication",
     title: "커뮤니케이션 및 조정 역량",
     description:
-      "개발자 피드백과 이슈 사항을 이해하고 우선순위를 조율할 수 있다.",
+      "개발자의 피드백, 이슈 사항을 이해하고 우선순위를 조율할 수 있다.",
   },
   {
     key: "problemSolving",
     title: "문제 해결 과정 이해",
     description:
-      "오류나 이슈 상황 발생 시, 원인 파악을 논리적으로 함께 점검할 수 있다.",
+      "오류나 예외 상황 발생 시, 원인 파악 과정을 논리적으로 함께 점검할 수 있다.",
   },
 ] as const;
 
-export default function PMPortfolioForm() {
-  const [experienceSummary, setExperienceSummary] = useState("");
-  const [strengths, setStrengths] = useState("");
-  const [dailyAvailability, setDailyAvailability] = useState<
-    (typeof DAILY_OPTIONS)[number]["key"] | null
-  >(null);
-  const [weeklyAvailability, setWeeklyAvailability] = useState<
-    (typeof WEEKLY_OPTIONS)[number]["key"] | null
-  >(null);
+interface PMPortfolioFormProps {
+  name?: string;
+  intro?: string;
+  dbtiInfo?: string | null;
+  profileImage?: string | null;
+  selectedParts?: string[]; // 현재 선택된 파트 목록
+  portfolioData?: {
+    experienceSummary?: string;
+    strengths?: string;
+    dailyAvailability?: DailyAvailabilityKey | null;
+    weeklyAvailability?: WeeklyAvailabilityKey | null;
+    designAssessment?: Record<string, number>;
+    developmentAssessment?: Record<string, number>;
+    isNewcomer?: boolean;
+  } | null;
+  onRegister?: () => string[]; // 등록 버튼 클릭 시 호출 (파트 추가를 위해), 업데이트된 selectedParts 반환
+}
+
+export default function PMPortfolioForm({ 
+  name, 
+  intro, 
+  dbtiInfo, 
+  profileImage,
+  selectedParts: propSelectedParts,
+  portfolioData,
+  onRegister
+}: PMPortfolioFormProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const locationState = location.state as { selectedParts?: string[] } | null;
+  // prop으로 전달된 selectedParts를 우선 사용, 없으면 location.state에서 가져오기
+  const currentSelectedParts = propSelectedParts || locationState?.selectedParts || [];
+  const [experienceSummary, setExperienceSummary] = useState(portfolioData?.experienceSummary || "");
+  const [strengths, setStrengths] = useState(portfolioData?.strengths || "");
+  const [dailyAvailability, setDailyAvailability] =
+    useState<DailyAvailabilityKey | null>(portfolioData?.dailyAvailability || null);
+  const [weeklyAvailability, setWeeklyAvailability] =
+    useState<WeeklyAvailabilityKey | null>(portfolioData?.weeklyAvailability || null);
   const [designAssessment, setDesignAssessment] = useState<
     Record<string, number>
-  >({});
+  >(portfolioData?.designAssessment || {});
   const [developmentAssessment, setDevelopmentAssessment] = useState<
     Record<string, number>
-  >({});
-
-  const experiencePlaceholder = useMemo(
-    () =>
-      [
-        "프로젝트 / 회사명, 담당 역할, 기간 등을 자유롭게 작성해주세요.",
-        "예시) 2024.03 ~ 2024.06 / 스타트업 A / 제품 기획 및 지표 관리",
-      ].join("\n"),
-    [],
-  );
+  >(portfolioData?.developmentAssessment || {});
 
   const strengthsPlaceholder =
     "PM으로서의 강점을 사례 중심으로 적어보세요. (ex. 리서치, 문서화, 이해관계자 조율 등)";
@@ -115,101 +128,93 @@ export default function PMPortfolioForm() {
     setDevelopmentAssessment((prev) => ({ ...prev, [key]: value }));
   };
 
-  const toggleDailyAvailability = (key: (typeof DAILY_OPTIONS)[number]["key"]) =>
+  const toggleDailyAvailability = (key: DailyAvailabilityKey) => {
     setDailyAvailability((prev) => (prev === key ? null : key));
+  };
 
-  const toggleWeeklyAvailability = (
-    key: (typeof WEEKLY_OPTIONS)[number]["key"],
-  ) => setWeeklyAvailability((prev) => (prev === key ? null : key));
+  const toggleWeeklyAvailability = (key: WeeklyAvailabilityKey) => {
+    setWeeklyAvailability((prev) => (prev === key ? null : key));
+  };
+
+  // 자가평가 유효성 검사: 모든 항목이 평가되어야 함
+  const isDesignAssessmentComplete = DESIGN_ITEMS.every(
+    (item) => designAssessment[item.key] !== undefined && designAssessment[item.key] > 0
+  );
+  const isDevelopmentAssessmentComplete = DEVELOPMENT_ITEMS.every(
+    (item) => developmentAssessment[item.key] !== undefined && developmentAssessment[item.key] > 0
+  );
+  const isSelfAssessmentValid = isDesignAssessmentComplete && isDevelopmentAssessmentComplete;
+
+  const handleRegister = (isNewcomerValue: boolean) => {
+    // 등록 버튼 클릭 시 파트 추가를 위해 부모 컴포넌트에 알림
+    let updatedSelectedParts = currentSelectedParts;
+    if (onRegister) {
+      // onRegister 콜백 실행 (selectedParts에 파트 추가 및 저장 버튼 활성화)
+      // 업데이트된 selectedParts를 반환받음
+      updatedSelectedParts = onRegister();
+    } else {
+      // onRegister가 없으면 직접 업데이트
+      updatedSelectedParts = currentSelectedParts.includes("PM") 
+        ? currentSelectedParts 
+        : [...currentSelectedParts, "PM"];
+    }
+    
+    // PM 포트폴리오 데이터를 localStorage에 저장
+    const pmData = {
+      name,
+      intro,
+      dbtiInfo,
+      profileImage,
+      selectedParts: updatedSelectedParts,
+      experienceSummary,
+      strengths,
+      dailyAvailability,
+      weeklyAvailability,
+      designAssessment,
+      developmentAssessment,
+      isNewcomer: isNewcomerValue,
+    };
+    localStorage.setItem('portfolio_PM', JSON.stringify(pmData));
+    
+    // 등록 후 view 화면으로 이동 (포트폴리오 섹션에 수정/삭제 버튼, LeftPanel에 저장 버튼 활성화)
+    navigate("/profile/pm/view", {
+      state: {
+        ...pmData,
+        part: "PM" as const, // 마지막에 저장한 파트 정보
+      },
+    });
+  };
 
   return (
-    <S.Wrapper>
-      <S.Header>
-        <S.PortfolioTitle>PM 포트폴리오</S.PortfolioTitle>
-      </S.Header>
-
-      <S.Section>
-        <S.SectionHeader>
-          <S.SectionTitle>경력사항</S.SectionTitle>
-          <S.Badge>
-            <S.BadgeIcon />
-            신입
-          </S.Badge>
-        </S.SectionHeader>
-        <S.TextFieldBox>
-          <S.TextArea
-            placeholder={experiencePlaceholder}
-            value={experienceSummary}
-            onChange={(event) => setExperienceSummary(event.target.value)}
-          />
-        </S.TextFieldBox>
-      </S.Section>
-
-      <S.Section>
-        <S.SectionHeader>
-          <S.SectionTitle>강점</S.SectionTitle>
-        </S.SectionHeader>
-        <S.TextFieldBox>
-          <S.TextArea
-            placeholder={strengthsPlaceholder}
-            value={strengths}
-            onChange={(event) => setStrengths(event.target.value)}
-          />
-        </S.TextFieldBox>
-      </S.Section>
-
-      <S.TimeAvailabilitySection>
-        <S.SectionHeader>
-          <S.SectionTitle>할애할 수 있는 시간</S.SectionTitle>
-        </S.SectionHeader>
-
-        <S.TimeRow>
-          <S.TimeRowLabel>1일 기준</S.TimeRowLabel>
-          <S.TimeOptionGroup>
-            {DAILY_OPTIONS.map((option) => (
-              <S.TimeOptionButton
-                key={option.key}
-                type="button"
-                $active={dailyAvailability === option.key}
-                onClick={() => toggleDailyAvailability(option.key)}
-              >
-                {option.label}
-              </S.TimeOptionButton>
-            ))}
-          </S.TimeOptionGroup>
-        </S.TimeRow>
-
-        <S.TimeRow>
-          <S.TimeRowLabel>1주 기준</S.TimeRowLabel>
-          <S.TimeOptionGroup>
-            {WEEKLY_OPTIONS.map((option) => (
-              <S.TimeOptionButton
-                key={option.key}
-                type="button"
-                $active={weeklyAvailability === option.key}
-                onClick={() => toggleWeeklyAvailability(option.key)}
-              >
-                {option.label}
-              </S.TimeOptionButton>
-            ))}
-          </S.TimeOptionGroup>
-        </S.TimeRow>
-      </S.TimeAvailabilitySection>
-
+    <BasePortfolioForm
+      title="PM 포트폴리오"
+      experienceSummary={experienceSummary}
+      strengths={strengths}
+      dailyAvailability={dailyAvailability}
+      weeklyAvailability={weeklyAvailability}
+      strengthsPlaceholder={strengthsPlaceholder}
+      isFormValid={isSelfAssessmentValid}
+      onExperienceChange={setExperienceSummary}
+      onStrengthsChange={setStrengths}
+      onDailyAvailabilityChange={toggleDailyAvailability}
+      onWeeklyAvailabilityChange={toggleWeeklyAvailability}
+      onRegister={handleRegister}
+      initialIsNewcomer={portfolioData?.isNewcomer || false}
+    >
       <SelfAssessmentGroup
-        title="디자인에 대한 이해도\n자가평가"
+        title="디자인에 대한 이해도 자가평가"
         items={DESIGN_ITEMS}
         values={designAssessment}
         onChange={handleDesignAssessmentChange}
       />
 
       <SelfAssessmentGroup
-        title="개발에 대한 이해도\n자가평가"
+        title="개발에 대한 이해도 자가평가"
         items={DEVELOPMENT_ITEMS}
         values={developmentAssessment}
         onChange={handleDevelopmentAssessmentChange}
       />
-    </S.Wrapper>
+    </BasePortfolioForm>
   );
 }
 

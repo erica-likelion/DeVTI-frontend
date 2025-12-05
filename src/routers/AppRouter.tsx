@@ -15,6 +15,9 @@ import HomePageNone from "@/pages/home/HomePageNone";
 import LandingPage from "@/pages/landing/LandingPage";
 import LoginPage from "@/pages/login/LoginPage";
 import ProfilePage from "@/pages/profile/ProfilePage";
+import PMPortfolioViewPage from "@/pages/profile/PMPortfolioViewPage";
+import DesignPortfolioViewPage from "@/pages/profile/DesignPortfolioViewPage";
+import ProfileDefaultPage from "@/pages/profile/ProfileDefaultPage";
 import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 import JoinRoom from "@/pages/joinroom/JoinRoom";
 import NewRoom from "@/pages/newroom/NewRoom";
@@ -25,6 +28,7 @@ import DBTIEditPage from "@/pages/profile/edit/DBTI/DBTIEditPage";
 import ProfileEditPage from "@/pages/profile/edit/DBTI/ProfileEditPage";
 import DBTIResultPage from "@/pages/profile/edit/DBTI/DBTIResultPage";
 import DBTIPage from "@/pages/profile/DBTI/DBTIPage";
+import Room from "@/pages/room/Room";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +57,54 @@ export const router = createBrowserRouter([
       },
       
       {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/edit",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/edit/:part",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/pm/view",
+        element: (
+          <ProtectedRoute>
+            <PMPortfolioViewPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/design/view",
+        element: (
+          <ProtectedRoute>
+            <DesignPortfolioViewPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/Default",
+        element: (
+          <ProtectedRoute>
+            <ProfileDefaultPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: '*',
         element: (
           <ProtectedRoute>
@@ -70,6 +122,12 @@ export const router = createBrowserRouter([
         path: "join-room/pr",
         element: (
           <JoinRoomPR />
+        ),
+      },
+      {
+        path: "room",
+        element: (
+          <Room />
         ),
       },
       {
