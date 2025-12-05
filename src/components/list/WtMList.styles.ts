@@ -9,7 +9,7 @@ export const Container = styled.div<{ clicked?: boolean }>`
   ${({ theme }) => theme.responsive.property.width('large')};
   ${({ theme }) => theme.responsive.property.paddingComplex('R', 'L', 'R', 'R')}
 
-  border-radius: ${({ theme }) => theme.responsive.property.borderRadius("soft")};
+  ${({ theme }) => theme.responsive.property.borderRadius("soft")};
   background: ${({ theme }) => theme.colors.grayScale.white};
   box-shadow: ${({ theme }) => theme.colors.transparents.BL100};
 
