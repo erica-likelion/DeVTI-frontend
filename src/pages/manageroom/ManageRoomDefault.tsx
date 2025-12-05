@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as S from './ManageRoomDefault.styles';
 import RoleTabs from '@/components/Tabs/RoleTabs';
-import WtLMemberList from './components/WtLMemberList';
+import WtLMemberList from '../../components/managerlist/WtLMemberList';
 import SegmentControl from '@/components/SegmentControl/SegmentControlTransparent';
 import DropBox from '@/components/DropBox/DropBox';
 import VT700LButton from '@/components/ButtonDynamic/VT700LButton';
