@@ -191,7 +191,7 @@ const ManageRoomDefault = () => {
         </S.SubTitle>
       </S.TopSection>
 
-			{ isEnded ? (
+			{ !isWagging ? (
 				<VT700LButton children="꼬리 흔들기 시작" disabled={isWagging} onClick={() => setIsWagging(true)}/>
 			) : (
 				<SegmentControl
