@@ -184,8 +184,7 @@ const ManageRoomDefault = () => {
 					options={TOP_TABS as unknown as string[]}
 					onChange={(val) => setSelectedTab(val as TopTab)}/>
 			)}
-
-			
+	
 
       <S.ListSection>
         <S.ListHeaderRow>

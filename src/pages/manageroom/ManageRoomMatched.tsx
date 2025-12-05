@@ -15,6 +15,7 @@ import {
   type Team,
   type Member,
   type Part,
+  type MatchingResult,
 } from './MatchingResult';
 
   const formatPartLabel = (part: Part): string => {
@@ -35,10 +36,22 @@ import {
   }
 
 
-const Room = () => {
-  const [selectedTopTab, setSelectedTopTab] = useState<TopTab>('매칭 팀');
+const ManageRoomMatched = () => {
+  // 🔹 전체 매칭 결과를 상태로 들고 있고
+  const [matchingResult, setMatchingResult] = useState<MatchingResult>(MATCHING_RESULT_DUMMY);
 
-  const teams: Team[] = MATCHING_RESULT_DUMMY.payload.teams;
+  const [selectedTopTab, setSelectedTopTab] =
+    useState<TopTab>('매칭 팀');
+
+  // 🔹 teams는 payload에서 바로 꺼냄
+  const teams: Team[] = matchingResult.payload.teams;
+
+  // 🔹 전체 인원 / 팀 수 계산
+  const teamCount = teams.length;
+  const totalMembers = teams.reduce(
+    (sum, team) => sum + team.members.length,
+    0
+  );
 
   return (
     <S.Container>
@@ -46,7 +59,7 @@ const Room = () => {
       <S.TopArea>
         <S.TitleBlock>
           <S.Title>매칭이 완료되었어요!</S.Title>
-          <S.Subtitle>전체 00명 / 00팀</S.Subtitle>
+          <S.Subtitle>전체 {totalMembers}명 / {teamCount}팀</S.Subtitle>
         </S.TitleBlock>
 
         <BlackMTextButton children="매칭 확정" />
@@ -94,4 +107,4 @@ const Room = () => {
   );
 };
 
-export default Room;
+export default ManageRoomMatched;
