@@ -120,20 +120,6 @@ const ManageRoomDefault = () => {
   const totalMembers = participants.length;
   let filteredParticipants = participants;
 
-  if (!isEnded) {
-    // 매칭 전 
-    if (selectedTab !== '전체') {
-      filteredParticipants = participants.filter(
-        p => p.role === (selectedTab as RoleType),
-      );
-    }
-  } else {
-    // 매칭 후 
-    if (selectedTab !== '전체') {
-      const teamNo = parseInt((selectedTab as string).replace('팀', ''), 10);
-      filteredParticipants = participants.filter(p => p.team === teamNo);
-    }
-  }
 
   /* 
     //백엔드 연결 용
@@ -208,9 +194,7 @@ const ManageRoomDefault = () => {
 
         <S.MidSection>
           <S.TotalCount>
-            {isEnded
-              ? `전체 ${totalMembers}명`
-              : `전체 ${filteredParticipants.length}명`}
+         		전체 {totalMembers}명
           </S.TotalCount>
 
           <DropBox
