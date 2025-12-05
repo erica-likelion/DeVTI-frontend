@@ -7,7 +7,7 @@ export const Dimmed = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 99999;
 `;
 
 export const ModalContainer = styled.div`
