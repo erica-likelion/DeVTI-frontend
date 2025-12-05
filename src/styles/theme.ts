@@ -251,6 +251,18 @@ const gaps = {
     tablet: '1.25rem',  // 20px
     mobile: '1rem',     // 16px
   },
+  CenterSheet: {
+    wide: '8.25rem',       // 132px
+    desktop: '7.25rem',    // 116px
+    tablet: '3rem',        // 48px
+    mobile: '0.75rem',     // 12px
+  },
+  GeneralMargin: {
+    wide: '2rem',          // 32px
+    desktop: '2rem',       // 32px
+    tablet: '2rem',        // 32px
+    mobile: '1rem',        // 16px
+  },
 } as const;
 
 // Component Width 유틸리티 (component widths) - 반응형
@@ -519,6 +531,15 @@ const responsive = {
     return borders[type].wide;
   },
 
+  // Overlay Modal width - 값만 반환
+  overlayModalWidth: (breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return overlayModals.width[breakpoint];
+    }
+    return overlayModals.width.wide;
+  },
+
+
   // 전체 속성을 반응형으로 적용하는 유틸리티
   property: {
     gap: (size: keyof typeof gaps) => createResponsiveProperty('gap', {
@@ -579,6 +600,14 @@ const responsive = {
       tablet: sourceWidths[size].tablet,
       mobile: sourceWidths[size].mobile
     }),
+    
+    // Overlay Modal width를 width 속성에 적용
+    overlayModalWidth: () => createResponsiveProperty('width', {
+      wide: overlayModals.width.wide,
+      desktop: overlayModals.width.desktop,
+      tablet: overlayModals.width.tablet,
+      mobile: overlayModals.width.mobile
+    }),
 
     // sourceWidth 크기를 width와 height에 동시 적용
     sourceSize: (size: keyof typeof sourceWidths) => css`
@@ -594,7 +623,11 @@ const responsive = {
         tablet: sourceWidths[size].tablet,
         mobile: sourceWidths[size].mobile
       })}
+
+      
     `
+    
+    
   }
 };
 

@@ -97,6 +97,7 @@ export const ButtonWrapper = styled.div`
   align-items: center;
   width: 100%;
 `;
+
 export const EditWrapper = styled.div`
   position: relative;
   min-height: ${VIEWPORT_AVAILABLE_HEIGHT};

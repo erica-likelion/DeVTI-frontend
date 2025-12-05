@@ -10,6 +10,8 @@ import InputField from "@/components/Input/InputField";
 import WtLPawButton from "@/components/ButtonDynamic/WtLPawButton";
 import DropBox from "@/components/DropBox";
 
+import BkLTextButton from "@/components/ButtonStatic/BkLTextButton";
+
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
 type PartOption = (typeof PART_OPTIONS)[number];
 
