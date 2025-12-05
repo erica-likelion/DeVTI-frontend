@@ -6,10 +6,9 @@ export const Container = styled.div`
   align-items: center;
   flex-direction: column;
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   gap: 3.75rem;
-  padding: 5rem 0;
-  overflow: auto;
+  overflow-y: auto;
 `;
 
 export const TextButtonFrame = styled.div`
@@ -56,6 +55,7 @@ export const DashBoardSection = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 3rem;
+
 `;
 
 export const PartGrid = styled.div`
