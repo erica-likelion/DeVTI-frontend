@@ -4,6 +4,7 @@ import { theme } from "@/styles/theme";
 export const Container = styled.div<{ $size?: "L" | "M" }>`
   display: flex;
   width: ${({ $size }) => ($size === "M" ? "auto" : "100%")};
+  max-width: ${({ $size }) => ($size === "M" ? "auto" : "33.25rem")};
   flex-direction: column;
   align-items: flex-start;
   ${({ theme }) => theme.responsive.property.gap('XXS')}
@@ -16,29 +17,13 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
   align-items: center;
   justify-content: ${({ $size }) => ($size === "M" ? "center" : "flex-start")};
   width: 100%;
-  ${({ $size, theme }) =>
+  padding: ${({ $size, theme }) =>
     $size === "M"
-      ? theme.responsive.property.paddingComplex('S', 'M', 'S', 'M') // InputField와 같은 padding
-      : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')};
+      ? `${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XS')}`
+      : `${theme.responsive.gap('S')} ${theme.responsive.gap('M')} ${theme.responsive.gap('S')} ${theme.responsive.gap('M')}`};
   border: none;
   border-radius: ${({ $size, theme }) =>
-    $size === "M" ? theme.borders.sharp.wide : theme.borders.smooth.wide};
-  
-  ${({ theme }) => theme.media.desktop} {
-    border-radius: ${({ $size, theme }) =>
-      $size === "M" ? theme.borders.sharp.desktop : theme.borders.smooth.desktop};
-  }
-
-  ${({ theme }) => theme.media.tablet} {
-    border-radius: ${({ $size, theme }) =>
-      $size === "M" ? theme.borders.sharp.tablet : theme.borders.smooth.tablet};
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    border-radius: ${({ $size, theme }) =>
-      $size === "M" ? theme.borders.sharp.mobile : theme.borders.smooth.mobile};
-  }
-  
+    $size === "M" ? theme.responsive.borderRadius('sharp') : theme.responsive.borderRadius('smooth')};
   background: ${({ $size, $disabled, theme }) =>
     $size === "M" && $disabled
       ? "transparent"
@@ -47,14 +32,9 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
     $size === "M" ? "none" : theme.effects.dropShadows.DS100};
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XXS') : theme.responsive.gap('S'))};
-  height: auto;
+  height: ${({ $size }) => ($size === "M" ? "2.5rem" : "3.5rem")};
   align-self: stretch;
   transition: background-color 0.2s ease;
-  
-  ${({ theme }) => theme.media.mobile} {
-    padding: ${({ theme }) => `${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('M', 'mobile')} ${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('M', 'mobile')}`};
-    gap: ${({ theme }) => theme.responsive.gap('S', 'mobile')};
-  }
 
 
 

@@ -26,8 +26,7 @@ export const Container = styled.button<{ disabled?: boolean }>`
 
 export const Icon = styled.span`
   display: flex;
-  width: 2.75rem;
-  height: 2.75rem;
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   border-radius: 50%;
   overflow: hidden;
   

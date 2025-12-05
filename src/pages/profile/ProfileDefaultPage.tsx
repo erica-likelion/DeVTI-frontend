@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
-import PMPortfolioView from "./components/PMPortfolioView";
-import DesignPortfolioView from "./components/DesignPortfolioView";
+import PMPortfolioView from "@/components/profile/PMPortfolioView";
+import DesignPortfolioView from "@/components/profile/DesignPortfolioView";
 import DBTIResultPage from "./edit/DBTI/DBTIResultPage";
 import * as S from "./ProfilePage.styles";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
@@ -11,7 +11,7 @@ import { useIsMobile } from "@/hooks/useMediaQuery";
 import type {
   DailyAvailabilityKey,
   WeeklyAvailabilityKey,
-} from "./components/BasePortfolioForm";
+} from "@/components/profile/BasePortfolioForm";
 
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
 type PartOption = (typeof PART_OPTIONS)[number];
