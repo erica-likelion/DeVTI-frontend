@@ -116,6 +116,9 @@ const Room = () => {
     setSelectedTab(value as TabValue);
   };
 
+  const handleWagging = (participantId: number) => {
+  };
+
   // 전체 인원 / 팀 수 계산
   const totalMembers = participants.length;
   const teamCount = new Set(
@@ -268,6 +271,7 @@ const Room = () => {
               keywords={participant.keywords}
               rightButton={isWagging ? '꼬리 흔들기' : false}
               disabled={participant.disabled}
+             // onRightButtonClick={() => handleWagging(participant.id)}
             />
           ))}
         </S.MemberList>

@@ -74,6 +74,10 @@ const ManageRoomDefault = () => {
   );
   const [isMatchedByServer, setIsMatchedByServer] = useState(false);
 
+	const handleRemoveParticipant = (id: number) => {
+    setParticipants(prev => prev.filter(p => p.id !== id));
+  };
+
   // 🔹 꼬리 흔들기 상태 (room.state_change → WAGGING 에서 true)
   const [isWagging, setIsWagging] = useState(false);
 
@@ -225,8 +229,9 @@ const ManageRoomDefault = () => {
               icon={DefaultIMG_Profile}
               header={participant.username}
               keywords={participant.keywords}
-              rightButton={isWagging ? participant.rightButton : false}
+              rightButton={'제거'}
               disabled={participant.disabled}
+							onRightButtonClick={() => handleRemoveParticipant(participant.id)}
             />
           ))}
         </S.MemberList>

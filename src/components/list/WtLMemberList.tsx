@@ -10,6 +10,7 @@ interface WtLMemberListProps {
   rightButton?: string | false;
   disabled?: boolean;
   onClick?: () => void;
+  onRightButtonClick?: () => void;
 }
 
 export const WtLMemberList = ({
@@ -19,6 +20,7 @@ export const WtLMemberList = ({
   rightButton,
   disabled = false,
   onClick,
+  onRightButtonClick,
 }: WtLMemberListProps) => {
   const [clicked, setClicked] = useState(false);
 
@@ -56,7 +58,7 @@ export const WtLMemberList = ({
 
         <S.ButtonArea>
           {hasRightButton && (
-            <VT500Button disabled={disabled}>
+            <VT500Button disabled={disabled} onClick={onRightButtonClick}>
               {rightButton}
             </VT500Button>
           )}
