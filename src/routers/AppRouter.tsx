@@ -23,8 +23,9 @@ import JoinRoomPR from "@/pages/joinroom/JoinRoomPR";
 import TestPage from "@/pages/test/TestPage";
 import DBTIEditPage from "@/pages/profile/edit/DBTI/DBTIEditPage";
 import ProfileEditPage from "@/pages/profile/edit/DBTI/ProfileEditPage";
-import DBTIResultPage from "@/pages/profile/edit/DBTI/DBTIResultPage";
+// import DBTIResultPage from "@/pages/profile/edit/DBTI/DBTIResultPage";
 import DBTIPage from "@/pages/profile/DBTI/DBTIPage";
+import DashboardPage from "@/pages/manage/dashboard/DashboardPage";
 
 export const router = createBrowserRouter([
   {
@@ -106,6 +107,12 @@ export const router = createBrowserRouter([
         path: "profile/DBTI",
         element: (
           <DBTIPage />
+        ),
+      },
+      {
+        path: "manage/dashboard",
+        element: (
+          <DashboardPage />
         ),
       },
       {
