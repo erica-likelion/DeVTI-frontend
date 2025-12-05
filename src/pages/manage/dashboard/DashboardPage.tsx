@@ -61,6 +61,7 @@ export default function DashboardPage({ totalMembers = DEFAULT_TOTAL_MEMBERS, to
                         outerRadius="100%"
                         paddingAngle={CHART_CONFIG.pie.paddingAngle}
                         dataKey="value"
+                        isAnimationActive={false}
                       >
                         {partData.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={entry.color} />
@@ -88,10 +89,10 @@ export default function DashboardPage({ totalMembers = DEFAULT_TOTAL_MEMBERS, to
                     <CartesianGrid strokeDasharray="6 5" horizontal={true} vertical={false} stroke="#BB85ED" />
                     <XAxis dataKey="name" stroke="#BB85ED" tick={{ fill: "#19181D", fontSize: 14, fontWeight: 600, dy: 16}} tickLine={false} />
                     <YAxis tick={{ fontSize: 0}} tickLine={false} stroke="#BB85ED" domain={[0, 'dataMax+1']} ticks={[0, 1, 2, 3, 4, 5]} width={2} />
-                    <Bar dataKey="PM" fill={CHART_CONFIG.colors.PM} maxBarSize={CHART_CONFIG.bar.maxBarSize} />
-                    <Bar dataKey="디자인" fill={CHART_CONFIG.colors.디자인} maxBarSize={CHART_CONFIG.bar.maxBarSize} />
-                    <Bar dataKey="프론트엔드" fill={CHART_CONFIG.colors.프론트엔드} maxBarSize={CHART_CONFIG.bar.maxBarSize} />
-                    <Bar dataKey="백엔드" fill={CHART_CONFIG.colors.백엔드} maxBarSize={CHART_CONFIG.bar.maxBarSize} />
+                    <Bar dataKey="PM" fill={CHART_CONFIG.colors.PM} maxBarSize={CHART_CONFIG.bar.maxBarSize} isAnimationActive={false} />
+                    <Bar dataKey="디자인" fill={CHART_CONFIG.colors.디자인} maxBarSize={CHART_CONFIG.bar.maxBarSize} isAnimationActive={false} />
+                    <Bar dataKey="프론트엔드" fill={CHART_CONFIG.colors.프론트엔드} maxBarSize={CHART_CONFIG.bar.maxBarSize} isAnimationActive={false} />
+                    <Bar dataKey="백엔드" fill={CHART_CONFIG.colors.백엔드} maxBarSize={CHART_CONFIG.bar.maxBarSize} isAnimationActive={false} />
                   </BarChart>
                 </ResponsiveContainer>
             </S.ChartContainer>
@@ -162,7 +163,7 @@ export default function DashboardPage({ totalMembers = DEFAULT_TOTAL_MEMBERS, to
             </S.RadarLegend>
             <S.ChartContainer>
               <ResponsiveContainer width="100%" height={344}>
-                  <BarChart data={PM_UNDERSTANDING_DATA} barGap={0}>
+                  <BarChart data={PM_UNDERSTANDING_DATA} margin={{top: 20, bottom: 16}} barGap={0} barCategoryGap="35%">
                     <CartesianGrid strokeDasharray="6 5" horizontal={true} vertical={false} stroke="#7FDAD4" />
                     <XAxis dataKey="name" stroke="#7FDAD4" tick={{ fill: "#19181D", fontSize: 14, fontWeight: 600, dy: 16}} tickLine={false} />
                     <YAxis tick={{ fontSize: 0}} tickLine={false} stroke="#7FDAD4" domain={[0, 5]} ticks={[0, 1, 2, 3, 4, 5]} width={2} />
@@ -170,9 +171,9 @@ export default function DashboardPage({ totalMembers = DEFAULT_TOTAL_MEMBERS, to
                     <ReferenceLine y={avgPMDesign} stroke="#973EE9" strokeWidth={2} />
                     <ReferenceLine y={avgPMDev} stroke="#C886E9" strokeWidth={2} />
                     <ReferenceLine y={avgDesign} stroke="#66D7BC" strokeWidth={2} />
-                    <Bar dataKey="PM-디자인 이해도" fill="#973EE9" maxBarSize={CHART_CONFIG.bar.maxBarSize} />
-                    <Bar dataKey="PM-개발 이해도" fill="#C886E9" maxBarSize={CHART_CONFIG.bar.maxBarSize} />
-                    <Bar dataKey="디자인" fill="#66D7BC" maxBarSize={CHART_CONFIG.bar.maxBarSize} />
+                    <Bar dataKey="PM-디자인 이해도" fill="#973EE9" maxBarSize={CHART_CONFIG.bar.maxBarSize} isAnimationActive={false} />
+                    <Bar dataKey="PM-개발 이해도" fill="#C886E9" maxBarSize={CHART_CONFIG.bar.maxBarSize} isAnimationActive={false} />
+                    <Bar dataKey="디자인" fill="#66D7BC" maxBarSize={CHART_CONFIG.bar.maxBarSize} isAnimationActive={false} />
                   </BarChart>
                 </ResponsiveContainer>
             </S.ChartContainer>

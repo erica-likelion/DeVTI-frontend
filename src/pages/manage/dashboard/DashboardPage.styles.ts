@@ -118,6 +118,14 @@ export const ChartContainer = styled.div`
   height: 100%;
   overflow: visible;
   text-align: center;
+  
+  .recharts-wrapper {
+    pointer-events: none !important;
+  }
+  
+  .recharts-surface {
+    pointer-events: none !important;
+  }
 `;
 
 
