@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react';
-import * as S from './Room.styles';
+import * as S from './ManageRoomDefault.styles';
 import RoleTabs from '@/components/Tabs/RoleTabs';
-import WtLMemberList from '@/components/list/WtLMemberList';
-import InputFieldL from '@/components/Input/InputFieldL';
+import WtLMemberList from '../../components/managerlist/WtLMemberList';
+import SegmentControl from '@/components/SegmentControl/SegmentControlTransparent';
 import DropBox from '@/components/DropBox/DropBox';
-import VT500SButton from '@/components/ButtonDynamic/VT500SButton';
+import VT700LButton from '@/components/ButtonDynamic/VT700LButton';
 import DefaultIMG_Profile from '/public/DefaultIMG_Profile.webp';
 
 import {
   PARTICIPANTS as INITIAL_PARTICIPANTS,
   type Participant,
   type RoleType,
-} from './RoomParticipants';
+} from '../room/RoomParticipants';
 
 const ROLE_TABS = ['전체', 'PM', '디자인', '프론트엔드', '백엔드'] as const;
-const TEAM_TABS = ['전체', '1팀', '2팀', '3팀', '4팀'] as const;
+const TOP_TABS = ['전체', '꼬리 다 흔들지 않은 인원'] as const;
 
 interface RemainingTime {
   days: number;
@@ -24,16 +24,14 @@ interface RemainingTime {
   isEnded: boolean;
 }
 
-interface CarrotButtonProps {
-  participantId: number;
-}
-
 // 마감 시간(임시)
 const MATCH_DEADLINE = new Date('2025-12-31T23:59:59+09:00');
 
 type RoleTab = (typeof ROLE_TABS)[number];
-type TeamTab = (typeof TEAM_TABS)[number];
-type TabValue = RoleTab | TeamTab;
+type TopTab = (typeof TOP_TABS)[number];
+type TabValue = RoleTab | TopTab; 
+
+let tabs = ROLE_TABS;
 
 
 const calcRemainingTime = (): RemainingTime => {
@@ -56,6 +54,7 @@ const calcRemainingTime = (): RemainingTime => {
   const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
   const seconds = totalSeconds % 60;
 
+
   return {
     days,
     hours,
@@ -66,7 +65,7 @@ const calcRemainingTime = (): RemainingTime => {
 };
 
 
-const Room = () => {
+const ManageRoomDefault = () => {
 
   const [participants, setParticipants] = useState<Participant[]>(INITIAL_PARTICIPANTS);
   const [selectedTab, setSelectedTab] = useState<TabValue>('전체');
@@ -75,20 +74,23 @@ const Room = () => {
   );
   const [isMatchedByServer, setIsMatchedByServer] = useState(false);
 
+	const handleRemoveParticipant = (id: number) => {
+    setParticipants(prev => prev.filter(p => p.id !== id));
+  };
+
   // 🔹 꼬리 흔들기 상태 (room.state_change → WAGGING 에서 true)
   const [isWagging, setIsWagging] = useState(false);
-  const [isCarrotDisabled, setIsCarrotDisabled] = useState(false);
 
-  const handleCarrotClick = async () => {
-    if (isCarrotDisabled) return; 
+  const handleWaggingClick = async () => {
+    if (isWagging) return; 
 
-    setIsCarrotDisabled(true);
+    setIsWagging(true);
 
     /*
     try {
       await axios.post('/api/matching/carrot/{participant_id}');
     } catch (error) {
-      console.error('당근 흔들기 API 호출 실패:', error);
+      console.error('꼬리 흔들기 API 호출 실패:', error);
 
       // setIsCarrotDisabled(false);
     }
@@ -110,39 +112,14 @@ const Room = () => {
     setSelectedTab('전체');
   }, [isEnded]);
 
-  const tabs = isEnded ? TEAM_TABS : ROLE_TABS;
-
   const handleChangeTab = (value: string) => {
     setSelectedTab(value as TabValue);
   };
 
-  const handleWagging = (participantId: number) => {
-  };
-
   // 전체 인원 / 팀 수 계산
   const totalMembers = participants.length;
-  const teamCount = new Set(
-    participants
-      .map(p => p.team)
-      .filter((t): t is number => typeof t === 'number'),
-  ).size;
-
   let filteredParticipants = participants;
 
-  if (!isEnded) {
-    // 매칭 전 
-    if (selectedTab !== '전체') {
-      filteredParticipants = participants.filter(
-        p => p.role === (selectedTab as RoleType),
-      );
-    }
-  } else {
-    // 매칭 후 
-    if (selectedTab !== '전체') {
-      const teamNo = parseInt((selectedTab as string).replace('팀', ''), 10);
-      filteredParticipants = participants.filter(p => p.team === teamNo);
-    }
-  }
 
   /* 
     //백엔드 연결 용
@@ -189,57 +166,25 @@ const Room = () => {
     <S.Container>
 
       <S.TopSection>
-        {isEnded ? (
-          <>
-            <S.Title>매칭이 완료되었습니다!</S.Title>
-            <S.CountdownText>
-              전체 {totalMembers}명 / {teamCount}팀
-            </S.CountdownText>
-          </>
-        ) : (
-          <>
-            <S.Title>매칭 시작까지</S.Title>
-            <S.CountdownText>
-              {remainingTime.days}일 {remainingTime.hours}시간{' '}
-              {remainingTime.minutes}분 {remainingTime.seconds}초
-            </S.CountdownText>
-          </>
-        )}
+        <S.Title>매칭 시작까지</S.Title>
+        <S.CountdownText>
+          {remainingTime.days}일 {remainingTime.hours}시간{' '}
+          {remainingTime.minutes}분 
+        </S.CountdownText>
 
         <S.SubTitle>
-          {!isEnded
-            ? '아직 팀원들이 다 입장하지 않았어요. 팀원들을 조금만 기다려볼까요?'
-            : ''}
+          멋쟁이사자처럼 13기 장기프로젝트 - 운영진
         </S.SubTitle>
       </S.TopSection>
 
-
-      <S.AISection>
-        <S.AISectionHeader>
-          <S.AITitle>
-            {isEnded ? '우리 팀이 만나게 된 배경은' : 'AI 추천'}
-          </S.AITitle>
-        </S.AISectionHeader>
-
-        <InputFieldL
-          text="Lorem ipsum dolor sit amet consectetur. Hendrerit tellus bibendum risus auctor commodo dolor blandit lacinia. Nulla eu non phasellus et elit. Condimentum et nulla scelerisque justo quisque mauris risus mauris sapien. Fames a et tellus ipsum non arcu bibendum. Amet amet viverra sit felis. Nunc ultrices laoreet purus aliquet lectus dictumst elementum. Molestie molestie neque risus dignissim sed eget aenean eu. Nisl eget dignissim velit consequat eu at mauris neque. Placerat nunc sit ullamcorper in."
-        />
-
-        {isEnded && (
-          <S.MidSection>
-            <S.SubTitle>
-              내 팀이 마음에 들지 않는다면, 당근을 흔들어 운영진에게 알릴 수 있어요.
-            </S.SubTitle>
-            <VT500SButton
-              children="당근 흔들기"
-              disabled={isCarrotDisabled}
-              onClick={handleCarrotClick}
-            />
-          </S.MidSection> 
-        )}
-      </S.AISection>
-
-
+			{ !isWagging ? (
+				<VT700LButton children="꼬리 흔들기 시작" disabled={isWagging} onClick={() => setIsWagging(true)}/>
+			) : (
+				<SegmentControl
+					options={TOP_TABS as unknown as string[]}
+					onChange={(val) => setSelectedTab(val as TopTab)}/>
+			)}
+	
 
       <S.ListSection>
         <S.ListHeaderRow>
@@ -248,16 +193,14 @@ const Room = () => {
 
         <S.MidSection>
           <S.TotalCount>
-            {isEnded
-              ? `전체 ${totalMembers}명`
-              : `전체 ${filteredParticipants.length}명`}
+         		전체 {totalMembers}명
           </S.TotalCount>
 
           <DropBox
-            value={'AI 추천순'}
+            value={'최근 입장순'}
             size="M"
             isOpen={false}
-            options={['AI 추천순']}
+            options={['최근 입장순']}
             disabled
           />
         </S.MidSection>
@@ -269,9 +212,9 @@ const Room = () => {
               icon={DefaultIMG_Profile}
               header={participant.username}
               keywords={participant.keywords}
-              rightButton={isWagging ? '꼬리 흔들기' : false}
+              rightButton={'제거'}
               disabled={participant.disabled}
-             // onRightButtonClick={() => handleWagging(participant.id)}
+							onRightButtonClick={() => handleRemoveParticipant(participant.id)}
             />
           ))}
         </S.MemberList>
@@ -280,4 +223,4 @@ const Room = () => {
   );
 };
 
-export default Room;
+export default ManageRoomDefault;
