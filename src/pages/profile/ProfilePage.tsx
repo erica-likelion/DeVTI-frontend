@@ -345,7 +345,7 @@ export default function ProfilePage() {
             </S.PartSelectionWrapper>
           </S.FormSection>
 
-          <S.SaveButtonWrapper>
+          <S.SaveButtonWrapper $isDropdownOpen={isPartDropdownOpen}>
             <BkMTextButton 
               onClick={handleSave} 
               disabled={isSaveDisabled}
