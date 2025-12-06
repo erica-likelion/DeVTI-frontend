@@ -11,15 +11,15 @@ export const Container = styled.div<{ $isInDefaultPage?: boolean }>`
   overflow-y: auto;
   height: 100%;
 
-  ${({ theme, $isInDefaultPage }) => theme.media.desktop} {
+  ${({ theme}) => theme.media.desktop} {
     padding: ${({ $isInDefaultPage, theme }) => $isInDefaultPage ? '0' : `3.75rem ${theme.gaps.GeneralMargin.desktop}`};
   }
 
-  ${({ theme, $isInDefaultPage }) => theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     padding: ${({ $isInDefaultPage, theme }) => $isInDefaultPage ? '0' : `3.75rem ${theme.gaps.GeneralMargin.tablet}`};
   }
 
-  ${({ theme, $isInDefaultPage }) => theme.media.mobile} {
+  ${({ theme }) => theme.media.mobile} {
     padding: ${({ $isInDefaultPage, theme }) => $isInDefaultPage ? '0' : `3.75rem ${theme.gaps.GeneralMargin.mobile}`};
   }
 `;
