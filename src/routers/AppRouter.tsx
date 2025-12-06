@@ -29,7 +29,8 @@ import ProfileEditPage from "@/pages/profile/edit/DBTI/ProfileEditPage";
 // import DBTIResultPage from "@/pages/profile/edit/DBTI/DBTIResultPage";
 import DBTIPage from "@/pages/profile/DBTI/DBTIPage";
 import Room from "@/pages/room/Room";
-import DashboardPage from "@/pages/manage/dashboard/DashboardPage";
+import DashboardPage from "@/pages/manageroom/dashboard/DashboardPage";
+import ManageJoinPage from "@/pages/manageroom/ManageJoinPage";
 
 export const router = createBrowserRouter([
   {
@@ -171,6 +172,12 @@ export const router = createBrowserRouter([
         path: "manage/dashboard",
         element: (
           <DashboardPage />
+        ),
+      },
+      {
+        path: "manage/join",
+        element: (
+          <ManageJoinPage />
         ),
       },
       {
