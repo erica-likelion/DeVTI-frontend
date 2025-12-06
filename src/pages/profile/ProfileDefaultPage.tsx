@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import PMPortfolioView from "@/components/profile/PMPortfolioView";
 import DesignPortfolioView from "@/components/profile/DesignPortfolioView";
+import FrontendPortfolioView from "@/components/profile/FrontendPortfolioView";
+import BackendPortfolioView from "@/components/profile/BackendPortfolioView";
 import DBTIResultPage from "./edit/DBTI/DBTIResultPage";
 import * as S from "./ProfilePage.styles";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
@@ -26,6 +28,9 @@ interface PortfolioData {
   developmentAssessment?: Record<string, number>;
   designWorkFile?: string | null;
   figmaAssessment?: Record<string, number>;
+  github?: string;
+  selectedTechs?: string[];
+  techAssessments?: Record<string, Record<string, number>>;
   isNewcomer: boolean;
   name?: string;
   intro?: string;
@@ -305,9 +310,39 @@ export default function ProfileDefaultPage() {
           />
         );
       case "프론트엔드":
+        return (
+          <FrontendPortfolioView
+            experienceSummary={partData.experienceSummary || ""}
+            strengths={partData.strengths || ""}
+            github={partData.github || ""}
+            selectedTechs={partData.selectedTechs || []}
+            techAssessments={partData.techAssessments || {}}
+            isNewcomer={partData.isNewcomer || false}
+            name={partData.name || user?.name}
+            intro={partData.intro || ""}
+            dbtiInfo={partData.dbtiInfo || null}
+            profileImage={partData.profileImage || null}
+            showEditButtons={false}
+            onBack={isMobile ? handleBackClick : undefined}
+          />
+        );
       case "백엔드":
-        // TODO: 프론트엔드/백엔드 포트폴리오 뷰 구현 후 추가
-        return <div>{selectedPart} 포트폴리오 (구현 예정)</div>;
+        return (
+          <BackendPortfolioView
+            experienceSummary={partData.experienceSummary || ""}
+            strengths={partData.strengths || ""}
+            github={partData.github || ""}
+            selectedTechs={partData.selectedTechs || []}
+            techAssessments={partData.techAssessments || {}}
+            isNewcomer={partData.isNewcomer || false}
+            name={partData.name || user?.name}
+            intro={partData.intro || ""}
+            dbtiInfo={partData.dbtiInfo || null}
+            profileImage={partData.profileImage || null}
+            showEditButtons={false}
+            onBack={isMobile ? handleBackClick : undefined}
+          />
+        );
       default:
         return <div>포트폴리오를 찾을 수 없습니다.</div>;
     }
