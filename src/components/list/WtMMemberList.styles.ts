@@ -57,6 +57,12 @@ export const KeywordArea = styled.div<{ hasKeyword: boolean }>`
   margin-left: auto;
   font-size: ${({ theme }) => theme.fonts.body.m500};
   display: ${({ hasKeyword }) => (hasKeyword ? "flex" : "none")};
+
+  ${({ theme }) => theme.media.mobile} {
+     & > *:nth-child(n + 3) {
+      display: none;
+    }
+  }
 `;
 
 

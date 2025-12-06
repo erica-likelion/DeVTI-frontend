@@ -40,19 +40,6 @@ export const Subtitle = styled.p`
   color: ${({ theme }) => theme.colors.secondary.VT700};
 `;
 
-/* ---------- Segment Area ---------- */
-
-
-
-// 임시 세그먼트 버튼 – 나중에 실제 컴포넌트로 교체
-export const DummySegmentButton = styled.button`
-  ${({ theme }) => theme.fonts.body.m500};
-  padding: 0.5rem 1.5rem;
-  border-radius: 999px;
-  border: none;
-  background: ${({ theme }) => theme.colors.transparents.WH200};
-`;
-
 /* ---------- List Area ---------- */
 
 export const ListArea = styled.section`
