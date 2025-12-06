@@ -20,8 +20,9 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
     ? theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')
     : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
   border: none;
-  border-radius: ${({ $size, theme }) =>
-    $size === "M" ? theme.responsive.property.borderRadius('sharp') : theme.responsive.property.borderRadius('smooth')};
+  ${({ $size, theme }) => $size === "M" 
+    ? theme.responsive.property.borderRadius('sharp') 
+    : theme.responsive.property.borderRadius('smooth')}
   background: ${({ $size, $disabled, theme }) =>
     $size === "M" && $disabled
       ? "transparent"
@@ -30,7 +31,6 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
     $size === "M" ? "none" : theme.effects.dropShadows.DS100};
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XXS') : theme.responsive.gap('S'))};
-  height: ${({ $size }) => ($size === "M" ? "2.5rem" : "3.5rem")};
   align-self: stretch;
   transition: background-color 0.2s ease;
 
@@ -91,12 +91,12 @@ export const DropdownList = styled.div`
 
 export const DropOption = styled.div<{ $size?: "L" | "M"; $isActive?: boolean; $isSelected?: boolean }>`
   display: flex;
-  height: 3.5rem;
   align-items: center;
   align-self: stretch;
   ${({ $size, theme }) => $size === "M" 
     ? theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')
     : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
+  ${({ theme }) => theme.responsive.property.borderRadius('smooth')}
   background: ${theme.colors.grayScale.white};
   cursor: ${({ $isActive }) => ($isActive ? "default" : "pointer")};
   transition: background-color 0.2s ease;
