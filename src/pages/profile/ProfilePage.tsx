@@ -224,8 +224,8 @@ export default function ProfilePage() {
       
       <S.EditWrapper>
       <S.EditContainer>
-        <S.LeftPanel $hideOnMobile={hasActivePart}>
-        <S.EditProfileSection>
+        <S.LeftPanel $hideOnMobile={hasActivePart} $isDropdownOpen={isPartDropdownOpen}>
+        <S.EditProfileSection $isDropdownOpen={isPartDropdownOpen}>
           <S.EditProfileImageWrapper>
             {profileImage ? (
               <S.EditProfileImage src={profileImage} alt={user?.name || "프로필"} />

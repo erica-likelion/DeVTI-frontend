@@ -164,12 +164,12 @@ export const EditContainer = styled.div`
   }
 `;
 
-export const LeftPanel = styled.div<{ $hideOnMobile?: boolean }>`
+export const LeftPanel = styled.div<{ $hideOnMobile?: boolean; $isDropdownOpen?: boolean }>`
   flex: 0 0 auto;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: ${({ $isDropdownOpen }) => $isDropdownOpen ? 'flex-end' : 'space-between'};
   align-items: center;
   background: ${theme.colors.secondary.VT50};
 
@@ -177,6 +177,7 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean }>`
     width: 28rem; /* Component-Width-Medium */
     height: 100%;
     padding: 5rem 2rem 2.5rem 2rem; /* 상 5rem, 좌우 2rem(General-Margin), 하 2.5rem */
+    justify-content: ${({ $isDropdownOpen }) => $isDropdownOpen ? 'flex-end' : 'space-between'};
     overflow-y: auto;
     overflow-x: hidden;
   }
@@ -185,6 +186,7 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean }>`
     width: 28rem; /* Component-Width-Medium */
     height: 100%;
     padding: 5rem 2rem 2.5rem 2rem; /* 상 5rem, 좌우 2rem(General-Margin), 하 2.5rem */
+    justify-content: ${({ $isDropdownOpen }) => $isDropdownOpen ? 'flex-end' : 'space-between'};
     overflow-y: auto;
     overflow-x: hidden;
   }
@@ -195,7 +197,7 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean }>`
     height: 100%;
     padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet};
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: ${({ $isDropdownOpen }) => $isDropdownOpen ? 'flex-end' : 'space-between'};
     align-items: center;
     background: ${theme.colors.secondary.VT50};
     overflow-y: auto;
@@ -209,7 +211,7 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean }>`
     height: 100%;
     /* TODO: 5rem(80px)은 theme에 없음 - 팀원 확인 필요 */
     padding: 5rem ${({ theme }) => theme.gaps.S.desktop} ${({ theme }) => theme.gaps.L.desktop} ${({ theme }) => theme.gaps.S.desktop}; /* 상단 5rem(theme 없음), 좌우 General-Margin(1rem=gaps.S), 하단 2.5rem(gaps.L) */
-    justify-content: space-between;
+    justify-content: ${({ $isDropdownOpen }) => $isDropdownOpen ? 'flex-end' : 'space-between'};
     align-items: center;
     overflow-y: auto; /* 내용이 많을 경우 스크롤 가능 */
   }
@@ -280,10 +282,10 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
   }
 `;
 
-export const EditProfileSection = styled.div`
+export const EditProfileSection = styled.div<{ $isDropdownOpen?: boolean }>`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: ${({ $isDropdownOpen }) => $isDropdownOpen ? 'flex-end' : 'space-between'};
   align-items: center;
   gap: 0;
   max-width: 100%;
@@ -292,6 +294,8 @@ export const EditProfileSection = styled.div`
   padding-top: 0;
   padding-bottom: 0;
   min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const EditProfileImageWrapper = styled.div<{ $isInDefaultPage?: boolean }>`
@@ -623,7 +627,6 @@ export const SaveButtonWrapper = styled.div`
   margin-top: auto;
   padding-top: 0;
   padding-bottom: 0; // LeftPanel의 padding-bottom에서 간격 관리
-  min-height: 0; // flex item이 shrink할 수 있도록
 `;
 
 export const SaveButton = styled.button`

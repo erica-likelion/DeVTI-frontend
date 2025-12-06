@@ -87,6 +87,19 @@ export const DropdownList = styled.div`
   box-shadow: ${theme.effects.dropShadows.DS100};
   background: ${theme.colors.grayScale.white};
   overflow: hidden;
+  max-width: ${({ theme }) => theme.componentWidths.large.mobile};
+
+  ${({ theme }) => theme.media.tablet} {
+    max-width: ${({ theme }) => theme.componentWidths.large.tablet};
+  }
+
+  ${({ theme }) => theme.media.desktop} {
+    max-width: ${({ theme }) => theme.componentWidths.large.desktop};
+  }
+
+  ${({ theme }) => theme.media.wide} {
+    max-width: ${({ theme }) => theme.componentWidths.large.wide};
+  }
 `;
 
 export const DropOption = styled.div<{ $size?: "L" | "M"; $isActive?: boolean; $isSelected?: boolean }>`
