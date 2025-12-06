@@ -1,57 +1,31 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as S from "./DesignPortfolioView.styles";
-import { Keyword } from "@/components/keywords/Keyword";
+import * as S from "./FrontendPortfolioView.styles";
 import SelfAssessmentGroup from "./SelfAssessmentGroup";
 import StarDisplay from "@/components/StarDisplay/StarDisplay";
 import InputField from "@/components/Input/InputField";
 import CheckboxButton from "@/components/ButtonDynamic/CheckboxButton";
 import Modal from "@/components/modal/Modal";
-import WtLCloseButton from "@/components/ButtonDynamic/WtLCloseButton";
-import DownloadIcon from "@/assets/icons/Download.svg";
 import type { SelfAssessmentItem } from "./SelfAssessmentGroup";
+import CopyBlackGray from "@/assets/icons/Copy/CopyBlackGray.svg";
+import { FRONTEND_TECH_ITEMS_MAP } from "./constants/frontendAssessmentItems";
 
-const FIGMA_ITEMS: SelfAssessmentItem[] = [
-  {
-    key: "uxPlanning",
-    title: "UX 기획 능력",
-    description: "사용자 경험(UX)을 고려한 인터랙션과 화면 흐름을 설계할 수 있다.",
-  },
-  {
-    key: "designConsistency",
-    title: "디자인 일관성 및 시스템 이해",
-    description: "디자인 시스템(컴포넌트, 스타일, 베리어블 등)을 이해하고 일관성을 유지할 수 있다.",
-  },
-  {
-    key: "collaborationAttitude",
-    title: "협업 태도 및 피드백 수용력",
-    description: "피드백을 받을 때, 개인의 취향보다는 팀의 목표나 사용자 관점을 우선시한다.",
-  },
-  {
-    key: "collaborationFeatures",
-    title: "협업 기능 활용도",
-    description: "Figma의 코멘트, 버전 관리, 프로토타입 공유 기능을 활용해 팀원과 효율적으로 협업할 수 있다.",
-  },
-  {
-    key: "communicationClarity",
-    title: "커뮤니케이션 명확성",
-    description: "개발자나 PM에게 전달되는 화면 구조를 명확히 하기 위해, 디자인 파일을 체계적으로 정리한다.",
-  },
-] as const;
+const TECH_ITEMS_MAP = FRONTEND_TECH_ITEMS_MAP;
 
-interface DesignPortfolioViewProps {
+interface FrontendPortfolioViewProps {
   experienceSummary: string;
   strengths: string;
-  designWorkFile: string | null; // 파일명
-  figmaAssessment: Record<string, number>;
+  github?: string;
+  selectedTechs?: string[];
+  techAssessments?: Record<string, Record<string, number>>;
   isNewcomer: boolean;
   name?: string;
   intro?: string;
   dbtiInfo?: string | null;
   profileImage?: string | null;
-  selectedParts?: string[]; // 선택된 파트 목록
-  showEditButtons?: boolean; // 수정/삭제 버튼 표시 여부 (기본값: true)
-  onBack?: () => void; // 뒤로가기 버튼 클릭 핸들러
+  selectedParts?: string[];
+  showEditButtons?: boolean;
+  onBack?: () => void;
 }
 
 /**
@@ -71,11 +45,12 @@ const calculateAverage = (scores: Record<string, number>, items: SelfAssessmentI
   return Math.floor(average * 2) / 2;
 };
 
-export default function DesignPortfolioView({
+export default function FrontendPortfolioView({
   experienceSummary,
   strengths,
-  designWorkFile,
-  figmaAssessment,
+  github = "",
+  selectedTechs = [],
+  techAssessments = {},
   isNewcomer,
   name,
   intro,
@@ -84,29 +59,34 @@ export default function DesignPortfolioView({
   selectedParts = [],
   showEditButtons = true,
   onBack,
-}: DesignPortfolioViewProps) {
-  // 평균 점수 계산
-  const figmaAverage = useMemo(
-    () => calculateAverage(figmaAssessment, FIGMA_ITEMS),
-    [figmaAssessment]
-  );
-
+}: FrontendPortfolioViewProps) {
   const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  // 각 기술별 평균 점수 계산
+  const techAverages = useMemo(() => {
+    const averages: Record<string, number> = {};
+    selectedTechs.forEach((tech) => {
+      const items = TECH_ITEMS_MAP[tech] || [];
+      averages[tech] = calculateAverage(techAssessments[tech] || {}, items);
+    });
+    return averages;
+  }, [selectedTechs, techAssessments]);
+
   const handleEditClick = () => {
-    navigate('/profile/edit/design', {
+    navigate('/profile/edit/frontend', {
       state: {
         name,
         intro,
         dbtiInfo,
         profileImage,
-        selectedParts, // selectedParts 전달
-        part: "디자인" as const, // 현재 파트 정보
+        selectedParts,
+        part: "프론트엔드" as const,
         experienceSummary,
         strengths,
-        designWorkFile,
-        figmaAssessment,
+        github,
+        selectedTechs,
+        techAssessments,
         isNewcomer,
       },
     });
@@ -121,19 +101,33 @@ export default function DesignPortfolioView({
   };
 
   const handleDeleteConfirm = () => {
-    // TODO: 삭제 로직 구현
     setIsDeleteModalOpen(false);
+    navigate('/profile/edit', {
+      state: {
+        name,
+        intro,
+        dbtiInfo,
+        profileImage,
+        selectedParts: selectedParts.filter(part => part !== "프론트엔드"),
+      },
+    });
   };
 
-  const handleFileDownload = () => {
-    // TODO: 백엔드 API를 통해 파일 다운로드 구현 필요
-    // 현재는 파일명만 표시
+  const handleGithubCopy = async () => {
+    if (github) {
+      try {
+        await navigator.clipboard.writeText(github);
+        // TODO: 복사 성공 토스트 메시지 표시
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    }
   };
 
   return (
     <S.Wrapper>
       <S.Header>
-        <S.PortfolioTitle>디자인 포트폴리오</S.PortfolioTitle>
+        <S.PortfolioTitle>프론트엔드 포트폴리오</S.PortfolioTitle>
         {showEditButtons && (
           <S.ButtonWrapper>
             <S.EditButton onClick={handleEditClick}>수정</S.EditButton>
@@ -160,6 +154,8 @@ export default function DesignPortfolioView({
             value={experienceSummary || ""}
             variant="output"
             disabled={true}
+            multiline={true}
+            rows={1}
           />
           <S.CheckboxWrapper>
             <CheckboxButton
@@ -180,37 +176,49 @@ export default function DesignPortfolioView({
             value={strengths || ""}
             variant="output"
             disabled={true}
+            multiline={true}
+            rows={1}
           />
         </S.StrengthsSection>
 
-        {/* 디자인 작업물 */}
-        <S.DesignWorkSection>
-          <S.SectionTitle>디자인 작업물</S.SectionTitle>
-          {designWorkFile ? (
-            <S.FileButtonWrapper>
-              <WtLCloseButton onClick={handleFileDownload} icon={DownloadIcon}>
-                {designWorkFile}
-              </WtLCloseButton>
-            </S.FileButtonWrapper>
+        {/* 깃허브 */}
+        <S.GithubSection>
+          <S.SectionTitle>깃허브</S.SectionTitle>
+          {github ? (
+            <InputField
+              value={github}
+              variant="output"
+              disabled={true}
+              icon={<img src={CopyBlackGray} alt="Copy" />}
+              hasIcon={true}
+              onIconClick={handleGithubCopy}
+            />
           ) : (
             <S.EmptyText>-</S.EmptyText>
           )}
-        </S.DesignWorkSection>
+        </S.GithubSection>
 
-        {/* 협업 툴 (Figma) 숙련도 자가평가 */}
-        <S.SelfAssessmentSection>
-          <S.SelfAssessmentHeader>
-            <S.SectionTitle>협업 툴 (Figma) 숙련도 자가평가</S.SectionTitle>
-            <StarDisplay value={figmaAverage} />
-          </S.SelfAssessmentHeader>
-          <SelfAssessmentGroup
-            title=""
-            items={FIGMA_ITEMS}
-            values={figmaAssessment}
-            onChange={() => {}} // 수정 불가능
-            variant="output"
-          />
-        </S.SelfAssessmentSection>
+        {/* 선택된 기술별 자가평가 */}
+        {selectedTechs.length > 0 && (
+          <S.SelfAssessmentSection>
+            <S.SectionTitle>언어, 프레임워크 숙련도 자가평가</S.SectionTitle>
+            {selectedTechs.map((tech) => (
+              <S.TechAssessmentWrapper key={tech}>
+                <S.TechHeader>
+                  <S.TechName>{tech}</S.TechName>
+                  <StarDisplay value={techAverages[tech] || 0} />
+                </S.TechHeader>
+                <SelfAssessmentGroup
+                  title=""
+                  items={TECH_ITEMS_MAP[tech] || []}
+                  values={techAssessments[tech] || {}}
+                  onChange={() => {}}
+                  variant="output"
+                />
+              </S.TechAssessmentWrapper>
+            ))}
+          </S.SelfAssessmentSection>
+        )}
       </S.ContentFrame>
     </S.Wrapper>
   );

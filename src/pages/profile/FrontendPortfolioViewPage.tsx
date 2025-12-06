@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
-import PMPortfolioView from "@/components/profile/PMPortfolioView";
+import FrontendPortfolioView from "@/components/profile/FrontendPortfolioView";
 import * as S from "./ProfilePage.styles";
 import InputField from "@/components/Input/InputField";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
@@ -10,10 +10,6 @@ import WtLPawButton from "@/components/ButtonDynamic/WtLPawButton";
 import DropBox from "@/components/DropBox";
 import Modal from "@/components/modal/Modal";
 import GroupIcon from "@/assets/icons/Group.svg";
-import type {
-  DailyAvailabilityKey,
-  WeeklyAvailabilityKey,
-} from "@/components/profile/BasePortfolioForm";
 
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
 type PartOption = (typeof PART_OPTIONS)[number];
@@ -26,14 +22,13 @@ interface LocationState {
   selectedParts?: PartOption[];
   experienceSummary: string;
   strengths: string;
-  dailyAvailability: DailyAvailabilityKey | null;
-  weeklyAvailability: WeeklyAvailabilityKey | null;
-  designAssessment: Record<string, number>;
-  developmentAssessment: Record<string, number>;
+  github?: string;
+  selectedTechs?: string[];
+  techAssessments?: Record<string, Record<string, number>>;
   isNewcomer: boolean;
 }
 
-export default function PMPortfolioViewPage() {
+export default function FrontendPortfolioViewPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuthStore();
@@ -45,10 +40,10 @@ export default function PMPortfolioViewPage() {
     return null;
   }
 
-  // localStorage에서 PM 포트폴리오 데이터 가져오기
+  // localStorage에서 프론트엔드 포트폴리오 데이터 가져오기
   const getStoredPortfolioData = (): LocationState | null => {
     try {
-      const stored = localStorage.getItem('portfolio_PM');
+      const stored = localStorage.getItem('portfolio_프론트엔드');
       return stored ? JSON.parse(stored) : null;
     } catch {
       return null;
@@ -65,15 +60,15 @@ export default function PMPortfolioViewPage() {
   const [intro, setIntro] = useState<string>(portfolioData.intro || "");
   const [dbtiInfo, setDbtiInfo] = useState<string | null>(portfolioData.dbtiInfo || null);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
-  const [selectedParts, setSelectedParts] = useState<PartOption[]>(portfolioData.selectedParts || ["PM"]);
-  const [activePart, setActivePart] = useState<PartOption | null>(null); // 모바일에서 LeftPanel만 보이도록 초기값 null
+  const [selectedParts, setSelectedParts] = useState<PartOption[]>(portfolioData.selectedParts || ["프론트엔드"]);
+  const [activePart, setActivePart] = useState<PartOption | null>(null);
   const [isPartDropdownOpen, setIsPartDropdownOpen] = useState(false);
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // PM 포트폴리오 데이터를 localStorage에 저장
+  // 프론트엔드 포트폴리오 데이터를 localStorage에 저장
   useEffect(() => {
-    const pmData: LocationState = {
+    const frontendData: LocationState = {
       name,
       intro,
       dbtiInfo,
@@ -81,14 +76,13 @@ export default function PMPortfolioViewPage() {
       selectedParts,
       experienceSummary: portfolioData.experienceSummary,
       strengths: portfolioData.strengths,
-      dailyAvailability: portfolioData.dailyAvailability,
-      weeklyAvailability: portfolioData.weeklyAvailability,
-      designAssessment: portfolioData.designAssessment,
-      developmentAssessment: portfolioData.developmentAssessment,
+      github: portfolioData.github,
+      selectedTechs: portfolioData.selectedTechs,
+      techAssessments: portfolioData.techAssessments,
       isNewcomer: portfolioData.isNewcomer,
     };
-    localStorage.setItem('portfolio_PM', JSON.stringify(pmData));
-  }, [name, intro, dbtiInfo, profileImage, selectedParts, portfolioData.experienceSummary, portfolioData.strengths, portfolioData.dailyAvailability, portfolioData.weeklyAvailability, portfolioData.designAssessment, portfolioData.developmentAssessment, portfolioData.isNewcomer]);
+    localStorage.setItem('portfolio_프론트엔드', JSON.stringify(frontendData));
+  }, [name, intro, dbtiInfo, profileImage, selectedParts, portfolioData.experienceSummary, portfolioData.strengths, portfolioData.github, portfolioData.selectedTechs, portfolioData.techAssessments, portfolioData.isNewcomer]);
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
@@ -111,10 +105,9 @@ export default function PMPortfolioViewPage() {
     };
   }, [isPartDropdownOpen]);
 
-  // 브라우저 뒤로가기 버튼 처리 (모바일에서 RightPanel에서 LeftPanel로 돌아가기)
+  // 브라우저 뒤로가기 버튼 처리
   useEffect(() => {
     const handlePopState = () => {
-      // 뒤로가기 시 activePart를 null로 설정하여 LeftPanel 표시
       if (activePart !== null) {
         setActivePart(null);
       }
@@ -144,7 +137,7 @@ export default function PMPortfolioViewPage() {
 
   const handleDBTIClick = () => {
     if (!dbtiInfo) {
-      setDbtiInfo("test"); // 임시 값
+      setDbtiInfo("test");
     } else {
       navigate("/profile/edit/dbti");
     }
@@ -159,11 +152,9 @@ export default function PMPortfolioViewPage() {
   };
 
   const handleSaveConfirm = () => {
-    // TODO: 프로필 저장 로직
     setIsSaveModalOpen(false);
     
-    // PM 포트폴리오 데이터를 localStorage에 저장
-    const pmData: LocationState = {
+    const frontendData: LocationState = {
       name,
       intro,
       dbtiInfo,
@@ -171,30 +162,18 @@ export default function PMPortfolioViewPage() {
       selectedParts,
       experienceSummary: portfolioData.experienceSummary,
       strengths: portfolioData.strengths,
-      dailyAvailability: portfolioData.dailyAvailability,
-      weeklyAvailability: portfolioData.weeklyAvailability,
-      designAssessment: portfolioData.designAssessment,
-      developmentAssessment: portfolioData.developmentAssessment,
+      github: portfolioData.github,
+      selectedTechs: portfolioData.selectedTechs,
+      techAssessments: portfolioData.techAssessments,
       isNewcomer: portfolioData.isNewcomer,
     };
-    localStorage.setItem('portfolio_PM', JSON.stringify(pmData));
+    localStorage.setItem('portfolio_프론트엔드', JSON.stringify(frontendData));
     
     navigate('/profile/Default', { 
       replace: false,
       state: {
-        part: "PM" as const,
-        experienceSummary: portfolioData.experienceSummary,
-        strengths: portfolioData.strengths,
-        dailyAvailability: portfolioData.dailyAvailability,
-        weeklyAvailability: portfolioData.weeklyAvailability,
-        designAssessment: portfolioData.designAssessment,
-        developmentAssessment: portfolioData.developmentAssessment,
-        isNewcomer: portfolioData.isNewcomer,
-        name,
-        intro,
-        dbtiInfo,
-        profileImage,
-        selectedParts, // selectedParts 전달
+        part: "프론트엔드" as const,
+        ...frontendData,
       }
     });
   };
@@ -268,8 +247,7 @@ export default function PMPortfolioViewPage() {
               <S.FormLabel>파트</S.FormLabel>
               <S.PartSelectionWrapper>
               {selectedParts.map((part) => {
-                // 현재 페이지가 PM 포트폴리오 view 페이지이므로, PM 파트만 clicked 상태로 표시
-                const isRegisteredPart = activePart === null && part === "PM";
+                const isRegisteredPart = activePart === null && part === "프론트엔드";
                 return (
                   <S.PartButtonWrapper 
                     key={part} 
@@ -279,8 +257,7 @@ export default function PMPortfolioViewPage() {
                     <WtLPawButton
                       key={`${part}-${activePart}`}
                       onClick={() => {
-                        // 다른 파트를 클릭하면 해당 파트의 view 페이지로 이동
-                        if (part !== "PM") {
+                        if (part !== "프론트엔드") {
                           const partMap: Record<PartOption, string> = {
                             'PM': 'pm',
                             '디자인': 'design',
@@ -288,7 +265,6 @@ export default function PMPortfolioViewPage() {
                             '백엔드': 'backend'
                           };
                           const partSlug = partMap[part];
-                          // 다른 파트로 이동할 때는 localStorage에서 해당 파트의 데이터를 가져와서 전달
                           const getStoredPartData = (partName: string): any => {
                             try {
                               const stored = localStorage.getItem(`portfolio_${partName}`);
@@ -298,7 +274,7 @@ export default function PMPortfolioViewPage() {
                             }
                           };
 
-                          const partData = getStoredPartData(part === "디자인" ? "디자인" : part === "PM" ? "PM" : part);
+                          const partData = getStoredPartData(part === "디자인" ? "디자인" : part === "PM" ? "PM" : part === "프론트엔드" ? "프론트엔드" : part === "백엔드" ? "백엔드" : part);
                           
                           navigate(`/profile/${partSlug}/view`, {
                             replace: false,
@@ -308,26 +284,11 @@ export default function PMPortfolioViewPage() {
                               dbtiInfo: portfolioData.dbtiInfo,
                               profileImage: portfolioData.profileImage,
                               selectedParts,
-                              // localStorage에서 해당 파트의 데이터를 가져오거나 기본값 사용
-                              experienceSummary: partData?.experienceSummary || "",
-                              strengths: partData?.strengths || "",
-                              ...(part === "디자인" ? {
-                                designWorkFile: partData?.designWorkFile || null,
-                                figmaAssessment: partData?.figmaAssessment || {},
-                                isNewcomer: partData?.isNewcomer || false,
-                              } : part === "PM" ? {
-                                dailyAvailability: partData?.dailyAvailability || null,
-                                weeklyAvailability: partData?.weeklyAvailability || null,
-                                designAssessment: partData?.designAssessment || {},
-                                developmentAssessment: partData?.developmentAssessment || {},
-                                isNewcomer: partData?.isNewcomer || false,
-                              } : {})
+                              ...partData
                             }
                           });
                         } else {
-                          // PM 파트를 클릭하면 현재 페이지에서 activePart만 변경
                           setActivePart(part);
-                          // 모바일에서 RightPanel로 이동할 때 히스토리 추가
                           window.history.pushState({ part }, '', window.location.pathname);
                         }
                       }}
@@ -352,7 +313,6 @@ export default function PMPortfolioViewPage() {
                         const selectedPart = option as PartOption;
                         const updatedSelectedParts = [...selectedParts, selectedPart];
                         setSelectedParts(updatedSelectedParts);
-                        // 파트 추가 시 해당 파트의 edit 페이지로 이동 (selectedParts를 state로 전달)
                         const partMap: Record<PartOption, string> = {
                           'PM': 'pm',
                           '디자인': 'design',
@@ -387,13 +347,12 @@ export default function PMPortfolioViewPage() {
         </S.LeftPanel>
 
         <S.RightPanel $hideOnMobile={activePart === null}>
-          <PMPortfolioView
+          <FrontendPortfolioView
             experienceSummary={portfolioData.experienceSummary}
             strengths={portfolioData.strengths}
-            dailyAvailability={portfolioData.dailyAvailability}
-            weeklyAvailability={portfolioData.weeklyAvailability}
-            designAssessment={portfolioData.designAssessment}
-            developmentAssessment={portfolioData.developmentAssessment}
+            github={portfolioData.github}
+            selectedTechs={portfolioData.selectedTechs}
+            techAssessments={portfolioData.techAssessments}
             isNewcomer={portfolioData.isNewcomer}
             name={name}
             intro={intro}

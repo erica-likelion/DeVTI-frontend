@@ -129,6 +129,13 @@ export const StrengthsSection = styled.div`
   
 `;
 
+export const GithubSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.responsive.gap('S')};
+  width: 100%;
+`;
+
 export const InputWrapper = styled.div`
   width: 100%;
 `;
