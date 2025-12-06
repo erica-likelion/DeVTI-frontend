@@ -96,7 +96,7 @@ export const EditWrapper = styled.div`
   margin-left: 0;
   margin-right: 0;
   width: 100%;
-  background: ${theme.colors.grayScale.white} !important;
+  background: ${theme.colors.grayScale.white};
   z-index: 1;
   height: calc(100% - 9rem); /* Main의 padding-top(4.5rem) + padding-bottom(4.5rem) 제외 */
 
@@ -136,7 +136,7 @@ export const EditContainer = styled.div`
   height: 100%;
   width: 100%;
   border-radius: 2rem; /* 고정 크기 - 컨테이너 border-radius는 반응형 불필요 */
-  background: ${theme.colors.grayScale.white} !important;
+  background: ${theme.colors.grayScale.white};
   position: relative;
   z-index: 1;
 
@@ -206,7 +206,7 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean }>`
     ${({ $hideOnMobile }) => $hideOnMobile && 'display: none;'}
     flex: 0 0 auto;
     width: 100%;
-    height: 59.25rem; /* LeftPanel 전체 길이 고정 */
+    height: 100%;
     /* TODO: 5rem(80px)은 theme에 없음 - 팀원 확인 필요 */
     padding: 5rem ${({ theme }) => theme.gaps.S.desktop} ${({ theme }) => theme.gaps.L.desktop} ${({ theme }) => theme.gaps.S.desktop}; /* 상단 5rem(theme 없음), 좌우 General-Margin(1rem=gaps.S), 하단 2.5rem(gaps.L) */
     justify-content: space-between;
@@ -222,7 +222,7 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
   gap: ${({ theme }) => theme.gaps.XXL.desktop};
   flex: 1 0 0;
   align-self: stretch;
-  background: ${theme.colors.grayScale.white} !important;
+  background: ${theme.colors.grayScale.white};
   height: 100%;
   width: 100%;
   z-index: 1;
@@ -751,7 +751,7 @@ export const DefaultLeftPanel = styled.div`
 
   ${theme.media.wide} {
     width: ${({ theme }) => theme.componentWidths.medium.wide}; /* 28rem */
-    height: 59.25rem;
+    height: 100%;
     padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.wide} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.wide}; /* 상 5rem(theme 없음), 좌우 General-Margin(2rem), 하 2.5rem(theme 없음) */
     flex-direction: column;
     justify-content: space-between;
@@ -762,7 +762,7 @@ export const DefaultLeftPanel = styled.div`
 
   ${theme.media.desktop} {
     width: ${({ theme }) => theme.componentWidths.medium.desktop}; /* 28rem */
-    height: 59.25rem;
+    height: 100%;
     padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.desktop} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.desktop}; /* 상 5rem(theme 없음), 좌우 General-Margin(2rem), 하 2.5rem(theme 없음) */
     flex-direction: column;
     justify-content: space-between;
@@ -783,7 +783,7 @@ export const DefaultLeftPanel = styled.div`
   }
 
   ${theme.media.mobile} {
-    height: 59.25rem;
+    height: 100%;
     padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile}; /* 상 5rem(theme 없음), 좌우 General-Margin(1rem), 하 2.5rem(theme 없음) */
     flex-direction: column;
     justify-content: space-between;

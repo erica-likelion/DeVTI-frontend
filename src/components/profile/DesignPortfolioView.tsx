@@ -169,6 +169,8 @@ export default function DesignPortfolioView({
             value={experienceSummary || ""}
             variant="output"
             disabled={true}
+            multiline={true}
+            rows={1}
           />
           <S.CheckboxWrapper>
             <CheckboxButton
@@ -189,6 +191,8 @@ export default function DesignPortfolioView({
             value={strengths || ""}
             variant="output"
             disabled={true}
+            multiline={true}
+            rows={1}
           />
         </S.StrengthsSection>
 

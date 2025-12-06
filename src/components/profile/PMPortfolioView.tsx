@@ -230,6 +230,8 @@ export default function PMPortfolioView({
             value={experienceSummary || ""}
             variant="output"
             disabled={true}
+            multiline={true}
+            rows={1}
           />
           <S.CheckboxWrapper>
             <CheckboxButton
@@ -250,6 +252,8 @@ export default function PMPortfolioView({
             value={strengths || ""}
             variant="output"
             disabled={true}
+            multiline={true}
+            rows={1}
           />
         </S.StrengthsSection>
 
