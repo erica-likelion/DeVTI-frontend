@@ -57,7 +57,7 @@ export const IconContainer = styled.div`
 
 
 
-export const StyledInput = styled.input<{ 
+const InputStyles = css<{
   $hasIcon?: boolean;
   $isActive?: boolean;
   $readOnly?: boolean;
@@ -86,5 +86,25 @@ export const StyledInput = styled.input<{
       }
     }
   `}
+`;
 
+export const StyledInput = styled.input<{ 
+  $hasIcon?: boolean;
+  $isActive?: boolean;
+  $readOnly?: boolean;
+  $variant?: 'input' | 'output';
+}>`
+  ${InputStyles}
+`;
+
+export const StyledTextarea = styled.textarea<{
+  $hasIcon?: boolean;
+  $isActive?: boolean;
+  $readOnly?: boolean;
+  $variant?: 'input' | 'output';
+}>`
+  ${InputStyles}
+  resize: none;
+  overflow: hidden;
+  min-height: auto;
 `;
