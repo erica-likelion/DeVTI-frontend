@@ -189,6 +189,15 @@ export default function PMPortfolioView({
   const handleDeleteConfirm = () => {
     // TODO: 삭제 로직 구현
     setIsDeleteModalOpen(false);
+    navigate('/profile/edit', {
+      state: {
+        name,
+        intro,
+        dbtiInfo,
+        profileImage,
+        selectedParts: selectedParts.filter(part => part !== "PM"), // PM 파트 제거
+      },
+    });
   };
 
   return (

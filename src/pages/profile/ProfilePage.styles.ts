@@ -192,7 +192,7 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean }>`
   ${theme.media.tablet} {
     display: flex;
     width: ${({ theme }) => theme.componentWidths.medium.tablet};
-    height: 59.25rem;
+    height: 100%;
     padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet};
     flex-direction: column;
     justify-content: space-between;
@@ -773,7 +773,7 @@ export const DefaultLeftPanel = styled.div`
 
   ${theme.media.tablet} {
     width: ${({ theme }) => theme.componentWidths.medium.tablet}; /* 20rem */
-    height: 59.25rem;
+    height: 100%;
     padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet}; /* 상 5rem(theme 없음), 좌우 General-Margin(2rem), 하 2.5rem(theme 없음) */
     flex-direction: column;
     justify-content: space-between;

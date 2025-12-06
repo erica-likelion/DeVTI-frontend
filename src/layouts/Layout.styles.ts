@@ -19,6 +19,10 @@ export const Container = styled.div<ContainerProps>`
     }
     
     if (!$isImageBackground) {
+      // 프로필 페이지일 때는 gray50 배경
+      if ($pathname.includes('/profile')) {
+        return `background: #F9F9F9;`; // theme.colors.grayScale.gray50
+      }
       return `background: radial-gradient(74% 86.02% at 50% 96.76%, #ECDEF9 0%, #FCFCFF 100%);`;
     }
     

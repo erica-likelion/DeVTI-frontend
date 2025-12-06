@@ -4,7 +4,6 @@ import { theme } from "@/styles/theme";
 export const Container = styled.div<{ $size?: "L" | "M" }>`
   display: flex;
   width: ${({ $size }) => ($size === "M" ? "auto" : "100%")};
-  max-width: ${({ $size }) => ($size === "M" ? "auto" : "33.25rem")};
   flex-direction: column;
   align-items: flex-start;
   ${({ theme }) => theme.responsive.property.gap('XXS')}
@@ -17,13 +16,12 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
   align-items: center;
   justify-content: ${({ $size }) => ($size === "M" ? "center" : "flex-start")};
   width: 100%;
-  padding: ${({ $size, theme }) =>
-    $size === "M"
-      ? `${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XS')}`
-      : `${theme.responsive.gap('S')} ${theme.responsive.gap('M')} ${theme.responsive.gap('S')} ${theme.responsive.gap('M')}`};
+  ${({ $size, theme }) => $size === "M" 
+    ? theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')
+    : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
   border: none;
   border-radius: ${({ $size, theme }) =>
-    $size === "M" ? theme.responsive.borderRadius('sharp') : theme.responsive.borderRadius('smooth')};
+    $size === "M" ? theme.responsive.property.borderRadius('sharp') : theme.responsive.property.borderRadius('smooth')};
   background: ${({ $size, $disabled, theme }) =>
     $size === "M" && $disabled
       ? "transparent"
@@ -96,10 +94,9 @@ export const DropOption = styled.div<{ $size?: "L" | "M"; $isActive?: boolean; $
   height: 3.5rem;
   align-items: center;
   align-self: stretch;
-  padding: ${({ $size, theme }) =>
-    $size === "M"
-      ? `${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XS')}`
-      : `${theme.responsive.gap('S')} ${theme.responsive.gap('M')} ${theme.responsive.gap('S')} ${theme.responsive.gap('M')}`};
+  ${({ $size, theme }) => $size === "M" 
+    ? theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')
+    : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
   background: ${theme.colors.grayScale.white};
   cursor: ${({ $isActive }) => ($isActive ? "default" : "pointer")};
   transition: background-color 0.2s ease;

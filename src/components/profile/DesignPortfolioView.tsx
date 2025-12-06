@@ -123,6 +123,15 @@ export default function DesignPortfolioView({
   const handleDeleteConfirm = () => {
     // TODO: 삭제 로직 구현
     setIsDeleteModalOpen(false);
+    navigate('/profile/edit', {
+      state: {
+        name,
+        intro,
+        dbtiInfo,
+        profileImage,
+        selectedParts: selectedParts.filter(part => part !== "디자인"), // 디자인 파트 제거
+      },
+    });
   };
 
   const handleFileDownload = () => {
