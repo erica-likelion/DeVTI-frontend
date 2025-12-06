@@ -178,7 +178,7 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean; $isDropdownOpen?:
   ${theme.media.wide} {
     width: 28rem;
     height: 100%;
-    padding: 5rem 2rem ${({ $isDropdownOpen }) => $isDropdownOpen ? '2.5rem' : '2.5rem'} 2rem;
+    padding: 5rem 2rem 2.5rem 2rem;
     justify-content: ${({ $isDropdownOpen }) => $isDropdownOpen ? 'flex-start' : 'space-between'};
     overflow-y: auto;
     overflow-x: hidden;
@@ -187,7 +187,7 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean; $isDropdownOpen?:
   ${theme.media.desktop} {
     width: 28rem;
     height: 100%;
-    padding: 5rem 2rem ${({ $isDropdownOpen }) => $isDropdownOpen ? '2.5rem' : '2.5rem'} 2rem;
+    padding: 5rem 2rem 2.5rem 2rem;
     justify-content: ${({ $isDropdownOpen }) => $isDropdownOpen ? 'flex-start' : 'space-between'};
     overflow-y: auto;
     overflow-x: hidden;
@@ -197,7 +197,7 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean; $isDropdownOpen?:
     display: flex;
     width: ${({ theme }) => theme.componentWidths.medium.tablet};
     height: 100%;
-    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet} ${({ $isDropdownOpen }) => $isDropdownOpen ? '2.5rem' : '2.5rem'} ${({ theme }) => theme.gaps.GeneralMargin.tablet};
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet};
     flex-direction: column;
     justify-content: ${({ $isDropdownOpen }) => $isDropdownOpen ? 'flex-start' : 'space-between'};
     align-items: center;
@@ -211,7 +211,7 @@ export const LeftPanel = styled.div<{ $hideOnMobile?: boolean; $isDropdownOpen?:
     flex: 0 0 auto;
     width: 100%;
     height: 100%;
-    padding: 5rem ${({ theme }) => theme.gaps.S.desktop} ${({ theme }) => theme.gaps.L.desktop} ${({ theme }) => theme.gaps.S.desktop};
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile};
     justify-content: ${({ $isDropdownOpen }) => $isDropdownOpen ? 'flex-start' : 'space-between'};
     align-items: center;
     overflow-y: auto;
