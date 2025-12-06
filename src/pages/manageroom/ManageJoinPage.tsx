@@ -9,7 +9,7 @@ export default function ManageJoinPage() {
     const correctAdminCode = 'admin123'; // 임시 정답 코드
     const isValidCode = adminCode === correctAdminCode;
 
-    const handleAdminCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleAdminCodeChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setAdminCode(e.target.value);
     };
 

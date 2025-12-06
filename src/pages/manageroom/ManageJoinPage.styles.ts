@@ -6,6 +6,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10rem;
+  height: 100%;
 `;
 
 export const Title = styled.h1`
@@ -22,7 +23,6 @@ export const InputWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
-  margin: 0;
 `;
 
 export const Label = styled.div`
