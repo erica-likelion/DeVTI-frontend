@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
-import PMPortfolioView from "./components/PMPortfolioView";
+import PMPortfolioView from "@/components/profile/PMPortfolioView";
 import * as S from "./ProfilePage.styles";
 import InputField from "@/components/Input/InputField";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
@@ -13,7 +13,7 @@ import GroupIcon from "@/assets/icons/Group.svg";
 import type {
   DailyAvailabilityKey,
   WeeklyAvailabilityKey,
-} from "./components/BasePortfolioForm";
+} from "@/components/profile/BasePortfolioForm";
 
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
 type PartOption = (typeof PART_OPTIONS)[number];

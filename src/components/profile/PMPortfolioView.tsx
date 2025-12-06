@@ -189,6 +189,15 @@ export default function PMPortfolioView({
   const handleDeleteConfirm = () => {
     // TODO: 삭제 로직 구현
     setIsDeleteModalOpen(false);
+    navigate('/profile/edit', {
+      state: {
+        name,
+        intro,
+        dbtiInfo,
+        profileImage,
+        selectedParts: selectedParts.filter(part => part !== "PM"), // PM 파트 제거
+      },
+    });
   };
 
   return (
@@ -221,6 +230,8 @@ export default function PMPortfolioView({
             value={experienceSummary || ""}
             variant="output"
             disabled={true}
+            multiline={true}
+            rows={1}
           />
           <S.CheckboxWrapper>
             <CheckboxButton
@@ -241,6 +252,8 @@ export default function PMPortfolioView({
             value={strengths || ""}
             variant="output"
             disabled={true}
+            multiline={true}
+            rows={1}
           />
         </S.StrengthsSection>
 

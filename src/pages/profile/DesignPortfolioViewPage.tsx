@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
-import DesignPortfolioView from "./components/DesignPortfolioView";
+import DesignPortfolioView from "@/components/profile/DesignPortfolioView";
 import * as S from "./ProfilePage.styles";
 import InputField from "@/components/Input/InputField";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
