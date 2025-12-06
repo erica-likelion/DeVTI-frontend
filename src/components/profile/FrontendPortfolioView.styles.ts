@@ -20,9 +20,9 @@ export const Header = styled.header`
   
   ${({ theme }) => theme.media.tablet} {
     flex-direction: column;
-    align-items: flex-end;
-    gap: ${({ theme }) => theme.gaps.S.tablet};
-    margin-bottom: 2.75rem;
+    align-items: flex-end; /* 오른쪽 정렬 */
+    gap: ${({ theme }) => theme.gaps.S.wide}; /* 제목과 버튼 사이 gap 1rem */
+    margin-bottom: 2.75rem; /* 수정/삭제 버튼 아래 2.75 간격 */
   }
   
   ${({ theme }) => theme.media.mobile} {
@@ -38,69 +38,49 @@ export const PortfolioTitle = styled.h2`
   ${theme.fonts.heading.h1}
   color: ${theme.colors.grayScale.black};
   margin: 0;
-  white-space: nowrap;
+  white-space: normal !important; /* 띄어쓰기 허용 */
   
   ${({ theme }) => theme.media.tablet} {
-    align-self: flex-start;
+    align-self: flex-start; /* 왼쪽 정렬 */
+  }
+`;
+
+export const PortfolioTitleLine = styled.span`
+  ${theme.fonts.heading.h1}
+  color: ${theme.colors.grayScale.black};
+  display: inline;
+  
+  ${({ theme }) => theme.media.tablet} {
+    display: block;
   }
 `;
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: ${({ theme }) => theme.gaps.S.wide}; /* 모든 화면에서 수정/삭제 버튼 사이 간격 1rem */
   flex-shrink: 0;
   
   ${({ theme }) => theme.media.mobile} {
     flex-direction: column;
-    gap: 1rem;
+    gap: ${({ theme }) => theme.gaps.S.mobile}; /* 수정/삭제 버튼 사이 간격 0.5rem */
   }
 `;
 
 export const EditButton = styled(BkMTextButton)`
   display: flex;
-  width: ${({ theme }) => theme.componentWidths.min.wide};
-  padding: ${({ theme }) => theme.gaps.XXS.wide} 0;
+  width: ${({ theme }) => theme.responsive.property.width('min')};
+  ${({ theme }) => theme.responsive.property.paddingComplex('XXS', 'none', 'XXS', 'none')};
   justify-content: center;
   align-items: center;
   margin-right: 0;
-  
-  ${({ theme }) => theme.media.desktop} {
-    width: ${({ theme }) => theme.componentWidths.min.desktop};
-    padding: ${({ theme }) => theme.gaps.XXS.desktop} 0;
-  }
-  
-  ${({ theme }) => theme.media.tablet} {
-    width: ${({ theme }) => theme.componentWidths.min.tablet};
-    padding: ${({ theme }) => theme.gaps.XXS.tablet} 0;
-  }
-  
-  ${({ theme }) => theme.media.mobile} {
-    width: ${({ theme }) => theme.componentWidths.min.mobile};
-    padding: ${({ theme }) => theme.gaps.XXS.mobile} 0;
-  }
 `;
 
 export const DeleteButton = styled(BkMTextButton)`
   display: flex;
-  width: ${({ theme }) => theme.componentWidths.min.wide};
-  padding: ${({ theme }) => theme.gaps.XXS.wide} 0;
+  width: ${({ theme }) => theme.responsive.property.width('min')};
+  ${({ theme }) => theme.responsive.property.paddingComplex('XXS', 'none', 'XXS', 'none')};
   justify-content: center;
   align-items: center;
-  
-  ${({ theme }) => theme.media.desktop} {
-    width: ${({ theme }) => theme.componentWidths.min.desktop};
-    padding: ${({ theme }) => theme.gaps.XXS.desktop} 0;
-  }
-  
-  ${({ theme }) => theme.media.tablet} {
-    width: ${({ theme }) => theme.componentWidths.min.tablet};
-    padding: ${({ theme }) => theme.gaps.XXS.tablet} 0;
-  }
-  
-  ${({ theme }) => theme.media.mobile} {
-    width: ${({ theme }) => theme.componentWidths.min.mobile};
-    padding: ${({ theme }) => theme.gaps.XXS.mobile} 0;
-  }
 `;
 
 export const ContentFrame = styled.div`
@@ -126,12 +106,12 @@ export const SectionTitle = styled.h3`
 export const ExperienceSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.responsive.gap('S')};
+  gap: ${({ theme }) => theme.responsive.property.gap('S')};
   width: 100%;
 `;
 
 export const CheckboxWrapper = styled.div`
-  margin-top: ${({ theme }) => theme.responsive.gap('S')};
+  margin-top: ${({ theme }) => theme.responsive.property.gap('S')};
   
   button {
     pointer-events: none;
@@ -139,20 +119,16 @@ export const CheckboxWrapper = styled.div`
   }
 `;
 
-export const StrengthsSection = styled.div`
+export const Section = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.responsive.gap('S')};
+  gap: ${({ theme }) => theme.responsive.property.gap('S')};
   width: 100%;
   margin-top: 2.75rem;
 `;
 
-export const GithubSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.responsive.gap('S')};
-  width: 100%;
-`;
+export const StrengthsSection = Section;
+export const GithubSection = Section;
 
 export const EmptyText = styled.span`
   ${theme.fonts.body.l500}
@@ -192,10 +168,34 @@ export const TechAssessmentWrapper = styled.div`
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  margin-top: ${({ theme }) => theme.responsive.gap('S')};
+  margin-top: ${({ theme }) => theme.responsive.gap('S', 'wide')};
   
   &:first-child {
-    margin-top: ${({ theme }) => theme.responsive.gap('S')};
+    margin-top: ${({ theme }) => theme.responsive.gap('S', 'wide')};
+  }
+  
+  ${({ theme }) => theme.media.desktop} {
+    margin-top: ${({ theme }) => theme.responsive.gap('S', 'desktop')};
+    
+    &:first-child {
+      margin-top: ${({ theme }) => theme.responsive.gap('S', 'desktop')};
+    }
+  }
+  
+  ${({ theme }) => theme.media.tablet} {
+    margin-top: ${({ theme }) => theme.responsive.gap('S', 'tablet')};
+    
+    &:first-child {
+      margin-top: ${({ theme }) => theme.responsive.gap('S', 'tablet')};
+    }
+  }
+  
+  ${({ theme }) => theme.media.mobile} {
+    margin-top: ${({ theme }) => theme.responsive.gap('S', 'mobile')};
+    
+    &:first-child {
+      margin-top: ${({ theme }) => theme.responsive.gap('S', 'mobile')};
+    }
   }
 `;
 
