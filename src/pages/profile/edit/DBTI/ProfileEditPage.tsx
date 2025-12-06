@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as S from './ProfileEditPage.styles';
 import { BkMTextButton } from '@/components/ButtonStatic';
 import InputField from '@/components/Input/InputField';
@@ -12,11 +13,20 @@ interface ProfileEditPageProps {
 }
 
 export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageProps) {
+  const navigate = useNavigate();
   const [selectedPart, setSelectedPart] = useState<string>('');
   const [isDropBoxOpen, setIsDropBoxOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const partOptions = ['PM', '디자인', '프론트엔드', '백엔드'];
+  
+  // 파트 slug 매핑
+  const partToSlug: Record<string, string> = {
+    'PM': 'pm',
+    '디자인': 'design',
+    '프론트엔드': 'frontend',
+    '백엔드': 'backend'
+  };
   
   const userName = '송재현'; // 기본값, 나중에 props나 상태관리에서 받아올 예정
   const userIntro = '저는 팀장입니다'; // 기본값, 나중에 props나 상태관리에서 받아올 예정
@@ -91,6 +101,11 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
             onSelectOption={(option) => {
               setSelectedPart(option);
               setIsDropBoxOpen(false);
+              // 파트 선택 시 해당 포트폴리오 편집 페이지로 이동
+              const partSlug = partToSlug[option];
+              if (partSlug) {
+                navigate(`/profile/edit/${partSlug}`);
+              }
             }}
           />
         </S.PartFrame>

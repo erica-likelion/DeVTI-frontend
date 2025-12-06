@@ -1,4 +1,5 @@
 import * as S from "./SelfAssessmentGroup.styles";
+import Card from "@/components/Card";
 
 const RATING_SCALE = [
   "매우 모름",
@@ -19,6 +20,7 @@ interface SelfAssessmentGroupProps {
   items: SelfAssessmentItem[];
   values: Record<string, number>;
   onChange: (key: string, value: number) => void;
+  variant?: "input" | "output";
 }
 
 export default function SelfAssessmentGroup({
@@ -26,36 +28,22 @@ export default function SelfAssessmentGroup({
   items,
   values,
   onChange,
+  variant = "input",
 }: SelfAssessmentGroupProps) {
   return (
     <S.Group>
-      <S.GroupTitle>{title}</S.GroupTitle>
+      {title && <S.GroupTitle>{title}</S.GroupTitle>}
       <S.CardGrid>
         {items.map((item) => (
-          <S.Card key={item.key}>
-            <S.CardTitle>{item.title}</S.CardTitle>
-            <S.CardDescription>{item.description}</S.CardDescription>
-            <S.RatingGroup>
-              {RATING_SCALE.map((label, index) => {
-                const value = index + 1;
-                const isActive = (values[item.key] ?? 0) === value;
-
-                return (
-                  <S.RatingOption key={label} $active={isActive}>
-                    <S.HiddenRadio
-                      name={item.key}
-                      type="radio"
-                      value={value}
-                      checked={isActive}
-                      onChange={() => onChange(item.key, value)}
-                    />
-                    <S.RatingCircle $active={isActive} />
-                    <S.RatingLabelText>{label}</S.RatingLabelText>
-                  </S.RatingOption>
-                );
-              })}
-            </S.RatingGroup>
-          </S.Card>
+          <S.CardWrapper key={item.key}>
+            <Card
+              header={item.title}
+              body={item.description}
+              score={values[item.key] ?? 0}
+              variant={variant}
+              onScoreChange={variant === "input" ? (score) => onChange(item.key, score) : undefined}
+            />
+          </S.CardWrapper>
         ))}
       </S.CardGrid>
     </S.Group>

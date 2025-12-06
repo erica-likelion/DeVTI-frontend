@@ -6,9 +6,10 @@ interface CardProps {
   body: string;
   score?: number; // 0~5
   variant?: "input" | "output"; // output: non-interactive view
+  onScoreChange?: (score: number) => void;
 }
 
-export default function Card({ header, body, score = 0, variant = "input" }: CardProps) {
+export default function Card({ header, body, score = 0, variant = "input", onScoreChange }: CardProps) {
   const isOutput = variant === "output";
 
   return (
@@ -17,7 +18,7 @@ export default function Card({ header, body, score = 0, variant = "input" }: Car
       <S.Content>
         <S.Body>{body}</S.Body>
         <S.Footer>
-          <Score value={score} disabled={isOutput} onChange={isOutput ? undefined : () => {}} />
+          <Score value={score} disabled={isOutput} onChange={isOutput ? undefined : onScoreChange} />
         </S.Footer>
       </S.Content>
     </S.Container>

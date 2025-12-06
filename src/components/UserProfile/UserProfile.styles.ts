@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import ImageIcon from "@/assets/icons/Image.svg";
 
 export const Container = styled.button`
   display: inline-flex;
@@ -41,7 +42,7 @@ export const DefaultProfileIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("/Image.svg");
+  background-image: url(${ImageIcon});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

@@ -1,26 +1,26 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.div<{ $isInDefaultPage?: boolean }>`
   background: ${({ theme }) => theme.colors.grayScale.white};
   display: flex;
   width:100%;
-  padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.wide};
+  padding: ${({ $isInDefaultPage, theme }) => $isInDefaultPage ? '0' : `3.75rem ${theme.gaps.GeneralMargin.wide}`};
   flex-direction: column;
   align-items: flex-start;
   gap: 2.75rem;
   overflow-y: auto;
   height: 100%;
 
-  ${({ theme }) => theme.media.desktop} {
-    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.desktop};
+  ${({ theme}) => theme.media.desktop} {
+    padding: ${({ $isInDefaultPage, theme }) => $isInDefaultPage ? '0' : `3.75rem ${theme.gaps.GeneralMargin.desktop}`};
   }
 
   ${({ theme }) => theme.media.tablet} {
-    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.tablet};
+    padding: ${({ $isInDefaultPage, theme }) => $isInDefaultPage ? '0' : `3.75rem ${theme.gaps.GeneralMargin.tablet}`};
   }
 
   ${({ theme }) => theme.media.mobile} {
-    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.mobile};
+    padding: ${({ $isInDefaultPage, theme }) => $isInDefaultPage ? '0' : `3.75rem ${theme.gaps.GeneralMargin.mobile}`};
   }
 `;
 

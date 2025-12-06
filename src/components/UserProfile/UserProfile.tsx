@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import ImageIcon from "@/assets/icons/Image.svg";
 import { useAuthStore } from "@/stores/authStore";
+import { useIsMobile } from "@/hooks/useMediaQuery";
+import ClearMImgButton from "@/components/ButtonDynamic/ClearMImgButton";
 import * as S from "./UserProfile.styles";
 
 interface UserProfileProps {
@@ -15,12 +18,25 @@ export default function UserProfile({
 }: UserProfileProps) {
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const isMobile = useIsMobile();
 
   const handleClick = () => {
     navigate("/profile");
   };
 
   if (variant === "profile") {
+    // 모바일일 때는 ClearMImgButton 사용하고 사용자 이름 숨김
+    if (isMobile) {
+      return (
+        <ClearMImgButton
+          className={className}
+          onClick={handleClick}
+          imageSrc={user?.profileImage || undefined}
+        />
+      );
+    }
+    
+    // 데스크탑일 때는 기존대로
     return (
       <S.ProfileContainer className={className} onClick={handleClick}>
         <S.ProfileIconWrapper>
@@ -28,7 +44,7 @@ export default function UserProfile({
             <S.ProfileIconImage src={user.profileImage} alt={user.name} />
           ) : (
             <S.ProfileDefaultIcon>
-              <img src="/Image.svg" alt="Profile" />
+              <img src={ImageIcon} alt="Profile" />
             </S.ProfileDefaultIcon>
           )}
         </S.ProfileIconWrapper>
