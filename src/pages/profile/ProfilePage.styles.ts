@@ -857,7 +857,7 @@ export const DefaultEditButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   margin-top: auto;
-  padding-top: 0;
+  padding-top: 2.5rem;
   padding-bottom: 0;
 `;
 
