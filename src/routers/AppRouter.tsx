@@ -20,7 +20,7 @@ import DesignPortfolioViewPage from "@/pages/profile/DesignPortfolioViewPage";
 import FrontendPortfolioViewPage from "@/pages/profile/FrontendPortfolioViewPage";
 import BackendPortfolioViewPage from "@/pages/profile/BackendPortfolioViewPage";
 import ProfileDefaultPage from "@/pages/profile/ProfileDefaultPage";
-import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
+//import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 import JoinRoom from "@/pages/joinroom/JoinRoom";
 import NewRoom from "@/pages/newroom/NewRoom";
 import NewRoomCode from "@/pages/newroom/NewRoomCode";
