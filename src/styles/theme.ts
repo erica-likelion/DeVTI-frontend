@@ -674,6 +674,7 @@ const layouts = {
     flex-shrink: 0;
   `,
   mobileCommon: css`
+    display: flex;
     width: 100%;
     height: 100%;
     flex-direction: column;

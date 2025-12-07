@@ -120,6 +120,11 @@ const ManageRoomDefault = () => {
   const totalMembers = participants.length;
   let filteredParticipants = participants;
 
+  if (selectedTab !== '전체') {
+        filteredParticipants = participants.filter(
+          p => p.role === (selectedTab as RoleType),
+        );
+      }
 
   /* 
     //백엔드 연결 용

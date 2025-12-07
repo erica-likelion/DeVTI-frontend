@@ -28,7 +28,7 @@ export const WtLMemberList = ({
 
   return (
     <S.Container
-      clicked={clicked}
+      $clicked={clicked}
       onClick={
         !disabled
           ? () => {
@@ -42,7 +42,7 @@ export const WtLMemberList = ({
         <S.Icon>
           {icon && <img src={icon} alt="icon" />}
         </S.Icon>
-        <S.Header clicked={clicked}>{header}</S.Header>
+        <S.Header $clicked={clicked}>{header}</S.Header>
       </S.LeftArea>
 
       <S.KeywordArea>
@@ -51,8 +51,8 @@ export const WtLMemberList = ({
         ))}
       </S.KeywordArea>
 
-      <S.RightArea hasRightButton={hasRightButton}>
-        <S.IndicatorArea hasRightButton={hasRightButton}>
+      <S.RightArea $hasRightButton={hasRightButton}>
+        <S.IndicatorArea >
           <S.Indicator />
         </S.IndicatorArea>
 

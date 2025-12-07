@@ -1,25 +1,25 @@
 import * as S from './WtMList.styles';
 import { useState } from 'react';
 
-interface WtLMemberListProps {
+interface WtMListProps {
   header: string;
   body: string;
   disabled?: boolean;
   onClick?: () => void;
 }
 
-export const WtLMemberList = ({
+export const WtMList = ({
   header,
   body,
   disabled = false,
   onClick,
-}: WtLMemberListProps) => {
+}: WtMListProps) => {
 
   const [clicked, setClicked] = useState(false);
 
   return (
     <S.Container
-      clicked={clicked}
+      $clicked={clicked}
       onClick={
         !disabled
           ? () => {
@@ -29,7 +29,7 @@ export const WtLMemberList = ({
           : undefined
       }>
       <S.LeftArea>
-        <S.Header clicked={clicked}>{header}</S.Header>
+        <S.Header $clicked={clicked}>{header}</S.Header>
       </S.LeftArea>
 
       
@@ -44,4 +44,4 @@ export const WtLMemberList = ({
   );
 };
 
-export default WtLMemberList;
+export default WtMList;

@@ -23,7 +23,7 @@ export const WtMMemberList = ({
 
   return (
     <S.Container
-      clicked={clicked}
+      $clicked={clicked}
       onClick={
         !disabled
           ? () => {
@@ -34,10 +34,10 @@ export const WtMMemberList = ({
       }
     >
       <S.LeftArea>
-        <S.Header clicked={clicked}>{header}</S.Header>
+        <S.Header $clicked={clicked}>{header}</S.Header>
       </S.LeftArea>
 
-      <S.KeywordArea hasKeyword={hasKeyword}>
+      <S.KeywordArea $hasKeyword={hasKeyword}>
         {keywordGroups.map((group, idx) => (
           <Keyword key={idx} items={group} />
         ))}

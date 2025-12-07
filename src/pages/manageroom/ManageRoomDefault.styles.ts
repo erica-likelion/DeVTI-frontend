@@ -2,20 +2,20 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-    display: flex;
+  display: flex;
   flex-direction: column;
-    align-items: center;
-    gap: 3.75rem;
-    align-self: stretch;
-    overflow-y: auto;
-  padding: 9.5rem ${({ theme }) => theme.responsive.gap('GeneralMargin')} 5rem	${({ theme }) => theme.responsive.gap('GeneralMargin')};
+  align-items: center;
+  gap: 3.75rem;
+  align-self: stretch;
+  overflow-y: auto;
+  padding: 5rem ${({ theme }) => theme.responsive.gap('GeneralMargin')} 5rem	${({ theme }) => theme.responsive.gap('GeneralMargin')};
 `;
 
 export const TopSection = styled.section`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-    gap: 0.5rem;
+  gap: 0.5rem;
 `;
 
 export const Title = styled.h2`
