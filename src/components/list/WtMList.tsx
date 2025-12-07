@@ -1,6 +1,4 @@
 import * as S from './WtMList.styles';
-import { Keyword } from '../keywords/Keyword';
-import VT500Button from '../ButtonDynamic/VT500SButton';
 import { useState } from 'react';
 
 interface WtLMemberListProps {
