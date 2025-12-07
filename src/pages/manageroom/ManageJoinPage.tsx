@@ -17,7 +17,9 @@ export default function ManageJoinPage() {
         <S.Container>
         <S.Title>매칭룸 관리하기</S.Title>
             <S.InputWrapper>
+            <S.LabelWrapper>
                 <S.Label>운영진 입장 코드</S.Label>
+            </S.LabelWrapper>
                 <S.Input>
                 <InputField 
                     variant='input'

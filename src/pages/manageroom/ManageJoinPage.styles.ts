@@ -25,9 +25,15 @@ export const InputWrapper = styled.div`
   gap: 1rem;
 `;
 
+export const LabelWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const Label = styled.div`
   ${({ theme }) => theme.fonts.heading.h3};
   ${({ theme }) => theme.responsive.property.width('min')};
+  flex-shrink: 0;
 `;
 
 export const Input = styled.div`
