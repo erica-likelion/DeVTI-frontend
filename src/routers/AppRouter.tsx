@@ -30,8 +30,8 @@ import DBTIEditPage from "@/pages/profile/edit/DBTI/DBTIEditPage";
 import ProfileEditPage from "@/pages/profile/edit/DBTI/ProfileEditPage";
 // import DBTIResultPage from "@/pages/profile/edit/DBTI/DBTIResultPage";
 import DBTIPage from "@/pages/profile/DBTI/DBTIPage";
-import ManageRoomMatched from "@/pages/manage/ManageRoomMatched";
-import ManageRoomDefault from "@/pages/manage/ManageRoomDefault";
+import ManageRoomMatched from "@/pages/manageroom/ManageRoomMatched";
+import ManageRoomDefault from "@/pages/manageroom/ManageRoomDefault";
 import Room from "@/pages/room/Room";
 import ManageJoinPage from "@/pages/manageroom/ManageJoinPage";
 
