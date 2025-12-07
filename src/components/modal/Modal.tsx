@@ -1,5 +1,6 @@
 import * as S from "./Modal.styles";
 import React from "react";
+import { createPortal } from "react-dom";
 import Xblack from "../../assets/icons/Xblack.svg";
 import { BkMTextButton } from "../ButtonStatic";
 
@@ -25,8 +26,7 @@ export default function Modal({
     else onClose();
   };
 
-
-  return (
+  return createPortal(
     <S.Dimmed>
       <S.ModalContainer onClick={(e) => e.stopPropagation()}>
 
@@ -46,6 +46,7 @@ export default function Modal({
           </BkMTextButton>
         </S.Footer>
       </S.ModalContainer>
-    </S.Dimmed>
+    </S.Dimmed>,
+    document.body
   );
 }

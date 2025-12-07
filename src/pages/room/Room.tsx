@@ -24,10 +24,6 @@ interface RemainingTime {
   isEnded: boolean;
 }
 
-interface CarrotButtonProps {
-  participantId: number;
-}
-
 // 마감 시간(임시)
 const MATCH_DEADLINE = new Date('2025-12-31T23:59:59+09:00');
 
@@ -68,15 +64,15 @@ const calcRemainingTime = (): RemainingTime => {
 
 const Room = () => {
 
-  const [participants, setParticipants] = useState<Participant[]>(INITIAL_PARTICIPANTS);
+  const [participants] = useState<Participant[]>(INITIAL_PARTICIPANTS);
   const [selectedTab, setSelectedTab] = useState<TabValue>('전체');
   const [remainingTime, setRemainingTime] = useState<RemainingTime>(
     () => calcRemainingTime(),
   );
-  const [isMatchedByServer, setIsMatchedByServer] = useState(false);
+  const [isMatchedByServer] = useState(false);
 
   // 🔹 꼬리 흔들기 상태 (room.state_change → WAGGING 에서 true)
-  const [isWagging, setIsWagging] = useState(false);
+  const [isWagging] = useState(false);
   const [isCarrotDisabled, setIsCarrotDisabled] = useState(false);
 
   const handleCarrotClick = async () => {

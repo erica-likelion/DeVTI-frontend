@@ -55,7 +55,7 @@ const Calendar: React.FC<CalendarProps> = ({ isOpen, onClose, onDateSelect, sele
   };
 
   // 시간 변경 핸들러
-  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newTime = e.target.value;
     
     // 숫자와 : 만 입력허용

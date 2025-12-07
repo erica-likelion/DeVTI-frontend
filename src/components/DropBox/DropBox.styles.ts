@@ -4,7 +4,6 @@ import { theme } from "@/styles/theme";
 export const Container = styled.div<{ $size?: "L" | "M" }>`
   display: flex;
   width: ${({ $size }) => ($size === "M" ? "auto" : "100%")};
-  max-width: ${({ $size }) => ($size === "M" ? "auto" : "33.25rem")};
   flex-direction: column;
   align-items: flex-start;
   ${({ theme }) => theme.responsive.property.gap('XXS')}
@@ -17,22 +16,21 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
   align-items: center;
   justify-content: ${({ $size }) => ($size === "M" ? "center" : "flex-start")};
   width: 100%;
-  padding: ${({ $size, theme }) =>
-    $size === "M"
-      ? `${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XS')}`
-      : `${theme.responsive.gap('S')} ${theme.responsive.gap('M')} ${theme.responsive.gap('S')} ${theme.responsive.gap('M')}`};
+  ${({ $size, theme }) => $size === "M" 
+    ? theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')
+    : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
   border: none;
-  border-radius: ${({ $size, theme }) =>
-    $size === "M" ? theme.responsive.borderRadius('sharp') : theme.responsive.borderRadius('smooth')};
+  ${({ $size, theme }) => $size === "M" 
+    ? theme.responsive.property.borderRadius('sharp') 
+    : theme.responsive.property.borderRadius('smooth')}
   background: ${({ $size, $disabled, theme }) =>
     $size === "M" && $disabled
       ? "transparent"
       : theme.colors.grayScale.white};
-  box-shadow: ${({ $size }) =>
-    $size === "M" ? "none" : "0 0 4px 0 rgba(25, 24, 29, 0.1)"};
+  box-shadow: ${({ $size, theme }) =>
+    $size === "M" ? "none" : theme.effects.dropShadows.DS100};
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XXS') : theme.responsive.gap('S'))};
-  height: ${({ $size}) => ($size === "M" ? "2.5rem" : "3.5rem")};
   align-self: stretch;
   transition: background-color 0.2s ease;
 
@@ -86,20 +84,32 @@ export const DropdownList = styled.div`
   align-items: flex-start;
   align-self: stretch;
   ${({ theme }) => theme.responsive.property.borderRadius('smooth')}
-  box-shadow: 0 0 4px 0 rgba(25, 24, 29, 0.1);
+  box-shadow: ${theme.effects.dropShadows.DS100};
   background: ${theme.colors.grayScale.white};
   overflow: hidden;
+  max-width: ${({ theme }) => theme.componentWidths.large.mobile};
+
+  ${({ theme }) => theme.media.tablet} {
+    max-width: ${({ theme }) => theme.componentWidths.large.tablet};
+  }
+
+  ${({ theme }) => theme.media.desktop} {
+    max-width: ${({ theme }) => theme.componentWidths.large.desktop};
+  }
+
+  ${({ theme }) => theme.media.wide} {
+    max-width: ${({ theme }) => theme.componentWidths.large.wide};
+  }
 `;
 
 export const DropOption = styled.div<{ $size?: "L" | "M"; $isActive?: boolean; $isSelected?: boolean }>`
   display: flex;
-  height: 3.5rem;
   align-items: center;
   align-self: stretch;
-  padding: ${({ $size, theme }) =>
-    $size === "M"
-      ? `${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XS')}`
-      : `${theme.responsive.gap('S')} ${theme.responsive.gap('M')} ${theme.responsive.gap('S')} ${theme.responsive.gap('M')}`};
+  ${({ $size, theme }) => $size === "M" 
+    ? theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')
+    : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
+  ${({ theme }) => theme.responsive.property.borderRadius('smooth')}
   background: ${theme.colors.grayScale.white};
   cursor: ${({ $isActive }) => ($isActive ? "default" : "pointer")};
   transition: background-color 0.2s ease;

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { theme } from '@/styles/theme';
 
 interface ContainerProps {
   $isImageBackground: boolean;
@@ -12,7 +13,16 @@ export const Container = styled.div<ContainerProps>`
   flex-direction: column;
   
   ${({ $isImageBackground, $pathname }) => {
+    // 프로필 편집 페이지(/profile/edit, /profile/pm/view 등)에서만 흰색 배경
+    if ($pathname.startsWith('/profile') && ($pathname.includes('/edit') || $pathname.includes('/view'))) {
+      return `background: ${theme.colors.grayScale.white};`;
+    }
+    
     if (!$isImageBackground) {
+      // 프로필 페이지일 때는 gray50 배경
+      if ($pathname.includes('/profile')) {
+        return `background: #F9F9F9;`; // theme.colors.grayScale.gray50
+      }
       return `background: radial-gradient(74% 86.02% at 50% 96.76%, #ECDEF9 0%, #FCFCFF 100%);`;
     }
     

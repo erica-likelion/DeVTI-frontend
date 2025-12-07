@@ -9,28 +9,38 @@ interface WhiteLButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   children?: React.ReactNode;
+  hideIcon?: boolean;
+  isActive?: boolean; // 외부에서 active 상태 제어
 }
 
 export default function WhiteLButton({ 
   className, 
   onClick, 
   disabled = false,
-  children 
+  children,
+  hideIcon = false,
+  isActive: externalIsActive
 }: WhiteLButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
+  // 외부에서 isActive prop이 제공되면 그것을 사용, 아니면 내부 상태 사용
+  const isActiveState = externalIsActive !== undefined ? externalIsActive : isClicked;
+
   const handleClick = () => {
     if (!disabled && onClick) {
-      setIsClicked(!isClicked);
+      // 외부에서 isActive를 제어하는 경우 내부 상태는 변경하지 않음
+      if (externalIsActive === undefined) {
+        setIsClicked(!isClicked);
+      }
       onClick();
     }
   };
 
   const getIcon = () => {
     if (disabled) return FootGray;
-    if (isClicked) return FootPupple;
+    if (isActiveState) return FootPupple;
     if (isActive) return FootBlack;
     if (isHovered) return FootPupple;
     return FootBlack;
@@ -45,12 +55,15 @@ export default function WhiteLButton({
       onMouseDown={() => setIsActive(true)}
       onMouseUp={() => setIsActive(false)}
       disabled={disabled}
-      $isClicked={isClicked}
+      $isClicked={isActiveState}
       $isActive={isActive}
+      $hideIcon={hideIcon}
     >
-      <S.Icon>
-        <img src={getIcon()} alt="Foot" />
-      </S.Icon>
+      {!hideIcon && (
+        <S.Icon>
+          <img src={getIcon()} alt="Foot" />
+        </S.Icon>
+      )}
       {children}
     </S.Container>
   );

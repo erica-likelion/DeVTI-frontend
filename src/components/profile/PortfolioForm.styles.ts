@@ -96,7 +96,7 @@ export const TextArea = styled.textarea`
 `;
 
 export const TimeAvailabilitySection = styled(Section)`
-  gap: 1.5rem;
+  gap: 1rem;
 `;
 
 export const TimeRow = styled.div`
@@ -109,6 +109,9 @@ export const TimeRow = styled.div`
 export const TimeRowLabel = styled.span`
   ${theme.fonts.body.m500}
   color: ${theme.colors.grayScale.black};
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-block;
 `;
 
 export const TimeOptionGroup = styled.div`

@@ -637,7 +637,6 @@ const layouts = {
     display: flex;
     width: 100%;
     height: 100%;
-    padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -647,7 +646,6 @@ const layouts = {
     display: flex;
     width: 100%;
     height: 100%;
-    padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -658,17 +656,14 @@ const layouts = {
     display: flex;
     width: 100%;
     height: 100%;
-    padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
   `,
   mobileCommon: css`
-    display: flex;
     width: 100%;
     height: 100%;
-    padding: 0 1rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
