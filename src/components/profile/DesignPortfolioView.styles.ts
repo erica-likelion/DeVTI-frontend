@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
-import WtLCloseButton from "@/components/ButtonDynamic/WtLCloseButton";
 
 export const Wrapper = styled.div`
   display: flex;

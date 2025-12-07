@@ -4,7 +4,6 @@ import BasePortfolioForm from "./BasePortfolioForm";
 import SelfAssessmentGroup from "./SelfAssessmentGroup";
 import type { SelfAssessmentItem } from "./SelfAssessmentGroup";
 import * as S from "./DesignPortfolioForm.styles";
-import WtLPawButton from "@/components/ButtonDynamic/WtLPawButton";
 import WtLCloseButton from "@/components/ButtonDynamic/WtLCloseButton";
 import UploadIcon from "@/assets/icons/Upload.svg";
 

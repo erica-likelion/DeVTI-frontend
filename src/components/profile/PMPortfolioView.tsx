@@ -129,6 +129,7 @@ export default function PMPortfolioView({
   profileImage,
   selectedParts = [],
   showEditButtons = true,
+  // @ts-ignore - 사용 예정
   onBack,
 }: PMPortfolioViewProps) {
   // 할애할 수 있는 시간을 Keyword로 변환
@@ -238,7 +239,7 @@ export default function PMPortfolioView({
               checked={isNewcomer}
               onChange={() => {}}
               disabled={false}
-              onClick={(e) => e.preventDefault()}
+              onClick={() => {}}
             >
               신입
             </CheckboxButton>

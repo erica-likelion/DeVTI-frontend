@@ -110,7 +110,7 @@ export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(portfolioState?.profileImage || user?.profileImage || null);
   const [name, setName] = useState<string>(portfolioState?.name || user?.name || "");
   const [intro, setIntro] = useState<string>(portfolioState?.intro || "");
-  const [dbtiInfo, setDbtiInfo] = useState<string | null>(portfolioState?.dbtiInfo || null); // DBTI 정보 상태
+  const [dbtiInfo] = useState<string | null>(portfolioState?.dbtiInfo || null); // DBTI 정보 상태
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -379,7 +379,7 @@ export default function ProfilePage() {
             onRegister={() => {
               // 등록 버튼 클릭 시 PM 파트를 selectedParts에 추가
               if (!selectedParts.includes("PM")) {
-                const updated = [...selectedParts, "PM"];
+                const updated = [...selectedParts, "PM"] as PartOption[];
                 setSelectedParts(updated);
                 return updated;
               }
@@ -405,7 +405,7 @@ export default function ProfilePage() {
             onRegister={() => {
               // 등록 버튼 클릭 시 디자인 파트를 selectedParts에 추가
               if (!selectedParts.includes("디자인")) {
-                const updated = [...selectedParts, "디자인"];
+                const updated = [...selectedParts, "디자인"] as PartOption[];
                 setSelectedParts(updated);
                 return updated;
               }
@@ -424,12 +424,15 @@ export default function ProfilePage() {
               (portfolioState.part === "프론트엔드" || 
                (portfolioState.experienceSummary !== undefined && 
                 portfolioState.github !== undefined)) 
-                ? portfolioState 
+                ? {
+                    ...portfolioState,
+                    selectedTechs: portfolioState.selectedTechs as ("JavaScript" | "Android Studio" | "React")[] | undefined
+                  }
                 : null
             }
             onRegister={() => {
               if (!selectedParts.includes("프론트엔드")) {
-                const updated = [...selectedParts, "프론트엔드"];
+                const updated = [...selectedParts, "프론트엔드"] as PartOption[];
                 setSelectedParts(updated);
                 return updated;
               }
@@ -448,12 +451,15 @@ export default function ProfilePage() {
               (portfolioState.part === "백엔드" || 
                (portfolioState.experienceSummary !== undefined && 
                 portfolioState.github !== undefined)) 
-                ? portfolioState 
+                ? {
+                    ...portfolioState,
+                    selectedTechs: portfolioState.selectedTechs as ("Java" | "Python" | "Django" | "Spring Boot")[] | undefined
+                  }
                 : null
             }
             onRegister={() => {
               if (!selectedParts.includes("백엔드")) {
-                const updated = [...selectedParts, "백엔드"];
+                const updated = [...selectedParts, "백엔드"] as PartOption[];
                 setSelectedParts(updated);
                 return updated;
               }

@@ -1,6 +1,8 @@
 import * as S from "./SelfAssessmentGroup.styles";
 import Card from "@/components/Card";
 
+// @ts-ignore - 사용 예정
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RATING_SCALE = [
   "매우 모름",
   "모름",

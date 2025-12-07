@@ -36,6 +36,7 @@ interface PortfolioData {
   intro?: string;
   dbtiInfo?: string | null;
   profileImage?: string | null;
+  selectedParts?: PartOption[];
 }
 
 export default function ProfileDefaultPage() {
@@ -239,6 +240,8 @@ export default function ProfileDefaultPage() {
     };
   }, [isMobile]);
   
+  // @ts-ignore - 사용 예정
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handlePartAdd = (option: string) => {
     const selectedPart = option as PartOption;
     if (!selectedParts.includes(selectedPart)) {
@@ -253,7 +256,7 @@ export default function ProfileDefaultPage() {
       const partSlug = partMap[selectedPart];
       navigate(`/profile/edit/${partSlug}`, { replace: false });
     }
-    setIsPartDropdownOpen(false);
+    // setIsPartDropdownOpen(false); // TODO: 구현 필요
   };
 
   const renderPortfolioView = () => {

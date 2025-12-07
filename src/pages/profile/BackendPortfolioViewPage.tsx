@@ -31,7 +31,7 @@ interface LocationState {
 export default function BackendPortfolioViewPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user: _user } = useAuthStore(); // eslint-disable-line @typescript-eslint/no-unused-vars
   const state = location.state as LocationState | null;
 
   // state가 없으면 프로필 페이지로 리다이렉트
