@@ -33,6 +33,7 @@ import DBTIPage from "@/pages/profile/DBTI/DBTIPage";
 import ManageRoomMatched from "@/pages/manage/ManageRoomMatched";
 import ManageRoomDefault from "@/pages/manage/ManageRoomDefault";
 import Room from "@/pages/room/Room";
+import ManageJoinPage from "@/pages/manageroom/ManageJoinPage";
 
 export const router = createBrowserRouter([
   {
@@ -196,6 +197,12 @@ export const router = createBrowserRouter([
         path: "manage/default",
         element: (
           <ManageRoomDefault />
+        ),
+      },
+      {
+        path: "manage/join",
+        element: (
+          <ManageJoinPage />
         ),
       },
       {
