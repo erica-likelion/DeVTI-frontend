@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   flex: 1 0 0;
   ${({ theme }) => theme.responsive.property.paddingComplex('XXS','XXS','XXS','XXS')}
-  max-width: ${({ theme }) => theme.responsive.property.width('large')};
+  ${({ theme }) => theme.responsive.property.width('large')};
   align-items: center;
   ${({ theme }) => theme.responsive.property.gap('XXXS')}
   ${({ theme }) => theme.responsive.property.borderRadius('smooth')}
