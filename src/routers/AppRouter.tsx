@@ -62,73 +62,73 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <ProfilePage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/edit",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <ProfilePage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/edit/:part",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <ProfilePage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/pm/view",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <PMPortfolioViewPage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/design/view",
         element: (
-          <ProtectedRoute>
+         // <ProtectedRoute>
             <DesignPortfolioViewPage />
-          </ProtectedRoute>
+         // </ProtectedRoute>
         ),
       },
       {
         path: "profile/frontend/view",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <FrontendPortfolioViewPage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/backend/view",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <BackendPortfolioViewPage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/Default",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <ProfileDefaultPage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: '*',
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <ProfilePage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
