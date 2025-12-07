@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import * as S from "./ProfilePage.styles";
-import PMPortfolioForm from "./components/PMPortfolioForm";
-import DesignPortfolioForm from "./components/DesignPortfolioForm";
-import FrontendPortfolioForm from "./components/FrontendPortfolioForm";
-import BackendPortfolioForm from "./components/BackendPortfolioForm";
+import PMPortfolioForm from "@/components/profile/PMPortfolioForm";
+import DesignPortfolioForm from "@/components/profile/DesignPortfolioForm";
+import FrontendPortfolioForm from "@/components/profile/FrontendPortfolioForm";
+import BackendPortfolioForm from "@/components/profile/BackendPortfolioForm";
 import BkLTextButton from "@/components/ButtonStatic/BkLTextButton";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
 import WtMIconButton from "@/components/ButtonStatic/WtMIconButton";
@@ -224,8 +224,8 @@ export default function ProfilePage() {
       
       <S.EditWrapper>
       <S.EditContainer>
-        <S.LeftPanel $hideOnMobile={hasActivePart}>
-        <S.EditProfileSection>
+        <S.LeftPanel $hideOnMobile={hasActivePart} $isDropdownOpen={isPartDropdownOpen}>
+        <S.EditProfileSection $isDropdownOpen={isPartDropdownOpen}>
           <S.EditProfileImageWrapper>
             {profileImage ? (
               <S.EditProfileImage src={profileImage} alt={user?.name || "프로필"} />
@@ -345,7 +345,7 @@ export default function ProfilePage() {
             </S.PartSelectionWrapper>
           </S.FormSection>
 
-          <S.SaveButtonWrapper>
+          <S.SaveButtonWrapper $isDropdownOpen={isPartDropdownOpen}>
             <BkMTextButton 
               onClick={handleSave} 
               disabled={isSaveDisabled}
