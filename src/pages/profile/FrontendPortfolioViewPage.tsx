@@ -31,7 +31,7 @@ interface LocationState {
 export default function FrontendPortfolioViewPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user: _user } = useAuthStore(); // eslint-disable-line @typescript-eslint/no-unused-vars
   const state = location.state as LocationState | null;
 
   // state가 없으면 프로필 페이지로 리다이렉트
@@ -274,7 +274,8 @@ export default function FrontendPortfolioViewPage() {
                             }
                           };
 
-                          const partData = getStoredPartData(part === "디자인" ? "디자인" : part === "PM" ? "PM" : part === "프론트엔드" ? "프론트엔드" : part === "백엔드" ? "백엔드" : part);
+                          // @ts-expect-error - part 타입이 제한적이지만 런타임에서는 모든 PartOption 가능
+                          const partData = getStoredPartData((part === "디자인" ? "디자인" : part === "PM" ? "PM" : part === "프론트엔드" ? "프론트엔드" : part === "백엔드" ? "백엔드" : part) as string);
                           
                           navigate(`/profile/${partSlug}/view`, {
                             replace: false,

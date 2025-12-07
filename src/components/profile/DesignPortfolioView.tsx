@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./DesignPortfolioView.styles";
-import { Keyword } from "@/components/keywords/Keyword";
 import SelfAssessmentGroup from "./SelfAssessmentGroup";
 import StarDisplay from "@/components/StarDisplay/StarDisplay";
 import InputField from "@/components/Input/InputField";
@@ -83,6 +82,7 @@ export default function DesignPortfolioView({
   profileImage,
   selectedParts = [],
   showEditButtons = true,
+  // @ts-ignore - 사용 예정
   onBack,
 }: DesignPortfolioViewProps) {
   // 평균 점수 계산
@@ -177,7 +177,7 @@ export default function DesignPortfolioView({
               checked={isNewcomer}
               onChange={() => {}}
               disabled={false}
-              onClick={(e) => e.preventDefault()}
+              onClick={() => {}}
             >
               신입
             </CheckboxButton>

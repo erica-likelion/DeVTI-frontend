@@ -54,7 +54,9 @@ export default function BasePortfolioForm({
   github = "",
   dailyAvailability,
   weeklyAvailability,
+  // @ts-ignore - 사용 예정
   experiencePlaceholder,
+  // @ts-ignore - 사용 예정
   strengthsPlaceholder,
   onExperienceChange,
   onStrengthsChange,

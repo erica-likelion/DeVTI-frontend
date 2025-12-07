@@ -58,6 +58,7 @@ export default function FrontendPortfolioView({
   profileImage,
   selectedParts = [],
   showEditButtons = true,
+  // @ts-ignore - 사용 예정
   onBack,
 }: FrontendPortfolioViewProps) {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ export default function FrontendPortfolioView({
   const techAverages = useMemo(() => {
     const averages: Record<string, number> = {};
     selectedTechs.forEach((tech) => {
-      const items = TECH_ITEMS_MAP[tech] || [];
+      const items = TECH_ITEMS_MAP[tech as keyof typeof TECH_ITEMS_MAP] || [];
       averages[tech] = calculateAverage(techAssessments[tech] || {}, items);
     });
     return averages;
@@ -162,7 +163,7 @@ export default function FrontendPortfolioView({
               checked={isNewcomer}
               onChange={() => {}}
               disabled={false}
-              onClick={(e) => e.preventDefault()}
+              onClick={() => {}}
             >
               신입
             </CheckboxButton>
@@ -210,7 +211,7 @@ export default function FrontendPortfolioView({
                 </S.TechHeader>
                 <SelfAssessmentGroup
                   title=""
-                  items={TECH_ITEMS_MAP[tech] || []}
+                  items={TECH_ITEMS_MAP[tech as keyof typeof TECH_ITEMS_MAP] || []}
                   values={techAssessments[tech] || {}}
                   onChange={() => {}}
                   variant="output"

@@ -3,10 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import BasePortfolioForm from "./BasePortfolioForm";
 import SelfAssessmentGroup from "./SelfAssessmentGroup";
 import DropBox from "@/components/DropBox";
-import type {
-  DailyAvailabilityKey,
-  WeeklyAvailabilityKey,
-} from "./BasePortfolioForm";
 import * as S from "./FrontendPortfolioForm.styles";
 import {
   FRONTEND_TECH_OPTIONS,
@@ -99,6 +95,8 @@ export default function FrontendPortfolioForm({
   };
 
   // 기술 제거 핸들러
+  // @ts-ignore - 사용 예정
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleTechRemove = (tech: FrontendTech) => {
     setSelectedTechs(selectedTechs.filter((t) => t !== tech));
     const newAssessments = { ...techAssessments };

@@ -30,7 +30,7 @@ interface LocationState {
 export default function DesignPortfolioViewPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user: _user } = useAuthStore(); // eslint-disable-line @typescript-eslint/no-unused-vars
   const state = location.state as LocationState | null;
 
   // state가 없으면 프로필 페이지로 리다이렉트
@@ -286,7 +286,8 @@ export default function DesignPortfolioViewPage() {
                             }
                           };
 
-                          const partData = getStoredPartData(part === "PM" ? "PM" : part === "디자인" ? "디자인" : part);
+                          // @ts-expect-error - part 타입이 제한적이지만 런타임에서는 모든 PartOption 가능
+                          const partData = getStoredPartData((part === "PM" ? "PM" : part === "디자인" ? "디자인" : part) as string);
                           
                           navigate(`/profile/${partSlug}/view`, {
                             replace: false,
@@ -305,6 +306,7 @@ export default function DesignPortfolioViewPage() {
                                 designAssessment: partData?.designAssessment || {},
                                 developmentAssessment: partData?.developmentAssessment || {},
                                 isNewcomer: partData?.isNewcomer || false,
+                              // @ts-expect-error - part 타입이 제한적이지만 런타임에서는 모든 PartOption 가능
                               } : part === "디자인" ? {
                                 designWorkFile: partData?.designWorkFile || null,
                                 figmaAssessment: partData?.figmaAssessment || {},
