@@ -34,15 +34,15 @@ export default function TopNav({ className }: TopNavProps) {
   };
 
   const handleNewChatRoom = () => {
-    navigate("/");
+    navigate("/new-room");
   };
 
   const handleJoinChatRoom = () => {
-    navigate("/");
+    navigate("/join-room");
   };
 
   const handleManageChatRoom = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   const handleMenuToggle = () => {
