@@ -22,7 +22,7 @@ export const Header = styled.header`
   ${({ theme }) => theme.media.tablet} {
     flex-direction: column;
     align-items: flex-end; /* 오른쪽 정렬 */
-    gap: ${({ theme }) => theme.gaps.S.tablet}; /* PM 포트폴리오 아래 gap 1 (0.625rem) */
+    gap: ${({ theme }) => theme.gaps.S.wide}; /* 제목과 버튼 사이 gap 1rem */
     margin-bottom: 2.75rem; /* 수정/삭제 버튼 아래 2.75 간격 */
   }
   
@@ -48,12 +48,12 @@ export const PortfolioTitle = styled.h2`
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  gap: 1rem; /* 모든 화면에서 수정/삭제 버튼 사이 간격 1rem */
+  gap: ${({ theme }) => theme.gaps.S.wide}; /* 모든 화면에서 수정/삭제 버튼 사이 간격 1rem */
   flex-shrink: 0;
   
   ${({ theme }) => theme.media.mobile} {
     flex-direction: column;
-    gap: 1rem; /* 수정/삭제 버튼 사이 간격 1rem */
+    gap: ${({ theme }) => theme.gaps.S.mobile}; /* 수정/삭제 버튼 사이 간격 0.5rem */
   }
 `;
 

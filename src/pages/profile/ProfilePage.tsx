@@ -41,6 +41,9 @@ interface PortfolioState {
   developmentAssessment?: Record<string, number>;
   designWorkFile?: string | null; // 디자인 포트폴리오용
   figmaAssessment?: Record<string, number>; // 디자인 포트폴리오용
+  github?: string; // 프론트엔드/백엔드 포트폴리오용
+  selectedTechs?: string[]; // 프론트엔드/백엔드 포트폴리오용
+  techAssessments?: Record<string, Record<string, number>>; // 프론트엔드/백엔드 포트폴리오용
   isNewcomer?: boolean;
 }
 
@@ -410,9 +413,53 @@ export default function ProfilePage() {
             }}
           />
         ) : activePart === "프론트엔드" || pathPart === 'frontend' ? (
-          <FrontendPortfolioForm />
+          <FrontendPortfolioForm 
+            name={name}
+            intro={intro}
+            dbtiInfo={dbtiInfo}
+            profileImage={profileImage}
+            selectedParts={selectedParts}
+            portfolioData={
+              portfolioState && 
+              (portfolioState.part === "프론트엔드" || 
+               (portfolioState.experienceSummary !== undefined && 
+                portfolioState.github !== undefined)) 
+                ? portfolioState 
+                : null
+            }
+            onRegister={() => {
+              if (!selectedParts.includes("프론트엔드")) {
+                const updated = [...selectedParts, "프론트엔드"];
+                setSelectedParts(updated);
+                return updated;
+              }
+              return selectedParts;
+            }}
+          />
         ) : activePart === "백엔드" || pathPart === 'backend' ? (
-          <BackendPortfolioForm />
+          <BackendPortfolioForm 
+            name={name}
+            intro={intro}
+            dbtiInfo={dbtiInfo}
+            profileImage={profileImage}
+            selectedParts={selectedParts}
+            portfolioData={
+              portfolioState && 
+              (portfolioState.part === "백엔드" || 
+               (portfolioState.experienceSummary !== undefined && 
+                portfolioState.github !== undefined)) 
+                ? portfolioState 
+                : null
+            }
+            onRegister={() => {
+              if (!selectedParts.includes("백엔드")) {
+                const updated = [...selectedParts, "백엔드"];
+                setSelectedParts(updated);
+                return updated;
+              }
+              return selectedParts;
+            }}
+          />
         ) : (
           <S.EmptyMessageWrapper>
             {!intro ? (

@@ -29,12 +29,14 @@ interface BasePortfolioFormProps {
   title: string;
   experienceSummary: string;
   strengths: string;
+  github?: string; // 깃허브 URL
   dailyAvailability: DailyAvailabilityKey | null;
   weeklyAvailability: WeeklyAvailabilityKey | null;
   experiencePlaceholder?: string;
   strengthsPlaceholder?: string;
   onExperienceChange: (value: string) => void;
   onStrengthsChange: (value: string) => void;
+  onGithubChange?: (value: string) => void; // 깃허브 변경 핸들러
   onDailyAvailabilityChange: (key: DailyAvailabilityKey) => void;
   onWeeklyAvailabilityChange: (key: WeeklyAvailabilityKey) => void;
   isFormValid?: boolean; // 폼 유효성 검사 결과
@@ -42,18 +44,21 @@ interface BasePortfolioFormProps {
   children?: ReactNode; // 파트별 특화 섹션들
   initialIsNewcomer?: boolean; // 초기 신입 여부
   showTimeAvailability?: boolean; // 할애할 수 있는 시간 섹션 표시 여부 (기본값: true)
+  showGithub?: boolean; // 깃허브 필드 표시 여부 (기본값: false)
 }
 
 export default function BasePortfolioForm({
   title,
   experienceSummary,
   strengths,
+  github = "",
   dailyAvailability,
   weeklyAvailability,
   experiencePlaceholder,
   strengthsPlaceholder,
   onExperienceChange,
   onStrengthsChange,
+  onGithubChange,
   onDailyAvailabilityChange,
   onWeeklyAvailabilityChange,
   isFormValid = false,
@@ -61,6 +66,7 @@ export default function BasePortfolioForm({
   children,
   initialIsNewcomer = false,
   showTimeAvailability = true,
+  showGithub = false,
 }: BasePortfolioFormProps) {
   const [isNewcomer, setIsNewcomer] = useState(initialIsNewcomer);
   const isNewcomerRef = useRef(false);
@@ -95,6 +101,12 @@ export default function BasePortfolioForm({
   const handleStrengthsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = e.target.value;
     onStrengthsChange(value);
+  };
+
+  // 깃허브 입력
+  const handleGithubChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    onGithubChange?.(value);
   };
 
   const toggleDailyAvailability = (key: DailyAvailabilityKey) => {
@@ -144,7 +156,7 @@ export default function BasePortfolioForm({
   // 전체 유효성 검사: 기본 검사 + 파트별 특화 검사
   const isValid = baseValidation && isFormValid;
 
-  // 타블렛에서 디자인 포트폴리오 제목을 두 줄로 나누기
+  // 타블렛에서 포트폴리오 제목을 두 줄로 나누기
   const isTablet = useMediaQuery('(min-width: 45rem) and (max-width: 89.9375rem)');
   const renderTitle = () => {
     if (title === "디자인 포트폴리오") {
@@ -160,6 +172,33 @@ export default function BasePortfolioForm({
       // 타블렛이 아닐 때는 원래 텍스트 사용
       return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
     }
+    
+    if (title === "프론트엔드 포트폴리오") {
+      // 타블렛일 때만 두 줄로 나누기
+      if (isTablet) {
+        return (
+          <S.PortfolioTitle>
+            <S.PortfolioTitleLine>프론트엔드</S.PortfolioTitleLine>
+            <S.PortfolioTitleLine>포트폴리오</S.PortfolioTitleLine>
+          </S.PortfolioTitle>
+        );
+      }
+      return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
+    }
+    
+    if (title === "백엔드 포트폴리오") {
+      // 타블렛일 때만 두 줄로 나누기
+      if (isTablet) {
+        return (
+          <S.PortfolioTitle>
+            <S.PortfolioTitleLine>백엔드</S.PortfolioTitleLine>
+            <S.PortfolioTitleLine>포트폴리오</S.PortfolioTitleLine>
+          </S.PortfolioTitle>
+        );
+      }
+      return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
+    }
+    
     return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
   };
 
@@ -206,6 +245,19 @@ export default function BasePortfolioForm({
             disabled={false}
           />
         </S.StrengthsSection>
+
+        {/* 깃허브 */}
+        {showGithub && (
+          <S.GithubSection>
+            <S.SectionTitle>깃허브</S.SectionTitle>
+            <InputField
+              multiline={false}
+              value={github}
+              onChange={handleGithubChange}
+              disabled={false}
+            />
+          </S.GithubSection>
+        )}
 
       {/* 할애할 수 있는 시간 */}
       {showTimeAvailability && (
