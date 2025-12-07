@@ -17,8 +17,10 @@ import LoginPage from "@/pages/login/LoginPage";
 import ProfilePage from "@/pages/profile/ProfilePage";
 import PMPortfolioViewPage from "@/pages/profile/PMPortfolioViewPage";
 import DesignPortfolioViewPage from "@/pages/profile/DesignPortfolioViewPage";
+import FrontendPortfolioViewPage from "@/pages/profile/FrontendPortfolioViewPage";
+import BackendPortfolioViewPage from "@/pages/profile/BackendPortfolioViewPage";
 import ProfileDefaultPage from "@/pages/profile/ProfileDefaultPage";
-import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
+//import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 import JoinRoom from "@/pages/joinroom/JoinRoom";
 import NewRoom from "@/pages/newroom/NewRoom";
 import NewRoomCode from "@/pages/newroom/NewRoomCode";
@@ -61,57 +63,73 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <ProfilePage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/edit",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <ProfilePage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/edit/:part",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <ProfilePage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/pm/view",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <PMPortfolioViewPage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/design/view",
         element: (
-          <ProtectedRoute>
+         // <ProtectedRoute>
             <DesignPortfolioViewPage />
-          </ProtectedRoute>
+         // </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/frontend/view",
+        element: (
+          //<ProtectedRoute>
+            <FrontendPortfolioViewPage />
+          //</ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile/backend/view",
+        element: (
+          //<ProtectedRoute>
+            <BackendPortfolioViewPage />
+          //</ProtectedRoute>
         ),
       },
       {
         path: "profile/Default",
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <ProfileDefaultPage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {
         path: '*',
         element: (
-          <ProtectedRoute>
+          //<ProtectedRoute>
             <ProfilePage />
-          </ProtectedRoute>
+          //</ProtectedRoute>
         ),
       },
       {

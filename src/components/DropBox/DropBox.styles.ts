@@ -16,29 +16,13 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
   align-items: center;
   justify-content: ${({ $size }) => ($size === "M" ? "center" : "flex-start")};
   width: 100%;
-  ${({ $size, theme }) =>
-    $size === "M"
-      ? theme.responsive.property.paddingComplex('S', 'M', 'S', 'M') // InputField와 같은 padding
-      : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')};
+  ${({ $size, theme }) => $size === "M" 
+    ? theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')
+    : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
   border: none;
-  border-radius: ${({ $size, theme }) =>
-    $size === "M" ? theme.borders.sharp.wide : theme.borders.smooth.wide};
-  
-  ${({ theme }) => theme.media.desktop} {
-    border-radius: ${({ $size, theme }) =>
-      $size === "M" ? theme.borders.sharp.desktop : theme.borders.smooth.desktop};
-  }
-
-  ${({ theme }) => theme.media.tablet} {
-    border-radius: ${({ $size, theme }) =>
-      $size === "M" ? theme.borders.sharp.tablet : theme.borders.smooth.tablet};
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    border-radius: ${({ $size, theme }) =>
-      $size === "M" ? theme.borders.sharp.mobile : theme.borders.smooth.mobile};
-  }
-  
+  ${({ $size, theme }) => $size === "M" 
+    ? theme.responsive.property.borderRadius('sharp') 
+    : theme.responsive.property.borderRadius('smooth')}
   background: ${({ $size, $disabled, theme }) =>
     $size === "M" && $disabled
       ? "transparent"
@@ -47,14 +31,8 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
     $size === "M" ? "none" : theme.effects.dropShadows.DS100};
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   gap: ${({ $size, theme }) => ($size === "M" ? theme.responsive.gap('XXS') : theme.responsive.gap('S'))};
-  height: auto;
   align-self: stretch;
   transition: background-color 0.2s ease;
-  
-  ${({ theme }) => theme.media.mobile} {
-    padding: ${({ theme }) => `${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('M', 'mobile')} ${theme.responsive.gap('S', 'mobile')} ${theme.responsive.gap('M', 'mobile')}`};
-    gap: ${({ theme }) => theme.responsive.gap('S', 'mobile')};
-  }
 
 
 
@@ -109,17 +87,29 @@ export const DropdownList = styled.div`
   box-shadow: ${theme.effects.dropShadows.DS100};
   background: ${theme.colors.grayScale.white};
   overflow: hidden;
+  max-width: ${({ theme }) => theme.componentWidths.large.mobile};
+
+  ${({ theme }) => theme.media.tablet} {
+    max-width: ${({ theme }) => theme.componentWidths.large.tablet};
+  }
+
+  ${({ theme }) => theme.media.desktop} {
+    max-width: ${({ theme }) => theme.componentWidths.large.desktop};
+  }
+
+  ${({ theme }) => theme.media.wide} {
+    max-width: ${({ theme }) => theme.componentWidths.large.wide};
+  }
 `;
 
 export const DropOption = styled.div<{ $size?: "L" | "M"; $isActive?: boolean; $isSelected?: boolean }>`
   display: flex;
-  height: 3.5rem;
   align-items: center;
   align-self: stretch;
-  padding: ${({ $size, theme }) =>
-    $size === "M"
-      ? `${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XXS')} ${theme.responsive.gap('XS')}`
-      : `${theme.responsive.gap('S')} ${theme.responsive.gap('M')} ${theme.responsive.gap('S')} ${theme.responsive.gap('M')}`};
+  ${({ $size, theme }) => $size === "M" 
+    ? theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')
+    : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
+  ${({ theme }) => theme.responsive.property.borderRadius('smooth')}
   background: ${theme.colors.grayScale.white};
   cursor: ${({ $isActive }) => ($isActive ? "default" : "pointer")};
   transition: background-color 0.2s ease;

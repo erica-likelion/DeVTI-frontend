@@ -129,6 +129,7 @@ export default function PMPortfolioView({
   profileImage,
   selectedParts = [],
   showEditButtons = true,
+  // @ts-ignore - 사용 예정
   onBack,
 }: PMPortfolioViewProps) {
   // 할애할 수 있는 시간을 Keyword로 변환
@@ -189,6 +190,15 @@ export default function PMPortfolioView({
   const handleDeleteConfirm = () => {
     // TODO: 삭제 로직 구현
     setIsDeleteModalOpen(false);
+    navigate('/profile/edit', {
+      state: {
+        name,
+        intro,
+        dbtiInfo,
+        profileImage,
+        selectedParts: selectedParts.filter(part => part !== "PM"), // PM 파트 제거
+      },
+    });
   };
 
   return (
@@ -221,13 +231,15 @@ export default function PMPortfolioView({
             value={experienceSummary || ""}
             variant="output"
             disabled={true}
+            multiline={true}
+            rows={1}
           />
           <S.CheckboxWrapper>
             <CheckboxButton
               checked={isNewcomer}
               onChange={() => {}}
               disabled={false}
-              onClick={(e) => e.preventDefault()}
+              onClick={() => {}}
             >
               신입
             </CheckboxButton>
@@ -241,6 +253,8 @@ export default function PMPortfolioView({
             value={strengths || ""}
             variant="output"
             disabled={true}
+            multiline={true}
+            rows={1}
           />
         </S.StrengthsSection>
 

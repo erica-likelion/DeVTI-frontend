@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import * as S from "./ProfilePage.styles";
-import PMPortfolioForm from "./components/PMPortfolioForm";
-import DesignPortfolioForm from "./components/DesignPortfolioForm";
-import FrontendPortfolioForm from "./components/FrontendPortfolioForm";
-import BackendPortfolioForm from "./components/BackendPortfolioForm";
+import PMPortfolioForm from "@/components/profile/PMPortfolioForm";
+import DesignPortfolioForm from "@/components/profile/DesignPortfolioForm";
+import FrontendPortfolioForm from "@/components/profile/FrontendPortfolioForm";
+import BackendPortfolioForm from "@/components/profile/BackendPortfolioForm";
 import BkLTextButton from "@/components/ButtonStatic/BkLTextButton";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
 import WtMIconButton from "@/components/ButtonStatic/WtMIconButton";
@@ -41,6 +41,9 @@ interface PortfolioState {
   developmentAssessment?: Record<string, number>;
   designWorkFile?: string | null; // 디자인 포트폴리오용
   figmaAssessment?: Record<string, number>; // 디자인 포트폴리오용
+  github?: string; // 프론트엔드/백엔드 포트폴리오용
+  selectedTechs?: string[]; // 프론트엔드/백엔드 포트폴리오용
+  techAssessments?: Record<string, Record<string, number>>; // 프론트엔드/백엔드 포트폴리오용
   isNewcomer?: boolean;
 }
 
@@ -107,7 +110,7 @@ export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(portfolioState?.profileImage || user?.profileImage || null);
   const [name, setName] = useState<string>(portfolioState?.name || user?.name || "");
   const [intro, setIntro] = useState<string>(portfolioState?.intro || "");
-  const [dbtiInfo, setDbtiInfo] = useState<string | null>(portfolioState?.dbtiInfo || null); // DBTI 정보 상태
+  const [dbtiInfo] = useState<string | null>(portfolioState?.dbtiInfo || null); // DBTI 정보 상태
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -224,8 +227,8 @@ export default function ProfilePage() {
       
       <S.EditWrapper>
       <S.EditContainer>
-        <S.LeftPanel $hideOnMobile={hasActivePart}>
-        <S.EditProfileSection>
+        <S.LeftPanel $hideOnMobile={hasActivePart} $isDropdownOpen={isPartDropdownOpen}>
+        <S.EditProfileSection $isDropdownOpen={isPartDropdownOpen}>
           <S.EditProfileImageWrapper>
             {profileImage ? (
               <S.EditProfileImage src={profileImage} alt={user?.name || "프로필"} />
@@ -345,7 +348,7 @@ export default function ProfilePage() {
             </S.PartSelectionWrapper>
           </S.FormSection>
 
-          <S.SaveButtonWrapper>
+          <S.SaveButtonWrapper $isDropdownOpen={isPartDropdownOpen}>
             <BkMTextButton 
               onClick={handleSave} 
               disabled={isSaveDisabled}
@@ -376,7 +379,7 @@ export default function ProfilePage() {
             onRegister={() => {
               // 등록 버튼 클릭 시 PM 파트를 selectedParts에 추가
               if (!selectedParts.includes("PM")) {
-                const updated = [...selectedParts, "PM"];
+                const updated = [...selectedParts, "PM"] as PartOption[];
                 setSelectedParts(updated);
                 return updated;
               }
@@ -402,7 +405,7 @@ export default function ProfilePage() {
             onRegister={() => {
               // 등록 버튼 클릭 시 디자인 파트를 selectedParts에 추가
               if (!selectedParts.includes("디자인")) {
-                const updated = [...selectedParts, "디자인"];
+                const updated = [...selectedParts, "디자인"] as PartOption[];
                 setSelectedParts(updated);
                 return updated;
               }
@@ -410,9 +413,59 @@ export default function ProfilePage() {
             }}
           />
         ) : activePart === "프론트엔드" || pathPart === 'frontend' ? (
-          <FrontendPortfolioForm />
+          <FrontendPortfolioForm 
+            name={name}
+            intro={intro}
+            dbtiInfo={dbtiInfo}
+            profileImage={profileImage}
+            selectedParts={selectedParts}
+            portfolioData={
+              portfolioState && 
+              (portfolioState.part === "프론트엔드" || 
+               (portfolioState.experienceSummary !== undefined && 
+                portfolioState.github !== undefined)) 
+                ? {
+                    ...portfolioState,
+                    selectedTechs: portfolioState.selectedTechs as ("JavaScript" | "Android Studio" | "React")[] | undefined
+                  }
+                : null
+            }
+            onRegister={() => {
+              if (!selectedParts.includes("프론트엔드")) {
+                const updated = [...selectedParts, "프론트엔드"] as PartOption[];
+                setSelectedParts(updated);
+                return updated;
+              }
+              return selectedParts;
+            }}
+          />
         ) : activePart === "백엔드" || pathPart === 'backend' ? (
-          <BackendPortfolioForm />
+          <BackendPortfolioForm 
+            name={name}
+            intro={intro}
+            dbtiInfo={dbtiInfo}
+            profileImage={profileImage}
+            selectedParts={selectedParts}
+            portfolioData={
+              portfolioState && 
+              (portfolioState.part === "백엔드" || 
+               (portfolioState.experienceSummary !== undefined && 
+                portfolioState.github !== undefined)) 
+                ? {
+                    ...portfolioState,
+                    selectedTechs: portfolioState.selectedTechs as ("Java" | "Python" | "Django" | "Spring Boot")[] | undefined
+                  }
+                : null
+            }
+            onRegister={() => {
+              if (!selectedParts.includes("백엔드")) {
+                const updated = [...selectedParts, "백엔드"] as PartOption[];
+                setSelectedParts(updated);
+                return updated;
+              }
+              return selectedParts;
+            }}
+          />
         ) : (
           <S.EmptyMessageWrapper>
             {!intro ? (

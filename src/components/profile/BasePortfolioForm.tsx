@@ -29,12 +29,14 @@ interface BasePortfolioFormProps {
   title: string;
   experienceSummary: string;
   strengths: string;
+  github?: string; // 깃허브 URL
   dailyAvailability: DailyAvailabilityKey | null;
   weeklyAvailability: WeeklyAvailabilityKey | null;
   experiencePlaceholder?: string;
   strengthsPlaceholder?: string;
   onExperienceChange: (value: string) => void;
   onStrengthsChange: (value: string) => void;
+  onGithubChange?: (value: string) => void; // 깃허브 변경 핸들러
   onDailyAvailabilityChange: (key: DailyAvailabilityKey) => void;
   onWeeklyAvailabilityChange: (key: WeeklyAvailabilityKey) => void;
   isFormValid?: boolean; // 폼 유효성 검사 결과
@@ -42,18 +44,23 @@ interface BasePortfolioFormProps {
   children?: ReactNode; // 파트별 특화 섹션들
   initialIsNewcomer?: boolean; // 초기 신입 여부
   showTimeAvailability?: boolean; // 할애할 수 있는 시간 섹션 표시 여부 (기본값: true)
+  showGithub?: boolean; // 깃허브 필드 표시 여부 (기본값: false)
 }
 
 export default function BasePortfolioForm({
   title,
   experienceSummary,
   strengths,
+  github = "",
   dailyAvailability,
   weeklyAvailability,
+  // @ts-ignore - 사용 예정
   experiencePlaceholder,
+  // @ts-ignore - 사용 예정
   strengthsPlaceholder,
   onExperienceChange,
   onStrengthsChange,
+  onGithubChange,
   onDailyAvailabilityChange,
   onWeeklyAvailabilityChange,
   isFormValid = false,
@@ -61,11 +68,10 @@ export default function BasePortfolioForm({
   children,
   initialIsNewcomer = false,
   showTimeAvailability = true,
+  showGithub = false,
 }: BasePortfolioFormProps) {
   const [isNewcomer, setIsNewcomer] = useState(initialIsNewcomer);
   const isNewcomerRef = useRef(false);
-  const experienceTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const strengthsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // isNewcomer를 외부에서 접근할 수 있도록 ref에 저장
   useEffect(() => {
@@ -82,24 +88,10 @@ export default function BasePortfolioForm({
     }
   };
 
-  // textarea 높이 자동 조정
-  const adjustTextareaHeight = (textarea: HTMLTextAreaElement | null, isStrengths = false) => {
-    if (textarea) {
-      // 타블렛에서 강점일 때 최소 높이: 4.25rem - padding(0.625rem * 2) = 3rem = 48px
-      const minHeight = isStrengths && window.matchMedia('(min-width: 45rem) and (max-width: 89.9375rem)').matches 
-        ? 48 // 3rem = 48px
-        : 24; // 1.5rem = 24px
-      
-      textarea.style.height = `${minHeight}px`;
-      textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
-    }
-  };
-
-  // 경력 입력 시 신입 버튼 자동 해제 및 높이 조정
-  const handleExperienceChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  // 경력 입력 시 신입 버튼 자동 해제
+  const handleExperienceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = e.target.value;
     onExperienceChange(value);
-    adjustTextareaHeight(e.target);
     // 경력 입력이 시작되면 신입 버튼 해제
     if (isNewcomerRef.current && value.trim() !== "") {
       setIsNewcomer(false);
@@ -107,28 +99,17 @@ export default function BasePortfolioForm({
     }
   };
 
-  // 강점 입력 시 높이 조정
-  const handleStrengthsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  // 강점 입력
+  const handleStrengthsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = e.target.value;
     onStrengthsChange(value);
-    adjustTextareaHeight(e.target, true); // 강점임을 표시
   };
 
-  // 경력 내용이 변경될 때 높이 조정
-  useEffect(() => {
-    adjustTextareaHeight(experienceTextareaRef.current);
-  }, [experienceSummary]);
-
-  // 강점 내용이 변경될 때 높이 조정
-  useEffect(() => {
-    adjustTextareaHeight(strengthsTextareaRef.current, true); // 강점임을 표시
-  }, [strengths]);
-
-  // 컴포넌트 마운트 시 초기 높이 설정
-  useEffect(() => {
-    adjustTextareaHeight(experienceTextareaRef.current);
-    adjustTextareaHeight(strengthsTextareaRef.current, true); // 강점임을 표시
-  }, []);
+  // 깃허브 입력
+  const handleGithubChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    onGithubChange?.(value);
+  };
 
   const toggleDailyAvailability = (key: DailyAvailabilityKey) => {
     onDailyAvailabilityChange(key);
@@ -177,7 +158,7 @@ export default function BasePortfolioForm({
   // 전체 유효성 검사: 기본 검사 + 파트별 특화 검사
   const isValid = baseValidation && isFormValid;
 
-  // 타블렛에서 디자인 포트폴리오 제목을 두 줄로 나누기
+  // 타블렛에서 포트폴리오 제목을 두 줄로 나누기
   const isTablet = useMediaQuery('(min-width: 45rem) and (max-width: 89.9375rem)');
   const renderTitle = () => {
     if (title === "디자인 포트폴리오") {
@@ -193,6 +174,33 @@ export default function BasePortfolioForm({
       // 타블렛이 아닐 때는 원래 텍스트 사용
       return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
     }
+    
+    if (title === "프론트엔드 포트폴리오") {
+      // 타블렛일 때만 두 줄로 나누기
+      if (isTablet) {
+        return (
+          <S.PortfolioTitle>
+            <S.PortfolioTitleLine>프론트엔드</S.PortfolioTitleLine>
+            <S.PortfolioTitleLine>포트폴리오</S.PortfolioTitleLine>
+          </S.PortfolioTitle>
+        );
+      }
+      return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
+    }
+    
+    if (title === "백엔드 포트폴리오") {
+      // 타블렛일 때만 두 줄로 나누기
+      if (isTablet) {
+        return (
+          <S.PortfolioTitle>
+            <S.PortfolioTitleLine>백엔드</S.PortfolioTitleLine>
+            <S.PortfolioTitleLine>포트폴리오</S.PortfolioTitleLine>
+          </S.PortfolioTitle>
+        );
+      }
+      return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
+    }
+    
     return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
   };
 
@@ -211,17 +219,13 @@ export default function BasePortfolioForm({
         {/* 경력사항 */}
         <S.ExperienceSection>
           <S.SectionTitle>경력사항</S.SectionTitle>
-          <S.InputWrapper>
-            <S.TextAreaWrapper>
-              <S.TextAreaField
-                ref={experienceTextareaRef}
-                value={experienceSummary}
-                onChange={handleExperienceChange}
-                placeholder=""
-                disabled={isNewcomer}
-              />
-            </S.TextAreaWrapper>
-          </S.InputWrapper>
+          <InputField
+            multiline={true}
+            rows={1}
+            value={experienceSummary}
+            onChange={handleExperienceChange}
+            disabled={isNewcomer}
+          />
           <S.CheckboxWrapper>
             <CheckboxButton
               checked={isNewcomer}
@@ -235,18 +239,27 @@ export default function BasePortfolioForm({
         {/* 강점 */}
         <S.StrengthsSection>
           <S.SectionTitle>강점</S.SectionTitle>
-          <S.InputWrapper>
-            <S.StrengthsTextAreaWrapper>
-              <S.TextAreaField
-                ref={strengthsTextareaRef}
-                value={strengths}
-                onChange={handleStrengthsChange}
-                placeholder=""
-                disabled={false}
-              />
-            </S.StrengthsTextAreaWrapper>
-          </S.InputWrapper>
+          <InputField
+            multiline={true}
+            rows={1}
+            value={strengths}
+            onChange={handleStrengthsChange}
+            disabled={false}
+          />
         </S.StrengthsSection>
+
+        {/* 깃허브 */}
+        {showGithub && (
+          <S.GithubSection>
+            <S.SectionTitle>깃허브</S.SectionTitle>
+            <InputField
+              multiline={false}
+              value={github}
+              onChange={handleGithubChange}
+              disabled={false}
+            />
+          </S.GithubSection>
+        )}
 
       {/* 할애할 수 있는 시간 */}
       {showTimeAvailability && (

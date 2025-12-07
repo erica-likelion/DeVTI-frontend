@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
-import PMPortfolioView from "./components/PMPortfolioView";
+import PMPortfolioView from "@/components/profile/PMPortfolioView";
 import * as S from "./ProfilePage.styles";
 import InputField from "@/components/Input/InputField";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
@@ -13,7 +13,7 @@ import GroupIcon from "@/assets/icons/Group.svg";
 import type {
   DailyAvailabilityKey,
   WeeklyAvailabilityKey,
-} from "./components/BasePortfolioForm";
+} from "@/components/profile/BasePortfolioForm";
 
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
 type PartOption = (typeof PART_OPTIONS)[number];
@@ -36,7 +36,7 @@ interface LocationState {
 export default function PMPortfolioViewPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user: _user } = useAuthStore(); // eslint-disable-line @typescript-eslint/no-unused-vars
   const state = location.state as LocationState | null;
 
   // state가 없으면 프로필 페이지로 리다이렉트
@@ -298,7 +298,8 @@ export default function PMPortfolioViewPage() {
                             }
                           };
 
-                          const partData = getStoredPartData(part === "디자인" ? "디자인" : part === "PM" ? "PM" : part);
+                          // @ts-expect-error - part 타입이 제한적이지만 런타임에서는 모든 PartOption 가능
+                          const partData = getStoredPartData((part === "디자인" ? "디자인" : part === "PM" ? "PM" : part) as string);
                           
                           navigate(`/profile/${partSlug}/view`, {
                             replace: false,
@@ -315,6 +316,7 @@ export default function PMPortfolioViewPage() {
                                 designWorkFile: partData?.designWorkFile || null,
                                 figmaAssessment: partData?.figmaAssessment || {},
                                 isNewcomer: partData?.isNewcomer || false,
+                              // @ts-expect-error - part 타입이 제한적이지만 런타임에서는 모든 PartOption 가능
                               } : part === "PM" ? {
                                 dailyAvailability: partData?.dailyAvailability || null,
                                 weeklyAvailability: partData?.weeklyAvailability || null,

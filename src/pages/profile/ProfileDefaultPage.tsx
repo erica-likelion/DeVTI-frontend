@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
-import PMPortfolioView from "./components/PMPortfolioView";
-import DesignPortfolioView from "./components/DesignPortfolioView";
+import PMPortfolioView from "@/components/profile/PMPortfolioView";
+import DesignPortfolioView from "@/components/profile/DesignPortfolioView";
+import FrontendPortfolioView from "@/components/profile/FrontendPortfolioView";
+import BackendPortfolioView from "@/components/profile/BackendPortfolioView";
 import DBTIResultPage from "./edit/DBTI/DBTIResultPage";
 import * as S from "./ProfilePage.styles";
 import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
@@ -11,7 +13,7 @@ import { useIsMobile } from "@/hooks/useMediaQuery";
 import type {
   DailyAvailabilityKey,
   WeeklyAvailabilityKey,
-} from "./components/BasePortfolioForm";
+} from "@/components/profile/BasePortfolioForm";
 
 const PART_OPTIONS = ["PM", "디자인", "프론트엔드", "백엔드"] as const;
 type PartOption = (typeof PART_OPTIONS)[number];
@@ -26,11 +28,15 @@ interface PortfolioData {
   developmentAssessment?: Record<string, number>;
   designWorkFile?: string | null;
   figmaAssessment?: Record<string, number>;
+  github?: string;
+  selectedTechs?: string[];
+  techAssessments?: Record<string, Record<string, number>>;
   isNewcomer: boolean;
   name?: string;
   intro?: string;
   dbtiInfo?: string | null;
   profileImage?: string | null;
+  selectedParts?: PartOption[];
 }
 
 export default function ProfileDefaultPage() {
@@ -234,6 +240,8 @@ export default function ProfileDefaultPage() {
     };
   }, [isMobile]);
   
+  // @ts-ignore - 사용 예정
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handlePartAdd = (option: string) => {
     const selectedPart = option as PartOption;
     if (!selectedParts.includes(selectedPart)) {
@@ -248,7 +256,7 @@ export default function ProfileDefaultPage() {
       const partSlug = partMap[selectedPart];
       navigate(`/profile/edit/${partSlug}`, { replace: false });
     }
-    setIsPartDropdownOpen(false);
+    // setIsPartDropdownOpen(false); // TODO: 구현 필요
   };
 
   const renderPortfolioView = () => {
@@ -305,9 +313,39 @@ export default function ProfileDefaultPage() {
           />
         );
       case "프론트엔드":
+        return (
+          <FrontendPortfolioView
+            experienceSummary={partData.experienceSummary || ""}
+            strengths={partData.strengths || ""}
+            github={partData.github || ""}
+            selectedTechs={partData.selectedTechs || []}
+            techAssessments={partData.techAssessments || {}}
+            isNewcomer={partData.isNewcomer || false}
+            name={partData.name || user?.name}
+            intro={partData.intro || ""}
+            dbtiInfo={partData.dbtiInfo || null}
+            profileImage={partData.profileImage || null}
+            showEditButtons={false}
+            onBack={isMobile ? handleBackClick : undefined}
+          />
+        );
       case "백엔드":
-        // TODO: 프론트엔드/백엔드 포트폴리오 뷰 구현 후 추가
-        return <div>{selectedPart} 포트폴리오 (구현 예정)</div>;
+        return (
+          <BackendPortfolioView
+            experienceSummary={partData.experienceSummary || ""}
+            strengths={partData.strengths || ""}
+            github={partData.github || ""}
+            selectedTechs={partData.selectedTechs || []}
+            techAssessments={partData.techAssessments || {}}
+            isNewcomer={partData.isNewcomer || false}
+            name={partData.name || user?.name}
+            intro={partData.intro || ""}
+            dbtiInfo={partData.dbtiInfo || null}
+            profileImage={partData.profileImage || null}
+            showEditButtons={false}
+            onBack={isMobile ? handleBackClick : undefined}
+          />
+        );
       default:
         return <div>포트폴리오를 찾을 수 없습니다.</div>;
     }

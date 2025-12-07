@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { theme } from "@/styles/theme";
 
 export const Wrapper = styled.div`
@@ -127,6 +127,13 @@ export const StrengthsSection = styled.div`
   width: 100%;
   margin-top: 2.75rem;
   
+`;
+
+export const GithubSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.responsive.gap('S')};
+  width: 100%;
 `;
 
 export const InputWrapper = styled.div`
