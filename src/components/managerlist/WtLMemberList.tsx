@@ -1,6 +1,6 @@
 import * as S from './WtLMemberList.styles';
-import { Keyword } from '../keywords/Keyword';
-import VT500Button from '../ButtonDynamic/VT500SButton';
+import { Keyword } from '@/components/keywords/Keyword';
+import WarningButton from '@/components/ButtonDynamic/WarningButton';
 import { useState } from 'react';
 
 interface WtLMemberListProps {
@@ -52,15 +52,15 @@ export const WtLMemberList = ({
       </S.KeywordArea>
 
       <S.RightArea $hasRightButton={hasRightButton}>
-        <S.IndicatorArea >
+        <S.IndicatorArea>
           <S.Indicator />
         </S.IndicatorArea>
 
         <S.ButtonArea>
           {hasRightButton && (
-            <VT500Button disabled={disabled} onClick={onRightButtonClick}>
+            <WarningButton disabled={disabled} onClick={onRightButtonClick}>
               {rightButton}
-            </VT500Button>
+            </WarningButton>
           )}
         </S.ButtonArea>
       </S.RightArea>

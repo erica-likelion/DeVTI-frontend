@@ -30,8 +30,10 @@ import DBTIEditPage from "@/pages/profile/edit/DBTI/DBTIEditPage";
 import ProfileEditPage from "@/pages/profile/edit/DBTI/ProfileEditPage";
 // import DBTIResultPage from "@/pages/profile/edit/DBTI/DBTIResultPage";
 import DBTIPage from "@/pages/profile/DBTI/DBTIPage";
+import ManageRoomMatched from "@/pages/manageroom/ManageRoomMatched";
+import ManageRoomDefault from "@/pages/manageroom/ManageRoomDefault";
 import Room from "@/pages/room/Room";
-import DashboardPage from "@/pages/manage/dashboard/DashboardPage";
+import ManageJoinPage from "@/pages/manageroom/ManageJoinPage";
 
 export const router = createBrowserRouter([
   {
@@ -186,9 +188,21 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "manage/dashboard",
+        path: "manage/matched",
         element: (
-          <DashboardPage />
+          <ManageRoomMatched />
+        ),
+      },
+      {
+        path: "manage/default",
+        element: (
+          <ManageRoomDefault />
+        ),
+      },
+      {
+        path: "manage/join",
+        element: (
+          <ManageJoinPage />
         ),
       },
       {
