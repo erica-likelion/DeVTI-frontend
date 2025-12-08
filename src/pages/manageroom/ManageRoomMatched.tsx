@@ -7,6 +7,7 @@ import BlackMTextButton from '@/components/ButtonStatic/BkMTextButton';
 import MatchedTeamPage from './matched/MatchedTeamPage';
 import RematchPage from './matched/RematchPage';
 import DashboardPage from './matched/DashboardPage';
+import Modal from '@/components/modal/Modal';
 
 import {
   MATCHING_RESULT_DUMMY,
@@ -32,6 +33,24 @@ const ManageRoomMatched = () => {
     0
   );
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  //모달 열기
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // 모달 닫기
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // 매칭 확정시
+  const handleMatching = () => {
+    // TODO: 매칭 확정 API 호출 / 상태 업데이트 등
+    setIsModalOpen(false);
+  };
+
   return (
     <S.Container>
       {/* Top Area */}
@@ -41,7 +60,7 @@ const ManageRoomMatched = () => {
           <S.Subtitle>전체 {totalMembers}명 / {teamCount}팀</S.Subtitle>
         </S.TitleBlock>
 
-        <BlackMTextButton children="매칭 확정" />
+        <BlackMTextButton children="매칭 확정" onClick={handleOpenModal} />
       </S.TopArea>
 
   
@@ -63,6 +82,11 @@ const ManageRoomMatched = () => {
       {selectedTopTab === '리매칭' && (
         <RematchPage teams={teams} />
       )}
+
+      <Modal isOpen={isModalOpen} buttonLabel="확정" onClose={handleCloseModal} onPrimary={handleMatching}>
+        <span>매칭을 확정하시겠어요? </span>
+        <span>이 작업은 변경할 수 없습니다.</span>
+      </Modal>
     </S.Container>
   );
 };

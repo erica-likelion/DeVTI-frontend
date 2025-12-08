@@ -1,7 +1,9 @@
 import * as S from './RematchPage.styles';
+import { useState } from 'react';
 import { WtMTextButton } from '@/components/ButtonStatic';
 import WtMMemberList from '@/components/list/WtMMemberList';
 import BlackMTextButton from '@/components/ButtonStatic/BkMTextButton';
+import Modal from '@/components/modal/Modal';
 import type { Team, Part } from '../MatchingResult';
 
   const formatPartLabel = (part: Part): string => {
@@ -31,6 +33,24 @@ const RematchPage = ({ teams }: ManageRoomMatchedTeamProps) => {
   const maxRematchCount = 2;
   const usedRematchCount = 0;
   const remainingRematchCount = maxRematchCount - usedRematchCount;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+    //모달 열기
+    const handleOpenModal = () => {
+      setIsModalOpen(true);
+    };
+  
+    // 모달 닫기
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
+    };
+  
+    // 매칭 확정시
+    const handleReMatching = () => {
+      // TODO: 매칭 확정 API 호출 / 상태 업데이트 등
+      setIsModalOpen(false);
+    };
 
   return (
     <S.ListArea>
@@ -64,8 +84,13 @@ const RematchPage = ({ teams }: ManageRoomMatchedTeamProps) => {
       <S.Text>잔여 횟수: {remainingRematchCount}회</S.Text>
     </S.TextArea>
 
-    <BlackMTextButton children="리매칭" onClick={() => {}} />
+    <BlackMTextButton children="리매칭" onClick={handleOpenModal} />
     
+
+    <Modal isOpen={isModalOpen} buttonLabel="확인" onClose={handleCloseModal} onPrimary={handleReMatching}>
+      <span>정말 리매칭하시겠어요? </span>
+      <span>리매칭 횟수가 차감되며, 이전 팀 매칭으로 되돌릴 수 없습니다.</span>
+    </Modal>
     </S.ListArea>
   );
 };
