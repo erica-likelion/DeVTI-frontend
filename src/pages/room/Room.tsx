@@ -5,13 +5,16 @@ import WtLMemberList from '@/components/list/WtLMemberList';
 import InputFieldL from '@/components/Input/InputFieldL';
 import DropBox from '@/components/DropBox/DropBox';
 import VT500SButton from '@/components/ButtonDynamic/VT500SButton';
+import VT700LButton from '@/components/ButtonDynamic/VT700LButton';
 import DefaultIMG_Profile from '/public/DefaultIMG_Profile.webp';
+import Modal from '@/components/modal/Modal';
 
 import {
   PARTICIPANTS as INITIAL_PARTICIPANTS,
   type Participant,
   type RoleType,
 } from './RoomParticipants';
+import { set } from 'react-hook-form';
 
 const ROLE_TABS = ['전체', 'PM', '디자인', '프론트엔드', '백엔드'] as const;
 const TEAM_TABS = ['전체', '1팀', '2팀', '3팀', '4팀'] as const;
@@ -25,11 +28,12 @@ interface RemainingTime {
 }
 
 // 마감 시간(임시)
-const MATCH_DEADLINE = new Date('2025-12-31T23:59:59+09:00');
+const MATCH_DEADLINE = new Date('2025-12-01T23:59:59+09:00');
 
 type RoleTab = (typeof ROLE_TABS)[number];
 type TeamTab = (typeof TEAM_TABS)[number];
 type TabValue = RoleTab | TeamTab;
+type ModalType = 'wagging' | 'carrot' | null;
 
 
 const calcRemainingTime = (): RemainingTime => {
@@ -72,24 +76,9 @@ const Room = () => {
   const [isMatchedByServer] = useState(false);
 
   // 🔹 꼬리 흔들기 상태 (room.state_change → WAGGING 에서 true)
-  const [isWagging] = useState(false);
+  const [isWagging] = useState(true);
+  const [Waggingfinished, setWaggingFinished] = useState(false);
   const [isCarrotDisabled, setIsCarrotDisabled] = useState(false);
-
-  const handleCarrotClick = async () => {
-    if (isCarrotDisabled) return; 
-
-    setIsCarrotDisabled(true);
-
-    /*
-    try {
-      await axios.post('/api/matching/carrot/{participant_id}');
-    } catch (error) {
-      console.error('당근 흔들기 API 호출 실패:', error);
-
-      // setIsCarrotDisabled(false);
-    }
-    */
-  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -111,6 +100,7 @@ const Room = () => {
   const handleChangeTab = (value: string) => {
     setSelectedTab(value as TabValue);
   };
+
 
   // 전체 인원 / 팀 수 계산
   const totalMembers = participants.length;
@@ -136,6 +126,58 @@ const Room = () => {
       filteredParticipants = participants.filter(p => p.team === teamNo);
     }
   }
+
+
+  const [modalType, setModalType] = useState<ModalType>(null);
+
+  
+     // 모달 열기
+  const openWaggingModal = () => {
+    setModalType('wagging');
+  };
+
+  const openCarrotModal = () => {
+    if (isCarrotDisabled) return;  // 이미 한 번 흔들었으면 막기
+    setModalType('carrot');
+  };
+
+  // 모달 닫기
+  const handleCloseModal = () => {
+    setModalType(null);
+  };
+
+  // 꼬리 흔들기 확정시
+  const handleWaggingFinished = () => {
+    setWaggingFinished(true);
+    setModalType(null);
+  };
+
+  const handleCarrotClick = async () => {
+    if (isCarrotDisabled) return;
+
+    setIsCarrotDisabled(true);
+
+    /*
+    try {
+      await axios.post('/api/matching/carrot/{participant_id}');
+    } catch (error) {
+      console.error('당근 흔들기 API 호출 실패:', error);
+      // setIsCarrotDisabled(false);
+    }
+    */
+    setModalType(null);
+  };
+
+  // 공통 모달 핸들러
+  const handleModalPrimary = () => {
+    if (modalType === 'wagging') {
+      handleWaggingFinished();
+    } else if (modalType === 'carrot') {
+      handleCarrotClick();
+    }
+  };
+
+
 
   /* 
     //백엔드 연결 용
@@ -200,11 +242,15 @@ const Room = () => {
         )}
 
         <S.SubTitle>
-          {!isEnded
+          {!isWagging
             ? '아직 팀원들이 다 입장하지 않았어요. 팀원들을 조금만 기다려볼까요?'
-            : ''}
+            : '매칭이 시작되기 전까지 꼬리를 흔들어 팀원을 찾아봐요'}
         </S.SubTitle>
+
       </S.TopSection>
+      { isWagging && !isEnded ? 
+        <VT700LButton children="꼬리 다 흔들었어요" disabled={Waggingfinished} onClick={openWaggingModal}/>
+       : ""}
 
 
       <S.AISection>
@@ -226,7 +272,7 @@ const Room = () => {
             <VT500SButton
               children="당근 흔들기"
               disabled={isCarrotDisabled}
-              onClick={handleCarrotClick}
+              onClick={openCarrotModal}
             />
           </S.MidSection> 
         )}
@@ -262,12 +308,23 @@ const Room = () => {
               icon={DefaultIMG_Profile}
               header={participant.username}
               keywords={participant.keywords}
-              rightButton={isWagging ? participant.rightButton : false}
+              rightButton={isWagging ? '꼬리 흔들기' : false}
               disabled={participant.disabled}
+             // onRightButtonClick={() => handleWagging(participant.id)}
             />
           ))}
         </S.MemberList>
       </S.ListSection>
+
+      <Modal isOpen={modalType === 'wagging'} buttonLabel="확정" onClose={handleCloseModal} onPrimary={handleModalPrimary}>
+        <span>함께 하고 싶은 분들께 꼬리를 다 흔들었나요? </span>
+        <span>한번 확정하면 다시 꼬리를 흔들 수 없어요</span>
+      </Modal>
+
+      <Modal isOpen={modalType === 'carrot'} buttonLabel="당근 흔들기" onClose={handleCloseModal} onPrimary={handleModalPrimary}>
+        <span>정말 팀을 바꾸고 싶으신가요? </span>
+        <span>이 결정은 번복할 수 없습니다.</span>
+      </Modal>
     </S.Container>
   );
 };

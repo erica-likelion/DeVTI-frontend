@@ -62,7 +62,7 @@ export const Main = styled.main<{ $pathname: string }>`
   padding-bottom: 4.5rem;
   margin-top: 0;
   
-  ${({ theme }) => theme.layouts.mobileCommon}
+  
 
   ${({ theme }) => theme.media.tablet} {
     ${({ theme }) => theme.layouts.tabletCommon}
@@ -83,6 +83,7 @@ export const Main = styled.main<{ $pathname: string }>`
   }
   
   ${({ theme }) => theme.media.mobile} {
+    ${({ theme }) => theme.layouts.mobileCommon}
     padding-top: calc(4.5rem + ${({ theme }) => theme.gaps.R.mobile});
     padding-bottom: 3.75rem;
   }

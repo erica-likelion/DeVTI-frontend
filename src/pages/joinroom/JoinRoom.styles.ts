@@ -6,8 +6,9 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 7.75rem 2.5rem 0 2.5rem;
-  gap: 10rem;
+  
+  padding: 9.5rem ${({ theme }) => theme.responsive.gap('GeneralMargin')} 5rem	${({ theme }) => theme.responsive.gap('GeneralMargin')};
+  gap: 3.75rem;
 `;
 
 export const Title = styled.h2`

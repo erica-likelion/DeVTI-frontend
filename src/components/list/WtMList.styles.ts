@@ -1,7 +1,7 @@
 // WtLMemberList.styles.ts
 import styled, { css } from "styled-components";
 
-export const Container = styled.div<{ clicked?: boolean }>`
+export const Container = styled.div<{ $clicked?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,8 +24,8 @@ export const Container = styled.div<{ clicked?: boolean }>`
     box-shadow: ${({ theme }) => theme.effects.dropShadows.DS200_VT};
   }
 
-  ${({ clicked, theme }) =>
-    clicked &&
+  ${({ $clicked, theme }) =>
+    $clicked &&
     css`
       background: ${theme.colors.grayScale.white};
       box-shadow: ${theme.effects.dropShadows.DS200_VT};
@@ -41,12 +41,12 @@ export const LeftArea = styled.div`
 `;
 
 
-export const Header = styled.div<{ clicked?: boolean }>`
+export const Header = styled.div<{ $clicked?: boolean }>`
   font-size: ${({ theme }) => theme.fonts.heading.h2};
   color: ${({ theme }) => theme.colors.grayScale.black};
 
-  ${({ clicked, theme }) =>
-    clicked &&
+  ${({ $clicked, theme }) =>
+    $clicked &&
     css`
       color: ${theme.colors.secondary.VT700};
     `}
