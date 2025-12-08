@@ -14,7 +14,6 @@ import {
   type Participant,
   type RoleType,
 } from './RoomParticipants';
-import { set } from 'react-hook-form';
 
 const ROLE_TABS = ['전체', 'PM', '디자인', '프론트엔드', '백엔드'] as const;
 const TEAM_TABS = ['전체', '1팀', '2팀', '3팀', '4팀'] as const;
