@@ -72,7 +72,7 @@ const ManageRoomDefault = () => {
   const [remainingTime, setRemainingTime] = useState<RemainingTime>(
     () => calcRemainingTime(),
   );
-  const [isMatchedByServer, setIsMatchedByServer] = useState(false);
+  const [isMatchedByServer] = useState(false);
 
 	const handleRemoveParticipant = (id: number) => {
     setParticipants(prev => prev.filter(p => p.id !== id));
@@ -183,7 +183,7 @@ const ManageRoomDefault = () => {
       </S.TopSection>
 
 			{ !isWagging ? (
-				<VT700LButton children="꼬리 흔들기 시작" disabled={isWagging} onClick={() => setIsWagging(true)}/>
+				<VT700LButton children="꼬리 흔들기 시작" disabled={isWagging} onClick={handleWaggingClick}/>
 			) : (
 				<SegmentControl
 					options={TOP_TABS as unknown as string[]}
