@@ -12,6 +12,7 @@ import {
   type Participant,
   type RoleType,
 } from './RoomParticipants';
+import { BkLTextButton } from '@/components/ButtonStatic';
 
 const ROLE_TABS = ['전체', 'PM', '디자인', '프론트엔드', '백엔드'] as const;
 const TEAM_TABS = ['전체', '1팀', '2팀', '3팀', '4팀'] as const;
@@ -22,10 +23,6 @@ interface RemainingTime {
   minutes: number;
   seconds: number;
   isEnded: boolean;
-}
-
-interface CarrotButtonProps {
-  participantId: number;
 }
 
 // 마감 시간(임시)
@@ -180,6 +177,13 @@ const Room = () => {
     }, []);
   */
 
+  const handleWagging = () => {
+    setIsWagging(true);
+  }
+
+  const handleEndMatching = () => {
+    setIsMatchedByServer(true);
+  }
 
 
   return (
@@ -266,12 +270,17 @@ const Room = () => {
               icon={DefaultIMG_Profile}
               header={participant.username}
               keywords={participant.keywords}
-              rightButton={isWagging ? participant.rightButton : false}
+              rightButton={isWagging && !isEnded ? participant.rightButton : false}
               disabled={participant.disabled}
             />
           ))}
         </S.MemberList>
       </S.ListSection>
+
+      <S.Temp>
+        <BkLTextButton children="꼬리 흔들기 시작" onClick={handleWagging} />
+        <BkLTextButton children="매칭 종료" onClick={handleEndMatching} />
+      </S.Temp>
     </S.Container>
   );
 };
