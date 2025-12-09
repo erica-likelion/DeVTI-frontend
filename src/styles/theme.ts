@@ -347,6 +347,14 @@ const sourceWidths = {
   },
 } as const;
 
+// General viewport sizes - 반응형
+const generalViewport = {
+  wide: '120rem',       // 1920px
+  desktop: '90rem',     // 1440px
+  tablet: '45rem',      // 720px
+  mobile: '22.5rem',    // 360px
+} as const;
+
 
 // 반응형 폰트 스타일: 옵셔널 속성 사용 (wide-tablet: 스타일 일치, mobile: 별도 분리)
 const fonts = {
@@ -623,11 +631,15 @@ const responsive = {
         tablet: sourceWidths[size].tablet,
         mobile: sourceWidths[size].mobile
       })}
+    `,
 
-      
-    `
-    
-    
+    // generalViewport를 width 속성에 적용
+    generalViewport: () => createResponsiveProperty('width', {
+      wide: generalViewport.wide,
+      desktop: generalViewport.desktop,
+      tablet: generalViewport.tablet,
+      mobile: generalViewport.mobile
+    })
   }
 };
 
@@ -637,7 +649,6 @@ const layouts = {
     display: flex;
     width: 100%;
     height: 100%;
-    padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -647,7 +658,6 @@ const layouts = {
     display: flex;
     width: 100%;
     height: 100%;
-    padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -658,7 +668,6 @@ const layouts = {
     display: flex;
     width: 100%;
     height: 100%;
-    padding: 0 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -668,7 +677,6 @@ const layouts = {
     display: flex;
     width: 100%;
     height: 100%;
-    padding: 0 1rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -689,6 +697,7 @@ export const theme = {
   overlaySheets,
   overlayModals,
   responsive,
+  generalViewport,
   withOpacity,
   withTint,
   withShade,

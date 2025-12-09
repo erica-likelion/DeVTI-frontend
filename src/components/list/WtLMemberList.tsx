@@ -10,6 +10,7 @@ interface WtLMemberListProps {
   rightButton?: string | false;
   disabled?: boolean;
   onClick?: () => void;
+  onRightButtonClick?: () => void;
 }
 
 export const WtLMemberList = ({
@@ -19,6 +20,7 @@ export const WtLMemberList = ({
   rightButton,
   disabled = false,
   onClick,
+  onRightButtonClick,
 }: WtLMemberListProps) => {
   const [clicked, setClicked] = useState(false);
 
@@ -26,7 +28,7 @@ export const WtLMemberList = ({
 
   return (
     <S.Container
-      clicked={clicked}
+      $clicked={clicked}
       onClick={
         !disabled
           ? () => {
@@ -40,7 +42,7 @@ export const WtLMemberList = ({
         <S.Icon>
           {icon && <img src={icon} alt="icon" />}
         </S.Icon>
-        <S.Header clicked={clicked}>{header}</S.Header>
+        <S.Header $clicked={clicked}>{header}</S.Header>
       </S.LeftArea>
 
       <S.KeywordArea>
@@ -49,14 +51,14 @@ export const WtLMemberList = ({
         ))}
       </S.KeywordArea>
 
-      <S.RightArea hasRightButton={hasRightButton}>
-        <S.IndicatorArea hasRightButton={hasRightButton}>
+      <S.RightArea $hasRightButton={hasRightButton}>
+        <S.IndicatorArea >
           <S.Indicator />
         </S.IndicatorArea>
 
         <S.ButtonArea>
           {hasRightButton && (
-            <VT500Button disabled={disabled}>
+            <VT500Button disabled={disabled} onClick={onRightButtonClick}>
               {rightButton}
             </VT500Button>
           )}

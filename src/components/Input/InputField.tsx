@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import * as S from './InputField.styles';
 import CalendarBlack from '../../assets/icons/Calendar/CalendarBlack.svg';
 import Calendar from '../Calendar/Calendar';
@@ -8,7 +8,7 @@ interface InputFieldProps {
   placeholder?: string;
   value?: string;
   defaultValue?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   disabled?: boolean;
   required?: boolean;
   name?: string;
@@ -21,9 +21,11 @@ interface InputFieldProps {
   onDateSelect?: (date: string) => void;
   maxLength?: number;
   variant?: 'input' | 'output'; // input: 인터랙티브 모드, output: 읽기 전용 출력 모드
+  multiline?: boolean; // 줄바꿈 허용 여부
+  rows?: number; // textarea의 초기 행 수 (multiline이 true일 때만 적용)
 }
 
-const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
+const InputField = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputFieldProps>(
   (
     {
       type = 'text',
@@ -42,11 +44,14 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       onDateSelect,
       maxLength,
       variant = 'input', // 기본값은 input 모드
+      multiline = false,
+      rows = 1,
       ...rest // 확장성 확보용 props
     },
     ref
   ) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
     
     const handleIconClick = () => {
       if (showCalendar) {
@@ -55,13 +60,30 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       onIconClick?.();
     };
     
+    const adjustTextareaHeight = () => {
+      const textarea = textareaRef.current;
+      if (textarea && multiline) {
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+      }
+    };
+    
+    useEffect(() => {
+      if (multiline) {
+        adjustTextareaHeight();
+      }
+    }, [value, multiline]);
+    
     const handleDateSelect = (date: string) => {
       onDateSelect?.(date);
       setIsCalendarOpen(false);
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       onChange?.(e);
+      if (multiline) {
+        setTimeout(adjustTextareaHeight, 0);
+      }
     };
 
     // hasIcon이 true이면 기본 아이콘 사용, 커스텀 아이콘이 있으면 그것 사용
@@ -76,25 +98,54 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       <S.Container>
         <S.InputWrapper $hasIcon={hasIcon}>
           <S.ContentWrapper>
-            <S.StyledInput
-              ref={ref}
-              type={type}
-              placeholder={isOutput ? undefined : placeholder} // output 모드에서는 placeholder 제거
-              value={value} 
-              defaultValue={defaultValue} 
-              onChange={isOutput ? undefined : handleChange} // output 모드에서는 onChange 제거
-              disabled={disabled} 
-              readOnly={isOutput}
-              required={isOutput ? false : required} // output 모드에서는 required 제거
-              name={name}
-              id={id}
-              maxLength={maxLength}
-              $hasIcon={hasIcon}
-              $isActive={isActive}
-              $readOnly={isOutput}
-              $variant={variant}
-              {...rest}
-            />
+            {multiline ? (
+              <S.StyledTextarea
+                ref={(el) => {
+                  textareaRef.current = el;
+                  if (typeof ref === 'function') {
+                    ref(el);
+                  } else if (ref) {
+                    (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = el;
+                  }
+                }}
+                placeholder={isOutput ? undefined : placeholder}
+                value={value}
+                defaultValue={defaultValue}
+                onChange={isOutput ? undefined : handleChange}
+                disabled={disabled}
+                readOnly={isOutput}
+                required={isOutput ? false : required}
+                name={name}
+                id={id}
+                maxLength={maxLength}
+                rows={rows}
+                $hasIcon={hasIcon}
+                $isActive={isActive}
+                $readOnly={isOutput}
+                $variant={variant}
+                {...rest}
+              />
+            ) : (
+              <S.StyledInput
+                ref={ref as React.ForwardedRef<HTMLInputElement>}
+                type={type}
+                placeholder={isOutput ? undefined : placeholder}
+                value={value} 
+                defaultValue={defaultValue} 
+                onChange={isOutput ? undefined : handleChange}
+                disabled={disabled} 
+                readOnly={isOutput}
+                required={isOutput ? false : required}
+                name={name}
+                id={id}
+                maxLength={maxLength}
+                $hasIcon={hasIcon}
+                $isActive={isActive}
+                $readOnly={isOutput}
+                $variant={variant}
+                {...rest}
+              />
+            )}
           </S.ContentWrapper>
           {showIcon && (
             <S.IconContainer 

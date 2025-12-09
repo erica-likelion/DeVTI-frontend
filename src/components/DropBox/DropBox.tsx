@@ -1,4 +1,6 @@
 import * as S from "./DropBox.styles";
+import ArrowUp from "@/assets/icons/arrow_up.svg";
+import ArrowDown from "@/assets/icons/arrow_down.svg";
 
 interface DropBoxProps {
   value?: string;
@@ -29,7 +31,7 @@ export default function DropBox({
         <S.OptionText $size={size}>{value || placeholder}</S.OptionText>
         <S.ArrowIcon $isOpen={isOpen}>
           <img
-            src={isOpen ? "/arrow_up.svg" : "/arrow_down.svg"}
+            src={isOpen ? ArrowUp : ArrowDown}
             alt={isOpen ? "Arrow up" : "Arrow down"}
           />
         </S.ArrowIcon>

@@ -4,9 +4,10 @@ interface ClearIconButtonProps {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  imageSrc?: string; // 프로필 이미지 src 추가
 }
 
-export default function ClearIconButton({ className, onClick, disabled = false }: ClearIconButtonProps) {
+export default function ClearIconButton({ className, onClick, disabled = false, imageSrc }: ClearIconButtonProps) {
   const handleClick = () => {
     if (!disabled && onClick) {
       onClick();
@@ -16,7 +17,7 @@ export default function ClearIconButton({ className, onClick, disabled = false }
   return (
     <S.Container className={className} onClick={handleClick} disabled={disabled}>
       <S.Icon>
-        <img src="/DefaultIMG_Profile.webp" alt="Clear" />
+        <img src={imageSrc || "/DefaultIMG_Profile.webp"} alt="Profile" />
       </S.Icon>
     </S.Container>
   );

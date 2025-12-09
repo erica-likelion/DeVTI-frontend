@@ -6,9 +6,11 @@ import { useLocation } from 'react-router-dom';
 
 interface DBTIResultPageProps {
   onRetakeTest?: () => void;
+  hideRetakeButton?: boolean; // "다시 테스트" 버튼 숨김 여부
+  isInDefaultPage?: boolean; // default 페이지에서 사용되는지 여부 (padding 제거용)
 }
 
-export default function DBTIResultPage({ onRetakeTest }: DBTIResultPageProps) {
+export default function DBTIResultPage({ onRetakeTest, hideRetakeButton = false, isInDefaultPage = false }: DBTIResultPageProps) {
   
   // 예시로 id 1의 DBTI 결과를 가져오게 해뒀어요! (실제로는 사용자 데이터에서 가져와야 함)
   const dbtiResult = getDBTIResult(1);
@@ -22,10 +24,10 @@ export default function DBTIResultPage({ onRetakeTest }: DBTIResultPageProps) {
   };
 
   return (
-    <S.Container>
+    <S.Container $isInDefaultPage={isInDefaultPage}>
       <S.TitleFrame>
         <S.Title>{userName} 의 DBTI</S.Title>
-        {!isDetailRoute && (
+        {!isDetailRoute && !hideRetakeButton && (
           <BkMTextButton onClick={handleRetakeTest}>다시 테스트</BkMTextButton>
         )}
       </S.TitleFrame>

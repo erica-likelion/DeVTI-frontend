@@ -32,7 +32,7 @@ export const RoleTabs = ({ tabs, onChange }: RoleTabsProps) => {
           ref={(el: HTMLButtonElement | null) => {
             tabRefs.current[i] = el;
           }}
-          isActive={tab === active}
+          $isActive={tab === active}
           onClick={() => setActive(tab)}
         >
           {tab}

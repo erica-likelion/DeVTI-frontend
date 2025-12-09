@@ -45,5 +45,19 @@ export const Icon = styled.span`
   img {
     object-fit: contain;
   }
-
+  
+  ${({ theme }) => theme.media.mobile} {
+    display: flex;
+    width: ${({ theme }) => theme.gaps.M.mobile}; /* var(--Gap-M, 0.75rem) */
+    height: 0.75rem;
+    padding: 0.11719rem;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1/1;
+    
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
 `;
