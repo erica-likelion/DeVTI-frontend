@@ -77,3 +77,10 @@ export const MemberList = styled.div`
   flex-direction: column;
   gap: 0.75rem;
 `;
+
+
+export const Temp = styled.div`
+  display: flex;
+  gap: 3rem;
+  margin-top: 5rem;
+`;

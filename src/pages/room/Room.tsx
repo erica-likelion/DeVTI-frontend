@@ -14,6 +14,7 @@ import {
   type Participant,
   type RoleType,
 } from './RoomParticipants';
+import { BkLTextButton } from '@/components/ButtonStatic';
 
 const ROLE_TABS = ['전체', 'PM', '디자인', '프론트엔드', '백엔드'] as const;
 const TEAM_TABS = ['전체', '1팀', '2팀', '3팀', '4팀'] as const;
@@ -27,7 +28,7 @@ interface RemainingTime {
 }
 
 // 마감 시간(임시)
-const MATCH_DEADLINE = new Date('2025-12-01T23:59:59+09:00');
+const MATCH_DEADLINE = new Date('2025-12-31T23:59:59+09:00');
 
 type RoleTab = (typeof ROLE_TABS)[number];
 type TeamTab = (typeof TEAM_TABS)[number];
@@ -72,10 +73,10 @@ const Room = () => {
   const [remainingTime, setRemainingTime] = useState<RemainingTime>(
     () => calcRemainingTime(),
   );
-  const [isMatchedByServer] = useState(false);
+  const [isMatchedByServer, setIsMatchedByServer] = useState(false);
 
   // 🔹 꼬리 흔들기 상태 (room.state_change → WAGGING 에서 true)
-  const [isWagging] = useState(true);
+  const [isWagging, setIsWagging] = useState(false);
   const [Waggingfinished, setWaggingFinished] = useState(false);
   const [isCarrotDisabled, setIsCarrotDisabled] = useState(false);
 
@@ -217,6 +218,13 @@ const Room = () => {
     }, []);
   */
 
+  const handleWagging = () => {
+    setIsWagging(true);
+  }
+
+  const handleEndMatching = () => {
+    setIsMatchedByServer(true);
+  }
 
 
   return (
@@ -307,13 +315,20 @@ const Room = () => {
               icon={DefaultIMG_Profile}
               header={participant.username}
               keywords={participant.keywords}
-              rightButton={isWagging ? '꼬리 흔들기' : false}
+              rightButton={isWagging && !isEnded && !Waggingfinished ? participant.rightButton : false}
               disabled={participant.disabled}
              // onRightButtonClick={() => handleWagging(participant.id)}
             />
           ))}
         </S.MemberList>
+
+        <S.Temp>
+          <BkLTextButton children="꼬리 흔들기 시작" onClick={handleWagging} />
+          <BkLTextButton children="매칭 종료" onClick={handleEndMatching} />
+        </S.Temp>
       </S.ListSection>
+
+      
 
       <Modal isOpen={modalType === 'wagging'} buttonLabel="확정" onClose={handleCloseModal} onPrimary={handleModalPrimary}>
         <span>함께 하고 싶은 분들께 꼬리를 다 흔들었나요? </span>
@@ -324,6 +339,7 @@ const Room = () => {
         <span>정말 팀을 바꾸고 싶으신가요? </span>
         <span>이 결정은 번복할 수 없습니다.</span>
       </Modal>
+
     </S.Container>
   );
 };
