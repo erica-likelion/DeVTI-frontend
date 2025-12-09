@@ -82,4 +82,5 @@ export const MemberList = styled.div`
 export const Temp = styled.div`
   display: flex;
   gap: 3rem;
+  margin-top: 5rem;
 `;

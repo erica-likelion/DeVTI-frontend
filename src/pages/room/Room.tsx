@@ -28,7 +28,7 @@ interface RemainingTime {
 }
 
 // 마감 시간(임시)
-const MATCH_DEADLINE = new Date('2025-12-01T23:59:59+09:00');
+const MATCH_DEADLINE = new Date('2025-12-31T23:59:59+09:00');
 
 type RoleTab = (typeof ROLE_TABS)[number];
 type TeamTab = (typeof TEAM_TABS)[number];
@@ -73,10 +73,10 @@ const Room = () => {
   const [remainingTime, setRemainingTime] = useState<RemainingTime>(
     () => calcRemainingTime(),
   );
-  const [isMatchedByServer] = useState(false);
+  const [isMatchedByServer, setIsMatchedByServer] = useState(false);
 
   // 🔹 꼬리 흔들기 상태 (room.state_change → WAGGING 에서 true)
-  const [isWagging] = useState(true);
+  const [isWagging, setIsWagging] = useState(false);
   const [Waggingfinished, setWaggingFinished] = useState(false);
   const [isCarrotDisabled, setIsCarrotDisabled] = useState(false);
 
@@ -315,7 +315,7 @@ const Room = () => {
               icon={DefaultIMG_Profile}
               header={participant.username}
               keywords={participant.keywords}
-              rightButton={isWagging && !isEnded ? participant.rightButton : false}
+              rightButton={isWagging && !isEnded && !Waggingfinished ? participant.rightButton : false}
               disabled={participant.disabled}
              // onRightButtonClick={() => handleWagging(participant.id)}
             />
