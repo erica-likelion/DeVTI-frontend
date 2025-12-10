@@ -96,6 +96,7 @@ const colors = {
   inner: {
     GL100: {
       background: 'rgba(252, 252, 255, 0.30)',
+      boxShadow: '-0.0125rem 0 0.0625rem 0 #FCFCFF inset, 0 -0.0625rem 0.625rem 0 rgba(252, 252, 255, 0.30) inset, 0.01875rem 0.01875rem 0.03125rem 0 #FCFCFF inset, 0 0 0.5rem 0 rgba(25, 24, 29, 0.08) inset',
       backdropFilter: 'blur(0.125rem)',
     },
     GL200: {

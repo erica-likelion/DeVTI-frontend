@@ -11,8 +11,8 @@ export const Container = styled.div<{ $clicked?: boolean }>`
 
   ${({ theme }) => theme.responsive.property.borderRadius("soft")};
   background: ${({ theme }) => theme.colors.transparents.WH300};
-  box-shadow: ${({ theme }) => theme.colors.inner.GL100};
-  backdrop-filter: blur(10px);
+  ${({ theme }) => theme.colors.inner.GL100};
+  
 
   cursor: pointer;
 

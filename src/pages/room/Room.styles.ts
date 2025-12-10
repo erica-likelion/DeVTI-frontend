@@ -8,7 +8,8 @@ export const Container = styled.div`
 	gap: 3.75rem;
 	align-self: stretch;
 	overflow-y: auto;
-  padding: 9.5rem ${({ theme }) => theme.responsive.gap('GeneralMargin')} 5rem	${({ theme }) => theme.responsive.gap('GeneralMargin')};
+  padding: 5rem ${({ theme }) => theme.responsive.gap('GeneralMargin')} 5rem ${({ theme }) => theme.responsive.gap('GeneralMargin')};
+	min-height: 63.75rem;
 `;
 
 export const TopSection = styled.section`
@@ -42,29 +43,40 @@ export const AISection = styled.section`
 `;
 
 export const AISectionHeader = styled.div`
+  display: flex;
+	padding: 0 ${({ theme }) => theme.responsive.property.gap('S')};
+	align-items: center;
+	align-self: stretch;
+	gap: 0.625rem;
+`;
+
+export const AITitle = styled.h3`
   font: ${props => props.theme.fonts.heading.h3};
 	color: ${props => props.theme.colors.grayScale.black};
 `;
 
-export const AITitle = styled.h3`
-  font-size: 1rem;
-  font-weight: 600;
-`;
-export const MidSection = styled.section`
-  display: flex;
-	padding: 0rem ${({ theme }) => theme.responsive.gap('S')};
-	justify-content: space-between;
-	align-self: stretch;
-	align-items: center;
-`;
 
-export const ListSection = styled.section``;
+export const ListSection = styled.section`
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1.25rem;
+	width: ${({ theme }) => theme.responsive.property.width('max')};
+	`;
 
 export const ListHeaderRow = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+	align-items: center;
+	${({ theme }) => theme.responsive.property.gap('R')};
+`;
+
+
+export const MidSection = styled.section`
+  display: flex;
+	padding: 0 ${({ theme }) => theme.responsive.property.gap('S')};
+	justify-content: space-between;
+	align-self: stretch;
+	align-items: center;
 `;
 
 export const TotalCount = styled.span`
@@ -75,6 +87,7 @@ export const TotalCount = styled.span`
 export const MemberList = styled.div`
   display: flex;
   flex-direction: column;
+	align-items: flex-start;
   gap: 0.75rem;
 `;
 
