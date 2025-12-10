@@ -7,7 +7,8 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
 	align-self: stretch;
-
+  min-height: 63.75rem;
+  justify-content: start;
   padding: 5rem ${({ theme }) => theme.responsive.gap('GeneralMargin')} 5rem	${({ theme }) => theme.responsive.gap('GeneralMargin')};
   gap: 3.75rem;
 

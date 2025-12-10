@@ -10,26 +10,11 @@ export const Container = styled.div<{ $clicked?: boolean }>`
 
   ${({ theme }) => theme.responsive.property.borderRadius("smooth")};
   background: ${({ theme }) => theme.colors.transparents.WH300};
-  box-shadow: ${({ theme }) => theme.colors.transparents.BL100};
+  box-shadow: ${({ theme }) => theme.effects.dropShadows.DS200};
   backdrop-filter: blur(10px);
 
   cursor: pointer;
 
-  &:hover {
-    box-shadow: ${({ theme }) => theme.effects.dropShadows.DS200_VT};
-}
-
-  &:active {
-    background: ${({ theme }) => theme.colors.secondary.VT100};
-    box-shadow: ${({ theme }) => theme.effects.dropShadows.DS200_VT};
-  }
-
-  ${({ $clicked, theme }) =>
-    $clicked &&
-    css`
-      border-color: ${theme.colors.grayScale.white};
-      box-shadow: ${theme.effects.dropShadows.DS200_VT};
-    `}
 `;
 
 

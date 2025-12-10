@@ -48,7 +48,7 @@ const MatchedTeamPage = ({ teams }: MatchedTeamPageProps) => {
                   `${member.meeting_preference}`,
                 ],
               ]}
-                disabled={false}
+                disabled={true}
               />
             ))}
       </S.MemberListWrapper>

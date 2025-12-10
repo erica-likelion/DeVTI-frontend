@@ -100,8 +100,7 @@ const colors = {
       backdropFilter: 'blur(0.125rem)',
     },
     GL200: {
-      background: 'rgba(252, 252, 255, 0.30)',
-      boxShadow: '0 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.25)',
+      boxShadow: '-0.0125rem 0 0.09375rem 0 var(--Colors-Gray-Scale-White, #FCFCFF) inset, -0.0625rem -0.0625rem 0.625rem 0 var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.30)) inset, 0.03125rem 0.03125rem 0.0625rem 0 var(--Colors-Gray-Scale-White, #FCFCFF) inset, 0.0625rem 0.0625rem 0.5rem 0 rgba(25, 24, 29, 0.08) inset',
       backdropFilter: 'blur(0.625rem)',
     },
     Gl_DS_VT: {
@@ -361,37 +360,37 @@ const generalViewport = {
 const fonts = {
   heading: {
     Extra: createFontStyle(
-      { tablet: 3, mobile: 1.5 }, 
+      { tablet: 2.5, mobile: 1.375 }, 
       700, 
-      { tablet: 4.5, mobile: 2.25 }, 
+      { tablet: 3.75, mobile: 2 }, 
       { tablet: -0.06, mobile: -0.03 }
     ),  
-    h1: createFontStyle(
+    h0: createFontStyle(
       { tablet: 1.75, mobile: 1.375 }, 
       600,
       { tablet: 2.625, mobile: 2 },
       { tablet: -0.035, mobile: -0.0275 }
     ),      
-    h2: createFontStyle(
+    h1: createFontStyle(
       { tablet: 1.25, mobile: 1.125 }, 
       600, 
       { tablet: 2, mobile: 1.75 }, 
       { tablet: -0.025, mobile: -0.0225 }
     ),     
-    h3: createFontStyle(
+    h2: createFontStyle(
       { tablet: 1.125, mobile: 1 }, 
       600, 
       { tablet: 1.75, mobile: 1.5 }, 
       { tablet: -0.0225, mobile: -0.02 }
     ),       
-    h4: createFontStyle(
+    h3: createFontStyle(
       { tablet: 1, mobile: 0.875 }, 
       600, 
       { tablet: 1.5, mobile: 1.31 }, 
       { tablet: -0.02, mobile: -0.0175 }
     ),     
-    h5: createFontStyle(
-      { tablet: 1.125, mobile: 0.875 }, 
+    h4: createFontStyle(
+      { tablet: 1.125, mobile: 0.75 }, 
       600, 
       { tablet: 1.63, mobile: 1.25 }, 
       { tablet: -0.0225, mobile: -0.0175 }
