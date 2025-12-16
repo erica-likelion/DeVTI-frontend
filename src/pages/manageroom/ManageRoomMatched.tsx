@@ -57,7 +57,7 @@ const ManageRoomMatched = () => {
       <S.TopArea>
         <S.TitleBlock>
           <S.Title>매칭이 완료되었습니다!</S.Title>
-          <S.Subtitle>전체 {totalMembers}명 / {teamCount}팀</S.Subtitle>
+          <S.Subtitle>전체 {totalMembers} 명 / {teamCount} 팀</S.Subtitle>
         </S.TitleBlock>
 
         <BlackMTextButton children="매칭 확정" onClick={handleOpenModal} />
