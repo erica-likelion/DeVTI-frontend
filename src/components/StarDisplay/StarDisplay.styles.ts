@@ -10,7 +10,7 @@ export const Container = styled.div`
 export const StarContainer = styled.div`
   display: inline-flex;
   align-items: center;
-  ${({ theme }) => theme.responsive.property.gap('XXS')}
+  gap: ${({ theme }) => theme.gaps.XXS.wide};
 `;
 
 export const Star = styled.div`

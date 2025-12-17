@@ -5,7 +5,6 @@ import BkMTextButton from "@/components/ButtonStatic/BkMTextButton";
 import SegmentControlTight from "@/components/SegmentControl/SegmentControlTight";
 import InputField from "@/components/Input/InputField";
 import CheckboxButton from "@/components/ButtonDynamic/CheckboxButton";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export const DAILY_OPTIONS = [
   { key: "under1h", label: "1시간 이하" },
@@ -158,49 +157,10 @@ export default function BasePortfolioForm({
   // 전체 유효성 검사: 기본 검사 + 파트별 특화 검사
   const isValid = baseValidation && isFormValid;
 
-  // 타블렛에서 포트폴리오 제목을 두 줄로 나누기
-  const isTablet = useMediaQuery('(min-width: 45rem) and (max-width: 89.9375rem)');
   const renderTitle = () => {
     if (title === "디자인 포트폴리오") {
-      // 타블렛일 때만 두 줄로 나누기
-      if (isTablet) {
-        return (
-          <S.PortfolioTitle $isDesignPortfolio={true}>
-            <S.PortfolioTitleLine>디자인</S.PortfolioTitleLine>
-            <S.PortfolioTitleLine>포트폴리오</S.PortfolioTitleLine>
-          </S.PortfolioTitle>
-        );
-      }
-      // 타블렛이 아닐 때는 원래 텍스트 사용
-      return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
+      return <S.PortfolioTitle $isDesignPortfolio={true}>{title}</S.PortfolioTitle>;
     }
-    
-    if (title === "프론트엔드 포트폴리오") {
-      // 타블렛일 때만 두 줄로 나누기
-      if (isTablet) {
-        return (
-          <S.PortfolioTitle>
-            <S.PortfolioTitleLine>프론트엔드</S.PortfolioTitleLine>
-            <S.PortfolioTitleLine>포트폴리오</S.PortfolioTitleLine>
-          </S.PortfolioTitle>
-        );
-      }
-      return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
-    }
-    
-    if (title === "백엔드 포트폴리오") {
-      // 타블렛일 때만 두 줄로 나누기
-      if (isTablet) {
-        return (
-          <S.PortfolioTitle>
-            <S.PortfolioTitleLine>백엔드</S.PortfolioTitleLine>
-            <S.PortfolioTitleLine>포트폴리오</S.PortfolioTitleLine>
-          </S.PortfolioTitle>
-        );
-      }
-      return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
-    }
-    
     return <S.PortfolioTitle>{title}</S.PortfolioTitle>;
   };
 

@@ -17,6 +17,10 @@ export const StyledButton = styled.button`
   ${({ theme }) => theme.responsive.property.width('min')}
   ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
 
+  ${({ theme }) => theme.media.tablet} {
+    padding: ${({ theme }) => theme.gaps.XXS.tablet} 0;
+  }
+
   ${({ theme }) => theme.media.mobile} {
     width: auto;
     min-width: ${({ theme }) => theme.responsive.width('min', 'mobile')};

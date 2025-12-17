@@ -22,7 +22,7 @@ export const Header = styled.header`
   ${({ theme }) => theme.media.tablet} {
     flex-direction: column;
     align-items: flex-end; /* 오른쪽 정렬 */
-    gap: ${({ theme }) => theme.gaps.S.wide}; /* 제목과 버튼 사이 gap 1rem */
+    gap: 1rem; /* 제목과 버튼 사이 gap 1rem (고정값) */
     margin-bottom: 2.75rem; /* 수정/삭제 버튼 아래 2.75 간격 */
   }
   
@@ -153,7 +153,6 @@ export const TimeAvailabilitySection = styled.div`
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  margin-top: 2.75rem;
   
   ${({ theme }) => theme.media.tablet} {
     flex-direction: column;
@@ -178,7 +177,7 @@ export const TimeRowContainer = styled.div`
   ${({ theme }) => theme.media.tablet} {
     flex-direction: column;
     align-items: flex-start;
-    gap: ${({ theme }) => theme.gaps.S.tablet}; /* 1일 기준과 1주 기준 사이 거리 1 (0.625rem) */
+    gap: 0.75rem; /* 1일 기준과 1주 기준 사이 거리 0.75rem (고정값) */
     width: auto;
     margin-left: 0.75rem; /* 할애할 수 있는 시간 제목보다 오른쪽으로 0.75rem 간격 */
   }
@@ -226,7 +225,6 @@ export const SelfAssessmentSection = styled.div`
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  margin-top: 2.75rem;
 `;
 
 export const SelfAssessmentHeader = styled.div`
