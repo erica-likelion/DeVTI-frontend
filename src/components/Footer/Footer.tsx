@@ -12,7 +12,13 @@ const Footer = ({ pathname }: FooterProps) => {
   const isProfileEditPart = pathname?.startsWith('/profile/edit/') || false; // /profile/edit/pm, /profile/edit/design 등
 
   return (
-    <S.Container $isLoginPage={isLoginPage} $isProfileRoute={isProfileRoute} $isProfileOnly={isProfileOnly} $isProfileEditPart={isProfileEditPart}>
+    <S.Container 
+      $isLoginPage={isLoginPage} 
+      $isProfileRoute={isProfileRoute} 
+      $isProfileOnly={isProfileOnly} 
+      $isProfileEditPart={isProfileEditPart}
+      $pathname={pathname}
+    >
       <S.Content>
         <S.CopyrightText $isLoginPage={isLoginPage}>
           Copyright © {currentYear} Team DevTI. All rights reserved.

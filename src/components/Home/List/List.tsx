@@ -4,7 +4,7 @@ import WtMTextButton from '../../ButtonStatic/WtMTextButton';
 
 interface ListItem {
   id: string | number;
-  content: ReactNode;
+  content: ReactNode | string[];
   buttonText: string;
   onClick: () => void;
 }
@@ -18,7 +18,15 @@ export default function List({ items }: ListProps) {
     <S.Container>
       {items.map((item) => (
         <S.ListItem key={item.id}>
-          <S.ItemContent>{item.content}</S.ItemContent>
+          {Array.isArray(item.content) ? (
+            <S.ContentWrapper>
+              {item.content.map((line, index) => (
+                <S.ContentLine key={index}>{line}</S.ContentLine>
+              ))}
+            </S.ContentWrapper>
+          ) : (
+            <S.ItemContent>{item.content}</S.ItemContent>
+          )}
           <WtMTextButton onClick={item.onClick}>
             {item.buttonText}
           </WtMTextButton>

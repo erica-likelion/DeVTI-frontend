@@ -100,7 +100,8 @@ const colors = {
       backdropFilter: 'blur(0.125rem)',
     },
     GL200: {
-      boxShadow: '-0.0125rem 0 0.09375rem 0 var(--Colors-Gray-Scale-White, #FCFCFF) inset, -0.0625rem -0.0625rem 0.625rem 0 var(--Colors-Transparent-WH300, rgba(252, 252, 255, 0.30)) inset, 0.03125rem 0.03125rem 0.0625rem 0 var(--Colors-Gray-Scale-White, #FCFCFF) inset, 0.0625rem 0.0625rem 0.5rem 0 rgba(25, 24, 29, 0.08) inset',
+      background: 'rgba(252, 252, 255, 0.05)',
+      boxShadow: '-0.0125rem 0 0.09375rem 0 #FCFCFF inset, -0.0625rem -0.0625rem 0.625rem 0 rgba(252, 252, 255, 0.30) inset, 0.03125rem 0.03125rem 0.0625rem 0 #FCFCFF inset, 0.0625rem 0.0625rem 0.5rem 0 rgba(25, 24, 29, 0.08) inset',
       backdropFilter: 'blur(0.625rem)',
     },
     Gl_DS_VT: {
@@ -452,9 +453,9 @@ const fonts = {
 // dropshadows / 배경 블러: Backdrop blur / gradients
 const effects = {
   dropShadows: {
-    DS100: '0 0 0.25rem 0 #EEF0F5',
-    DS200: '0 0.0625rem 0.75rem 0 #E1E4EB',
-    DS300: '0 0.125rem 1.125rem 0 #D0D2DC',
+    DS100: '0 0 0.25rem 0  rgba(25, 24, 29, 0.10)',
+    DS200: '0 0.0625rem 0.75rem 0 rgba(25, 24, 29, 0.10)',
+    DS300: '0 0.125rem 1.5rem 0 rgba(25, 24, 29, 0.10)',
     DS200_VT: '0 0.0625rem 0.75rem 0 rgba(151, 62, 233, 0.30)',
   },
   
@@ -648,7 +649,6 @@ const layouts = {
   wideCommon: css`
     display: flex;
     width: 100%;
-    height: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -657,7 +657,6 @@ const layouts = {
   desktopCommon: css`
     display: flex;
     width: 100%;
-    height: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -667,7 +666,6 @@ const layouts = {
   tabletCommon: css`
     display: flex;
     width: 100%;
-    height: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -676,7 +674,6 @@ const layouts = {
   mobileCommon: css`
     display: flex;
     width: 100%;
-    height: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;

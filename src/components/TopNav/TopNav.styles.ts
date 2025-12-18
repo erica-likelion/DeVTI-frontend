@@ -1,10 +1,21 @@
 import styled from 'styled-components';
 
-export const Container = styled.nav`
+interface ContainerProps {
+  $pathname?: string;
+}
+
+export const Container = styled.nav<ContainerProps>`
   position: fixed;
   width:100%;
   height: 4.5rem;
   z-index: 1000;
+  background: ${({ $pathname, theme }) => {
+    // 로그인과 랜딩 페이지에서는 배경 투명, 나머지는 흰색
+    if ($pathname === '/' || $pathname === '/landing' || $pathname === '/login') {
+      return 'transparent';
+    }
+    return theme.colors.grayScale.white;
+  }};
   ${({ theme }) => theme.responsive.property.gap('XXL')}
   
   ${({ theme }) => theme.media.mobile} {

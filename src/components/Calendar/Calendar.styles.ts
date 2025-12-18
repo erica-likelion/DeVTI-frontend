@@ -7,7 +7,7 @@ export const CalendarContainer = styled.div`
   ${({ theme }) => theme.responsive.property.borderRadius('soft')}
   box-shadow: ${({ theme }) => theme.effects.dropShadows.DS300};
   display: inline-flex;
-  ${({ theme }) => theme.responsive.property.paddingComplex('M', 'L', 'M', 'L')}
+  ${({ theme }) => theme.responsive.property.paddingComplex('R', 'L', 'R', 'L')}
   flex-direction: column;
   align-items: center;
 `;
@@ -16,19 +16,19 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.responsive.gap('S')};
+  margin-bottom: ${({ theme }) => theme.responsive.gap('XXS','wide')};
   width: 100%;
 
   ${({ theme }) => theme.media.desktop} {
-    margin-bottom: ${({ theme }) => theme.responsive.gap('S', 'desktop')};
+    margin-bottom: ${({ theme }) => theme.responsive.gap('XXS', 'desktop')};
   }
 
   ${({ theme }) => theme.media.tablet} {
-    margin-bottom: ${({ theme }) => theme.responsive.gap('S', 'tablet')};
+    margin-bottom: ${({ theme }) => theme.responsive.gap('XXS', 'tablet')};
   }
 
   ${({ theme }) => theme.media.mobile} {
-    margin-bottom: ${({ theme }) => theme.responsive.gap('S', 'mobile')};
+    margin-bottom: ${({ theme }) => theme.responsive.gap('XXS', 'mobile')};
   }
 `;
 

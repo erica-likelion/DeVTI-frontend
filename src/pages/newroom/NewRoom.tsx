@@ -29,13 +29,15 @@ export default function NewRoom() {
             </S.InputWrapper>
             <S.InputWrapper>
                 <S.Label>매칭 시작 설정</S.Label>
-                <InputField 
-                    placeholder=""
-                    showCalendar={true}
-                    onDateSelect={(date) => setSelectedDate(date)}
-                    value={selectedDate}
-                    hasIcon={true}
-                />
+                <S.Input>
+                    <InputField 
+                        placeholder=""
+                        showCalendar={true}
+                        onDateSelect={(date) => setSelectedDate(date)}
+                        value={selectedDate}
+                        hasIcon={true}
+                    />
+                    </S.Input>
             </S.InputWrapper> 
         </S.ListWrapper>
             <BlackLTextButton>다음</BlackLTextButton>

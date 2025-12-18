@@ -12,7 +12,7 @@ export const ListItem = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${({ theme }) => theme.gaps.XXS.wide};
+  ${({ theme }) => theme.responsive.property.gap('XXS')};
   padding: 0;
 `;
 
@@ -28,17 +28,29 @@ export const ItemContent = styled.div`
     white-space: pre-line;
     word-break: break-word;
     line-height: 1.5;
-    max-width: 14rem;
+    max-width: 14.1875rem;
+  }
+`;
+
+export const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`;
+
+export const ContentLine = styled.span`
+  ${({ theme }) => theme.fonts.body.l500}
+  color: ${({ theme }) => theme.colors.grayScale.black};
+  
+  ${({ theme }) => theme.media.mobile} {
+    max-width: 14.1875rem;
+    word-break: break-word;
   }
 `;
 
 export const ItemButton = styled.div`
-  width: ${({ theme }) => theme.componentWidths.min.tablet};
+  ${({ theme }) => theme.responsive.property.width('min')};
   display: flex;
   align-items: center;
   flex-shrink: 0;
-
-  ${({ theme }) => theme.media.mobile} {
-    height: auto;
-  }
 `;
