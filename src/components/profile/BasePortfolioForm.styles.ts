@@ -19,28 +19,24 @@ export const Header = styled.header`
   ${({ theme }) => theme.media.wide} {
     display: flex;
     align-items: center;
-    gap: ${({ theme }) => theme.gaps.S.wide};
     align-self: stretch;
   }
   
   ${({ theme }) => theme.media.desktop} {
     display: flex;
     align-items: center;
-    gap: ${({ theme }) => theme.gaps.S.desktop};
     align-self: stretch;
   }
   
   ${({ theme }) => theme.media.tablet} {
     display: flex;
     align-items: center;
-    gap: ${({ theme }) => theme.gaps.S.tablet};
     align-self: stretch;
   }
   
   ${({ theme }) => theme.media.mobile} {
     display: flex;
     align-items: center;
-    gap: ${({ theme }) => theme.gaps.S.mobile};
     align-self: stretch;
   }
 `;
