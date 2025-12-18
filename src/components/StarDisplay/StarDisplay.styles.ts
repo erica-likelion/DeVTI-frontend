@@ -10,7 +10,7 @@ export const Container = styled.div`
 export const StarContainer = styled.div`
   display: inline-flex;
   align-items: center;
-  gap: ${({ theme }) => theme.gaps.XXS.wide};
+  gap: 0.5rem;
 `;
 
 export const Star = styled.div`
