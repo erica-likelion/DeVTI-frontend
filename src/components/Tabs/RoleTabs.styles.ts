@@ -11,7 +11,7 @@ export const Container = styled.div`
 
 export const TabButton = styled.button<{ $isActive: boolean }>`
   position: relative;
-  ${({ theme }) => theme.responsive.property.paddingComplex('XS', 'R', 'XS', 'R')}
+  ${({ theme }) => theme.responsive.property.paddingComplex('XXS', 'R', 'XXS', 'R')}
   background: none;
   border: none;
   color: ${({ theme }) => theme.colors.grayScale.black};
@@ -26,7 +26,7 @@ export const TabButton = styled.button<{ $isActive: boolean }>`
 export const Indicator = styled.div`
   position: absolute;
   bottom: 0;
-  height: 0.25rem;
+  height: 3px;
   background: ${({ theme }) => theme.colors.primary.VT500};
   transition: 0.25s ease;
 `;

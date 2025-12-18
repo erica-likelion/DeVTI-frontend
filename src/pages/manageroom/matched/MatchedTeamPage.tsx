@@ -32,7 +32,7 @@ const MatchedTeamPage = ({ teams }: MatchedTeamPageProps) => {
       {teams.map((team) => (
           <S.MemberListWrapper key={team.team_number}>
             <S.TeamArea>
-              <S.TeamName>{`${team.team_number} 팀`}</S.TeamName>
+              <S.TeamName>{`${team.team_number}팀`}</S.TeamName>
               <WtMTextButton>AI 매칭 근거</WtMTextButton>
             </S.TeamArea>
             {team.members.map((member) => (
@@ -48,7 +48,7 @@ const MatchedTeamPage = ({ teams }: MatchedTeamPageProps) => {
                   `${member.meeting_preference}`,
                 ],
               ]}
-                disabled={false}
+                disabled={true}
               />
             ))}
       </S.MemberListWrapper>

@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/stores/authStore';
 import * as S from './ProfileEditPage.styles';
 import { BkMTextButton } from '@/components/ButtonStatic';
 import InputField from '@/components/Input/InputField';
@@ -14,6 +15,7 @@ interface ProfileEditPageProps {
 
 export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageProps) {
   const navigate = useNavigate();
+  const { user } = useAuthStore();
   const [selectedPart, setSelectedPart] = useState<string>('');
   const [isDropBoxOpen, setIsDropBoxOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -28,8 +30,8 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
     '백엔드': 'backend'
   };
   
-  const userName = '송재현'; // 기본값, 나중에 props나 상태관리에서 받아올 예정
-  const userIntro = '저는 팀장입니다'; // 기본값, 나중에 props나 상태관리에서 받아올 예정
+  const userName = user?.name || '사용자';
+  const userIntro = '안녕하세요!'; // 기본 소개글 (이후 백엔드에서 받아올 예정)
 
   const handleSave = () => {
     // 로직 확인용으로 임시 추가 (이후 제거 예정) - 이후 profile/default로 변경
@@ -57,7 +59,7 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
       <S.InfoSection>
         <S.ImageButtonFrame>
           <S.Image>
-            <img src="/DefaultIMG_Profile.webp" alt="프로필 이미지" />
+            <img src={user?.profileImage || "/DefaultIMG_Profile.webp"} alt="프로필 이미지" />
           </S.Image>
           <S.EditIconButton>
             <WtMIconButton disabled={false} onClick={handleImageUpload}>

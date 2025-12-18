@@ -19,9 +19,9 @@ export const MemberListWrapper = styled.div`
   flex-direction: column;
 	align-items: flex-start;
 	padding: ${({ theme }) => theme.responsive.gap('R')};
-  gap: 1.25rem;
-
-	border-radius: 2.25rem;
+  gap: 0.75rem;
+	${({ theme }) => theme.responsive.property.borderRadius("round")};
+	${({ theme }) => theme.colors.inner.GL200};
 	background: ${({ theme }) => theme.colors.transparents.WH300};
 `;
 
