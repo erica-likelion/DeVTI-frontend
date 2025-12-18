@@ -68,6 +68,9 @@ export default function DesignPortfolioViewPage() {
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  
+  // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI가 모두 입력되어야 함
+  const canSave = !!name.trim() && !!intro.trim() && !!dbtiInfo;
 
   // 디자인 포트폴리오 데이터를 localStorage에 저장
   useEffect(() => {
@@ -147,6 +150,7 @@ export default function DesignPortfolioViewPage() {
   };
 
   const handleSave = () => {
+    if (!canSave) return; // 조건 만족 전엔 절대 진행 안 함
     setIsSaveModalOpen(true);
   };
 
@@ -373,7 +377,7 @@ export default function DesignPortfolioViewPage() {
             </S.FormSection>
 
             <S.SaveButtonWrapper>
-              <BkMTextButton onClick={handleSave} disabled={false}>
+              <BkMTextButton onClick={handleSave} disabled={!canSave}>
                 저장
               </BkMTextButton>
             </S.SaveButtonWrapper>

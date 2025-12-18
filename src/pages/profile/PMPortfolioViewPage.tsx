@@ -70,6 +70,9 @@ export default function PMPortfolioViewPage() {
   const [dbtiInfo, setDbtiInfo] = useState<string | null>(portfolioData.dbtiInfo || null);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [selectedParts, setSelectedParts] = useState<PartOption[]>(portfolioData.selectedParts || ["PM"]);
+  
+  // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI가 모두 입력되어야 함
+  const canSave = !!name.trim() && !!intro.trim() && !!dbtiInfo;
   const [activePart, setActivePart] = useState<PartOption | null>(null); // 모바일에서 LeftPanel만 보이도록 초기값 null
   const [isPartDropdownOpen, setIsPartDropdownOpen] = useState(false);
   const partSelectorRef = useRef<HTMLDivElement>(null);
@@ -155,6 +158,7 @@ export default function PMPortfolioViewPage() {
   };
 
   const handleSave = () => {
+    if (!canSave) return; // 조건 만족 전엔 절대 진행 안 함
     setIsSaveModalOpen(true);
   };
 
@@ -385,7 +389,7 @@ export default function PMPortfolioViewPage() {
             </S.FormSection>
 
             <S.SaveButtonWrapper>
-              <BkMTextButton onClick={handleSave} disabled={false}>
+              <BkMTextButton onClick={handleSave} disabled={!canSave}>
                 저장
               </BkMTextButton>
             </S.SaveButtonWrapper>

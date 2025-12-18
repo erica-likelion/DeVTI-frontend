@@ -8,7 +8,7 @@ import {
   FRONTEND_TECH_OPTIONS,
   FRONTEND_TECH_ITEMS_MAP,
   type FrontendTech,
-} from "./constants/frontendAssessmentItems";
+} from "@/constants/profile/frontendAssessmentItems";
 
 const TECH_ITEMS_MAP = FRONTEND_TECH_ITEMS_MAP;
 
@@ -192,7 +192,7 @@ export default function FrontendPortfolioForm({
           <DropBox
             size="L"
             value=""
-            placeholder="언어, 프레임워크선택"
+            placeholder="언어, 프레임워크 선택"
             isOpen={isDropdownOpen}
             options={availableTechOptions}
             disabledOptions={selectedTechs}
@@ -205,10 +205,11 @@ export default function FrontendPortfolioForm({
         {selectedTechs.map((tech) => (
           <SelfAssessmentGroup
             key={tech}
-            title={`${tech} 숙련도 자가평가`}
+            title={tech}
             items={TECH_ITEMS_MAP[tech]}
             values={techAssessments[tech] || {}}
             onChange={(key, value) => handleAssessmentChange(tech, key, value)}
+            cardSize="L"
           />
         ))}
       </S.SelfAssessmentSection>

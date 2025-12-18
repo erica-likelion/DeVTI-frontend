@@ -1,38 +1,38 @@
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
 
-export const Container = styled.div`
+export const Container = styled.div<{ $size?: "M" | "L" }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   flex-shrink: 0;
   ${({ theme }) => theme.responsive.property.borderRadius('soft')}
   background: ${theme.colors.grayScale.white};
-  box-shadow: ${theme.effects.dropShadows.DS200};
+  box-shadow: 0 1px 12px 0 ${theme.colors.transparents.BL100};
   
-  ${({ theme }) => theme.media.wide} {
-    width: 28rem; /* Component-Width-Medium */
+  ${({ theme, $size }) => theme.media.wide} {
+    width: ${({ $size, theme }) => $size === "L" ? theme.componentWidths.large.wide : '28rem'}; /* Component-Width-Large or Medium */
     height: 15.5rem;
     padding: ${({ theme }) => theme.gaps.R.wide}; /* 1.25rem */
     gap: ${({ theme }) => theme.gaps.XS.wide}; /* 0.75rem */
   }
 
-  ${({ theme }) => theme.media.desktop} {
-    width: 28rem; /* Component-Width-Medium */
+  ${({ theme, $size }) => theme.media.desktop} {
+    width: ${({ $size, theme }) => $size === "L" ? theme.componentWidths.large.desktop : '28rem'}; /* Component-Width-Large or Medium */
     height: 15.5rem;
     padding: ${({ theme }) => theme.gaps.R.desktop}; /* 1.25rem */
     gap: ${({ theme }) => theme.gaps.XS.desktop}; /* 0.75rem */
   }
 
-  ${({ theme }) => theme.media.tablet} {
-    ${({ theme }) => theme.responsive.property.width('medium')}
+  ${({ theme, $size }) => theme.media.tablet} {
+    width: ${({ $size, theme }) => $size === "L" ? theme.componentWidths.large.tablet : theme.componentWidths.medium.tablet};
     ${({ theme }) => theme.responsive.property.height('small')}
     ${({ theme }) => theme.responsive.property.padding('M')}
     ${({ theme }) => theme.responsive.property.gap('XS')}
   }
   
-  ${({ theme }) => theme.media.mobile} {
-    width: ${({ theme }) => theme.componentWidths.medium.mobile}; /* 11.375rem */
+  ${({ theme, $size }) => theme.media.mobile} {
+    width: ${({ $size, theme }) => $size === "L" ? theme.componentWidths.large.mobile : theme.componentWidths.medium.mobile};
     height: 15.5rem;
     padding: ${({ theme }) => theme.gaps.R.mobile}; /* 0.625rem */
     gap: ${({ theme }) => theme.gaps.XS.mobile}; /* 0.375rem */
