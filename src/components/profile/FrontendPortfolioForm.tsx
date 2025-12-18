@@ -8,7 +8,7 @@ import {
   FRONTEND_TECH_OPTIONS,
   FRONTEND_TECH_ITEMS_MAP,
   type FrontendTech,
-} from "./constants/frontendAssessmentItems";
+} from "@/constants/profile/frontendAssessmentItems";
 
 const TECH_ITEMS_MAP = FRONTEND_TECH_ITEMS_MAP;
 

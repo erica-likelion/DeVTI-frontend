@@ -1,4 +1,4 @@
-import type { SelfAssessmentItem } from "../SelfAssessmentGroup";
+import type { SelfAssessmentItem } from "@/components/profile/SelfAssessmentGroup";
 
 // Java 자가평가 항목
 export const JAVA_ITEMS: SelfAssessmentItem[] = [
