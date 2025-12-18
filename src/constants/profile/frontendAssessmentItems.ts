@@ -1,4 +1,4 @@
-import type { SelfAssessmentItem } from "../SelfAssessmentGroup";
+import type { SelfAssessmentItem } from "@/components/profile/SelfAssessmentGroup";
 
 // Android Studio 자가평가 항목
 export const ANDROID_STUDIO_ITEMS: SelfAssessmentItem[] = [

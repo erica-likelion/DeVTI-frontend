@@ -8,7 +8,7 @@ import {
   BACKEND_TECH_OPTIONS,
   BACKEND_TECH_ITEMS_MAP,
   type BackendTech,
-} from "./constants/backendAssessmentItems";
+} from "@/constants/profile/backendAssessmentItems";
 
 const TECH_ITEMS_MAP = BACKEND_TECH_ITEMS_MAP;
 
