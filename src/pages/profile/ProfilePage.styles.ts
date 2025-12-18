@@ -54,26 +54,6 @@ export const ProfileImage = styled.img`
   background: ${theme.colors.grayScale.gray600};
   flex-shrink: 0;
   box-shadow: 0 1px 12px 0 ${theme.colors.transparents.BL100};
-  
-  ${theme.media.wide} {
-    width: 12.5rem;
-    height: 12.5rem;
-  }
-  
-  ${theme.media.desktop} {
-    width: 12.5rem;
-    height: 12.5rem;
-  }
-  
-  ${theme.media.tablet} {
-    width: 12.5rem;
-    height: 12.5rem;
-  }
-  
-  ${theme.media.mobile} {
-    width: 12.5rem;
-    height: 12.5rem;
-  }
 `;
 
 export const ProfileImagePlaceholder = styled.img.attrs({
@@ -87,26 +67,6 @@ export const ProfileImagePlaceholder = styled.img.attrs({
   object-fit: cover;
   flex-shrink: 0;
   box-shadow: 0 1px 12px 0 ${theme.colors.transparents.BL100};
-  
-  ${theme.media.wide} {
-    width: 12.5rem;
-    height: 12.5rem;
-  }
-  
-  ${theme.media.desktop} {
-    width: 12.5rem;
-    height: 12.5rem;
-  }
-  
-  ${theme.media.tablet} {
-    width: 12.5rem;
-    height: 12.5rem;
-  }
-  
-  ${theme.media.mobile} {
-    width: 12.5rem;
-    height: 12.5rem;
-  }
 `;
 
 export const UserName = styled.h1`
