@@ -37,8 +37,8 @@ export const ListWrapper = styled.div`
 `;
 
 export const InputWrapper = styled.div`
+${({ theme }) => theme.responsive.property.width('large')}
   display: flex;
-  width: 100%;
   flex-direction: row;
   align-items: center;
   gap: 1rem;
