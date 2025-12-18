@@ -11,7 +11,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 1rem;
 
     @media (min-width: 14rem) and (max-width: 44.9375rem) {
-      font-size: 0.9375rem;
+      font-size: 1rem;
     }
 
     @media (min-width: 45rem) and (max-width: 89.9375rem) {

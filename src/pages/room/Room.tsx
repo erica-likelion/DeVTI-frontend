@@ -249,9 +249,9 @@ const Room = () => {
         )}
 
         <S.SubTitle>
-          {!isWagging
-            ? '아직 팀원들이 다 입장하지 않았어요. 팀원들을 조금만 기다려볼까요?'
-            : '매칭이 시작되기 전까지 꼬리를 흔들어 팀원을 찾아봐요'}
+          {isEnded
+            ? ''
+            : !isWagging ? '아직 팀원들이 다 입장하지 않았어요. 팀원들을 조금만 기다려볼까요?' : '매칭이 시작되기 전까지 꼬리를 흔들어 팀원을 찾아봐요'}
         </S.SubTitle>
 
       </S.TopSection>
@@ -292,23 +292,23 @@ const Room = () => {
           <RoleTabs tabs={tabs as unknown as string[]} onChange={handleChangeTab} />
         </S.ListHeaderRow>
 
-        <S.MidSection>
-          <S.TotalCount>
-            {isEnded
-              ? `전체 ${totalMembers}명`
-              : `전체 ${filteredParticipants.length}명`}
-          </S.TotalCount>
-
-          <DropBox
-            value={'AI 추천순'}
-            size="M"
-            isOpen={false}
-            options={['AI 추천순']}
-            disabled
-          />
-        </S.MidSection>
-
         <S.MemberList>
+          <S.MidSection>
+            <S.TotalCount>
+              {isEnded
+                ? `전체 ${totalMembers}명`
+                : `전체 ${filteredParticipants.length}명`}
+            </S.TotalCount>
+
+            <DropBox
+              value={isEnded ? '이름순' : 'AI 추천순'}
+              size="M"
+              isOpen={false}
+              options={['AI 추천순']}
+              disabled
+            />
+          </S.MidSection>
+
           {filteredParticipants.map(participant => (
             <WtLMemberList
               key={participant.id}
