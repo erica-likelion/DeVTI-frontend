@@ -56,7 +56,7 @@ export const WtLMemberList = ({
           <S.Indicator />
         </S.IndicatorArea>
 
-        <S.ButtonArea>
+        <S.ButtonArea onClick={(e) => e.stopPropagation()}>
           {hasRightButton && (
             <VT500Button disabled={disabled} onClick={onRightButtonClick}>
               {rightButton}

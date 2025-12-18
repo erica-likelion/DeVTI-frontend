@@ -8,6 +8,7 @@ import VT500SButton from '@/components/ButtonDynamic/VT500SButton';
 import VT700LButton from '@/components/ButtonDynamic/VT700LButton';
 import DefaultIMG_Profile from '/public/DefaultIMG_Profile.webp';
 import Modal from '@/components/modal/Modal';
+import SideSheet from './SideSheet';
 
 import {
   PARTICIPANTS as INITIAL_PARTICIPANTS,
@@ -129,7 +130,33 @@ const Room = () => {
 
 
   const [modalType, setModalType] = useState<ModalType>(null);
+  const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
+  const [selectedParticipantId, setSelectedParticipantId] = useState<string | number | null>(null);
+  const [giveWagging, setgiveWagging] = useState(false);
+    
+  const GiveWagging = async (waggeeId: number) => {
+    
+    try {
+      await fetch('https://devti.site/api/matching/wagging', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ wagger: 1, waggee: waggeeId }),
+      });
+    } catch (e) {
+      console.error(e);
+    }
 
+  };
+
+  const openSideSheet = (id: string | number) => {
+    setSelectedParticipantId(id);
+    setIsSideSheetOpen(true);
+  };
+
+  const closeSideSheet = () => {
+    setSelectedParticipantId(null);
+    setIsSideSheetOpen(false);
+  };
   
      // 모달 열기
   const openWaggingModal = () => {
@@ -285,8 +312,6 @@ const Room = () => {
         )}
       </S.AISection>
 
-
-
       <S.ListSection>
         <S.ListHeaderRow>
           <RoleTabs tabs={tabs as unknown as string[]} onChange={handleChangeTab} />
@@ -317,7 +342,8 @@ const Room = () => {
               keywords={participant.keywords}
               rightButton={isWagging && !isEnded && !Waggingfinished ? participant.rightButton : false}
               disabled={participant.disabled}
-             // onRightButtonClick={() => handleWagging(participant.id)}
+              onClick={() => openSideSheet(participant.id)}
+             onRightButtonClick={() => GiveWagging(participant.id)}
             />
           ))}
         </S.MemberList>
@@ -339,6 +365,10 @@ const Room = () => {
         <span>정말 팀을 바꾸고 싶으신가요? </span>
         <span>이 결정은 번복할 수 없습니다.</span>
       </Modal>
+
+      <S.SheetWrapper $open={isSideSheetOpen}>
+        <SideSheet participantId={selectedParticipantId} onClose={closeSideSheet} />
+      </S.SheetWrapper>
 
     </S.Container>
   );

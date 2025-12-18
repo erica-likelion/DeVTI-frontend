@@ -373,7 +373,11 @@ export default function DesignPortfolioViewPage() {
             </S.FormSection>
 
             <S.SaveButtonWrapper>
+<<<<<<< Updated upstream
               <BkMTextButton onClick={handleSave} disabled={!canSave}>
+=======
+              <BkMTextButton onClick={handleSave} disabled={true}>
+>>>>>>> Stashed changes
                 저장
               </BkMTextButton>
             </S.SaveButtonWrapper>

@@ -547,6 +547,13 @@ const responsive = {
     return overlayModals.width.wide;
   },
 
+  overlaySheetsWidth: (breakpoint?: 'wide' | 'desktop' | 'tablet' | 'mobile') => {
+    if (breakpoint) {
+      return overlaySheets.width[breakpoint];
+    }
+    return overlaySheets.width.wide;
+  },
+
 
   // 전체 속성을 반응형으로 적용하는 유틸리티
   property: {
@@ -615,6 +622,13 @@ const responsive = {
       desktop: overlayModals.width.desktop,
       tablet: overlayModals.width.tablet,
       mobile: overlayModals.width.mobile
+    }),
+
+    overlaySheetsWidth: () => createResponsiveProperty('width', {
+      wide: overlaySheets.width.wide,
+      desktop: overlaySheets.width.desktop,
+      tablet: overlaySheets.width.tablet,
+      mobile: overlaySheets.width.mobile
     }),
 
     // sourceWidth 크기를 width와 height에 동시 적용

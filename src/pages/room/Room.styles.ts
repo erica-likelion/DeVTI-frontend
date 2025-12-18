@@ -98,3 +98,20 @@ export const Temp = styled.div`
   gap: 3rem;
   margin-top: 5rem;
 `;
+
+
+
+export const SheetWrapper = styled.aside<{ $open: boolean }>`
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1.25rem;
+  z-index: 99999;
+
+  background-color: ${props => props.theme.colors.grayScale.white};
+  
+`;

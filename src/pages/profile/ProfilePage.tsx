@@ -119,9 +119,19 @@ export default function ProfilePage() {
   // 이름이 공백인지 확인 (trim으로 공백 제거 후 확인)
   const isNameEmpty = !name.trim();
   
+<<<<<<< Updated upstream
   // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI, 파트가 모두 입력/선택되어야 함
+=======
+  // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI, 파트 전부 입력/선택되어야 함s
+>>>>>>> Stashed changes
   // isEditModeFromView가 true이면 수정 모드이므로 저장 버튼 비활성화
   const isSaveDisabled = isNameEmpty || !intro.trim() || !dbtiInfo || selectedParts.length === 0 || isEditModeFromView;
+  
+  console.log(isNameEmpty);
+  console.log(!intro.trim());
+  console.log(!dbtiInfo);
+  console.log(selectedParts.length === 0);
+  console.log(isEditModeFromView);
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
