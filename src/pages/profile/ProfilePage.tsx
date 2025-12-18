@@ -74,6 +74,7 @@ export default function ProfilePage() {
     // portfolioState가 있으면 수정 모드로 표시
     setIsEditModeFromView(!!currentPortfolioState);
     
+    
     // location.state에서 selectedParts가 있으면 사용
     if (currentPortfolioState?.selectedParts) {
       setSelectedParts(currentPortfolioState.selectedParts);
@@ -118,7 +119,7 @@ export default function ProfilePage() {
   // 이름이 공백인지 확인 (trim으로 공백 제거 후 확인)
   const isNameEmpty = !name.trim();
   
-  // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI, 파트 전부 입력/선택되어야 함
+  // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI, 파트가 모두 입력/선택되어야 함
   // isEditModeFromView가 true이면 수정 모드이므로 저장 버튼 비활성화
   const isSaveDisabled = isNameEmpty || !intro.trim() || !dbtiInfo || selectedParts.length === 0 || isEditModeFromView;
 
@@ -377,13 +378,12 @@ export default function ProfilePage() {
                 : null
             }
             onRegister={() => {
-              // 등록 버튼 클릭 시 PM 파트를 selectedParts에 추가
-              if (!selectedParts.includes("PM")) {
-                const updated = [...selectedParts, "PM"] as PartOption[];
-                setSelectedParts(updated);
-                return updated;
-              }
-              return selectedParts;
+              // PMPortfolioForm의 onRegister 콜백 (타입 호환을 위해 별도로 제공)
+              const updated = !selectedParts.includes("PM") 
+                ? [...selectedParts, "PM"] as PartOption[]
+                : selectedParts;
+              setSelectedParts(updated);
+              return updated;
             }}
           />
         ) : activePart === "디자인" || pathPart === 'design' ? (
@@ -403,13 +403,12 @@ export default function ProfilePage() {
                 : null
             }
             onRegister={() => {
-              // 등록 버튼 클릭 시 디자인 파트를 selectedParts에 추가
-              if (!selectedParts.includes("디자인")) {
-                const updated = [...selectedParts, "디자인"] as PartOption[];
-                setSelectedParts(updated);
-                return updated;
-              }
-              return selectedParts;
+              // DesignPortfolioForm의 onRegister 콜백 (타입 호환을 위해 별도로 제공)
+              const updated = !selectedParts.includes("디자인") 
+                ? [...selectedParts, "디자인"] as PartOption[]
+                : selectedParts;
+              setSelectedParts(updated);
+              return updated;
             }}
           />
         ) : activePart === "프론트엔드" || pathPart === 'frontend' ? (
@@ -431,12 +430,12 @@ export default function ProfilePage() {
                 : null
             }
             onRegister={() => {
-              if (!selectedParts.includes("프론트엔드")) {
-                const updated = [...selectedParts, "프론트엔드"] as PartOption[];
-                setSelectedParts(updated);
-                return updated;
-              }
-              return selectedParts;
+              // FrontendPortfolioForm의 onRegister 콜백 (타입 호환을 위해 별도로 제공)
+              const updated = !selectedParts.includes("프론트엔드") 
+                ? [...selectedParts, "프론트엔드"] as PartOption[]
+                : selectedParts;
+              setSelectedParts(updated);
+              return updated;
             }}
           />
         ) : activePart === "백엔드" || pathPart === 'backend' ? (
@@ -458,12 +457,12 @@ export default function ProfilePage() {
                 : null
             }
             onRegister={() => {
-              if (!selectedParts.includes("백엔드")) {
-                const updated = [...selectedParts, "백엔드"] as PartOption[];
-                setSelectedParts(updated);
-                return updated;
-              }
-              return selectedParts;
+              // BackendPortfolioForm의 onRegister 콜백 (타입 호환을 위해 별도로 제공)
+              const updated = !selectedParts.includes("백엔드") 
+                ? [...selectedParts, "백엔드"] as PartOption[]
+                : selectedParts;
+              setSelectedParts(updated);
+              return updated;
             }}
           />
         ) : (

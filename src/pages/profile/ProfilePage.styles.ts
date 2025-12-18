@@ -1,35 +1,27 @@
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
-import ImageIcon from "@/assets/icons/Image.svg";
-import ProfileImageIcon from "@/assets/icons/ProfileImage.svg";
 
 const VIEWPORT_AVAILABLE_HEIGHT = "calc(100vh - 4.5rem - 4rem)"; // TopNav + Footer padding in Layout
 
 export const Container = styled.div`
   display: flex;
+  min-height: 63.75rem;
+  padding: 20rem ${({ theme }) => theme.gaps.GeneralMargin.mobile} 0 ${({ theme }) => theme.gaps.GeneralMargin.mobile};
   flex-direction: column;
   align-items: center;
-  min-height: ${VIEWPORT_AVAILABLE_HEIGHT};
-  padding: 15.5rem 2rem 0; /* TopNav(4.5rem) 아래부터 프로필 이미지까지 20rem (4.5rem + 15.5rem = 20rem), 좌우 2rem */
-  gap: 3.75rem; /* wide, desktop */
-  margin-left: -2.5rem; /* Layout Main의 좌우 padding 2.5rem 제거 */
-  margin-right: -2.5rem;
-  width: calc(100% + 5rem); /* 좌우 margin을 고려한 width */
+  gap: 7.5rem;
+  align-self: stretch;
 
   ${theme.media.tablet} {
-    padding: 15.5rem 2rem 0;
-    margin-left: -2rem;
-    margin-right: -2rem;
-    width: calc(100% + 4rem);
-    gap: ${({ theme }) => theme.gaps.XXL.desktop}; /* tablet에서도 2.75rem 사용 (XXL.desktop 값) */
+    padding: 20rem ${({ theme }) => theme.gaps.GeneralMargin.tablet} 0 ${({ theme }) => theme.gaps.GeneralMargin.tablet};
   }
 
-  ${theme.media.mobile} {
-    min-height: auto;
-    padding: 15.5rem 1.5rem 0;
-    margin-left: -1rem;
-    margin-right: -1rem;
-    width: calc(100% + 2rem);
+  ${theme.media.desktop} {
+    padding: 20rem ${({ theme }) => theme.gaps.GeneralMargin.desktop} 0 ${({ theme }) => theme.gaps.GeneralMargin.desktop};
+  }
+
+  ${theme.media.wide} {
+    padding: 20rem ${({ theme }) => theme.gaps.GeneralMargin.wide} 0 ${({ theme }) => theme.gaps.GeneralMargin.wide};
   }
 `;
 
@@ -37,7 +29,7 @@ export const ProfileSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
+  ${({ theme }) => theme.responsive.property.gap('none')}
   width: 100%;
   max-width: fit-content; /* 콘텐츠 크기에 맞춰 고정 */
 `;
@@ -54,23 +46,27 @@ export const ProfileImageWrapper = styled.div`
 `;
 
 export const ProfileImage = styled.img`
-  width: 12.5rem; /* 모든 화면 크기에서 고정 (모바일 포함) */
-  height: 12.5rem; /* 모든 화면 크기에서 고정 (모바일 포함) */
-  border-radius: 50%;
+  width: 12.5rem;
+  height: 12.5rem;
+  aspect-ratio: 1/1;
+  border-radius: 6.25rem;
   object-fit: cover;
   background: ${theme.colors.grayScale.gray600};
   flex-shrink: 0;
+  box-shadow: 0 1px 12px 0 ${theme.colors.transparents.BL100};
 `;
 
 export const ProfileImagePlaceholder = styled.img.attrs({
-  src: ImageIcon,
+  src: "/DefaultIMG_Profile.webp",
   alt: "기본 프로필 이미지",
 })`
-  width: 12.5rem; /* 모든 화면 크기에서 고정 (모바일 포함) */
-  height: 12.5rem; /* 모든 화면 크기에서 고정 (모바일 포함) */
-  border-radius: 50%;
+  width: 12.5rem;
+  height: 12.5rem;
+  aspect-ratio: 1/1;
+  border-radius: 6.25rem;
   object-fit: cover;
   flex-shrink: 0;
+  box-shadow: 0 1px 12px 0 ${theme.colors.transparents.BL100};
 `;
 
 export const UserName = styled.h1`
@@ -313,10 +309,11 @@ export const EditProfileImage = styled.img`
   aspect-ratio: 1/1;
   border-radius: 6.25rem; /* 고정 크기 - 프로필 이미지는 반응형 불필요 */
   object-fit: cover;
+  box-shadow: 0 1px 12px 0 ${theme.colors.transparents.BL100};
 `;
 
 export const EditProfileImagePlaceholder = styled.img.attrs({
-  src: ProfileImageIcon,
+  src: "/DefaultIMG_Profile.webp",
   alt: "기본 프로필 이미지",
 })`
   width: 7.5rem;
@@ -324,6 +321,7 @@ export const EditProfileImagePlaceholder = styled.img.attrs({
   aspect-ratio: 1/1;
   border-radius: 6.25rem; /* 고정 크기 - 프로필 이미지는 반응형 불필요 */
   object-fit: cover;
+  box-shadow: 0 1px 12px 0 ${theme.colors.transparents.BL100};
 `;
 
 export const UploadButtonWrapper = styled.div`
@@ -354,7 +352,7 @@ export const EditUserName = styled.h2`
 export const FormSection = styled.div`
   display: flex;
   flex-direction: column;
-  ${({ theme }) => theme.responsive.property.gap('XS')} /* 라벨과 입력 필드 사이: 0.75rem */
+  gap: 0.75rem; /* 라벨과 입력 필드 사이: 0.75rem (반응형 아님) */
   width: 100%;
   margin-bottom: ${({ theme }) => theme.responsive.gap('XL')}; /* 섹션 사이: 2rem */
 
@@ -623,7 +621,7 @@ export const SaveButtonWrapper = styled.div<{ $isDropdownOpen?: boolean }>`
   justify-content: center;
   margin-top: auto;
   padding-top: 0;
-  padding-bottom: ${({ $isDropdownOpen }) => $isDropdownOpen ? '0' : '2.5rem'};
+  padding-bottom: 2.5rem;
 `;
 
 export const SaveButton = styled.button`

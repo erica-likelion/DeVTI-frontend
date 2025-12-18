@@ -3,8 +3,7 @@ import { theme } from "@/styles/theme";
 
 export const Container = styled.div`
   display: flex;
-  width: 100%;
-  max-width: 26.75rem;
+  width: auto;
   align-items: center;
   ${({ theme }) => theme.responsive.property.gap('S')}
 `;

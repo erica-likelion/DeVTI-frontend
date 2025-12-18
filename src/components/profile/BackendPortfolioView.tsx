@@ -215,6 +215,7 @@ export default function BackendPortfolioView({
                   values={techAssessments[tech] || {}}
                   onChange={() => {}}
                   variant="output"
+                  cardSize="L"
                 />
               </S.TechAssessmentWrapper>
             ))}

@@ -6,14 +6,15 @@ interface CardProps {
   body: string;
   score?: number; // 0~5
   variant?: "input" | "output"; // output: non-interactive view
+  size?: "M" | "L"; // M: Component Width/Medium, L: Component Width/Large
   onScoreChange?: (score: number) => void;
 }
 
-export default function Card({ header, body, score = 0, variant = "input", onScoreChange }: CardProps) {
+export default function Card({ header, body, score = 0, variant = "input", size = "M", onScoreChange }: CardProps) {
   const isOutput = variant === "output";
 
   return (
-    <S.Container>
+    <S.Container $size={size}>
       <S.Header>{header}</S.Header>
       <S.Content>
         <S.Body>{body}</S.Body>
