@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
 
-export const Container = styled.div`
+export const Container = styled.div<{ $isJoinRoomPr?: boolean }>`
   display: flex;
   flex: 1 0 0;
   ${({ theme }) => theme.responsive.property.paddingComplex('XXS','XXS','XXS','XXS')}
-  ${({ theme }) => theme.responsive.property.width('large')};
+  ${({ theme, $isJoinRoomPr }) => !$isJoinRoomPr ? theme.responsive.property.width('large') : ''};
   align-items: center;
   ${({ theme }) => theme.responsive.property.gap('XXXS')}
   ${({ theme }) => theme.responsive.property.borderRadius('smooth')}
@@ -23,7 +23,7 @@ export const ButtonWrapper = styled.div<{ $isSelected?: boolean }>`
     background: transparent !important;
     color: ${theme.colors.grayScale.black} !important;
   }
-
+ 
   button:not(.selected):hover {
     color: ${theme.colors.secondary.VT700} !important;
   }
@@ -50,7 +50,7 @@ export const ButtonWrapper = styled.div<{ $isSelected?: boolean }>`
 `;
 
 export const Divider = styled.div`
-  width: 0.0625rem;
+  width: 0.05rem;
   height: 2rem;
   background: ${theme.colors.grayScale.gray300};
   border-radius: 0.03125rem;

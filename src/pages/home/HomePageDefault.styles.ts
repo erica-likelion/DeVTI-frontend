@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  ${({ theme }) => theme.responsive.property.gap('XXL')}
-  ${({ theme }) => theme.responsive.property.width('max')}
-  height: 100%;
-  overflow: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  gap: 5rem;
 `;
 
 export const Title = styled.h2`
@@ -15,9 +18,9 @@ export const Title = styled.h2`
 
 export const ListWrapper = styled.div`
   width: 100%;
-  display: flex;
-  padding: 3.75rem 0;
-  flex-direction: column;
   align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 

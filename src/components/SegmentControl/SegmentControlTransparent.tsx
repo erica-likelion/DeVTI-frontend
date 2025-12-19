@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import ClearMTextButton from "@/components/ButtonDynamic/ClearMTextButton";
 import * as S from "./SegmentControlTransparent.styles";
 
@@ -13,6 +14,7 @@ export default function SegmentControl({
   value: controlledValue,
   onChange,
 }: SegmentControlTransparentProps) {
+  const location = useLocation();
   const [internalValue, setInternalValue] = useState<string | undefined>(
     undefined
   );
@@ -33,7 +35,7 @@ export default function SegmentControl({
   };
 
   return (
-    <S.Container>
+    <S.Container $isJoinRoomPr={location.pathname.includes('/join-room') && location.pathname.includes('/pr')}>
       {options.map((option, index) => {
         const isSelected = selectedValue === option;
         return (

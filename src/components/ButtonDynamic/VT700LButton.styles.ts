@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.button<{ disabled?: boolean; $isClicked?: boolean }>`
   display: inline-flex;
-  ${({ theme }) => theme.responsive.property.paddingComplex('XS', 'M', 'XS', 'M')}
+  ${({ theme }) => theme.responsive.property.paddingComplex('XS', 'M', 'XS', 'R')}
   justify-content: center;
   align-items: center;
   ${({ theme }) => theme.responsive.property.gap('S')}
@@ -49,9 +49,4 @@ export const Icon = styled.div`
   background-size: cover;
   background-position: center;
 
-  
-  img {
-    width: 100%;
-    height: 100%;
-  }
 `;

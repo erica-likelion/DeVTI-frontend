@@ -5,6 +5,7 @@ interface ContainerProps {
   $isProfileRoute: boolean;
   $isProfileOnly?: boolean;
   $isProfileEditPart?: boolean;
+  $pathname?: string;
 }
 
 interface CopyrightTextProps {
@@ -12,12 +13,22 @@ interface CopyrightTextProps {
 }
 
 export const Container = styled.footer<ContainerProps>`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  ${({ $pathname, $isProfileOnly }) => {
+    // 로그인, 랜딩 페이지, /profile에서만 fixed 위치
+    if ($pathname === '/' || $pathname === '/landing' || $pathname === '/login' || $pathname === '/new-room' || ($pathname === '/join-room' && !$pathname.includes('/pr')) || $isProfileOnly) {
+      return `
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      `;
+    }
+   
+    return ``;
+  }}
+  
   width: 100%;
-  z-index: 1000;
   height: 4.5rem;
   background: ${({ $isProfileRoute, $isProfileOnly, $isProfileEditPart, theme }) => {
     if ($isProfileOnly) return 'transparent'; // /profile → 투명

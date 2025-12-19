@@ -8,6 +8,7 @@ import DropBox from '@/components/DropBox/DropBox';
 import WtMIconButton from '@/components/ButtonStatic/WtMIconButton';
 import Upload from '@/assets/icons/Upload.svg';
 import { WtLPawButton } from '@/components/ButtonDynamic';
+import { getDBTIResult } from '@/constants/DBTIResults';
 
 interface ProfileEditPageProps {
   onMoveToDBTIResult?: () => void;
@@ -32,6 +33,9 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
   
   const userName = user?.name || '사용자';
   const userIntro = '안녕하세요!'; // 기본 소개글 (이후 백엔드에서 받아올 예정)
+  
+  // DBTI 결과 가져오기
+  const userDBTIResult = user?.dbti ? getDBTIResult(user.dbti) : null;
 
   const handleSave = () => {
     // 로직 확인용으로 임시 추가 (이후 제거 예정) - 이후 profile/default로 변경
@@ -90,7 +94,9 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
         </S.DBTIFrame>
         <S.DBTIFrame>
           <S.label>DBTI (프로젝트 성향 테스트)</S.label>
-          <WtLPawButton onClick={handleMoveToDBTIResult}>골든 리트리버</WtLPawButton>
+          <WtLPawButton onClick={handleMoveToDBTIResult} isActive={!!userDBTIResult}>
+            {userDBTIResult ? userDBTIResult.name.split(', ')[1] || userDBTIResult.name : '테스트'}
+          </WtLPawButton>
         </S.DBTIFrame>
         <S.PartFrame>
           <S.label>파트</S.label>

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  ${({ theme }) => theme.responsive.property.width('large')}
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,7 +15,6 @@ export const Title = styled.h2`
 `;
 
 export const ListWrapper = styled.div`
-  ${({ theme }) => theme.responsive.property.width('large')}
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,15 +30,14 @@ export const InputWrapper = styled.div`
   margin: 0;
 `;
 
-export const Label = styled.div`
+export const Label = styled.h3`
   ${({ theme }) => theme.fonts.heading.h3}
+  color: ${({ theme }) => theme.colors.grayScale.black};
   ${({ theme }) => theme.responsive.property.width('min')};
-  margin: 0;
-  padding:0;
 `;
 
 export const Input = styled.div`
-  width: 100%;
+  width: 33.25rem;
 `;
 
 
