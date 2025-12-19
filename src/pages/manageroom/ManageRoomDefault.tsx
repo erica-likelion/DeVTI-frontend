@@ -8,7 +8,6 @@ import VT700LButton from '@/components/ButtonDynamic/VT700LButton';
 import DefaultIMG_Profile from '/public/DefaultIMG_Profile.webp';
 
 import {
-  PARTICIPANTS as INITIAL_PARTICIPANTS,
   type Participant,
   type RoleType,
 } from '../room/RoomParticipants';
@@ -67,7 +66,7 @@ const calcRemainingTime = (): RemainingTime => {
 
 const ManageRoomDefault = () => {
 
-  const [participants, setParticipants] = useState<Participant[]>(INITIAL_PARTICIPANTS);
+  const [participants, setParticipants] = useState<Participant[]>(Participant);
   const [selectedTab, setSelectedTab] = useState<TabValue>('전체');
   const [remainingTime, setRemainingTime] = useState<RemainingTime>(
     () => calcRemainingTime(),

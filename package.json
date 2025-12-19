@@ -19,6 +19,7 @@
     "react-kakao-login": "^2.1.1",
     "react-router-dom": "^7.9.1",
     "recharts": "^3.5.1",
+    "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.19",
     "styled-reset": "^5.0.0",
     "zustand": "^5.0.8"
