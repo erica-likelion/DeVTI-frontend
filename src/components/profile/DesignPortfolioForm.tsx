@@ -89,6 +89,16 @@ export default function DesignPortfolioForm({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // 파일 크기 제한: 10MB
+      const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+      if (file.size > maxSize) {
+        alert('파일 크기가 너무 큽니다. 10MB 이하의 파일을 선택해주세요.');
+        if (e.target) {
+          e.target.value = '';
+        }
+        return;
+      }
+      
       setDesignWorkFile(file);
       setDesignWorkFileName(file.name);
     }
@@ -182,8 +192,8 @@ export default function DesignPortfolioForm({
       console.log(key, value instanceof File ? `File: ${value.name}` : value);
     }
     
-    // 프로필 존재 여부 확인
-    const existingProfile = await getProfile("DE");
+    // 프로필 존재 여부 확인 (404 에러 로깅 비활성화)
+    const existingProfile = await getProfile("DE", true);
     let result;
     
     if (existingProfile.success && existingProfile.data) {
@@ -195,12 +205,11 @@ export default function DesignPortfolioForm({
     }
     
     if (!result.success) {
-      // TODO: 에러 처리 (토스트 메시지 등)
       console.error("프로필 저장 실패:", result.error);
+      alert(`프로필 저장에 실패했습니다: ${result.error}`);
       return;
     }
     
-    // 디자인 포트폴리오 데이터를 localStorage에 저장
     const designData = {
       name,
       intro,
@@ -213,7 +222,6 @@ export default function DesignPortfolioForm({
       figmaAssessment,
       isNewcomer: isNewcomerValue,
     };
-    localStorage.setItem('portfolio_디자인', JSON.stringify(designData));
     
     // 등록 후 view 화면으로 이동 (포트폴리오 섹션에 수정/삭제 버튼, LeftPanel에 저장 버튼 활성화)
     navigate("/profile/design/view", {

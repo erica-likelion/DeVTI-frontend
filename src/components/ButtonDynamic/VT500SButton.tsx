@@ -8,6 +8,7 @@ interface ImageButtonProps {
   children: React.ReactNode;
   icon?: string;
   iconAlt?: string;
+  isToggle?: boolean; // 토글 버튼 여부 (기본값: false - 일반 버튼)
 }
 
 export default function ImageButton({ 
@@ -16,13 +17,21 @@ export default function ImageButton({
   disabled = false, 
   children, 
   icon,
-  iconAlt = "icon"
+  iconAlt = "icon",
+  isToggle = false
 }: ImageButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
     if (!disabled && onClick) {
-      setIsClicked(!isClicked);
+      if (isToggle) {
+        setIsClicked(!isClicked);
+      } else {
+        setIsClicked(true);
+        setTimeout(() => {
+          setIsClicked(false);
+        }, 100);
+      }
       onClick();
     }
   };

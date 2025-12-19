@@ -10,11 +10,11 @@ interface DBTIResultProps {
   onClose: () => void;
 }
 
-export default function DBTIResult({ resultData, userName = '붕어빵', onClose }: DBTIResultProps) {
+export default function DBTIResult({ resultData, userName = 'likelion', onClose }: DBTIResultProps) {
   const navigate = useNavigate();
 
   const handleDBTIAnalysis = () => {
-    navigate('/profile/edit/DBTI?from=centersheet');
+    navigate('/profile/edit/dbti?from=centersheet');
     onClose();
   };
 

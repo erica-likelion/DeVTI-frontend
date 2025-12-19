@@ -102,7 +102,10 @@ interface PMPortfolioViewProps {
  * 평균 점수 계산 (0.5 단위로 내림)
  */
 const calculateAverage = (scores: Record<string, number>, items: SelfAssessmentItem[]): number => {
+  if (!scores || !items) return 0;
+  
   const validScores = items
+    .filter((item) => item && item.key)
     .map((item) => scores[item.key] ?? 0)
     .filter((score) => score > 0);
   

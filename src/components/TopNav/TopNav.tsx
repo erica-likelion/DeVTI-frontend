@@ -30,7 +30,7 @@ export default function TopNav({ className }: TopNavProps) {
   const isProfilePage = location.pathname.startsWith("/profile");
 
   const handleLogoClick = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   const handleNewChatRoom = () => {

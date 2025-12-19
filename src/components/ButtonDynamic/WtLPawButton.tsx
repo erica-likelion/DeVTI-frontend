@@ -11,6 +11,7 @@ interface WhiteLButtonProps {
   children?: React.ReactNode;
   hideIcon?: boolean;
   isActive?: boolean; // 외부에서 active 상태 제어
+  isToggle?: boolean; // 토글 버튼 여부 (기본값: false - 일반 버튼)
 }
 
 export default function WhiteLButton({ 
@@ -19,7 +20,8 @@ export default function WhiteLButton({
   disabled = false,
   children,
   hideIcon = false,
-  isActive: externalIsActive
+  isActive: externalIsActive,
+  isToggle = false
 }: WhiteLButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -32,7 +34,14 @@ export default function WhiteLButton({
     if (!disabled && onClick) {
       // 외부에서 isActive를 제어하는 경우 내부 상태는 변경하지 않음
       if (externalIsActive === undefined) {
-        setIsClicked(!isClicked);
+        if (isToggle) {
+          setIsClicked(!isClicked);
+        } else {
+          setIsClicked(true);
+          setTimeout(() => {
+            setIsClicked(false);
+          }, 100);
+        }
       }
       onClick();
     }

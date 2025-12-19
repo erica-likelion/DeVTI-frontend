@@ -186,8 +186,8 @@ export default function FrontendPortfolioForm({
       development_score: developmentScore,
     };
 
-    // 프로필 존재 여부 확인
-    const existingProfile = await getProfile("FE");
+    // 프로필 존재 여부 확인 (404 에러 로깅 비활성화)
+    const existingProfile = await getProfile("FE", true);
     let result;
     
     if (existingProfile.success && existingProfile.data) {
@@ -217,7 +217,6 @@ export default function FrontendPortfolioForm({
       techAssessments,
       isNewcomer: isNewcomerValue,
     };
-    localStorage.setItem("portfolio_프론트엔드", JSON.stringify(frontendData));
 
     navigate("/profile/frontend/view", {
       state: {

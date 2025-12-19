@@ -38,18 +38,20 @@ export default function SelfAssessmentGroup({
     <S.Group>
       {title && <S.GroupTitle>{title}</S.GroupTitle>}
       <S.CardGrid>
-        {items.map((item) => (
-          <S.CardWrapper key={item.key} $cardSize={cardSize}>
-            <Card
-              header={item.title}
-              body={item.description}
-              score={values[item.key] ?? 0}
-              variant={variant}
-              size={cardSize}
-              onScoreChange={variant === "input" ? (score) => onChange(item.key, score) : undefined}
-            />
-          </S.CardWrapper>
-        ))}
+        {items
+          .filter((item) => item && item.key)
+          .map((item) => (
+            <S.CardWrapper key={item.key} $cardSize={cardSize}>
+              <Card
+                header={item.title}
+                body={item.description}
+                score={(values && values[item.key]) ?? 0}
+                variant={variant}
+                size={cardSize}
+                onScoreChange={variant === "input" ? (score) => onChange(item.key, score) : undefined}
+              />
+            </S.CardWrapper>
+          ))}
       </S.CardGrid>
     </S.Group>
   );

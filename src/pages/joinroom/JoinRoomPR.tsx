@@ -1,10 +1,11 @@
 import * as S from './JoinRoomPR.styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import BlackLTextButton from '@/components/ButtonStatic/BkLTextButton';
 import DropBox from '@/components/DropBox/DropBox';
 import SegmentControl from '@/components/SegmentControl/SegmentControlTransparent';
 import { joinRoom, type RoomErrorResponse } from '@/services/room';
+import { getProfile } from '@/services/profile';
 
 export default function JoinRoomPR() {
     const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function JoinRoomPR() {
     const [isPartDropdownOpen, setIsPartDropdownOpen] = useState(false);
     const [isTeamStyleDropdownOpen, setIsTeamStyleDropdownOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [disabledPartOptions, setDisabledPartOptions] = useState<PartOption[]>([]);
 
     const partOptions: PartOption[] = ['PM', '디자인', '프론트엔드', '백엔드'];
     const teamStyleOptions: TeamVibeDisplay[] = ['배우면서 즐겁게', '열정적으로 하루 종일'];
@@ -30,6 +32,44 @@ export default function JoinRoomPR() {
     const meetingStyleOptions: MeetingPreferenceDisplay[] = ['대면', '비대면'];
 
     const isAllSelected = selectedPart && selectedTeamStyle && selectedActivityTime && selectedMeetingStyle;
+
+    useEffect(() => {
+        let isMounted = true;
+        const loadProfile = async () => {
+            try {
+                const result = await getProfile();
+                if (!isMounted || !result.success || !result.data) {
+                    return;
+                }
+                
+                const partMap: Record<string, PartOption> = {
+                    PM: 'PM',
+                    FE: '프론트엔드',
+                    BE: '백엔드',
+                    DE: '디자인',
+                };
+                const available = (result.data.available_parts || [])
+                    .map((part) => partMap[part])
+                    .filter((part): part is PartOption => Boolean(part));
+                
+                const disabled = partOptions.filter((option) => !available.includes(option));
+                setDisabledPartOptions(disabled);
+            } catch (error) {
+                console.error('프로필 파트 로드 실패:', error);
+            }
+        };
+        
+        loadProfile();
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        if (selectedPart && disabledPartOptions.includes(selectedPart)) {
+            setSelectedPart('');
+        }
+    }, [disabledPartOptions, selectedPart]);
 
     // 옵션을 API 형식으로 변환하는 함수들
     const getPartCode = (part: PartOption): 'PM' | 'DE' | 'FE' | 'BE' => {
@@ -82,9 +122,8 @@ export default function JoinRoomPR() {
                 meeting_preference: getMeetingPreference(selectedMeetingStyle)
             });
 
-            // 성공 시 완료 페이지나 대시보드로 이동
-            alert('매칭룸 입장이 완료되었습니다!');
-            navigate('/');
+
+            navigate('/room');
         } catch (error) {
             const roomError = error as RoomErrorResponse;
             
@@ -118,6 +157,7 @@ export default function JoinRoomPR() {
                             placeholder="파트를 선택해주세요"
                             isOpen={isPartDropdownOpen}
                             options={partOptions}
+                            disabledOptions={disabledPartOptions}
                             size="L"
                             onClick={() => setIsPartDropdownOpen(!isPartDropdownOpen)}
                             onSelectOption={(option) => {

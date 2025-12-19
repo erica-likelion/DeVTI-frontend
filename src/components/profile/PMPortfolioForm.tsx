@@ -231,8 +231,8 @@ export default function PMPortfolioForm({
 
     console.log("PM 프로필 요청 데이터:", JSON.stringify(requestData, null, 2));
     
-    // 프로필 존재 여부 확인
-    const existingProfile = await getProfile("PM");
+    // 프로필 존재 여부 확인 (404 에러 로깅 비활성화)
+    const existingProfile = await getProfile("PM", true);
     let result;
     
     if (existingProfile.success && existingProfile.data) {
@@ -249,7 +249,6 @@ export default function PMPortfolioForm({
       return;
     }
     
-    // PM 포트폴리오 데이터를 localStorage에 저장
     const pmData = {
       name,
       intro,
@@ -264,7 +263,6 @@ export default function PMPortfolioForm({
       developmentAssessment,
       isNewcomer: isNewcomerValue,
     };
-    localStorage.setItem('portfolio_PM', JSON.stringify(pmData));
     
     // 등록 후 view 화면으로 이동 (포트폴리오 섹션에 수정/삭제 버튼, LeftPanel에 저장 버튼 활성화)
     navigate("/profile/pm/view", {
