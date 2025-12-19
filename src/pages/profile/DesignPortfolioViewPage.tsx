@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import { getDBTIResult } from '@/constants/DBTIResults';
+import { getProfile, updateProfile } from '@/services/profile';
 import DesignPortfolioView from "@/components/profile/DesignPortfolioView";
 import * as S from "./ProfilePage.styles";
 import InputField from "@/components/Input/InputField";
@@ -40,22 +41,11 @@ export default function DesignPortfolioViewPage() {
     return null;
   }
 
-  // localStorage에서 디자인 포트폴리오 데이터 가져오기
-  const getStoredPortfolioData = (): LocationState | null => {
-    try {
-      const stored = localStorage.getItem('portfolio_디자인');
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  };
-
   // DBTI 결과 가져오기
   const userDBTIResult = _user?.dbti ? getDBTIResult(_user.dbti) : null;
 
-  // state 또는 localStorage에서 데이터 가져오기
-  const storedData = getStoredPortfolioData();
-  const portfolioData = storedData || state;
+  // state에서 데이터 가져오기 (API로 로딩할 예정)
+  const portfolioData = state;
 
   // 편집 모드 상태 관리
   const [profileImage, setProfileImage] = useState<string | null>(portfolioData.profileImage || null);
@@ -72,22 +62,39 @@ export default function DesignPortfolioViewPage() {
   // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI가 모두 입력되어야 함
   const canSave = !!name.trim() && !!intro.trim() && !!dbtiInfo;
 
-  // 디자인 포트폴리오 데이터를 localStorage에 저장
+  // 서버에서 프로필 데이터 로딩
   useEffect(() => {
-    const designData: LocationState = {
-      name,
-      intro,
-      dbtiInfo,
-      profileImage,
-      selectedParts,
-      experienceSummary: portfolioData.experienceSummary,
-      strengths: portfolioData.strengths,
-      designWorkFile: portfolioData.designWorkFile || null,
-      figmaAssessment: portfolioData.figmaAssessment,
-      isNewcomer: portfolioData.isNewcomer,
+    const loadProfile = async () => {
+      try {
+        // 공통 프로필 조회
+        const commonProfileResult = await getProfile();
+        if (commonProfileResult.success && commonProfileResult.data) {
+          const data = commonProfileResult.data;
+          setName(data.username || "");
+          setIntro(data.comment || "");
+          setDbtiInfo(data.devti || null);
+        }
+
+        // 디자인 파트 프로필 조회
+        const designProfileResult = await getProfile("DE");
+        if (designProfileResult.success) {
+          console.log("Design profile loaded:", designProfileResult.data);
+          // 디자인 프로필 데이터로 portfolioData 업데이트는 state를 통해 처리
+        } else if ((designProfileResult as any).isNotFound) {
+          console.log("디자인 프로필 데이터가 없습니다. 새로 작성할 수 있습니다.");
+        } else {
+          console.error("디자인 프로필 로딩 실패:", designProfileResult.error);
+        }
+      } catch (error) {
+        console.error("프로필 로딩 실패:", error);
+      }
     };
-    localStorage.setItem('portfolio_디자인', JSON.stringify(designData));
-  }, [name, intro, dbtiInfo, profileImage, selectedParts, portfolioData.experienceSummary, portfolioData.strengths, portfolioData.designWorkFile, portfolioData.figmaAssessment, portfolioData.isNewcomer]);
+
+    // state가 없을 때만 API에서 로딩
+    if (!state) {
+      loadProfile();
+    }
+  }, [state]);
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
@@ -142,11 +149,7 @@ export default function DesignPortfolioViewPage() {
   };
 
   const handleDBTIClick = () => {
-    if (!dbtiInfo) {
-      setDbtiInfo("test"); // 임시 값
-    } else {
-      navigate("/profile/edit/dbti");
-    }
+    navigate("/profile/edit/dbti");
   };
 
   const handleSave = () => {
@@ -158,41 +161,64 @@ export default function DesignPortfolioViewPage() {
     setIsSaveModalOpen(false);
   };
 
-  const handleSaveConfirm = () => {
-    // TODO: 프로필 저장 로직
+  const handleSaveConfirm = async () => {
     setIsSaveModalOpen(false);
     
-    // 디자인 포트폴리오 데이터를 localStorage에 저장
-    const designData: LocationState = {
-      name,
-      intro,
-      dbtiInfo,
-      profileImage,
-      selectedParts,
-      experienceSummary: portfolioData.experienceSummary,
-      strengths: portfolioData.strengths,
-      designWorkFile: portfolioData.designWorkFile || null,
-      figmaAssessment: portfolioData.figmaAssessment,
-      isNewcomer: portfolioData.isNewcomer,
-    };
-    localStorage.setItem('portfolio_디자인', JSON.stringify(designData));
-    
-    navigate('/profile/Default', { 
-      replace: false,
-      state: {
-        part: "디자인" as const,
-        experienceSummary: portfolioData.experienceSummary,
-        strengths: portfolioData.strengths,
-        designWorkFile: portfolioData.designWorkFile || null,
-        figmaAssessment: portfolioData.figmaAssessment,
-        isNewcomer: portfolioData.isNewcomer,
-        name,
-        intro,
-        dbtiInfo,
-        profileImage,
-        selectedParts, // selectedParts 전달
+    try {
+      // 공통 프로필 업데이트
+      const commonProfileResult = await updateProfile({
+        username: name,
+        comment: intro,
+      });
+      
+      if (!commonProfileResult.success) {
+        console.error("공통 프로필 저장 실패:", commonProfileResult.error);
+        alert("프로필 저장에 실패했습니다.");
+        return;
       }
-    });
+
+      // 디자인 파트 프로필 업데이트 (FormData 사용)
+      const formData = new FormData();
+      formData.append('experienced', portfolioData.isNewcomer ? '' : portfolioData.experienceSummary);
+      formData.append('strength', portfolioData.strengths);
+      
+      if (portfolioData.designWorkFile) {
+        formData.append('portfolio_url', portfolioData.designWorkFile);
+      }
+      
+      if (portfolioData.figmaAssessment) {
+        formData.append('design_score', portfolioData.figmaAssessment.toString());
+      }
+
+      const designProfileResult = await updateProfile(formData, "DE");
+      
+      if (!designProfileResult.success) {
+        console.error("디자인 프로필 저장 실패:", designProfileResult.error);
+        alert("디자인 프로필 저장에 실패했습니다.");
+        return;
+      }
+      
+      // 저장 성공 시 프로필 Default 페이지로 이동
+      navigate('/profile/Default', { 
+        replace: false,
+        state: {
+          part: "디자인" as const,
+          experienceSummary: portfolioData.experienceSummary,
+          strengths: portfolioData.strengths,
+          designWorkFile: portfolioData.designWorkFile || null,
+          figmaAssessment: portfolioData.figmaAssessment,
+          isNewcomer: portfolioData.isNewcomer,
+          name,
+          intro,
+          dbtiInfo,
+          profileImage,
+          selectedParts,
+        }
+      });
+    } catch (error) {
+      console.error("프로필 저장 중 오류:", error);
+      alert("프로필 저장 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -284,18 +310,8 @@ export default function DesignPortfolioViewPage() {
                             '백엔드': 'backend'
                           };
                           const partSlug = partMap[part];
-                          // 다른 파트로 이동할 때는 localStorage에서 해당 파트의 데이터를 가져와서 전달
-                          const getStoredPartData = (partName: string): any => {
-                            try {
-                              const stored = localStorage.getItem(`portfolio_${partName}`);
-                              return stored ? JSON.parse(stored) : null;
-                            } catch {
-                              return null;
-                            }
-                          };
-
-                          // @ts-expect-error - part 타입이 제한적이지만 런타임에서는 모든 PartOption 가능
-                          const partData = getStoredPartData((part === "PM" ? "PM" : part === "디자인" ? "디자인" : part) as string);
+                          // 다른 파트로 이동할 때는 기본값으로 이동 (API에서 로딩)
+                          const partData: any = null;
                           
                           navigate(`/profile/${partSlug}/view`, {
                             replace: false,
@@ -305,7 +321,6 @@ export default function DesignPortfolioViewPage() {
                               dbtiInfo: portfolioData.dbtiInfo,
                               profileImage: portfolioData.profileImage,
                               selectedParts,
-                              // localStorage에서 해당 파트의 데이터를 가져오거나 기본값 사용
                               experienceSummary: partData?.experienceSummary || "",
                               strengths: partData?.strengths || "",
                               ...(part === "PM" ? {

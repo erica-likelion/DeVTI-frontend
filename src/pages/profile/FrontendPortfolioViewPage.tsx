@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import { getDBTIResult } from '@/constants/DBTIResults';
+import { getProfile, updateProfile } from '@/services/profile';
 import FrontendPortfolioView from "@/components/profile/FrontendPortfolioView";
 import * as S from "./ProfilePage.styles";
 import InputField from "@/components/Input/InputField";
@@ -41,22 +42,11 @@ export default function FrontendPortfolioViewPage() {
     return null;
   }
 
-  // localStorage에서 프론트엔드 포트폴리오 데이터 가져오기
-  const getStoredPortfolioData = (): LocationState | null => {
-    try {
-      const stored = localStorage.getItem('portfolio_프론트엔드');
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  };
-
   // DBTI 결과 가져오기
   const userDBTIResult = _user?.dbti ? getDBTIResult(_user.dbti) : null;
 
-  // state 또는 localStorage에서 데이터 가져오기
-  const storedData = getStoredPortfolioData();
-  const portfolioData = storedData || state;
+  // state에서 데이터 가져오기
+  const portfolioData = state;
 
   // 편집 모드 상태 관리
   const [profileImage, setProfileImage] = useState<string | null>(portfolioData.profileImage || null);
@@ -73,23 +63,36 @@ export default function FrontendPortfolioViewPage() {
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 프론트엔드 포트폴리오 데이터를 localStorage에 저장
+  // 서버에서 프로필 데이터 로딩
   useEffect(() => {
-    const frontendData: LocationState = {
-      name,
-      intro,
-      dbtiInfo,
-      profileImage,
-      selectedParts,
-      experienceSummary: portfolioData.experienceSummary,
-      strengths: portfolioData.strengths,
-      github: portfolioData.github,
-      selectedTechs: portfolioData.selectedTechs,
-      techAssessments: portfolioData.techAssessments,
-      isNewcomer: portfolioData.isNewcomer,
+    const loadProfile = async () => {
+      try {
+        // 공통 프로필 조회
+        const commonProfileResult = await getProfile();
+        if (commonProfileResult.success && commonProfileResult.data) {
+          const data = commonProfileResult.data;
+          setName(data.username || "");
+          setIntro(data.comment || "");
+          setDbtiInfo(data.devti || null);
+        }
+
+        // 프론트엔드 파트 프로필 조회
+        const frontendProfileResult = await getProfile("FE");
+        if (frontendProfileResult.success) {
+          console.log("Frontend profile loaded:", frontendProfileResult.data);
+        } else {
+          console.log("프론트엔드 프로필 데이터가 없습니다. 새로 작성할 수 있습니다.");
+        }
+      } catch (error) {
+        console.error("프로필 로딩 실패:", error);
+      }
     };
-    localStorage.setItem('portfolio_프론트엔드', JSON.stringify(frontendData));
-  }, [name, intro, dbtiInfo, profileImage, selectedParts, portfolioData.experienceSummary, portfolioData.strengths, portfolioData.github, portfolioData.selectedTechs, portfolioData.techAssessments, portfolioData.isNewcomer]);
+
+    // state가 없을 때만 API에서 로딩
+    if (!state) {
+      loadProfile();
+    }
+  }, [state]);
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
@@ -143,11 +146,7 @@ export default function FrontendPortfolioViewPage() {
   };
 
   const handleDBTIClick = () => {
-    if (!dbtiInfo) {
-      setDbtiInfo("test");
-    } else {
-      navigate("/profile/edit/dbti");
-    }
+    navigate("/profile/edit/dbti");
   };
 
   const handleSave = () => {
@@ -159,31 +158,75 @@ export default function FrontendPortfolioViewPage() {
     setIsSaveModalOpen(false);
   };
 
-  const handleSaveConfirm = () => {
+  const handleSaveConfirm = async () => {
     setIsSaveModalOpen(false);
     
-    const frontendData: LocationState = {
-      name,
-      intro,
-      dbtiInfo,
-      profileImage,
-      selectedParts,
-      experienceSummary: portfolioData.experienceSummary,
-      strengths: portfolioData.strengths,
-      github: portfolioData.github,
-      selectedTechs: portfolioData.selectedTechs,
-      techAssessments: portfolioData.techAssessments,
-      isNewcomer: portfolioData.isNewcomer,
-    };
-    localStorage.setItem('portfolio_프론트엔드', JSON.stringify(frontendData));
-    
-    navigate('/profile/Default', { 
-      replace: false,
-      state: {
-        part: "프론트엔드" as const,
-        ...frontendData,
+    try {
+      // 공통 프로필 업데이트
+      const commonProfileResult = await updateProfile({
+        username: name,
+        comment: intro,
+      });
+      
+      if (!commonProfileResult.success) {
+        console.error("공통 프로필 저장 실패:", commonProfileResult.error);
+        alert("프로필 저장에 실패했습니다.");
+        return;
       }
-    });
+
+      // 프론트엔드 파트 프로필 업데이트 (FormData 사용)
+      const formData = new FormData();
+      formData.append('experienced', portfolioData.isNewcomer ? '' : portfolioData.experienceSummary);
+      formData.append('strength', portfolioData.strengths);
+      
+      if (portfolioData.github) {
+        formData.append('github_url', portfolioData.github);
+      }
+      
+      if (portfolioData.techAssessments && portfolioData.selectedTechs) {
+        // 기술별 점수 평균을 계산하여 development_score 형식으로 변환
+        const techScores = portfolioData.selectedTechs.map((tech: string) => {
+          const techAssessment = portfolioData.techAssessments![tech];
+          if (techAssessment && Object.keys(techAssessment).length > 0) {
+            const scores = Object.values(techAssessment);
+            const avgScore = scores.reduce((sum: number, score: number) => sum + score, 0) / scores.length;
+            return [tech, avgScore];
+          }
+          return [tech, 0];
+        });
+        formData.append('development_score', JSON.stringify(techScores));
+      }
+
+      const frontendProfileResult = await updateProfile(formData, "FE");
+      
+      if (!frontendProfileResult.success) {
+        console.error("프론트엔드 프로필 저장 실패:", frontendProfileResult.error);
+        alert("프론트엔드 프로필 저장에 실패했습니다.");
+        return;
+      }
+      
+      // 저장 성공 시 프로필 Default 페이지로 이동
+      navigate('/profile/Default', { 
+        replace: false,
+        state: {
+          part: "프론트엔드" as const,
+          experienceSummary: portfolioData.experienceSummary,
+          strengths: portfolioData.strengths,
+          github: portfolioData.github || "",
+          selectedTechs: portfolioData.selectedTechs || [],
+          techAssessments: portfolioData.techAssessments || {},
+          isNewcomer: portfolioData.isNewcomer,
+          name,
+          intro,
+          dbtiInfo,
+          profileImage,
+          selectedParts,
+        }
+      });
+    } catch (error) {
+      console.error("프로필 저장 중 오류:", error);
+      alert("프로필 저장 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -273,17 +316,8 @@ export default function FrontendPortfolioViewPage() {
                             '백엔드': 'backend'
                           };
                           const partSlug = partMap[part];
-                          const getStoredPartData = (partName: string): any => {
-                            try {
-                              const stored = localStorage.getItem(`portfolio_${partName}`);
-                              return stored ? JSON.parse(stored) : null;
-                            } catch {
-                              return null;
-                            }
-                          };
-
-                          // @ts-expect-error - part 타입이 제한적이지만 런타임에서는 모든 PartOption 가능
-                          const partData = getStoredPartData((part === "디자인" ? "디자인" : part === "PM" ? "PM" : part === "프론트엔드" ? "프론트엔드" : part === "백엔드" ? "백엔드" : part) as string);
+                          // 다른 파트로 이동할 때는 기본값으로 이동 (API에서 로딩)
+                          const partData = null;
                           
                           navigate(`/profile/${partSlug}/view`, {
                             replace: false,
@@ -293,7 +327,7 @@ export default function FrontendPortfolioViewPage() {
                               dbtiInfo: portfolioData.dbtiInfo,
                               profileImage: portfolioData.profileImage,
                               selectedParts,
-                              ...partData
+                              ...(partData || {})
                             }
                           });
                         } else {

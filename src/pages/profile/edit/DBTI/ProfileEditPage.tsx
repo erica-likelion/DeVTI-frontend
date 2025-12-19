@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import * as S from './ProfileEditPage.styles';
@@ -9,6 +9,7 @@ import WtMIconButton from '@/components/ButtonStatic/WtMIconButton';
 import Upload from '@/assets/icons/Upload.svg';
 import { WtLPawButton } from '@/components/ButtonDynamic';
 import { getDBTIResult } from '@/constants/DBTIResults';
+import { getProfile, updateProfile } from '@/services/profile';
 
 interface ProfileEditPageProps {
   onMoveToDBTIResult?: () => void;
@@ -20,6 +21,9 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
   const [selectedPart, setSelectedPart] = useState<string>('');
   const [isDropBoxOpen, setIsDropBoxOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [name, setName] = useState<string>(user?.name || '');
+  const [intro, setIntro] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<string | null>(user?.profileImage || null);
 
   const partOptions = ['PM', '디자인', '프론트엔드', '백엔드'];
   
@@ -30,16 +34,65 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
     '프론트엔드': 'frontend',
     '백엔드': 'backend'
   };
-  
-  const userName = user?.name || '사용자';
-  const userIntro = '안녕하세요!'; // 기본 소개글 (이후 백엔드에서 받아올 예정)
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadProfile = async () => {
+      try {
+        const result = await getProfile();
+        if (!isMounted) return;
+        if (result.success && result.data) {
+          setName(result.data.username || user?.name || '');
+          setIntro(result.data.comment || '');
+          
+          if (result.data.available_parts?.length) {
+            const partMap: Record<string, string> = {
+              PM: 'PM',
+              FE: '프론트엔드',
+              BE: '백엔드',
+              DE: '디자인',
+            };
+            const mappedParts = result.data.available_parts
+              .map((part) => partMap[part])
+              .filter((part): part is string => Boolean(part));
+            if (mappedParts[0]) {
+              setSelectedPart(mappedParts[0]);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('프로필 로드 실패:', error);
+      }
+    };
+    
+    loadProfile();
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.name]);
   
   // DBTI 결과 가져오기
   const userDBTIResult = user?.dbti ? getDBTIResult(user.dbti) : null;
 
-  const handleSave = () => {
-    // 로직 확인용으로 임시 추가 (이후 제거 예정) - 이후 profile/default로 변경
-    console.log('프로필 정보가 저장되었습니다.');
+  const handleSave = async () => {
+    try {
+      const result = await updateProfile({
+        username: name.trim(),
+        comment: intro.trim(),
+      });
+      
+      if (!result.success) {
+        console.error('프로필 저장 실패:', result.error);
+        alert(result.error || '프로필 저장에 실패했습니다.');
+        return;
+      }
+      
+      alert('프로필 정보가 저장되었습니다.');
+      navigate('/profile/default');
+    } catch (error) {
+      console.error('프로필 저장 실패:', error);
+      alert('프로필 저장에 실패했습니다.');
+    }
   };
 
   const handleImageUpload = () => {
@@ -49,8 +102,11 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // 파일 처리 로직 테스트용 임시 추가 (이후 제거 예정)
-      console.log('선택된 파일:', file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -63,7 +119,7 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
       <S.InfoSection>
         <S.ImageButtonFrame>
           <S.Image>
-            <img src={user?.profileImage || "/DefaultIMG_Profile.webp"} alt="프로필 이미지" />
+            <img src={profileImage || "/DefaultIMG_Profile.webp"} alt="프로필 이미지" />
           </S.Image>
           <S.EditIconButton>
             <WtMIconButton disabled={false} onClick={handleImageUpload}>
@@ -81,20 +137,22 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
         <S.DBTIFrame>
           <S.label>이름</S.label>
           <InputField 
-            variant="output" 
-            value={userName}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="이름을 입력해주세요"
           />
         </S.DBTIFrame>
         <S.DBTIFrame>
           <S.label>한 줄 소개</S.label>
           <InputField 
-            variant="output" 
-            value={userIntro}
+            value={intro}
+            onChange={(e) => setIntro(e.target.value)}
+            placeholder="미래의 팀원들에게"
           />
         </S.DBTIFrame>
         <S.DBTIFrame>
           <S.label>DBTI (프로젝트 성향 테스트)</S.label>
-          <WtLPawButton onClick={handleMoveToDBTIResult} isActive={!!userDBTIResult}>
+          <WtLPawButton onClick={handleMoveToDBTIResult} isActive={!!userDBTIResult} isToggle={true}>
             {userDBTIResult ? userDBTIResult.name.split(', ')[1] || userDBTIResult.name : '테스트'}
           </WtLPawButton>
         </S.DBTIFrame>

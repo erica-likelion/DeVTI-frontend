@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { theme } from "@/styles/theme";
 
-const VIEWPORT_AVAILABLE_HEIGHT = "calc(100vh - 4.5rem - 4rem)"; // TopNav + Footer padding in Layout
+const VIEWPORT_AVAILABLE_HEIGHT = "100%";
 
 export const Container = styled.div`
   display: flex;
@@ -113,12 +113,12 @@ export const EditWrapper = styled.div`
 
   ${theme.media.mobile} {
     position: fixed;
-    top: 4.5rem; /* TopNav 높이만큼 아래로 이동 */
+    top: 4.5rem;
     left: 0;
     right: 0;
-    bottom: 3.75rem; /* Footer 높이(3.75rem)만큼 위로 이동 */
+    bottom: 3.75rem;
     width: 100vw;
-    height: calc(100vh - 4.5rem - 3.75rem); /* TopNav(4.5rem) + Footer(3.75rem) 제외 */
+    height: calc(100vh - 4.5rem - 3.75rem);
     margin: 0;
     padding: 0;
     overflow-y: auto;
@@ -228,7 +228,7 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
 
   ${theme.media.wide} {
     display: flex;
-    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.wide}; /* 상하 3.75rem, 좌우 General-Margin */
+    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.wide};
     flex-direction: column;
     align-items: flex-start;
     gap: ${({ theme }) => theme.gaps.XXL.wide};
@@ -239,7 +239,7 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
 
   ${theme.media.desktop} {
     display: flex;
-    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.desktop}; /* 상하 3.75rem, 좌우 General-Margin */
+    padding: 3.75rem ${({ theme }) => theme.gaps.GeneralMargin.desktop};
     flex-direction: column;
     align-items: flex-start;
     gap: ${({ theme }) => theme.gaps.XXL.desktop};
@@ -269,7 +269,7 @@ export const RightPanel = styled.div<{ $hideOnMobile?: boolean }>`
         padding: 3.75rem ${theme.gaps.GeneralMargin.mobile};
         flex-direction: column;
         align-items: flex-start;
-        gap: ${theme.gaps.XXL.desktop}; /* mobile에서도 2.75rem 사용 (XXL.desktop 값) */
+        gap: ${theme.gaps.XXL.desktop};
         flex: 1 0 0;
         align-self: stretch;
         width: 100%;
@@ -299,7 +299,7 @@ export const EditProfileImageWrapper = styled.div<{ $isInDefaultPage?: boolean }
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  margin-bottom: ${({ $isInDefaultPage }) => $isInDefaultPage ? '0' : '2rem'}; /* 프로필 이미지와 이름 글씨 사이 간격 (edit 페이지: 2rem, default 페이지: 0 - DefaultInfoSection의 gap으로 관리) */
+  margin-bottom: ${({ $isInDefaultPage }) => $isInDefaultPage ? '0' : '2rem'};
   width: auto;
 `;
 
@@ -307,7 +307,7 @@ export const EditProfileImage = styled.img`
   width: 7.5rem;
   height: 7.5rem;
   aspect-ratio: 1/1;
-  border-radius: 6.25rem; /* 고정 크기 - 프로필 이미지는 반응형 불필요 */
+  border-radius: 6.25rem;
   object-fit: cover;
   box-shadow: 0 1px 12px 0 ${theme.colors.transparents.BL100};
 `;
@@ -319,7 +319,7 @@ export const EditProfileImagePlaceholder = styled.img.attrs({
   width: 7.5rem;
   height: 7.5rem;
   aspect-ratio: 1/1;
-  border-radius: 6.25rem; /* 고정 크기 - 프로필 이미지는 반응형 불필요 */
+  border-radius: 6.25rem;
   object-fit: cover;
   box-shadow: 0 1px 12px 0 ${theme.colors.transparents.BL100};
 `;
@@ -330,11 +330,11 @@ export const UploadButtonWrapper = styled.div`
   right: -1.25rem;
 
   ${theme.media.tablet} {
-    right: 0; /* 타블렛에서 프로필 사진과 붙도록 */
+    right: 0;
   }
 
   ${theme.media.mobile} {
-    transform: translateX(-1.25rem); /* 모바일에서 transform으로 -1.25rem 이동 */
+    transform: translateX(-1.25rem);
   }
 `;
 
@@ -352,9 +352,9 @@ export const EditUserName = styled.h2`
 export const FormSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem; /* 라벨과 입력 필드 사이: 0.75rem (반응형 아님) */
+  gap: 0.75rem;
   width: 100%;
-  margin-bottom: ${({ theme }) => theme.responsive.gap('XL')}; /* 섹션 사이: 2rem */
+  margin-bottom: ${({ theme }) => theme.responsive.gap('XL')};
 
   &:last-of-type {
     margin-bottom: 0;
@@ -374,9 +374,9 @@ export const DBTIButtonWrapper = styled.div`
 
   button {
     display: flex;
-    padding: ${({ theme }) => theme.gaps.XS.mobile} ${({ theme }) => theme.gaps.R.mobile} ${({ theme }) => theme.gaps.XS.mobile} ${({ theme }) => theme.gaps.S.mobile}; /* 상: XS(0.375rem), 우: R(0.625rem), 하: XS(0.375rem), 좌: S(0.5rem) */
+    padding: ${({ theme }) => theme.gaps.XS.mobile} ${({ theme }) => theme.gaps.R.mobile} ${({ theme }) => theme.gaps.XS.mobile} ${({ theme }) => theme.gaps.S.mobile};
     align-items: center;
-    gap: ${({ theme }) => theme.gaps.XS.mobile}; /* 0.375rem */
+    gap: ${({ theme }) => theme.gaps.XS.mobile};
     align-self: stretch;
     justify-content: flex-start;
     width: 100%;
@@ -398,103 +398,6 @@ export const DBTIButtonWrapper = styled.div`
   }
 `;
 
-// 한 줄 소개 입력 필드
-export const IntroInputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  ${({ theme }) => theme.responsive.property.gap('M')}
-  ${({ theme }) => theme.responsive.property.padding('S')}
-  background: ${theme.colors.grayScale.white};
-  ${({ theme }) => theme.responsive.property.borderRadius('soft')}
-  box-shadow: 0 0 2px 0 ${theme.colors.transparents.BL100};
-  width: 100%;
-`;
-
-export const IntroInput = styled.input`
-  ${theme.fonts.body.l500}
-  flex: 1;
-  border: none;
-  background: transparent;
-  color: ${theme.colors.grayScale.black};
-  outline: none;
-
-  &::placeholder {
-    color: ${theme.colors.grayScale.gray700};
-  }
-`;
-
-export const CalendarIcon = styled.img`
-  ${({ theme }) => theme.responsive.property.sourceSize('R')}
-  aspect-ratio: 1 / 1;
-  flex-shrink: 0;
-`;
-
-// 개BTI 버튼
-export const DevBTIButton = styled.button`
-  display: flex;
-  align-items: center;
-  ${({ theme }) => theme.responsive.property.gap('XS')}
-  ${({ theme }) => theme.responsive.property.paddingComplex('XXS', 'S', 'XXS', 'S')}
-  background: ${theme.colors.grayScale.gray300};
-  border: none;
-  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background: ${theme.colors.grayScale.gray400};
-  }
-`;
-
-export const DevBTIIcon = styled.div`
-  ${({ theme }) => theme.responsive.property.sourceSize('R')}
-  aspect-ratio: 1 / 1;
-  ${({ theme }) => theme.responsive.property.borderRadius('round')}
-  background: ${theme.colors.grayScale.gray600};
-  flex-shrink: 0;
-`;
-
-export const DevBTIText = styled.span`
-  ${theme.fonts.body.l500}
-  font-weight: 600; // 세미볼드
-  color: ${theme.colors.grayScale.black};
-  flex: 1;
-  text-align: left;
-`;
-
-// 파트 추가 필드
-export const PartAddField = styled.button`
-  display: flex;
-  align-items: center;
-  ${({ theme }) => theme.responsive.property.gap('S')}
-  ${({ theme }) => theme.responsive.property.paddingComplex('XXS', 'S', 'XXS', 'S')}
-  background: transparent;
-  border: 1px solid ${theme.colors.grayScale.gray300};
-  ${({ theme }) => theme.responsive.property.borderRadius('sharp')}
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background: ${theme.colors.grayScale.gray50};
-  }
-`;
-
-export const PartAddText = styled.span`
-  ${theme.fonts.body.l500}
-  color: ${theme.colors.grayScale.black};
-  flex: 1;
-  text-align: left;
-`;
-
-export const PartAddIcon = styled.div`
-  ${({ theme }) => theme.responsive.property.sourceSize('R')}
-  aspect-ratio: 1 / 1;
-  ${({ theme }) => theme.responsive.property.borderRadius('round')}
-  background: ${theme.colors.grayScale.gray600};
-  flex-shrink: 0;
-`;
 
 export const PartSelectorWrapper = styled.div`
   position: relative;
@@ -624,71 +527,6 @@ export const SaveButtonWrapper = styled.div<{ $isDropdownOpen?: boolean }>`
   padding-bottom: 2.5rem;
 `;
 
-export const SaveButton = styled.button`
-  ${theme.fonts.heading.h3}
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: ${({ theme }) => theme.componentWidths.min.mobile}; /* Component-Width-Min: 6.0625rem */
-  padding: ${({ theme }) => theme.gaps.XXS.desktop} 0; /* Gap-XXS: 0.25rem 상하, 좌우 0 (모든 화면에서 0.25rem 사용) */
-  background: ${theme.colors.grayScale.black} !important; /* #19181D */
-  border: none !important;
-  border-radius: ${({ theme }) => theme.borders.sharp.desktop}; /* 기본 border-radius */
-  color: ${theme.colors.grayScale.white} !important; /* #FCFCFF */
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  box-sizing: border-box;
-  font-family: inherit;
-  outline: none;
-
-  ${theme.media.tablet} {
-    display: flex;
-    width: var(--Component-Width-Min, 8rem);
-    padding: var(--Gap-XXS, 0.375rem) 0;
-    justify-content: center;
-    align-items: center;
-  }
-
-  ${theme.media.desktop} {
-    width: ${({ theme }) => theme.componentWidths.min.desktop}; /* 8.25rem */
-    padding: ${({ theme }) => theme.gaps.XXS.desktop} 0;
-  }
-
-  ${theme.media.wide} {
-    width: ${({ theme }) => theme.componentWidths.min.wide}; /* 8.25rem */
-    padding: ${({ theme }) => theme.gaps.XXS.wide} 0;
-  }
-
-  ${theme.media.mobile} {
-    width: ${({ theme }) => theme.componentWidths.min.mobile}; /* Component-Width-Min: 6.0625rem */
-    padding: ${({ theme }) => theme.gaps.XXS.mobile} 0; /* Gap-XXS: 0.25rem 상하, 좌우 0 */
-    justify-content: center;
-    align-items: center;
-    border-radius: ${({ theme }) => theme.borders.hard.mobile}; /* 모바일 border-radius */
-    height: 1.75rem;
-    min-height: 1.75rem;
-  }
-
-  &:hover:not(:disabled) {
-    background: ${theme.colors.grayScale.gray400} !important;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  ${theme.media.mobile} {
-    width: 100%;
-    min-width: 100%;
-    height: auto; // 모바일에서는 높이 자동
-    min-height: auto;
-  }
-`;
 
 // 오른쪽 패널 안내 메시지
 export const EmptyMessageWrapper = styled.div`
@@ -748,47 +586,27 @@ export const DefaultLeftPanel = styled.div`
   background: ${theme.colors.secondary.VT50};
 
   ${theme.media.wide} {
-    width: ${({ theme }) => theme.componentWidths.medium.wide}; /* 28rem */
+    width: ${({ theme }) => theme.componentWidths.medium.wide};
     height: 100%;
-    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.wide} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.wide}; /* 상 5rem(theme 없음), 좌우 General-Margin(2rem), 하 2.5rem(theme 없음) */
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    overflow-y: auto;
-    overflow-x: hidden;
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.wide} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.wide};
   }
 
   ${theme.media.desktop} {
-    width: ${({ theme }) => theme.componentWidths.medium.desktop}; /* 28rem */
+    width: ${({ theme }) => theme.componentWidths.medium.desktop};
     height: 100%;
-    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.desktop} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.desktop}; /* 상 5rem(theme 없음), 좌우 General-Margin(2rem), 하 2.5rem(theme 없음) */
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    overflow-y: auto;
-    overflow-x: hidden;
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.desktop} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.desktop};
   }
 
   ${theme.media.tablet} {
-    width: ${({ theme }) => theme.componentWidths.medium.tablet}; /* 20rem */
+    width: ${({ theme }) => theme.componentWidths.medium.tablet};
     height: 100%;
-    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet}; /* 상 5rem(theme 없음), 좌우 General-Margin(2rem), 하 2.5rem(theme 없음) */
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    overflow-y: auto;
-    overflow-x: hidden;
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.tablet};
   }
 
   ${theme.media.mobile} {
     height: 100%;
-    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile}; /* 상 5rem(theme 없음), 좌우 General-Margin(1rem), 하 2.5rem(theme 없음) */
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.mobile};
     flex: 1 0 0;
-    overflow-y: auto;
-    overflow-x: hidden;
   }
 `;
 
@@ -796,7 +614,7 @@ export const DefaultInfoSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2.5rem; /* theme에 없음 */
+  gap: 2.5rem;
   align-self: stretch;
 `;
 
@@ -805,7 +623,7 @@ export const DefaultTextFrame = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem; /* theme에 없음 */
+  gap: 0.5rem;
   align-self: stretch;
 `;
 
@@ -827,7 +645,7 @@ export const DefaultDBTIFrame = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem; /* theme에 없음 */
+  gap: 0.5rem;
   align-self: stretch;
 `;
 
@@ -905,48 +723,3 @@ export const DefaultPartButton = styled.button<{ $isActive?: boolean }>`
     `}
 `;
 
-export const DefaultDBTIButton = styled.button<{ $isActive?: boolean }>`
-  display: inline-flex;
-  ${({ theme }) => theme.responsive.property.paddingComplex('XS', 'M', 'XS', 'S')}
-  justify-content: flex-start;
-  align-items: center;
-  border: none;
-  border-radius: ${({ theme }) => theme.responsive.property.borderRadius('sharp')};
-  background: ${({ theme }) => theme.colors.grayScale.white};
-  box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
-  color: ${({ theme }) => theme.colors.grayScale.black};
-  cursor: pointer;
-  ${({ theme }) => theme.fonts.heading.h4}
-  width: 100%;
-  height: 3rem;
-  
-  ${({ theme }) => theme.media.mobile} {
-    height: 2rem;
-  }
-  
-  &:hover:not(:disabled) {
-    ${({ $isActive, theme }) => 
-      !$isActive && `
-        color: ${theme.colors.secondary.VT700};
-      `}
-  }
-
-  &:active:not(:disabled) {
-    ${({ $isActive, theme }) => 
-      !$isActive && `
-        background: ${theme.colors.secondary.VT100};
-        color: ${theme.colors.grayScale.black};
-      `}
-  }
-
-  &:disabled {
-    color: ${({ theme }) => theme.colors.grayScale.gray300};
-    cursor: not-allowed;
-  }
-
-  ${({ $isActive, theme }) => 
-    $isActive && `
-      color: ${theme.colors.secondary.VT700};
-      background: ${theme.colors.secondary.VT100};
-    `}
-`;

@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import * as S from "./ProfilePage.styles";
 import PMPortfolioForm from "@/components/profile/PMPortfolioForm";
-import { getProfile } from "@/services/profile";
+import { getProfile, updateProfile } from "@/services/profile";
 import DesignPortfolioForm from "@/components/profile/DesignPortfolioForm";
 import FrontendPortfolioForm from "@/components/profile/FrontendPortfolioForm";
 import BackendPortfolioForm from "@/components/profile/BackendPortfolioForm";
@@ -64,7 +64,6 @@ export default function ProfilePage() {
     portfolioState?.selectedParts || (partFromUrl ? [partFromUrl] : [])
   );
   const [activePart, setActivePart] = useState<PartOption | null>(partFromUrl);
-  const [isEditModeFromView, setIsEditModeFromView] = useState(!!portfolioState); // 수정 버튼을 통해 들어온 경우 추적
   
   // URL 변경 시 activePart와 selectedParts 업데이트
   useEffect(() => {
@@ -72,8 +71,6 @@ export default function ProfilePage() {
     const currentPartFromUrl = currentPathPart && slugToPart[currentPathPart] ? slugToPart[currentPathPart] : null;
     const currentPortfolioState = location.state as PortfolioState | null;
     
-    // portfolioState가 있으면 수정 모드로 표시
-    setIsEditModeFromView(!!currentPortfolioState);
     
     
     // location.state에서 selectedParts가 있으면 사용
@@ -114,8 +111,6 @@ export default function ProfilePage() {
   const [intro, setIntro] = useState<string>(portfolioState?.intro || "");
   const [dbtiInfo] = useState<string | null>(portfolioState?.dbtiInfo || null); // DBTI 정보 상태
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
-  // 각 파트별 프로필 데이터 저장
-  const [partProfiles, setPartProfiles] = useState<Record<string, any>>({});
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -164,7 +159,6 @@ export default function ProfilePage() {
               }
               
               // 각 파트별 프로필 데이터 저장
-              setPartProfiles(partProfilesData);
               
               // 프로필 데이터가 있으면 default 페이지로 이동
               if (Object.keys(partProfilesData).length > 0) {
@@ -211,9 +205,8 @@ export default function ProfilePage() {
   // 이름이 공백인지 확인 (trim으로 공백 제거 후 확인)
   const isNameEmpty = !name.trim();
   
-  // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI, 파트 전부 입력/선택되어야 함s
-  // isEditModeFromView가 true이면 수정 모드이므로 저장 버튼 비활성화
-  const isSaveDisabled = isNameEmpty || !intro.trim()  // !dbtiInfo || selectedParts.length === 0 || isEditModeFromView;
+  // 저장 버튼 활성화 조건: 이름, 한줄소개가 모두 입력되어야 함
+  const isSaveDisabled = isNameEmpty || !intro.trim();
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
@@ -248,10 +241,35 @@ export default function ProfilePage() {
     setIsSaveModalOpen(false);
   };
 
-  const handleSaveConfirm = () => {
-    // TODO: 프로필 저장 로직
+  const handleSaveConfirm = async () => {
     setIsSaveModalOpen(false);
-    navigate('/profile/Default', { replace: false });
+    
+    try {
+      // 공통 프로필 저장
+      const commonProfileResult = await updateProfile({
+        username: name,
+        comment: intro,
+      });
+      
+      if (!commonProfileResult.success) {
+        console.error("공통 프로필 저장 실패:", commonProfileResult.error);
+        alert("프로필 저장에 실패했습니다.");
+        return;
+      }
+      
+      console.log("공통 프로필 저장 성공");
+      
+      // 저장 후 프로필 상태 확인
+      const verifyResult = await getProfile();
+      if (verifyResult.success) {
+        console.log("저장된 프로필 확인:", verifyResult.data);
+      }
+      
+      navigate('/profile/Default', { replace: false });
+    } catch (error) {
+      console.error("프로필 저장 중 오류:", error);
+      alert("프로필 저장 중 오류가 발생했습니다.");
+    }
   };
 
   const handleImageUpload = () => {
@@ -270,13 +288,8 @@ export default function ProfilePage() {
   };
 
   const handleDBTIClick = () => {
-    // DBTI 정보가 없으면 DBTI 테스트 페이지로 이동
-    if (!dbtiInfo) {
-      navigate("/profile/DBTI");
-    } else {
-      // DBTI 정보가 있으면 Profile/Edit/DBTI 페이지로 이동
-      navigate("/profile/edit/dbti");
-    }
+    // DBTI 편집 페이지로 이동
+    navigate("/profile/edit/dbti");
   };
 
   // 편집 모드가 아닐 때 (기본 프로필 보기)
