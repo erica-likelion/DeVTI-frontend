@@ -106,6 +106,11 @@ type ProfileUpdateRequest =
   | DEProfileUpdateRequest;
 
 const handleProfileError = (error: any, defaultMessage: string) => {
+  // 413 오류 (파일 크기 초과) 처리
+  if (error?.response?.status === 413) {
+    return "업로드한 파일이 너무 큽니다. 10MB 이하의 파일을 선택해주세요.";
+  }
+  
   const data = error?.response?.data;
   if (data) {
     // 상세 에러 정보를 콘솔에 출력
@@ -122,7 +127,7 @@ const handleProfileError = (error: any, defaultMessage: string) => {
 
 // GET /api/profile
 // part가 없으면 기본 프로필, 있으면 해당 파트 프로필 반환
-export const getProfile = async (part?: PartType) => {
+export const getProfile = async (part?: PartType, silentNotFound = false) => {
   try {
     const response = await axiosInstance.get("/api/profile", {
       params: part ? { part } : undefined,
@@ -133,6 +138,20 @@ export const getProfile = async (part?: PartType) => {
     }
     return { success: false, error: "프로필 조회에 실패했습니다" };
   } catch (error: any) {
+    // 404 오류는 정상적인 상황 (프로필이 아직 등록되지 않음)
+    if (error?.response?.status === 404) {
+      return {
+        success: false,
+        error: `${part ? `${part} 파트` : '공통'} 프로필 데이터가 없습니다`,
+        isNotFound: true
+      };
+    }
+    
+    // silentNotFound가 true가 아닌 경우에만 에러 로깅
+    if (!silentNotFound) {
+      console.error('Profile fetch error:', error);
+    }
+    
     return {
       success: false,
       error: handleProfileError(error, "프로필 조회에 실패했습니다"),

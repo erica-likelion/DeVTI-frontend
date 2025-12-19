@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import { getDBTIResult } from '@/constants/DBTIResults';
+import { getProfile } from '@/services/profile';
 import PMPortfolioView from "@/components/profile/PMPortfolioView";
 import DesignPortfolioView from "@/components/profile/DesignPortfolioView";
 import FrontendPortfolioView from "@/components/profile/FrontendPortfolioView";
@@ -19,7 +20,6 @@ import type {
   DailyAvailabilityKey,
   WeeklyAvailabilityKey,
 } from "@/components/profile/BasePortfolioForm";
-import { getProfile } from "@/services/profile";
 import { FRONTEND_TECH_ITEMS_MAP } from "@/constants/profile/frontendAssessmentItems";
 import { BACKEND_TECH_ITEMS_MAP } from "@/constants/profile/backendAssessmentItems";
 
@@ -64,43 +64,17 @@ export default function ProfileDefaultPage() {
     백엔드: false,
   }); // 각 파트별 수정 모드 상태
   
-  // localStorage에서 저장된 모든 파트의 포트폴리오 데이터 가져오기
-  const getStoredPortfolioData = (partName: string): any => {
-    try {
-      const stored = localStorage.getItem(`portfolio_${partName}`);
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  };
 
-  // 저장된 모든 파트 찾기
-  const getSavedParts = (): PartOption[] => {
-    const savedParts: PartOption[] = [];
-    PART_OPTIONS.forEach((part) => {
-      const data = getStoredPortfolioData(part);
-      if (data && (data.experienceSummary || data.strengths)) {
-        savedParts.push(part);
-      }
-    });
-    return savedParts;
-  };
 
-  // location.state에서 데이터 가져오기 (저장 후 돌아올 때)
   const portfolioData = location.state as PortfolioData | null;
-  
-  // DBTI 결과 가져오기
   const userDBTIResult = user?.dbti ? getDBTIResult(user.dbti) : null;
-  
-  // 저장된 모든 파트로 초기화
   const [selectedParts, setSelectedParts] = useState<PartOption[]>(() => {
     if (portfolioData?.selectedParts) {
       return portfolioData.selectedParts;
     }
-    return getSavedParts();
+    return [];
   });
 
-  // 프로필 정보 가져오기 (location.state 또는 localStorage에서)
   const getProfileInfo = () => {
     if (portfolioData) {
       return {
@@ -109,20 +83,6 @@ export default function ProfileDefaultPage() {
         dbtiInfo: portfolioData.dbtiInfo || null,
         profileImage: portfolioData.profileImage || user?.profileImage || null,
       };
-    }
-    // localStorage에서 첫 번째 저장된 파트의 프로필 정보 가져오기
-    const savedParts = getSavedParts();
-    const firstPart = savedParts[0];
-    if (firstPart) {
-      const data = getStoredPortfolioData(firstPart);
-      if (data) {
-        return {
-          name: data.name || user?.name || "",
-          intro: data.intro || "",
-          dbtiInfo: data.dbtiInfo || null,
-          profileImage: data.profileImage || user?.profileImage || null,
-        };
-      }
     }
     return {
       name: user?.name || "",
@@ -135,21 +95,18 @@ export default function ProfileDefaultPage() {
   const profileInfo = getProfileInfo();
   const [name, setName] = useState(profileInfo.name);
   const [intro, setIntro] = useState(profileInfo.intro);
-  const [dbtiInfo, setDbtiInfo] = useState(profileInfo.dbtiInfo);
-  const [profileImage, setProfileImage] = useState(profileInfo.profileImage);
-  // 서버에서 가져온 각 파트별 프로필 데이터 저장
+  const [dbtiInfo] = useState(profileInfo.dbtiInfo);
+  const [profileImage] = useState(profileInfo.profileImage);
   const [partProfiles, setPartProfiles] = useState<Record<string, any>>(
     portfolioData?.partProfiles || {}
   );
   
-  // location.state에서 서버 데이터가 있으면 사용
   useEffect(() => {
     if (portfolioData?.partProfiles && portfolioData?.commonProfile) {
       setName(portfolioData.commonProfile.username || profileInfo.name);
       setIntro(portfolioData.commonProfile.comment || profileInfo.intro);
       setPartProfiles(portfolioData.partProfiles);
       
-      // available_parts를 selectedParts에 반영
       if (portfolioData.commonProfile.available_parts && portfolioData.commonProfile.available_parts.length > 0) {
         const partMap: Record<string, PartOption> = {
           'PM': 'PM',
@@ -167,7 +124,6 @@ export default function ProfileDefaultPage() {
     }
   }, [portfolioData]);
   
-  // 프로필 페이지 로드 시 API에서 프로필 데이터 가져오기 (location.state에 데이터가 없을 때만)
   useEffect(() => {
     if (portfolioData?.partProfiles) {
       // 이미 서버 데이터가 있으면 API 호출하지 않음
@@ -225,14 +181,11 @@ export default function ProfileDefaultPage() {
     if (selectedPart === null) {
       if (portfolioData?.part) {
         setSelectedPart(portfolioData.part);
-      } else {
-        const savedParts = getSavedParts();
-        if (savedParts.length > 0) {
-          setSelectedPart(savedParts[0]);
-        }
+      } else if (selectedParts.length > 0) {
+        setSelectedPart(selectedParts[0]);
       }
     }
-  }, [portfolioData]);
+  }, [portfolioData, selectedParts]);
   
 
   const handleEditClick = () => {
@@ -256,6 +209,19 @@ export default function ProfileDefaultPage() {
   };
 
   const handleDBTIClick = () => {
+    console.log('DBTI 버튼 클릭됨');
+    console.log('userDBTIResult:', userDBTIResult);
+    console.log('dbtiInfo:', dbtiInfo);
+    console.log('조건 체크:', !userDBTIResult && !dbtiInfo);
+    
+    // DBTI 정보가 없으면 DBTI 편집 페이지로 이동
+    if (!userDBTIResult && !dbtiInfo) {
+      console.log('/profile/edit/dbti 페이지로 이동');
+      navigate('/profile/edit/dbti');
+      return;
+    }
+    
+    console.log('DBTI 결과를 right panel에 표시');
     // DBTI 결과를 right panel에 표시
     setShowDBTIResult(true);
     // 파트 선택 해제 (파트 버튼 비활성화)
@@ -320,6 +286,9 @@ export default function ProfileDefaultPage() {
       window.removeEventListener('popstate', handlePopState);
     };
   }, [isMobile]);
+
+
+
   
   // @ts-ignore - 사용 예정
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -337,7 +306,6 @@ export default function ProfileDefaultPage() {
       const partSlug = partMap[selectedPart];
       navigate(`/profile/edit/${partSlug}`, { replace: false });
     }
-    // setIsPartDropdownOpen(false); // TODO: 구현 필요
   };
 
   // 서버 데이터를 View 컴포넌트 형식으로 변환하는 함수
@@ -477,11 +445,6 @@ export default function ProfileDefaultPage() {
       }
     }
     
-    // 서버 데이터가 없으면 localStorage에서 가져오기
-    if (!partData) {
-      partData = getStoredPortfolioData(selectedPart);
-    }
-
     if (!partData) {
       return <div>{selectedPart} 포트폴리오 데이터를 찾을 수 없습니다.</div>;
     }
@@ -551,7 +514,7 @@ export default function ProfileDefaultPage() {
                 experienceSummary: partData.experienceSummary || "",
                 strengths: partData.strengths || "",
                 github: partData.github || "",
-                selectedTechs: partData.selectedTechs || [],
+                selectedTechs: (partData.selectedTechs || []) as any,
                 techAssessments: partData.techAssessments || {},
                 isNewcomer: partData.isNewcomer || false,
               }}
@@ -576,7 +539,7 @@ export default function ProfileDefaultPage() {
                 experienceSummary: partData.experienceSummary || "",
                 strengths: partData.strengths || "",
                 github: partData.github || "",
-                selectedTechs: partData.selectedTechs || [],
+                selectedTechs: (partData.selectedTechs || []) as any,
                 techAssessments: partData.techAssessments || {},
                 isNewcomer: partData.isNewcomer || false,
               }}
@@ -670,77 +633,80 @@ export default function ProfileDefaultPage() {
   };
 
   return (
-    <S.EditWrapper>
-      <S.EditContainer>
-        {/* 모바일에서 right panel이 보이지 않을 때만 left panel 표시 */}
-        {(!isMobile || !showRightPanel) && (
-          <S.DefaultLeftPanel>
-            <S.EditProfileSection>
-              {/* Info Section */}
-              <S.DefaultInfoSection>
-                {/* 프로필사진 */}
-                <S.EditProfileImageWrapper $isInDefaultPage={true}>
-                  {profileImage ? (
-                    <S.EditProfileImage src={profileImage} alt={name || "프로필"} />
-                  ) : (
-                    <S.EditProfileImagePlaceholder />
-                  )}
-                </S.EditProfileImageWrapper>
+    <>
+      <S.EditWrapper>
+        <S.EditContainer>
+          {/* 모바일에서 right panel이 보이지 않을 때만 left panel 표시 */}
+          {(!isMobile || !showRightPanel) && (
+            <S.DefaultLeftPanel>
+              <S.EditProfileSection>
+                {/* Info Section */}
+                <S.DefaultInfoSection>
+                  {/* 프로필사진 */}
+                  <S.EditProfileImageWrapper $isInDefaultPage={true}>
+                    {profileImage ? (
+                      <S.EditProfileImage src={profileImage} alt={name || "프로필"} />
+                    ) : (
+                      <S.EditProfileImagePlaceholder />
+                    )}
+                  </S.EditProfileImageWrapper>
 
-                {/* Text Frame (사용자이름+한줄소개) */}
-                <S.DefaultTextFrame>
-                  <S.DefaultUserName>{name || "사용자"}</S.DefaultUserName>
-                  <S.DefaultIntro>{intro || ""}</S.DefaultIntro>
-                </S.DefaultTextFrame>
+                  {/* Text Frame (사용자이름+한줄소개) */}
+                  <S.DefaultTextFrame>
+                    <S.DefaultUserName>{name || "사용자"}</S.DefaultUserName>
+                    <S.DefaultIntro>{intro || ""}</S.DefaultIntro>
+                  </S.DefaultTextFrame>
 
-                {/* DBTI Frame */}
-                <S.DefaultDBTIFrame>
-                  <S.DefaultDBTITitle>DBTI (프로젝트 성향 테스트)</S.DefaultDBTITitle>
-                  <WtLPawButton 
-                    onClick={handleDBTIClick}
-                    isActive={showDBTIResult || !!userDBTIResult}
-                  >
-                    {userDBTIResult ? userDBTIResult.name.split(', ')[1] || userDBTIResult.name : dbtiInfo || "테스트"}
-                  </WtLPawButton>
-                </S.DefaultDBTIFrame>
+                  {/* DBTI Frame */}
+                  <S.DefaultDBTIFrame>
+                    <S.DefaultDBTITitle>DBTI (프로젝트 성향 테스트)</S.DefaultDBTITitle>
+                    <WtLPawButton 
+                      onClick={handleDBTIClick}
+                      isActive={showDBTIResult || !!userDBTIResult}
+                    >
+                      {userDBTIResult ? userDBTIResult.name.split(', ')[1] || userDBTIResult.name : dbtiInfo || "테스트"}
+                    </WtLPawButton>
+                  </S.DefaultDBTIFrame>
 
-                {/* Part Frame */}
-                <S.DefaultPartFrame>
-                  <S.DefaultPartTitle>파트</S.DefaultPartTitle>
-                  {selectedParts.map((part) => {
-                    const isActive = !showDBTIResult && selectedPart === part && selectedPart !== null;
-                    return (
-                      <WtLPawButton
-                        key={part}
-                        onClick={() => handlePartClick(part)}
-                        hideIcon={true}
-                        isActive={isActive}
-                      >
-                        {part}
-                      </WtLPawButton>
-                    );
-                  })}
-                </S.DefaultPartFrame>
-              </S.DefaultInfoSection>
+                  {/* Part Frame */}
+                  <S.DefaultPartFrame>
+                    <S.DefaultPartTitle>파트</S.DefaultPartTitle>
+                    {selectedParts.map((part) => {
+                      const isActive = !showDBTIResult && selectedPart === part && selectedPart !== null;
+                      return (
+                        <WtLPawButton
+                          key={part}
+                          onClick={() => handlePartClick(part)}
+                          hideIcon={true}
+                          isActive={isActive}
+                        >
+                          {part}
+                        </WtLPawButton>
+                      );
+                    })}
+                  </S.DefaultPartFrame>
+                </S.DefaultInfoSection>
 
-              {/* 수정 버튼 */}
-              <S.DefaultEditButtonWrapper>
-                <BkMTextButton onClick={handleEditClick}>
-                  수정
-                </BkMTextButton>
-              </S.DefaultEditButtonWrapper>
-            </S.EditProfileSection>
-          </S.DefaultLeftPanel>
-        )}
+                {/* 수정 버튼 */}
+                <S.DefaultEditButtonWrapper>
+                  <BkMTextButton onClick={handleEditClick}>
+                    수정
+                  </BkMTextButton>
+                </S.DefaultEditButtonWrapper>
+              </S.EditProfileSection>
+            </S.DefaultLeftPanel>
+          )}
 
-        {/* 모바일이 아니거나, 모바일에서 right panel이 보여야 할 때만 right panel 표시 */}
-        {(!isMobile || showRightPanel) && (
-          <S.RightPanel>
-            {renderPortfolioView()}
-          </S.RightPanel>
-        )}
-      </S.EditContainer>
-    </S.EditWrapper>
+          {/* 모바일이 아니거나, 모바일에서 right panel이 보여야 할 때만 right panel 표시 */}
+          {(!isMobile || showRightPanel) && (
+            <S.RightPanel>
+              {renderPortfolioView()}
+            </S.RightPanel>
+          )}
+        </S.EditContainer>
+      </S.EditWrapper>
+
+    </>
   );
 }
 
