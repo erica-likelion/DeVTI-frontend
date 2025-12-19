@@ -152,7 +152,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "room",
+        path: "room/:id",
         element: (
           <Room />
         ),
