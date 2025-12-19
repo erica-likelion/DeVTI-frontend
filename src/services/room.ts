@@ -39,7 +39,7 @@ export interface ValidateParticipantCodeResponse {
 export interface JoinRoomRequest {
   participant_code: string;
   part: 'PM' | 'DE' | 'FE' | 'BE'; // PM, DE, FE, BE 중 택1
-  team_vibe: 'professional' | 'learning' | 'anywhere'; // professional, learning, anywhere 중 택1
+  team_vibe: 'professional' | 'learning'; // professional, learning 중 택1
   active_hours: 'day' | 'night'; // day, night 중 택1
   meeting_preference: 'online' | 'offline'; // online, offline 중 택1
 }

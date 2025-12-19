@@ -12,7 +12,7 @@ export default function JoinRoomPR() {
     const participantCode = location.state?.participantCode;
 
     type PartOption = 'PM' | '디자인' | '프론트엔드' | '백엔드';
-    type TeamVibeDisplay = '배우면서 즐겁게' | '열정적으로 하루 종일' | '어디에서나 잘할 수 있어요';
+    type TeamVibeDisplay = '배우면서 즐겁게' | '열정적으로 하루 종일';
     type ActiveHoursDisplay = '낮' | '밤';
     type MeetingPreferenceDisplay = '대면' | '비대면';
 
@@ -25,7 +25,7 @@ export default function JoinRoomPR() {
     const [isLoading, setIsLoading] = useState(false);
 
     const partOptions: PartOption[] = ['PM', '디자인', '프론트엔드', '백엔드'];
-    const teamStyleOptions: TeamVibeDisplay[] = ['배우면서 즐겁게', '열정적으로 하루 종일', '어디에서나 잘할 수 있어요'];
+    const teamStyleOptions: TeamVibeDisplay[] = ['배우면서 즐겁게', '열정적으로 하루 종일'];
     const activityTimeOptions: ActiveHoursDisplay[] = ['낮', '밤'];
     const meetingStyleOptions: MeetingPreferenceDisplay[] = ['대면', '비대면'];
 
@@ -42,11 +42,10 @@ export default function JoinRoomPR() {
         }
     };
 
-    const getTeamVibe = (teamStyle: TeamVibeDisplay): 'professional' | 'learning' | 'anywhere' => {
+    const getTeamVibe = (teamStyle: TeamVibeDisplay): 'professional' | 'learning' => {
         switch (teamStyle) {
             case '배우면서 즐겁게': return 'learning';
             case '열정적으로 하루 종일': return 'professional';
-            case '어디에서나 잘할 수 있어요': return 'anywhere';
             default:
                 return 'learning';
         }
