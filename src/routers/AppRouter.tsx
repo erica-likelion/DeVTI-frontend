@@ -32,6 +32,7 @@ import ManageRoomMatched from "@/pages/manageroom/ManageRoomMatched";
 import ManageRoomDefault from "@/pages/manageroom/ManageRoomDefault";
 import Room from "@/pages/room/Room";
 import ManageJoinPage from "@/pages/manageroom/ManageJoinPage";
+import HomeRouter from "@/utils/HomeRouter";
 
 export const router = createBrowserRouter([
   {
@@ -44,7 +45,16 @@ export const router = createBrowserRouter([
       },
       {
         path: "home",
-        element: <HomePage />,
+        children: [
+          {
+            index: true,
+            element: <HomePage />,
+          },
+          {
+            path: "check",
+            element: <HomeRouter />,
+          },
+        ],
       },
       {
         path: "home/none",

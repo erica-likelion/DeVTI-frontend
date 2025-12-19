@@ -4,8 +4,7 @@ export type Part = 'PM' | 'FE' | 'BE' | 'DE' | 'AI';
 
 export type TeamVibe =
   | '배우면서 즐겁게'
-  | '열정적으로 하루 종일'
-  | '어디에서나 잘할 수 있어요';
+  | '열정적으로 하루 종일';
 
 export type ActiveHours = '낮' | '밤' | '유동적';
 export type MeetingPreference = '대면' | '비대면' | '상관없음';
@@ -97,7 +96,7 @@ export const MATCHING_RESULT_DUMMY: MatchingResult = {
             user_id: '0007',
             username: '박성한',
             part: 'BE',
-            team_vibe: '어디에서나 잘할 수 있어요',
+            team_vibe: '열정적으로 하루 종일',
             active_hours: '낮',
             meeting_preference: '대면',
           },
@@ -105,7 +104,7 @@ export const MATCHING_RESULT_DUMMY: MatchingResult = {
             user_id: '0008',
             username: '최지훈',
             part: 'DE',
-            team_vibe: '어디에서나 잘할 수 있어요',
+            team_vibe: '열정적으로 하루 종일',
             active_hours: '유동적',
             meeting_preference: '상관없음',
           },
@@ -142,7 +141,7 @@ export const MATCHING_RESULT_DUMMY: MatchingResult = {
             user_id: '0012',
             username: '하주석',
             part: 'BE',
-            team_vibe: '어디에서나 잘할 수 있어요',
+            team_vibe: '열정적으로 하루 종일',
             active_hours: '밤',
             meeting_preference: '비대면',
           },
@@ -150,7 +149,7 @@ export const MATCHING_RESULT_DUMMY: MatchingResult = {
             user_id: '0013',
             username: '최재훈',
             part: 'DE',
-            team_vibe: '어디에서나 잘할 수 있어요',
+            team_vibe: '열정적으로 하루 종일',
             active_hours: '유동적',
             meeting_preference: '대면',
           },
@@ -179,7 +178,7 @@ export const MATCHING_RESULT_DUMMY: MatchingResult = {
             user_id: '0016',
             username: '박상원',
             part: 'BE',
-            team_vibe: '어디에서나 잘할 수 있어요',
+            team_vibe: '열정적으로 하루 종일',
             active_hours: '낮',
             meeting_preference: '대면',
           },
@@ -195,7 +194,7 @@ export const MATCHING_RESULT_DUMMY: MatchingResult = {
             user_id: '0018',
             username: '오태곤',
             part: 'AI',
-            team_vibe: '어디에서나 잘할 수 있어요',
+            team_vibe: '열정적으로 하루 종일',
             active_hours: '밤',
             meeting_preference: '비대면',
           },
@@ -224,7 +223,7 @@ export const MATCHING_RESULT_DUMMY: MatchingResult = {
             user_id: '0021',
             username: '김강민',
             part: 'BE',
-            team_vibe: '어디에서나 잘할 수 있어요',
+            team_vibe: '열정적으로 하루 종일',
             active_hours: '낮',
             meeting_preference: '대면',
           },
@@ -240,7 +239,7 @@ export const MATCHING_RESULT_DUMMY: MatchingResult = {
             user_id: '0023',
             username: '이재원',
             part: 'AI',
-            team_vibe: '어디에서나 잘할 수 있어요',
+            team_vibe: '열정적으로 하루 종일',
             active_hours: '유동적',
             meeting_preference: '상관없음',
           },

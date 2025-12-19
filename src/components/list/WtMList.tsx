@@ -5,6 +5,7 @@ interface WtMListProps {
   header: string;
   body: string;
   disabled?: boolean;
+  showRightSection?: boolean;
   onClick?: () => void;
 }
 
@@ -12,6 +13,7 @@ export const WtMList = ({
   header,
   body,
   disabled = false,
+  showRightSection = true,
   onClick,
 }: WtMListProps) => {
 
@@ -34,12 +36,14 @@ export const WtMList = ({
 
       
 
-      <S.RightArea>
-        <S.IndicatorArea>
-          <S.Indicator />
-        </S.IndicatorArea>
-        {body}
-      </S.RightArea>
+      {showRightSection && (
+        <S.RightArea>
+          <S.IndicatorArea>
+            <S.Indicator />
+          </S.IndicatorArea>
+          {body}
+        </S.RightArea>
+      )}
     </S.Container>
   );
 };

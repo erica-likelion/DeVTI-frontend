@@ -17,7 +17,7 @@ const SocialLoginButton = ({ provider, children }: SocialLoginButtonProps) => {
     onSuccess: async (tokenResponse) => {
       const result = await googleLogin(tokenResponse.access_token);
       if (result?.success) {
-        window.location.href = '/home';
+        window.location.href = '/home/check';
       }
     },
     flow: 'implicit',
@@ -26,7 +26,7 @@ const SocialLoginButton = ({ provider, children }: SocialLoginButtonProps) => {
   const handleKakaoSuccess = async (response: any) => {
     const result = await kakaoLogin(response.response.access_token);
     if (result.success) {
-      window.location.href = '/home';
+      window.location.href = '/home/check';
     }
   };
 
