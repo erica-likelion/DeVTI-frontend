@@ -167,33 +167,32 @@ export default function ProfilePage() {
               setPartProfiles(partProfilesData);
               
               // 프로필 데이터가 있으면 default 페이지로 이동
-              // TODO: POST 테스트용 임시 주석 처리 - 테스트 후 복구 필요
-              // if (Object.keys(partProfilesData).length > 0) {
-              //   // 서버에서 가져온 데이터를 ProfileDefaultPage 형식으로 변환
-              //   const partMap: Record<string, PartOption> = {
-              //     'PM': 'PM',
-              //     'FE': '프론트엔드',
-              //     'BE': '백엔드',
-              //     'DE': '디자인'
-              //   };
-              //   
-              //   // 첫 번째 파트를 기본 선택 파트로 설정
-              //   const firstPart = profileData.available_parts[0];
-              //   const firstPartOption = partMap[firstPart];
-              //   
-              //   navigate('/profile/Default', {
-              //     state: {
-              //       name: profileData.username,
-              //       intro: profileData.comment,
-              //       dbtiInfo: null, // DBTI는 별도로 가져와야 할 수 있음
-              //       profileImage: null, // 프로필 이미지는 별도로 가져와야 할 수 있음
-              //       selectedParts: mappedParts,
-              //       part: firstPartOption,
-              //       partProfiles: partProfilesData, // 각 파트별 프로필 데이터
-              //       commonProfile: profileData, // 공통 프로필 데이터
-              //     },
-              //   });
-              // }
+              if (Object.keys(partProfilesData).length > 0) {
+                // 서버에서 가져온 데이터를 ProfileDefaultPage 형식으로 변환
+                const partMap: Record<string, PartOption> = {
+                  'PM': 'PM',
+                  'FE': '프론트엔드',
+                  'BE': '백엔드',
+                  'DE': '디자인'
+                };
+                
+                // 첫 번째 파트를 기본 선택 파트로 설정
+                const firstPart = profileData.available_parts[0];
+                const firstPartOption = partMap[firstPart];
+                
+                navigate('/profile/Default', {
+                  state: {
+                    name: profileData.username,
+                    intro: profileData.comment,
+                    dbtiInfo: null, // DBTI는 별도로 가져와야 할 수 있음
+                    profileImage: null, // 프로필 이미지는 별도로 가져와야 할 수 있음
+                    selectedParts: mappedParts,
+                    part: firstPartOption,
+                    partProfiles: partProfilesData, // 각 파트별 프로필 데이터
+                    commonProfile: profileData, // 공통 프로필 데이터
+                  },
+                });
+              }
             }
           }
         } catch (error) {
