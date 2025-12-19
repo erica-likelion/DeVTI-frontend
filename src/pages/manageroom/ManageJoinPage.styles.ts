@@ -9,8 +9,8 @@ export const Container = styled.div`
   height: 100%;
 `;
 
-export const Title = styled.h1`
-  ${({ theme }) => theme.fonts.heading.h1}
+export const Title = styled.h2`
+  ${({ theme }) => theme.fonts.heading.h2}
   color: ${({ theme }) => theme.colors.grayScale.black};
   white-space: pre-line;
   text-align: center;
