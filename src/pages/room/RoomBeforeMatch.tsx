@@ -71,7 +71,7 @@ const RoomBeforeMatch = ({ participants, recommendReason, matching_at, isWagging
       seconds,
       isEnded: false,
     };
-};
+  };
 
   const [remainingTime, setRemainingTime] = useState<RemainingTime>(() => calcRemainingTime());
 
@@ -145,6 +145,8 @@ const RoomBeforeMatch = ({ participants, recommendReason, matching_at, isWagging
   const handleEndMatching = () => {
     setIsMatchedByServer(true);
   }
+
+  console.log(`참가자 룸 ${isWagging}`)
 
 
   return (

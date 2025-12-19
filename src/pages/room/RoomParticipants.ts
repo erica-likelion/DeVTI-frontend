@@ -17,8 +17,8 @@ export interface ApiProfile {
 }
 
 export interface ApiParticipant {
-  participant_id: number;
-  participant_name: string;
+  id: number;
+  username: string;
   part: Part;
   team_vibe: string;
   active_hours: string;
@@ -93,8 +93,8 @@ export const mapApiParticipant = (raw: ApiParticipant): Participant => {
   const roleLabel = ROLE_LABEL_MAP[partCode];
 
   return {
-    id: raw.participant_id,
-    username: raw.participant_name,
+    id: raw.id,
+    username: raw.username,
     part: partCode,
     role: roleLabel,
     icon: '/assets/icons/paw.svg',
