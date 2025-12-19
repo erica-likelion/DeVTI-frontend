@@ -187,6 +187,7 @@ export const router = createBrowserRouter([
           <DBTIPage />
         ),
       },
+      {/*
       {
         path: "manage/matched",
         element: (
@@ -205,6 +206,7 @@ export const router = createBrowserRouter([
           <ManageJoinPage />
         ),
       },
+      */},
       {
         path: "*",
         element: (

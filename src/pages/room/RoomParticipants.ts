@@ -1,262 +1,119 @@
-// src/pages/Room/RoomParticipants.ts
+// 서버 응답에서 오는 part가 "FE"일 수도, "프론트엔드"일 수도 있어서 둘 다 커버
+export type PartCode = 'PM' | 'FE' | 'BE' | 'DE';
+export type PartLabel = 'PM' | '프론트엔드' | '백엔드' | '디자인';
+export type Part = PartCode | PartLabel;
 
-// 서버에서 내려오는 part 코드
-export type BackendPart = 'PM' | 'FE' | 'BE' | 'DE';
+// /api/users/{room_id} 응답 타입
+export interface ApiProfile {
+  devti: string;
+  comment: string;
+  part: Part;
+  experienced: string;
+  strength: string;
+  daily_time_capacity: number;
+  weekly_time_capacity: number;
+  design_understanding: number;
+  development_understanding: number;
+}
 
-// UI에서 사용하는 직무 탭 타입
-export type RoleType = '전체' | 'PM' | '디자인' | '프론트엔드' | '백엔드';
-
-// 🔹 participants.list / participant.new 에서 오는 개별 참가자 형태
-export interface SocketParticipantPayload {
-  username: string;
-  part: BackendPart;
+export interface ApiParticipant {
+  participant_id: number;
+  participant_name: string;
+  part: Part;
   team_vibe: string;
   active_hours: string;
   meeting_preference: string;
+  wagging: boolean;
+  profile: ApiProfile;
 }
 
-// 🔹 matching.result 에서 오는 팀 정보
-export interface MatchingResultTeamMember extends SocketParticipantPayload {}
-
-export interface MatchingResultPayload {
-  teams: {
-    team_number: number;
-    members: MatchingResultTeamMember[];
-  }[];
+export interface ApiUsersResponse {
+  recommend_reason: string;
+  matching_at: string;
+  participants: ApiParticipant[];
 }
 
-// 🔹 실제 UI에서 사용하는 Participant 타입
+// UI에서 쓰는 RoleType은 기존 그대로
+export type RoleType = '전체' | 'PM' | '디자인' | '프론트엔드' | '백엔드';
+
 export interface Participant {
-  id: number; // 프론트에서 임의로 부여
+  id: number;
   username: string;
-  part: BackendPart;
-  role: RoleType;          
+  part: PartCode;     // 내부적으로는 코드로 통일 (PM/FE/BE/DE)
+  role: RoleType;
   icon?: string;
-  keywords: string[][];    
+  keywords: string[][];
   rightButton?: string | false;
   disabled?: boolean;
-  team?: number;          
+  team?: number;
+
+  // 필요하면 사이드시트에서 쓰려고 보관 (선택)
+  wagging?: boolean;
+  profile?: ApiProfile;
 }
 
-const ROLE_LABEL_MAP: Record<BackendPart, RoleType> = {
+const normalizePartToCode = (part: Part): PartCode => {
+  switch (part) {
+    case 'PM':
+      return 'PM';
+    case 'FE':
+      return 'FE';
+    case 'BE':
+      return 'BE';
+    case 'DE':
+      return 'DE';
+    case '프론트엔드':
+      return 'FE';
+    case '백엔드':
+      return 'BE';
+    case '디자인':
+      return 'DE';
+    default:
+      return 'PM';
+  }
+};
+
+const ROLE_LABEL_MAP: Record<PartCode, RoleType> = {
   PM: 'PM',
   FE: '프론트엔드',
   BE: '백엔드',
   DE: '디자인',
 };
 
-// 🔧 단일 참가자 매핑 함수 (소켓 → UI Participant)
-export const mapSocketParticipant = (
-  raw: SocketParticipantPayload,
-  index: number,
-): Participant => {
-  const roleLabel = ROLE_LABEL_MAP[raw.part];
+export const ROLE_TABS: readonly RoleType[] = [
+  '전체',
+  'PM',
+  '디자인',
+  '프론트엔드',
+  '백엔드',
+] as const;
+
+export const mapApiParticipant = (raw: ApiParticipant): Participant => {
+  const partCode = normalizePartToCode(raw.part);
+  const roleLabel = ROLE_LABEL_MAP[partCode];
 
   return {
-    id: index,
-    username: raw.username,
-    part: raw.part,
+    id: raw.participant_id,
+    username: raw.participant_name,
+    part: partCode,
     role: roleLabel,
     icon: '/assets/icons/paw.svg',
+
     keywords: [
-      [roleLabel],                             
-      [raw.team_vibe],                          
-      [raw.active_hours, raw.meeting_preference] 
+      [roleLabel],
+      [raw.team_vibe],
+      [raw.active_hours, raw.meeting_preference],
     ],
-    rightButton: '꼬리 흔들기',
+
+    // wagging 상태에 따라 버튼 문구/비활성 처리도 가능
+    rightButton: raw.wagging ? false : '꼬리 흔들기',
     disabled: false,
+
+    wagging: raw.wagging,
+    profile: raw.profile,
+    
   };
 };
 
-// 🔧 participants.list
-export const createParticipantsFromList = (payload: {
-  participants: SocketParticipantPayload[];
-}): Participant[] =>
-  payload.participants.map((p, idx) => mapSocketParticipant(p, idx + 1));
-
-// 🔧 matching.result
-export const applyMatchingResult = (
-  base: Participant[],
-  matching: MatchingResultPayload,
-): Participant[] => {
-  const byUsername = new Map(base.map(p => [p.username, { ...p }]));
-
-  matching.teams.forEach(team => {
-    team.members.forEach(member => {
-      const existing = byUsername.get(member.username);
-      if (existing) {
-        existing.team = team.team_number;
-      } else {
-        
-        const newId = byUsername.size + 1;
-        byUsername.set(
-          member.username,
-          {
-            ...mapSocketParticipant(member, newId),
-            team: team.team_number,
-          },
-        );
-      }
-    });
-  });
-
-  return Array.from(byUsername.values());
-};
-
-/* ------------------------------------------------------------------
-   더미 데이터
-   실제 WebSocket 붙일 때는 DUMMY_* 대신
-   createParticipantsFromList / applyMatchingResult 를 그대로 사용
-------------------------------------------------------------------- */
-
-const DUMMY_PARTICIPANTS_LIST = {
-  type: 'participants.list' as const,
-  payload: {
-    participants: [
-      {
-        username: '김사자',
-        part: 'PM' as const,
-        team_vibe: '배우면서 즐겁게',
-        active_hours: '낮',
-        meeting_preference: '대면',
-      },
-      {
-        username: '노시환',
-        part: 'FE' as const,
-        team_vibe: '배우면서 즐겁게',
-        active_hours: '낮',
-        meeting_preference: '대면',
-      },
-      {
-        username: '문현빈',
-        part: 'FE' as const,
-        team_vibe: '배우면서 즐겁게',
-        active_hours: '낮',
-        meeting_preference: '비대면',
-      },
-      {
-        username: '채은성',
-        part: 'BE' as const,
-        team_vibe: '배우면서 즐겁게',
-        active_hours: '밤',
-        meeting_preference: '대면',
-      },
-      {
-        username: '문동주',
-        part: 'DE' as const,
-        team_vibe: '배우면서 즐겁게',
-        active_hours: '밤',
-        meeting_preference: '대면',
-      },
-      {
-        username: '하주석',
-        part: 'PM' as const,
-        team_vibe: '배우면서 즐겁게',
-        active_hours: '밤',
-        meeting_preference: '비대면',
-      },
-      {
-        username: '정우주',
-        part: 'BE' as const,
-        team_vibe: '배우면서 즐겁게',
-        active_hours: '밤',
-        meeting_preference: '대면',
-      },
-      {
-        username: '심우준',
-        part: 'FE' as const,
-        team_vibe: '배우면서 즐겁게',
-        active_hours: '밤',
-        meeting_preference: '비대면',
-      },
-    ],
-  },
-};
-
-// 매칭 결과 더미 (matching.result 스펙 그대로)
-const DUMMY_MATCHING_RESULT: MatchingResultPayload = {
-  teams: [
-    {
-      team_number: 1,
-      members: [
-        {
-          username: '김사자',
-          part: 'PM',
-          team_vibe: '배우면서 즐겁게',
-          active_hours: '낮',
-          meeting_preference: '대면',
-        },
-        {
-          username: '노시환',
-          part: 'FE',
-          team_vibe: '배우면서 즐겁게',
-          active_hours: '낮',
-          meeting_preference: '대면',
-        },
-      ],
-    },
-    {
-      team_number: 2,
-      members: [
-        {
-          username: '문현빈',
-          part: 'FE',
-          team_vibe: '배우면서 즐겁게',
-          active_hours: '낮',
-          meeting_preference: '비대면',
-        },
-        {
-          username: '채은성',
-          part: 'BE',
-          team_vibe: '배우면서 즐겁게',
-          active_hours: '밤',
-          meeting_preference: '대면',
-        },
-      ],
-    },
-    {
-      team_number: 3,
-      members: [
-        {
-          username: '문동주',
-          part: 'DE',
-          team_vibe: '배우면서 즐겁게',
-          active_hours: '밤',
-          meeting_preference: '대면',
-        },
-        {
-          username: '하주석',
-          part: 'PM',
-          team_vibe: '배우면서 즐겁게',
-          active_hours: '밤',
-          meeting_preference: '비대면',
-        },
-      ],
-    },
-    {
-      team_number: 4,
-      members: [
-        {
-          username: '정우주',
-          part: 'BE',
-          team_vibe: '배우면서 즐겁게',
-          active_hours: '밤',
-          meeting_preference: '대면',
-        },
-        {
-          username: '심우준',
-          part: 'FE',
-          team_vibe: '배우면서 즐겁게',
-          active_hours: '밤',
-          meeting_preference: '비대면',
-        },
-      ],
-    },
-  ],
-};
-
-// 🔹 현재 화면에서 사용하는 최종 더미 Participant 리스트
-export const PARTICIPANTS: Participant[] = applyMatchingResult(
-  createParticipantsFromList(DUMMY_PARTICIPANTS_LIST.payload),
-  DUMMY_MATCHING_RESULT,
-);
+export const createParticipantsFromApi = (data: ApiUsersResponse): Participant[] =>
+  data.participants.map(mapApiParticipant);

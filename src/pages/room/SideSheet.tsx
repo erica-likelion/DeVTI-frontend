@@ -16,6 +16,9 @@ import Close from '@/assets/icons/Close.svg';
 import CopyBlackGray from "@/assets/icons/CopyBlackGray.svg"
 import DownloadIcon from "@/assets/icons/Download.svg";
 
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const TEST_TOKEN = import.meta.env.TEST_TOKEN;
+
 
 type Props = {
   participantId: string | number | null;
@@ -65,9 +68,10 @@ const SideSheet = ({ participantId, onClose }: Props) => {
 		
 
 		try {
-			await fetch('https://devti.site/api/matching/wagging', {
+			await fetch(`${VITE_API_BASE_URL}/api/matching/wagging`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
+				
 				body: JSON.stringify({ wagger: 1, waggee: waggeeId }),
 			});
 		} catch (e) {
@@ -102,7 +106,7 @@ const SideSheet = ({ participantId, onClose }: Props) => {
       setLoading(true);
       try {
         // 예시: GET /api/users/{id}
-        const res = await fetch(`https://devti.site/api/profile/${participantId}`);
+        const res = await fetch(`${VITE_API_BASE_URL}/api/profile/${participantId}`);
         const data = await res.json();
         setProfile(data.data.profile);
 				setPr(data.data.pr);
