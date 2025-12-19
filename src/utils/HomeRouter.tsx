@@ -1,3 +1,4 @@
+//로그인 시 첫 진입인지 아닌지 확인
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getMyRooms, type RoomErrorResponse } from '@/services/room';
