@@ -13,11 +13,22 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    // FormData인 경우 Content-Type을 제거 (브라우저가 자동으로 boundary 포함하여 설정)
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
+    
     // 로컬 스토리지에서 토큰 가져오기
     const token = localStorage.getItem('access_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log("Authorization 헤더 설정됨:", `Bearer ${token.substring(0, 20)}...`);
+    } else {
+      console.warn("토큰이 없습니다. 인증이 필요할 수 있습니다.");
     }
+    console.log("요청 URL:", config.url);
+    console.log("요청 메서드:", config.method?.toUpperCase());
+    console.log("요청 헤더:", config.headers);
     return config;
   },
   (error) => {

@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import * as S from "./ProfilePage.styles";
 import PMPortfolioForm from "@/components/profile/PMPortfolioForm";
+import { getProfile } from "@/services/profile";
 import DesignPortfolioForm from "@/components/profile/DesignPortfolioForm";
 import FrontendPortfolioForm from "@/components/profile/FrontendPortfolioForm";
 import BackendPortfolioForm from "@/components/profile/BackendPortfolioForm";
@@ -113,15 +114,107 @@ export default function ProfilePage() {
   const [intro, setIntro] = useState<string>(portfolioState?.intro || "");
   const [dbtiInfo] = useState<string | null>(portfolioState?.dbtiInfo || null); // DBTI 정보 상태
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  // 각 파트별 프로필 데이터 저장
+  const [partProfiles, setPartProfiles] = useState<Record<string, any>>({});
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 편집 모드 진입 시 프로필 데이터 로드 (한 번만 실행)
+  const hasLoadedProfile = useRef(false);
+  useEffect(() => {
+    // /profile/edit 경로에 처음 진입할 때만 API에서 데이터 가져오기
+    if (isEditMode && !hasLoadedProfile.current && !portfolioState) {
+      hasLoadedProfile.current = true;
+      const loadProfile = async () => {
+        try {
+          // 공통 프로필 가져오기
+          const commonProfileResult = await getProfile();
+          if (commonProfileResult.success && commonProfileResult.data) {
+            const profileData = commonProfileResult.data;
+            console.log(profileData);
+            setName(profileData.username || user?.name || "");
+            setIntro(profileData.comment || "");
+            // available_parts를 selectedParts에 반영
+            if (profileData.available_parts && profileData.available_parts.length > 0) {
+              const partMap: Record<string, PartOption> = {
+                'PM': 'PM',
+                'FE': '프론트엔드',
+                'BE': '백엔드',
+                'DE': '디자인'
+              };
+              const mappedParts = profileData.available_parts
+                .map(part => partMap[part])
+                .filter((part): part is PartOption => part !== undefined);
+              if (mappedParts.length > 0) {
+                setSelectedParts(mappedParts);
+              }
+              
+              // available_parts의 각 파트별 프로필 가져오기
+              const partProfilesData: Record<string, any> = {};
+              for (const part of profileData.available_parts) {
+                try {
+                  const partProfileResult = await getProfile(part);
+                  if (partProfileResult.success && partProfileResult.data) {
+                    console.log(`${part} 프로필:`, partProfileResult.data);
+                    partProfilesData[part] = partProfileResult.data;
+                  }
+                } catch (error) {
+                  console.error(`${part} 프로필 로드 실패:`, error);
+                }
+              }
+              
+              // 각 파트별 프로필 데이터 저장
+              setPartProfiles(partProfilesData);
+              
+              // 프로필 데이터가 있으면 default 페이지로 이동
+              // TODO: POST 테스트용 임시 주석 처리 - 테스트 후 복구 필요
+              // if (Object.keys(partProfilesData).length > 0) {
+              //   // 서버에서 가져온 데이터를 ProfileDefaultPage 형식으로 변환
+              //   const partMap: Record<string, PartOption> = {
+              //     'PM': 'PM',
+              //     'FE': '프론트엔드',
+              //     'BE': '백엔드',
+              //     'DE': '디자인'
+              //   };
+              //   
+              //   // 첫 번째 파트를 기본 선택 파트로 설정
+              //   const firstPart = profileData.available_parts[0];
+              //   const firstPartOption = partMap[firstPart];
+              //   
+              //   navigate('/profile/Default', {
+              //     state: {
+              //       name: profileData.username,
+              //       intro: profileData.comment,
+              //       dbtiInfo: null, // DBTI는 별도로 가져와야 할 수 있음
+              //       profileImage: null, // 프로필 이미지는 별도로 가져와야 할 수 있음
+              //       selectedParts: mappedParts,
+              //       part: firstPartOption,
+              //       partProfiles: partProfilesData, // 각 파트별 프로필 데이터
+              //       commonProfile: profileData, // 공통 프로필 데이터
+              //     },
+              //   });
+              // }
+            }
+          }
+        } catch (error) {
+          console.error("프로필 로드 실패:", error);
+        }
+      };
+      loadProfile();
+    }
+    
+    // /profile/edit이 아닌 경로로 이동하면 리셋
+    if (!isEditMode) {
+      hasLoadedProfile.current = false;
+    }
+  }, [isEditMode, portfolioState, user?.name]);
 
   // 이름이 공백인지 확인 (trim으로 공백 제거 후 확인)
   const isNameEmpty = !name.trim();
   
   // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI, 파트가 모두 입력/선택되어야 함
   // isEditModeFromView가 true이면 수정 모드이므로 저장 버튼 비활성화
-  const isSaveDisabled = isNameEmpty || !intro.trim() || !dbtiInfo || selectedParts.length === 0 || isEditModeFromView;
+  const isSaveDisabled = isNameEmpty || !intro.trim()  // !dbtiInfo || selectedParts.length === 0 || isEditModeFromView;
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
