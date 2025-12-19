@@ -9,7 +9,6 @@ import VT700LButton from '@/components/ButtonDynamic/VT700LButton';
 import DefaultIMG_Profile from '/public/DefaultIMG_Profile.webp';
 import Modal from '@/components/modal/Modal';
 import SideSheet from './SideSheet';
-import { getMatchingStartTime } from '@/utils/globalState';
 
 import { BkLTextButton } from '@/components/ButtonStatic';
 
@@ -22,6 +21,7 @@ import {
 interface Props {
   participants: Participant[];
   recommendReason: string;
+  matching_at: string;
   isWagging: boolean;
 }
 
@@ -38,24 +38,13 @@ type TabValue = RoleTab;
 type ModalType = 'wagging' | null;
 
 
-const RoomBeforeMatch = ({ participants, recommendReason, isWagging }: Props) => {
+const RoomBeforeMatch = ({ participants, recommendReason, matching_at, isWagging }: Props) => {
   const [selectedTab, setSelectedTab] = useState<RoleType>('전체');
   const [isMatchedByServer, setIsMatchedByServer] = useState(false);
   const [Waggingfinished, setWaggingFinished] = useState(false);
 
   const calcRemainingTime = (): RemainingTime => {
     const now = new Date().getTime();
-    const matching_at = getMatchingStartTime();
-    
-    if (!matching_at) {
-      return {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-        isEnded: true,
-      };
-    }
     
     const deadline = new Date(matching_at.replace(' ', 'T') + '+09:00');
     const diff = deadline.getTime() - now;
