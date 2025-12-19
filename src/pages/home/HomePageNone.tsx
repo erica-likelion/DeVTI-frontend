@@ -6,7 +6,7 @@ export default function HomePageNone() {
   const navigate = useNavigate();
 
   const handleNavigateToNewRoomCode = () => {
-    navigate('/new-room/code');
+    navigate('/join-room');
   };
 
   const handleNavigateToNewRoom = () => {
