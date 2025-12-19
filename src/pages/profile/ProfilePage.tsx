@@ -213,17 +213,7 @@ export default function ProfilePage() {
   
   // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI, 파트 전부 입력/선택되어야 함s
   // isEditModeFromView가 true이면 수정 모드이므로 저장 버튼 비활성화
-<<<<<<< HEAD
-  const isSaveDisabled = isNameEmpty || !intro.trim() || !dbtiInfo || selectedParts.length === 0 || isEditModeFromView;
-  
-  console.log(isNameEmpty);
-  console.log(!intro.trim());
-  console.log(!dbtiInfo);
-  console.log(selectedParts.length === 0);
-  console.log(isEditModeFromView);
-=======
   const isSaveDisabled = isNameEmpty || !intro.trim()  // !dbtiInfo || selectedParts.length === 0 || isEditModeFromView;
->>>>>>> origin
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
