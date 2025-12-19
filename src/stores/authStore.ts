@@ -7,6 +7,7 @@ interface User {
   name: string;
   email: string;
   profileImage?: string;
+  dbti?: number; // DBTI 결과 ID (예: 1, 2, 3...)
 }
 
 interface AuthState {

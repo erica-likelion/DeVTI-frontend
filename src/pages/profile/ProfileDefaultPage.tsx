@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
+import { getDBTIResult } from '@/constants/DBTIResults';
 import PMPortfolioView from "@/components/profile/PMPortfolioView";
 import DesignPortfolioView from "@/components/profile/DesignPortfolioView";
 import FrontendPortfolioView from "@/components/profile/FrontendPortfolioView";
@@ -72,6 +73,9 @@ export default function ProfileDefaultPage() {
 
   // location.state에서 데이터 가져오기 (저장 후 돌아올 때)
   const portfolioData = location.state as PortfolioData | null;
+  
+  // DBTI 결과 가져오기
+  const userDBTIResult = user?.dbti ? getDBTIResult(user.dbti) : null;
   
   // 저장된 모든 파트로 초기화
   const [selectedParts, setSelectedParts] = useState<PartOption[]>(() => {
@@ -380,9 +384,9 @@ export default function ProfileDefaultPage() {
                   <S.DefaultDBTITitle>DBTI (프로젝트 성향 테스트)</S.DefaultDBTITitle>
                   <WtLPawButton 
                     onClick={handleDBTIClick}
-                    isActive={showDBTIResult}
+                    isActive={showDBTIResult || !!userDBTIResult}
                   >
-                    {dbtiInfo || "테스트"}
+                    {userDBTIResult ? userDBTIResult.name.split(', ')[1] || userDBTIResult.name : dbtiInfo || "테스트"}
                   </WtLPawButton>
                 </S.DefaultDBTIFrame>
 

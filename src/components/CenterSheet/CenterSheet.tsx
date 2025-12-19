@@ -17,6 +17,7 @@ interface CenterSheetProps {
   onNext?: () => void;
   hasAnswer?: boolean;
   isPreviousDisabled?: boolean;
+  isNextDisabled?: boolean;
   currentPage?: number;
   isLastPage?: boolean;
 }
@@ -31,6 +32,7 @@ export default function CenterSheet({
   onNext,
   hasAnswer = false,
   isPreviousDisabled = false,
+  isNextDisabled = false,
   currentPage,
   isLastPage = false
 }: CenterSheetProps) {
@@ -63,9 +65,9 @@ export default function CenterSheet({
             <S.RightSection>
               {onNext && (
                 isLastPage ? (
-                  <BlackMTextButton onClick={onNext} disabled={!hasAnswer}>제출</BlackMTextButton>
+                  <BlackMTextButton onClick={onNext} disabled={!hasAnswer || isNextDisabled}>제출</BlackMTextButton>
                 ) : (
-                  <ArrowRightTextButton onClick={onNext} disabled={!hasAnswer}>다음</ArrowRightTextButton>
+                  <ArrowRightTextButton onClick={onNext} disabled={!hasAnswer || isNextDisabled}>다음</ArrowRightTextButton>
                 )
               )}
             </S.RightSection>

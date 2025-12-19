@@ -6,7 +6,7 @@ export const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: ${({ theme }) => theme.colors.transparents.BL200};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,27 +17,11 @@ export const Container = styled.div`
   display: flex;
   width: ${({ theme }) => theme.overlaySheets.width.wide};
   height: 37.5rem;
-  padding: ${({ theme }) => theme.responsive.gap('M')} ${({ theme }) => theme.responsive.gap('M')} ${({ theme }) => theme.responsive.gap('XL')} ${({ theme }) => theme.responsive.gap('M')};
-
-  ${({ theme }) => theme.media.desktop} {
-    padding: ${({ theme }) => theme.responsive.gap('M', 'desktop')} ${({ theme }) => theme.responsive.gap('M', 'desktop')} ${({ theme }) => theme.responsive.gap('XL', 'desktop')} ${({ theme }) => theme.responsive.gap('M', 'desktop')};
-  }
-
-  ${({ theme }) => theme.media.tablet} {
-    padding: ${({ theme }) => theme.responsive.gap('M', 'tablet')} ${({ theme }) => theme.responsive.gap('M', 'tablet')} ${({ theme }) => theme.responsive.gap('XL', 'tablet')} ${({ theme }) => theme.responsive.gap('M', 'tablet')};
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    padding: ${({ theme }) => theme.responsive.gap('R', 'mobile')} ${({ theme }) => theme.responsive.gap('R', 'mobile')} ${({ theme }) => theme.responsive.gap('XL', 'mobile')} ${({ theme }) => theme.responsive.gap('R', 'mobile')};
-  }
+  ${({ theme }) => theme.responsive.property.paddingComplex('R', 'R', 'XL', 'R')};
+  ${({ theme }) => theme.responsive.property.borderRadius('round')};
   flex-direction: column;
   align-items: center;
   background: ${({ theme }) => theme.colors.grayScale.white};
-  border-radius: ${({ theme }) => theme.responsive.borderRadius('round')};
-
-  ${({ theme }) => theme.media.mobile} {
-    border-radius: ${({ theme }) => theme.responsive.borderRadius('round', 'mobile')};
-  }
   position: relative;
 
   ${({ theme }) => theme.media.desktop} {

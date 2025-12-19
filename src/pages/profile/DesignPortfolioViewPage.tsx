@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
+import { getDBTIResult } from '@/constants/DBTIResults';
 import DesignPortfolioView from "@/components/profile/DesignPortfolioView";
 import * as S from "./ProfilePage.styles";
 import InputField from "@/components/Input/InputField";
@@ -48,6 +49,9 @@ export default function DesignPortfolioViewPage() {
       return null;
     }
   };
+
+  // DBTI 결과 가져오기
+  const userDBTIResult = _user?.dbti ? getDBTIResult(_user.dbti) : null;
 
   // state 또는 localStorage에서 데이터 가져오기
   const storedData = getStoredPortfolioData();
@@ -250,8 +254,8 @@ export default function DesignPortfolioViewPage() {
             <S.FormSection>
               <S.FormLabel>DBTI (프로젝트 성향 테스트)</S.FormLabel>
               <S.DBTIButtonWrapper>
-                <WtLPawButton onClick={handleDBTIClick}>
-                  테스트
+                <WtLPawButton onClick={handleDBTIClick} isActive={!!userDBTIResult}>
+                  {userDBTIResult ? userDBTIResult.name.split(', ')[1] || userDBTIResult.name : '테스트'}
                 </WtLPawButton>
               </S.DBTIButtonWrapper>
             </S.FormSection>

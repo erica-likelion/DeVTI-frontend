@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   ${({ theme }) => theme.responsive.property.width('medium')}
+  color: ${({ theme }) => theme.colors.grayScale.black};
   height: 100%;
   padding: 5rem ${({ theme }) => theme.gaps.GeneralMargin.wide} 2.5rem ${({ theme }) => theme.gaps.GeneralMargin.wide};
 
@@ -21,7 +22,7 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background: radial-gradient(74% 86.02% at 50% 96.76%, #ECDEF9 0%, #FCFCFF 100%);
+  background: ${({ theme }) => theme.colors.secondary.VT50} ;
   overflow-y: auto;
 `;
 
@@ -30,7 +31,7 @@ export const InfoSection = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 2.5rem;
+    gap: 2rem;
     align-self: stretch;
 `;
 
@@ -79,12 +80,12 @@ export const DBTIFrame = styled.div`
   align-self: stretch;
 
   button {
-    border-radius: ${({ theme }) => theme.responsive.borderRadius('sharp')};
+    ${({ theme }) => theme.responsive.property.borderRadius('sharp')};
   }
 `;
 
 export const label = styled.h1`
-  ${({ theme }) => theme.colors.grayScale.black};
+  color: ${({ theme }) => theme.colors.grayScale.black};
   ${({ theme }) => theme.fonts.heading.h4};
 `;
 

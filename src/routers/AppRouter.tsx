@@ -25,11 +25,9 @@ import JoinRoom from "@/pages/joinroom/JoinRoom";
 import NewRoom from "@/pages/newroom/NewRoom";
 import NewRoomCode from "@/pages/newroom/NewRoomCode";
 import JoinRoomPR from "@/pages/joinroom/JoinRoomPR";
-import TestPage from "@/pages/test/TestPage";
 import DBTIEditPage from "@/pages/profile/edit/DBTI/DBTIEditPage";
 import ProfileEditPage from "@/pages/profile/edit/DBTI/ProfileEditPage";
 // import DBTIResultPage from "@/pages/profile/edit/DBTI/DBTIResultPage";
-import DBTIPage from "@/pages/profile/DBTI/DBTIPage";
 import ManageRoomMatched from "@/pages/manageroom/ManageRoomMatched";
 import ManageRoomDefault from "@/pages/manageroom/ManageRoomDefault";
 import Room from "@/pages/room/Room";
@@ -164,12 +162,6 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "test",
-        element: (
-          <TestPage />
-        ),
-      },
-      {
         path: "profile/edit",
         element: (
           <ProfileEditPage />
@@ -179,12 +171,6 @@ export const router = createBrowserRouter([
         path: "profile/edit/DBTI",
         element: (
           <DBTIEditPage />
-        ),
-      },
-      {
-        path: "profile/DBTI",
-        element: (
-          <DBTIPage />
         ),
       },
       {
