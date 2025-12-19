@@ -123,7 +123,7 @@ export default function JoinRoomPR() {
             });
 
 
-            navigate('/room');
+            navigate('/room/:id');
         } catch (error) {
             const roomError = error as RoomErrorResponse;
             
