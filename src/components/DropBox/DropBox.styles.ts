@@ -18,7 +18,7 @@ export const DropBoxField = styled.button<{ $size?: "L" | "M"; $disabled?: boole
   width: 100%;
   ${({ $size, theme }) => $size === "M" 
     ? theme.responsive.property.paddingComplex('XXS', 'XS', 'XXS', 'XXS')
-    : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
+    : theme.responsive.property.paddingComplex('S', 'S', 'S', 'R')}
   border: none;
   ${({ $size, theme }) => $size === "M" 
     ? theme.responsive.property.borderRadius('sharp') 
@@ -64,7 +64,7 @@ export const OptionText = styled.span<{ $size?: "L" | "M" }>`
 `;
 
 export const ArrowIcon = styled.span<{ $isOpen: boolean }>`
-  ${({ theme }) => theme.responsive.property.sourceSize('S')}
+  ${({ theme }) => theme.responsive.property.sourceSize('R')}
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;

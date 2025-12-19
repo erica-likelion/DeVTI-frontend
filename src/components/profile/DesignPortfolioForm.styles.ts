@@ -7,7 +7,6 @@ export const DesignWorkSection = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.gaps.S.wide}; /* 1rem */
   width: 100%;
-  margin-top: 2.75rem;
   
   ${({ theme }) => theme.media.tablet} {
     gap: ${({ theme }) => theme.gaps.S.tablet}; /* 0.625rem */
@@ -49,8 +48,7 @@ export const FileUploadContainer = styled.div`
   
   ${({ theme }) => theme.media.mobile} {
     gap: ${({ theme }) => theme.gaps.S.mobile}; /* 0.5rem */
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: visible;
     flex-wrap: nowrap;
   }
   

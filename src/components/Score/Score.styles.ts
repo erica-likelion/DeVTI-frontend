@@ -8,13 +8,13 @@ export const Container = styled.div`
 `;
 
 export const StarContainer = styled.div`
-  display: inline-flex;
+  display: flex;
   align-items: center;
   ${({ theme }) => theme.responsive.property.gap('XXS')}
 `;
 
 export const StarButton = styled.button<{ $isFilled?: boolean; $disabled?: boolean }>`
-  display: inline-flex;
+  display: flex;
   ${({ theme }) => theme.responsive.property.padding('XXS')}
   justify-content: center;
   align-items: center;

@@ -8,13 +8,13 @@ import * as S from "./UserProfile.styles";
 interface UserProfileProps {
   showTextOnMobile?: boolean;
   className?: string;
-  variant?: "default" | "profile"; // Added variant prop
+  variant?: "default" | "profile";
 }
 
 export default function UserProfile({
   showTextOnMobile = false,
   className,
-  variant = "default", // Default variant
+  variant = "default",
 }: UserProfileProps) {
   const navigate = useNavigate();
   const { user } = useAuthStore();
@@ -24,45 +24,40 @@ export default function UserProfile({
     navigate("/profile");
   };
 
-  if (variant === "profile") {
-    // 모바일일 때는 ClearMImgButton 사용하고 사용자 이름 숨김
-    if (isMobile) {
-      return (
-        <ClearMImgButton
-          className={className}
-          onClick={handleClick}
-          imageSrc={user?.profileImage || undefined}
-        />
-      );
-    }
-    
-    // 데스크탑일 때는 기존대로
-    return (
-      <S.ProfileContainer className={className} onClick={handleClick}>
-        <S.ProfileIconWrapper>
-          {user?.profileImage ? (
-            <S.ProfileIconImage src={user.profileImage} alt={user.name} />
-          ) : (
-            <S.ProfileDefaultIcon>
-              <img src={ImageIcon} alt="Profile" />
-            </S.ProfileDefaultIcon>
-          )}
-        </S.ProfileIconWrapper>
-        <S.ProfileUserName>{user?.name || "사용자"}</S.ProfileUserName>
-      </S.ProfileContainer>
-    );
-  }
-
-  return (
-    <S.Container className={className} onClick={handleClick}>
+  const renderProfileIcon = () => (
+    <S.ProfileIconWrapper>
       {user?.profileImage ? (
         <S.ProfileImage src={user.profileImage} alt={user.name} />
       ) : (
-        <S.DefaultProfileIcon />
+        <S.DefaultProfileIcon>
+          <img src={ImageIcon} alt="Profile" />
+        </S.DefaultProfileIcon>
       )}
-      <S.UserName $showOnMobile={showTextOnMobile}>
-        {user?.name || "사용자"}
-      </S.UserName>
+    </S.ProfileIconWrapper>
+  );
+
+  const renderUserName = () => (
+    <S.UserName $showOnMobile={showTextOnMobile}>
+      {user?.name || "사용자"}
+    </S.UserName>
+  );
+
+  // Profile variant + Mobile = ClearMImgButton
+  if (variant === "profile" && isMobile) {
+    return (
+      <ClearMImgButton
+        className={className}
+        onClick={handleClick}
+        imageSrc={user?.profileImage || undefined}
+      />
+    );
+  }
+
+  // All other cases use the same structure
+  return (
+    <S.Container className={className} onClick={handleClick}>
+      {renderProfileIcon()}
+      {renderUserName()}
     </S.Container>
   );
 }

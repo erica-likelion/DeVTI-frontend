@@ -8,9 +8,20 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  
+  ${({ $pathname }) => {
+    if ($pathname === '/' || $pathname === '/landing' || $pathname === '/login' || $pathname === '/new-room' ||  $pathname === '/new-room/code' || $pathname.includes('/join-room')) {
+      return `
+        overflow: hidden;
+      `;
+    }
+    return `
+       overflow-y: auto;
+    `;
+  }}
   
   ${({ $isImageBackground, $pathname }) => {
     // 프로필 편집 페이지(/profile/edit, /profile/pm/view 등)에서만 흰색 배경
@@ -19,9 +30,9 @@ export const Container = styled.div<ContainerProps>`
     }
     
     if (!$isImageBackground) {
-      // 프로필 페이지일 때는 gray50 배경
-      if ($pathname.includes('/profile')) {
-        return `background: #F9F9F9;`; // theme.colors.grayScale.gray50
+      // 프로필 페이지일 때는 Rrad-VT gradient 배경
+      if ($pathname.includes('/profile') && !$pathname.includes('/edit') && !$pathname.includes('/view')) {
+        return `background: radial-gradient(74% 86.02% at 50% 96.76%, #ECDEF9 0%, #FCFCFF 100%);`;
       }
       return `background: radial-gradient(74% 86.02% at 50% 96.76%, #ECDEF9 0%, #FCFCFF 100%);`;
     }
@@ -57,35 +68,45 @@ export const Container = styled.div<ContainerProps>`
 `;
 
 export const Main = styled.main<{ $pathname: string }>`
-  height:100%;
   padding-top: 4.5rem;
-  padding-bottom: 4.5rem;
   margin-top: 0;
+  
+  ${({ $pathname }) => {
+    // 로그인과 랜딩 페이지에서는 flex: 1로 남은 공간 차지하고 footer를 하단에 고정
+    if ($pathname === '/' || $pathname === '/landing' || $pathname === '/login' || $pathname === '/new-room' || $pathname === '/new-room/code' || $pathname.includes('/join-room')) {
+      return `
+        flex: 1;
+        padding-bottom: 4.5rem;
+        overflow-y: auto;
+      `;
+    }
+    // 다른 페이지에서는 flex: 1로 설정하여 footer가 바로 아래 붙도록
+    return `
+      flex: 1;
+      padding-bottom: 0rem;
+    `;
+  }}
   
   
 
   ${({ theme }) => theme.media.tablet} {
     ${({ theme }) => theme.layouts.tabletCommon}
-    padding-top: calc(4.5rem + ${({ theme }) => theme.gaps.R.tablet});
-    padding-bottom: 4.5rem;
+    padding-top: 4.5rem;
   }
 
   ${({ theme }) => theme.media.desktop} {
     ${({ theme }) => theme.layouts.desktopCommon}
     padding-top: 4.5rem;
-    padding-bottom: 4.5rem;
   }
   
   ${({ theme }) => theme.media.wide} {
     ${({ theme }) => theme.layouts.wideCommon}
     padding-top: 4.5rem;
-    padding-bottom: 4.5rem;
   }
   
   ${({ theme }) => theme.media.mobile} {
     ${({ theme }) => theme.layouts.mobileCommon}
-    padding-top: calc(4.5rem + ${({ theme }) => theme.gaps.R.mobile});
-    padding-bottom: 3.75rem;
+    padding-top: 4.5rem;
   }
 
   ${({ $pathname }) => $pathname.includes('/profile') && css`

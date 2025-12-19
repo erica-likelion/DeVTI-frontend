@@ -23,6 +23,7 @@ interface SelfAssessmentGroupProps {
   values: Record<string, number>;
   onChange: (key: string, value: number) => void;
   variant?: "input" | "output";
+  cardSize?: "M" | "L"; // M: Component Width/Medium, L: Component Width/Large
 }
 
 export default function SelfAssessmentGroup({
@@ -31,18 +32,20 @@ export default function SelfAssessmentGroup({
   values,
   onChange,
   variant = "input",
+  cardSize = "M",
 }: SelfAssessmentGroupProps) {
   return (
     <S.Group>
       {title && <S.GroupTitle>{title}</S.GroupTitle>}
       <S.CardGrid>
         {items.map((item) => (
-          <S.CardWrapper key={item.key}>
+          <S.CardWrapper key={item.key} $cardSize={cardSize}>
             <Card
               header={item.title}
               body={item.description}
               score={values[item.key] ?? 0}
               variant={variant}
+              size={cardSize}
               onScoreChange={variant === "input" ? (score) => onChange(item.key, score) : undefined}
             />
           </S.CardWrapper>

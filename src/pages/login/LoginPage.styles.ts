@@ -7,6 +7,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0;
+  gap: 12.5rem;
 `;
 
 
@@ -23,6 +24,5 @@ export const SocialButtonGroup = styled.div`
   align-items: center;
   flex-direction: column;
   ${({ theme }) => theme.responsive.property.gap('XL')}
-  margin-top: ${({ theme }) => theme.responsive.gap('XXL')};
 `;
 

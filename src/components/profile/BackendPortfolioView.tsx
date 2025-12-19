@@ -8,7 +8,7 @@ import CheckboxButton from "@/components/ButtonDynamic/CheckboxButton";
 import Modal from "@/components/modal/Modal";
 import type { SelfAssessmentItem } from "./SelfAssessmentGroup";
 import CopyBlackGray from "@/assets/icons/Copy/CopyBlackGray.svg";
-import { BACKEND_TECH_ITEMS_MAP } from "./constants/backendAssessmentItems";
+import { BACKEND_TECH_ITEMS_MAP } from "@/constants/profile/backendAssessmentItems";
 
 const TECH_ITEMS_MAP = BACKEND_TECH_ITEMS_MAP;
 
@@ -215,6 +215,7 @@ export default function BackendPortfolioView({
                   values={techAssessments[tech] || {}}
                   onChange={() => {}}
                   variant="output"
+                  cardSize="L"
                 />
               </S.TechAssessmentWrapper>
             ))}

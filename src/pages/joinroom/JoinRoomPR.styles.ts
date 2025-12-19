@@ -1,17 +1,16 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  ${({ theme }) => theme.responsive.property.width('large')}
+  ${({ theme }) => theme.responsive.property.width('large')};
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 5rem;
-  overflow-y: auto;
+  ${({ theme }) => theme.responsive.property.paddingComplex('GeneralMargin', 'none','GeneralMargin','none')};
+  height: 100%;
 `;
 
 export const TitleWrapper = styled.div`
-  ${({ theme }) => theme.responsive.property.width('large')}
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,7 +30,6 @@ export const Content = styled.div`
 
 
 export const ListWrapper = styled.div`
-  ${({ theme }) => theme.responsive.property.width('large')}
   display: flex;
   flex-direction: column;
   align-items: center;

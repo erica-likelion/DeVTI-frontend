@@ -18,7 +18,7 @@ export const Title = styled.h1`
 
 export const Subtitle = styled.p`
   ${({ theme }) => theme.fonts.body.l500}
-  color: ${({ theme }) => theme.colors.grayScale.gray500};
+  color: ${({ theme }) => theme.colors.grayScale.black};
   margin: 0;
   text-align: center;
 `;

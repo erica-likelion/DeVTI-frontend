@@ -60,9 +60,24 @@ export default function TopNav({ className }: TopNavProps) {
       </S.Logo>
       {!shouldHideNavButtons && (
         <S.NavButtons>
-          <WtMButton onClick={handleNewChatRoom}>새 매칭룸</WtMButton>
-          <WtMButton onClick={handleJoinChatRoom}>매칭룸 참여</WtMButton>
-          <WtMButton onClick={handleManageChatRoom}>매칭룸 관리</WtMButton>
+          <WtMButton 
+            onClick={handleNewChatRoom}
+            isClicked={location.pathname.startsWith('/new-room')}
+          >
+            새 매칭룸
+          </WtMButton>
+          <WtMButton 
+            onClick={handleJoinChatRoom}
+            isClicked={location.pathname.startsWith('/join-room')}
+          >
+            매칭룸 참여
+          </WtMButton>
+          <WtMButton 
+            onClick={handleManageChatRoom}
+            isClicked={location.pathname.startsWith('/home') || location.pathname.startsWith('/manage')}
+          >
+            매칭룸 관리
+          </WtMButton>
         </S.NavButtons>
       )}
     </S.LeftSection>
@@ -119,7 +134,7 @@ export default function TopNav({ className }: TopNavProps) {
 
   return (
     <>
-      <S.Container className={className}>
+      <S.Container className={className} $pathname={location.pathname}>
         <S.NavWrapper>{renderNavContent()}</S.NavWrapper>
       </S.Container>
       <MobileSidebar isOpen={isSidebarOpen} onClose={handleSidebarClose} />

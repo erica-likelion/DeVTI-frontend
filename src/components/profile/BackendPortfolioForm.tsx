@@ -8,7 +8,7 @@ import {
   BACKEND_TECH_OPTIONS,
   BACKEND_TECH_ITEMS_MAP,
   type BackendTech,
-} from "./constants/backendAssessmentItems";
+} from "@/constants/profile/backendAssessmentItems";
 
 const TECH_ITEMS_MAP = BACKEND_TECH_ITEMS_MAP;
 
@@ -192,7 +192,7 @@ export default function BackendPortfolioForm({
           <DropBox
             size="L"
             value=""
-            placeholder="언어, 프레임워크선택"
+            placeholder="언어, 프레임워크 선택"
             isOpen={isDropdownOpen}
             options={availableTechOptions}
             disabledOptions={selectedTechs}
@@ -205,10 +205,11 @@ export default function BackendPortfolioForm({
         {selectedTechs.map((tech) => (
           <SelfAssessmentGroup
             key={tech}
-            title={`${tech} 숙련도 자가평가`}
+            title={tech}
             items={TECH_ITEMS_MAP[tech]}
             values={techAssessments[tech] || {}}
             onChange={(key, value) => handleAssessmentChange(tech, key, value)}
+            cardSize="L"
           />
         ))}
       </S.SelfAssessmentSection>
