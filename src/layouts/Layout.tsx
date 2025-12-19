@@ -26,8 +26,15 @@ export default function Layout() {
       <TopNav />
       <S.Main $pathname={location.pathname}>
         <Outlet />
+        {/* 로그인/랜딩이 아닌 페이지에서는 Main 안에 Footer 포함 */}
+        {location.pathname !== '/' && location.pathname !== '/landing' && location.pathname !== '/login' && location.pathname !== '/new-room' && location.pathname !== '/new-room/code' && !location.pathname.includes('/join-room') && location.pathname !== '/home/none' && location.pathname !== '/home' && (
+          <Footer pathname={location.pathname} />
+        )}
       </S.Main>
-      <Footer pathname={location.pathname} />
+      {/* 로그인/랜딩 페이지에서는 Main 밖에 Footer 위치 */}
+      {(location.pathname === '/' || location.pathname === '/landing' || location.pathname === '/login' || location.pathname === '/new-room' || location.pathname === '/new-room/code' || location.pathname.includes('/join-room') || location.pathname === '/home/none' || location.pathname === '/home') && (
+        <Footer pathname={location.pathname} />
+      )}
       {/* TODO: 필요시 Modal, Toast 컴포넌트 추가 */}
     </S.Container>
   );

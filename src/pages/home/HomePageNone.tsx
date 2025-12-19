@@ -17,7 +17,10 @@ export default function HomePageNone() {
   const listItems = [
     {
       id: 1,
-      content: '참여 중인 매칭룸이 없어요.\n프로젝트 참가자라면, 입장 코드를 입력하여 매칭룸에 참여할 수 있어요.',
+      content: [
+        '참여 중인 매칭룸이 없어요.',
+        '프로젝트 참가자라면, 입장 코드를 입력하여 매칭룸에 참여할 수 있어요.'
+      ],
       buttonText: '매칭룸 참여',
       onClick: handleNavigateToNewRoomCode,
     },

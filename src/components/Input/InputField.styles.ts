@@ -10,9 +10,7 @@ export const Container = styled.div`
 export const InputWrapper = styled.div<{ 
   $hasIcon?: boolean; 
 }>`
-  ${({ theme, $hasIcon }) => $hasIcon 
-    ? theme.responsive.property.paddingComplex('S', 'S', 'S', 'S')
-    : theme.responsive.property.paddingComplex('S', 'M', 'S', 'M')}
+  ${({ theme }) => theme.responsive.property.paddingComplex('S','S','S','S')};
   position: relative;
   display: flex;
   align-items: center;
@@ -20,19 +18,7 @@ export const InputWrapper = styled.div<{
   width: 100%;
   background: ${({ theme }) => theme.colors.grayScale.white};
   box-shadow: ${({ theme }) => theme.effects.dropShadows.DS100};
-  border-radius: ${({ theme }) => theme.borders.smooth.wide};
-  
-  ${({ theme }) => theme.media.desktop} {
-    border-radius: ${({ theme }) => theme.borders.smooth.desktop};
-  }
-
-  ${({ theme }) => theme.media.tablet} {
-    border-radius: ${({ theme }) => theme.borders.smooth.tablet};
-  }
-
-  ${({ theme }) => theme.media.mobile} {
-    border-radius: ${({ theme }) => theme.borders.smooth.mobile};
-  }
+  ${({ theme }) => theme.responsive.property.borderRadius('smooth')};
 `;
 
 export const ContentWrapper = styled.div`

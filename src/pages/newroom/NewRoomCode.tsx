@@ -1,16 +1,12 @@
 import * as S from './NewRoomCode.styles';
 import { InputField } from '@/components/Input';
 import BlackLTextButton from '@/components/ButtonStatic/BkLTextButton';
-import CopyBlackGray from '../../assets/icons/Copy/CopyBlackGray.svg';
-import { copyToClipboard } from '../../utils/copyToClipboard';
+import CopyIconButton from '@/components/ButtonStatic/CopyIconButton';
 
 
 export default function NewRoomCode() {
 
 
-    const handleCopy = async (text: string) => {
-        await copyToClipboard(text);
-    };
 
     const roomName = "멋쟁이사자처럼 13기 장기프로젝트" // 임시 배정
     const publicCode = "일반 입장 코드"; // 임시 배정 -> 복사 테스트용
@@ -20,7 +16,10 @@ export default function NewRoomCode() {
 
     return (
         <S.Container>
-        <S.Title>{roomName}{'\n'}매칭룸을 생성했습니다!</S.Title>
+        <S.TitleWrapper>
+            <S.RoomName>{roomName}</S.RoomName>
+            <S.TitleText>매칭룸을 생성했습니다!</S.TitleText>
+        </S.TitleWrapper>
         <S.ListWrapper>
             <S.InputWrapper>
                 <S.Label>일반 입장 코드</S.Label>
@@ -28,24 +27,24 @@ export default function NewRoomCode() {
                 <InputField 
                     variant='output'
                     value= {publicCode}
-                    icon={<img src={CopyBlackGray} alt="copy" />}
-                    onIconClick={()=> handleCopy(publicCode)}
+                    icon={<CopyIconButton text={publicCode} />}
                     hasIcon={true}
                 />
                 </S.Input>
             </S.InputWrapper>
             <S.InputWrapper>
                 <S.Label>운영진 입장 코드</S.Label>
-                <InputField 
-                    variant='output'
-                    icon={<img src={CopyBlackGray} alt="copy" />}
-                    value= {adminCode}
-                    onIconClick={()=> handleCopy(adminCode)}
-                    hasIcon={true}
-                />
+                <S.Input>
+                    <InputField 
+                        variant='output'
+                        icon={<CopyIconButton text={adminCode} />}
+                        value= {adminCode}
+                        hasIcon={true}
+                    />
+                </S.Input>
             </S.InputWrapper> 
         </S.ListWrapper>
-            <BlackLTextButton>다음</BlackLTextButton>
+            <BlackLTextButton>매칭룸 관리로 이동</BlackLTextButton>
         </S.Container>
     );
 }

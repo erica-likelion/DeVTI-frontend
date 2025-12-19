@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  ${({ theme }) => theme.responsive.property.gap('XXL')}
-  width: auto;
+  gap: 5rem;
+  ${({ theme }) => theme.responsive.property.width('large')}
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0;
 `;
 
 export const Title = styled.h1`
