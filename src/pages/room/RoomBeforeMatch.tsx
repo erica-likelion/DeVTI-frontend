@@ -44,46 +44,47 @@ const RoomBeforeMatch = ({ participants, recommendReason, isWagging }: Props) =>
   const [Waggingfinished, setWaggingFinished] = useState(false);
 
   const calcRemainingTime = (): RemainingTime => {
-    const now = new Date().getTime();
-    const matching_at = getMatchingStartTime();
-    
-    if (!matching_at) {
-      return {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-        isEnded: true,
-      };
-    }
-    
-    const deadline = new Date(matching_at.replace(' ', 'T') + '+09:00');
-    const diff = deadline.getTime() - now;
+  const now = Date.now();
 
-    if (diff <= 0) {
-      return {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-        isEnded: true,
-      };
-    }
-
-    const totalSeconds = Math.floor(diff / 1000);
-    const days = Math.floor(totalSeconds / (60 * 60 * 24));
-    const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
-    const seconds = totalSeconds % 60;
-
+  const startTime = getMatchingStartTime();
+  if (!startTime) {
     return {
-      days,
-      hours,
-      minutes,
-      seconds,
-      isEnded: false,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      isEnded: false, // 시작 시간이 없으면 "종료"로 보긴 애매해서 false 추천
     };
+  }
+
+  const deadline = new Date(startTime.replace(' ', 'T') + '+09:00');
+  const diff = deadline.getTime() - now;
+
+  // Invalid Date면 getTime()이 NaN이니까 같이 처리
+  if (!Number.isFinite(diff) || diff <= 0) {
+    return {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      isEnded: true,
+    };
+  }
+
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / (60 * 60 * 24));
+  const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+  const seconds = totalSeconds % 60;
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+    isEnded: false,
   };
+};
 
   const [remainingTime, setRemainingTime] = useState<RemainingTime>(() => calcRemainingTime());
 
@@ -116,7 +117,7 @@ const RoomBeforeMatch = ({ participants, recommendReason, isWagging }: Props) =>
   const [modalType, setModalType] = useState<ModalType>(null);
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
   const [selectedParticipantId, setSelectedParticipantId] = useState<string | number | null>(null);
-  const [giveWagging, setgiveWagging] = useState(false);
+  // const [giveWagging, setgiveWagging] = useState(false);
     
   const GiveWagging = async (waggeeId: number) => {
     
