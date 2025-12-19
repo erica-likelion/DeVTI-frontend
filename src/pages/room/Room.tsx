@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useMemo, useCallback  } from 'react';
 import * as S from './Room.styles';
 import { createParticipantsFromApi, type ApiUsersResponse } from './RoomParticipants';
 import { type Participant } from '../room/RoomParticipants';
+import { setMatchingStartTime } from '@/utils/globalState';
 
 
 import RoomBeforeMatch from './RoomBeforeMatch';
@@ -20,11 +21,10 @@ const TEST_TOKEN = import.meta.env.VITE_TEST_AUTH_TOKEN;
 console.log(TEST_TOKEN)
 
 const Room = () => {
-  const roomId = 1;
+  const roomId = 15;
 
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [recommendReason, setRecommendReason] = useState('');
-  const [matchingAt, setMatchingAt] = useState('');
   const [isMatched, setIsMatched] = useState(false);
   const [isWagging, setIsWagging] = useState(false);
 
@@ -52,7 +52,7 @@ const Room = () => {
       const data: ApiUsersResponse = await res.json();
       setRecommendReason(data.recommend_reason ?? '');
       setParticipants(createParticipantsFromApi(data));
-      setMatchingAt(data.matching_at ?? '');
+      setMatchingStartTime(data.matching_at ?? '');
     } catch (e) {
       console.error(e);
     }
@@ -150,7 +150,6 @@ const Room = () => {
         <RoomBeforeMatch
           participants={participants}
           recommendReason={recommendReason}
-          matching_at={matchingAt}
           isWagging={isWagging}
         />
       )}
