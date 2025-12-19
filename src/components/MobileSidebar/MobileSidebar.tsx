@@ -52,8 +52,8 @@ export default function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
               매칭룸 참여
             </WtMButton>
             <WtMButton 
-              onClick={() => handleNavigation('/')}
-              isClicked={location.pathname === '/'}
+              onClick={() => handleNavigation('/manage/join')}
+              isClicked={location.pathname === '/manage/join'}
             >
               매칭룸 관리
             </WtMButton>
