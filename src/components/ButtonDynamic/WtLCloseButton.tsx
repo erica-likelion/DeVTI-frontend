@@ -10,6 +10,7 @@ interface WhiteLCloseButtonProps {
   disabled?: boolean;
   children?: React.ReactNode;
   icon?: string; // 커스텀 아이콘 (기본값: X 아이콘)
+  isToggle?: boolean; // 토글 버튼 여부 (기본값: false - 일반 버튼)
 }
 
 export default function WhiteLCloseButton({ 
@@ -17,7 +18,8 @@ export default function WhiteLCloseButton({
   onClick, 
   disabled = false,
   children,
-  icon
+  icon,
+  isToggle = false
 }: WhiteLCloseButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -25,7 +27,14 @@ export default function WhiteLCloseButton({
 
   const handleClick = () => {
     if (!disabled && onClick) {
-      setIsClicked(!isClicked);
+      if (isToggle) {
+        setIsClicked(!isClicked);
+      } else {
+        setIsClicked(true);
+        setTimeout(() => {
+          setIsClicked(false);
+        }, 100);
+      }
       onClick();
     }
   };

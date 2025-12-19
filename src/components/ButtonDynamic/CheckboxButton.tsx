@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import type { FC } from 'react';
 import * as S from './CheckboxButton.styles';
 import BoxFill from '@/assets/icons/CheckBox/BoxFill.svg';
 import BoxGray from '@/assets/icons/CheckBox/BoxGray.svg';
@@ -10,16 +11,18 @@ interface CheckboxButtonProps {
   children?: React.ReactNode;
   checked?: boolean;
   onChange?: (checked: boolean) => void;
+  isToggle?: boolean; // 버튼 호환성을 위한 prop (실제로는 사용되지 않음)
 }
 
-export default function CheckboxButton({ 
+const CheckboxButton: FC<CheckboxButtonProps> = ({ 
   className, 
   onClick, 
   disabled = false,
   children,
   checked = false,
-  onChange
-}: CheckboxButtonProps) {
+  onChange,
+  isToggle: _isToggle // underscore prefix로 사용하지 않음을 명시
+}) => {
   const [isChecked, setIsChecked] = useState(checked);
   const [isActive, setIsActive] = useState(false);
 
@@ -62,4 +65,6 @@ export default function CheckboxButton({
       {children}
     </S.Container>
   );
-}
+};
+
+export default CheckboxButton;

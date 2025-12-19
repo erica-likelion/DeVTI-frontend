@@ -3,6 +3,7 @@ import ImageIcon from "@/assets/icons/Image.svg";
 import { useAuthStore } from "@/stores/authStore";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import ClearMImgButton from "@/components/ButtonDynamic/ClearMImgButton";
+import { getProfile } from "@/services/profile";
 import * as S from "./UserProfile.styles";
 
 interface UserProfileProps {
@@ -20,8 +21,23 @@ export default function UserProfile({
   const { user } = useAuthStore();
   const isMobile = useIsMobile();
 
-  const handleClick = () => {
-    navigate("/profile");
+  const handleClick = async () => {
+    try {
+      // 프로필 등록 여부 확인
+      const profileResult = await getProfile();
+      
+      if (profileResult.success && profileResult.data) {
+        // 프로필이 등록되어 있으면 default 페이지로 이동
+        navigate("/profile/default");
+      } else {
+        // 프로필이 등록되지 않았으면 프로필 등록 페이지로 이동
+        navigate("/profile");
+      }
+    } catch (error) {
+      console.error("프로필 확인 실패:", error);
+      // 에러 발생 시 기본적으로 프로필 등록 페이지로 이동
+      navigate("/profile");
+    }
   };
 
   const renderProfileIcon = () => (

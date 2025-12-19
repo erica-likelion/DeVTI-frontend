@@ -7,9 +7,10 @@ interface WtMButtonProps {
   disabled?: boolean;
   children: React.ReactNode;
   isClicked?: boolean;
+  isToggle?: boolean; // 토글 버튼 여부 (기본값: false - 일반 버튼)
 }
 
-export default function WtMButton({ className, onClick, disabled = false, children, isClicked: externalIsClicked }: WtMButtonProps) {
+export default function WtMButton({ className, onClick, disabled = false, children, isClicked: externalIsClicked, isToggle = false }: WtMButtonProps) {
   const [internalIsClicked, setInternalIsClicked] = useState(false);
   
   const isClicked = externalIsClicked !== undefined ? externalIsClicked : internalIsClicked;
@@ -17,7 +18,14 @@ export default function WtMButton({ className, onClick, disabled = false, childr
   const handleClick = () => {
     if (!disabled && onClick) {
       if (externalIsClicked === undefined) {
-        setInternalIsClicked(!internalIsClicked);
+        if (isToggle) {
+          setInternalIsClicked(!internalIsClicked);
+        } else {
+          setInternalIsClicked(true);
+          setTimeout(() => {
+            setInternalIsClicked(false);
+          }, 100);
+        }
       }
       onClick();
     }

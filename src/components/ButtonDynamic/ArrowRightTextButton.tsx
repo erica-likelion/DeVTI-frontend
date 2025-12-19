@@ -9,13 +9,15 @@ interface ArrowRightButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   children?: React.ReactNode;
+  isToggle?: boolean; // 토글 버튼 여부 (기본값: false - 일반 버튼)
 }
 
 export default function ArrowRightButton({ 
   className, 
   onClick, 
   disabled = false,
-  children 
+  children,
+  isToggle = false
 }: ArrowRightButtonProps) {
   const [isClicked, setIsClicked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -23,7 +25,14 @@ export default function ArrowRightButton({
 
   const handleClick = () => {
     if (!disabled && onClick) {
-      setIsClicked(!isClicked);
+      if (isToggle) {
+        setIsClicked(!isClicked);
+      } else {
+        setIsClicked(true);
+        setTimeout(() => {
+          setIsClicked(false);
+        }, 100);
+      }
       onClick();
     }
   };
