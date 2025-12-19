@@ -13,6 +13,11 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    // FormData인 경우 Content-Type을 제거 (브라우저가 자동으로 boundary 포함하여 설정)
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
+    
     // 로컬 스토리지에서 토큰 가져오기
     const token = localStorage.getItem('access_token');
     if (token) {

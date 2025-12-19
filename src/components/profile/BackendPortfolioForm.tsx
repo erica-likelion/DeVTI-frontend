@@ -9,6 +9,7 @@ import {
   BACKEND_TECH_ITEMS_MAP,
   type BackendTech,
 } from "@/constants/profile/backendAssessmentItems";
+import { updateProfile, createProfile, getProfile } from "@/services/profile";
 
 const TECH_ITEMS_MAP = BACKEND_TECH_ITEMS_MAP;
 
@@ -127,7 +128,7 @@ export default function BackendPortfolioForm({
 
   const isFormValid = selectedTechs.length > 0 && isAssessmentComplete;
 
-  const handleRegister = (isNewcomerValue: boolean) => {
+  const handleRegister = async (isNewcomerValue: boolean) => {
     let updatedSelectedParts = currentSelectedParts;
     if (onRegister) {
       updatedSelectedParts = onRegister();
@@ -135,6 +136,72 @@ export default function BackendPortfolioForm({
       updatedSelectedParts = currentSelectedParts.includes("백엔드")
         ? currentSelectedParts
         : [...currentSelectedParts, "백엔드"];
+    }
+
+    // 공통 프로필이 없으면 먼저 생성
+    if (name || intro) {
+      const commonProfileResult = await updateProfile({
+        username: name,
+        comment: intro,
+      });
+      
+      if (!commonProfileResult.success) {
+        console.error("공통 프로필 생성/업데이트 실패:", commonProfileResult.error);
+        // 공통 프로필 생성 실패해도 계속 진행 (이미 존재할 수 있음)
+      }
+    }
+
+    // techAssessments를 development_score 배열 형식으로 변환
+    const developmentScore: [string, number][] = [];
+    selectedTechs.forEach((tech) => {
+      const assessments = techAssessments[tech] || {};
+      const items = TECH_ITEMS_MAP[tech];
+      if (items && items.length > 0) {
+        // 각 기술별로 평균 점수 계산
+        const scores = items
+          .map((item) => assessments[item.key] ?? 0)
+          .filter((score) => score > 0);
+        if (scores.length > 0) {
+          const average = scores.reduce((acc, score) => acc + score, 0) / scores.length;
+          // 0.5 단위로 내림
+          const roundedAverage = Math.floor(average * 2) / 2;
+          developmentScore.push([tech, roundedAverage]);
+        }
+      }
+    });
+
+    // API 요청 데이터 준비 (JSON 형식)
+    const requestData: {
+      experienced?: string | null;
+      strength?: string | string[];
+      github_url?: string;
+      development_score?: [string, number][];
+    } = {
+      // 신입인 경우 null, 아니면 experienceSummary 전송 (빈 문자열은 제외)
+      ...(isNewcomerValue 
+        ? { experienced: null } 
+        : experienceSummary ? { experienced: experienceSummary } : {}),
+      strength: strengths || "",
+      github_url: github,
+      development_score: developmentScore,
+    };
+    
+    // 프로필 존재 여부 확인
+    const existingProfile = await getProfile("BE");
+    let result;
+    
+    if (existingProfile.success && existingProfile.data) {
+      // 프로필이 있으면 PUT (업데이트)
+      result = await updateProfile(requestData, "BE");
+    } else {
+      // 프로필이 없으면 POST (생성)
+      result = await createProfile(requestData, "BE");
+    }
+
+    if (!result.success) {
+      // TODO: 에러 처리 (토스트 메시지 등)
+      console.error("프로필 저장 실패:", result.error);
+      return;
     }
 
     const backendData = {
