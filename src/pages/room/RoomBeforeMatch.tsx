@@ -104,7 +104,7 @@ const RoomBeforeMatch = ({ participants, recommendReason, matching_at, isWagging
   const [modalType, setModalType] = useState<ModalType>(null);
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
   const [selectedParticipantId, setSelectedParticipantId] = useState<string | number | null>(null);
-  const [giveWagging, setgiveWagging] = useState(false);
+  // const [giveWagging, setgiveWagging] = useState(false);
     
   const GiveWagging = async (waggeeId: number) => {
     
