@@ -40,7 +40,6 @@ export const ImageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.grayScale.gray100};
   
   ${({ theme }) => theme.media.wide} {
     width: 18%;

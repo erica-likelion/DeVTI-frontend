@@ -78,10 +78,8 @@ export default function DesignPortfolioViewPage() {
         // 디자인 파트 프로필 조회
         const designProfileResult = await getProfile("DE");
         if (designProfileResult.success) {
-          console.log("Design profile loaded:", designProfileResult.data);
           // 디자인 프로필 데이터로 portfolioData 업데이트는 state를 통해 처리
         } else if ((designProfileResult as any).isNotFound) {
-          console.log("디자인 프로필 데이터가 없습니다. 새로 작성할 수 있습니다.");
         } else {
           console.error("디자인 프로필 로딩 실패:", designProfileResult.error);
         }
@@ -173,7 +171,6 @@ export default function DesignPortfolioViewPage() {
       
       if (!commonProfileResult.success) {
         console.error("공통 프로필 저장 실패:", commonProfileResult.error);
-        alert("프로필 저장에 실패했습니다.");
         return;
       }
 
@@ -194,7 +191,6 @@ export default function DesignPortfolioViewPage() {
       
       if (!designProfileResult.success) {
         console.error("디자인 프로필 저장 실패:", designProfileResult.error);
-        alert("디자인 프로필 저장에 실패했습니다.");
         return;
       }
       
@@ -217,7 +213,6 @@ export default function DesignPortfolioViewPage() {
       });
     } catch (error) {
       console.error("프로필 저장 중 오류:", error);
-      alert("프로필 저장 중 오류가 발생했습니다.");
     }
   };
 

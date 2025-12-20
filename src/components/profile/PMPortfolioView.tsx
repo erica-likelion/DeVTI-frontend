@@ -182,8 +182,6 @@ export default function PMPortfolioView({
     });
   };
   
-  console.log(!dbtiInfo);
-  console.log(selectedParts.length === 0);
   
 
   const handleDeleteClick = () => {

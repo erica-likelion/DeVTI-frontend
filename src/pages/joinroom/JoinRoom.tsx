@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { validateParticipantCode, type RoomErrorResponse } from '@/services/room';
 import { setCurrentRoomId } from '@/utils/globalState';
 import Modal from '@/components/modal/Modal';
+import { handleError } from '@/utils/errorHandler';
 
 export default function JoinRoom() {
   const [text, setText] = useState('');
@@ -109,13 +110,9 @@ export default function JoinRoom() {
           { buttonLabel: '확인' }
         );
       } else {
-        openModal(
-          <>
-            <span>코드 검증에 실패했습니다.</span>
-            <span>다시 시도해주세요.</span>
-          </>,
-          { buttonLabel: '확인' }
-        );
+        // 서버 에러나 네트워크 에러인 경우 에러 페이지로 이동
+        handleError(error, { navigate });
+        return;
       }
       console.error('Validate code error:', error);
     } finally {
@@ -144,7 +141,7 @@ export default function JoinRoom() {
         disabled={isDisabled || isLoading} 
         onClick={handleNext}
       >
-        {isLoading ? '검증 중...' : '다음'}
+        {isLoading ? '검증 중' : '다음'}
       </BlackLTextButton>
       
       <Modal

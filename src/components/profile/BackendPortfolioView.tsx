@@ -7,7 +7,7 @@ import InputField from "@/components/Input/InputField";
 import CheckboxButton from "@/components/ButtonDynamic/CheckboxButton";
 import Modal from "@/components/modal/Modal";
 import type { SelfAssessmentItem } from "./SelfAssessmentGroup";
-import CopyBlackGray from "@/assets/icons/Copy/CopyBlackGray.svg";
+import CopyIconButton from "@/components/ButtonStatic/CopyIconButton";
 import { BACKEND_TECH_ITEMS_MAP } from "@/constants/profile/backendAssessmentItems";
 
 const TECH_ITEMS_MAP = BACKEND_TECH_ITEMS_MAP;
@@ -114,16 +114,6 @@ export default function BackendPortfolioView({
     });
   };
 
-  const handleGithubCopy = async () => {
-    if (github) {
-      try {
-        await navigator.clipboard.writeText(github);
-        // TODO: 복사 성공 토스트 메시지 표시
-      } catch (err) {
-        console.error('Failed to copy:', err);
-      }
-    }
-  };
 
   return (
     <S.Wrapper>
@@ -190,9 +180,8 @@ export default function BackendPortfolioView({
               value={github}
               variant="output"
               disabled={true}
-              icon={<img src={CopyBlackGray} alt="Copy" />}
+              icon={<CopyIconButton text={github} />}
               hasIcon={true}
-              onIconClick={handleGithubCopy}
             />
           ) : (
             <S.EmptyText>-</S.EmptyText>
