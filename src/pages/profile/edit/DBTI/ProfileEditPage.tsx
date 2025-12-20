@@ -10,6 +10,7 @@ import Upload from '@/assets/icons/Upload.svg';
 import { WtLPawButton } from '@/components/ButtonDynamic';
 import { getDBTIResult } from '@/constants/DBTIResults';
 import { getProfile, updateProfile } from '@/services/profile';
+import { handleError } from '@/utils/errorHandler';
 
 interface ProfileEditPageProps {
   onMoveToDBTIResult?: () => void;
@@ -17,13 +18,14 @@ interface ProfileEditPageProps {
 
 export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageProps) {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user, updateUser } = useAuthStore();
   const [selectedPart, setSelectedPart] = useState<string>('');
   const [isDropBoxOpen, setIsDropBoxOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState<string>(user?.name || '');
   const [intro, setIntro] = useState<string>('');
   const [profileImage, setProfileImage] = useState<string | null>(user?.profileImage || null);
+  const [hasAvailableParts, setHasAvailableParts] = useState<boolean>(false);
 
   const partOptions = ['PM', '디자인', '프론트엔드', '백엔드'];
   
@@ -42,10 +44,15 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
         const result = await getProfile();
         if (!isMounted) return;
         if (result.success && result.data) {
-          setName(result.data.username || user?.name || '');
+          const nextName = result.data.username || user?.name || '';
+          setName(nextName);
           setIntro(result.data.comment || '');
+          if (nextName && nextName !== user?.name) {
+            updateUser({ name: nextName });
+          }
           
           if (result.data.available_parts?.length) {
+            setHasAvailableParts(true);
             const partMap: Record<string, string> = {
               PM: 'PM',
               FE: '프론트엔드',
@@ -58,10 +65,12 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
             if (mappedParts[0]) {
               setSelectedPart(mappedParts[0]);
             }
+          } else {
+            setHasAvailableParts(false);
           }
         }
       } catch (error) {
-        console.error('프로필 로드 실패:', error);
+        handleError(error, { navigate });
       }
     };
     
@@ -87,11 +96,10 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
         return;
       }
       
-      alert('프로필 정보가 저장되었습니다.');
+      updateUser({ name: name.trim() });
       navigate('/profile/default');
     } catch (error) {
-      console.error('프로필 저장 실패:', error);
-      alert('프로필 저장에 실패했습니다.');
+      handleError(error, { navigate });
     }
   };
 
@@ -167,17 +175,23 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
             onSelectOption={(option) => {
               setSelectedPart(option);
               setIsDropBoxOpen(false);
-              // 파트 선택 시 해당 포트폴리오 편집 페이지로 이동
+              // 파트 선택 시 해당 포트폴리오 편집 페이지로 이동 (이름과 한줄소개 유지)
               const partSlug = partToSlug[option];
               if (partSlug) {
-                navigate(`/profile/edit/${partSlug}`);
+                navigate(`/profile/edit/${partSlug}`, {
+                  state: {
+                    name: name.trim(),
+                    intro: intro.trim(),
+                    profileImage
+                  }
+                });
               }
             }}
           />
         </S.PartFrame>
       </S.InfoSection>
       <S.ButtonFrame>
-        <BkMTextButton onClick={handleSave}>저장</BkMTextButton>
+        <BkMTextButton onClick={handleSave} disabled={!selectedPart.trim() && !hasAvailableParts}>저장</BkMTextButton>
       </S.ButtonFrame>
     </S.Container>
   );

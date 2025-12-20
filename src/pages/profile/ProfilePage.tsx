@@ -4,6 +4,8 @@ import { useAuthStore } from "@/stores/authStore";
 import * as S from "./ProfilePage.styles";
 import PMPortfolioForm from "@/components/profile/PMPortfolioForm";
 import { getProfile, updateProfile } from "@/services/profile";
+import { getDBTIResult } from '@/constants/DBTIResults';
+import { handleError } from "@/utils/errorHandler";
 import DesignPortfolioForm from "@/components/profile/DesignPortfolioForm";
 import FrontendPortfolioForm from "@/components/profile/FrontendPortfolioForm";
 import BackendPortfolioForm from "@/components/profile/BackendPortfolioForm";
@@ -110,6 +112,9 @@ export default function ProfilePage() {
   const [name, setName] = useState<string>(portfolioState?.name || user?.name || "");
   const [intro, setIntro] = useState<string>(portfolioState?.intro || "");
   const [dbtiInfo] = useState<string | null>(portfolioState?.dbtiInfo || null); // DBTI 정보 상태
+  
+  // DBTI 결과 가져오기
+  const userDBTIResult = user?.dbti ? getDBTIResult(user.dbti) : null;
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -126,7 +131,6 @@ export default function ProfilePage() {
           const commonProfileResult = await getProfile();
           if (commonProfileResult.success && commonProfileResult.data) {
             const profileData = commonProfileResult.data;
-            console.log(profileData);
             setName(profileData.username || user?.name || "");
             setIntro(profileData.comment || "");
             // available_parts를 selectedParts에 반영
@@ -150,7 +154,6 @@ export default function ProfilePage() {
                 try {
                   const partProfileResult = await getProfile(part);
                   if (partProfileResult.success && partProfileResult.data) {
-                    console.log(`${part} 프로필:`, partProfileResult.data);
                     partProfilesData[part] = partProfileResult.data;
                   }
                 } catch (error) {
@@ -190,7 +193,7 @@ export default function ProfilePage() {
             }
           }
         } catch (error) {
-          console.error("프로필 로드 실패:", error);
+          handleError(error, { navigate });
         }
       };
       loadProfile();
@@ -253,22 +256,18 @@ export default function ProfilePage() {
       
       if (!commonProfileResult.success) {
         console.error("공통 프로필 저장 실패:", commonProfileResult.error);
-        alert("프로필 저장에 실패했습니다.");
         return;
       }
       
-      console.log("공통 프로필 저장 성공");
       
       // 저장 후 프로필 상태 확인
       const verifyResult = await getProfile();
       if (verifyResult.success) {
-        console.log("저장된 프로필 확인:", verifyResult.data);
       }
       
       navigate('/profile/Default', { replace: false });
     } catch (error) {
-      console.error("프로필 저장 중 오류:", error);
-      alert("프로필 저장 중 오류가 발생했습니다.");
+      handleError(error, { navigate });
     }
   };
 
@@ -378,8 +377,8 @@ export default function ProfilePage() {
           <S.FormSection>
             <S.FormLabel>DBTI (프로젝트 성향 테스트)</S.FormLabel>
             <S.DBTIButtonWrapper>
-              <WtLPawButton onClick={handleDBTIClick}>
-                테스트
+              <WtLPawButton onClick={handleDBTIClick} isActive={!!userDBTIResult} isToggle={true}>
+                {userDBTIResult ? userDBTIResult.name.split(', ')[1] || userDBTIResult.name : '테스트'}
               </WtLPawButton>
             </S.DBTIButtonWrapper>
           </S.FormSection>

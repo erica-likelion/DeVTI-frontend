@@ -13,6 +13,7 @@ import DBTIResult from '@/components/DBTI/DBTIResult';
 import { DBTI_QUESTIONS, QUESTIONS_PER_PAGE, TOTAL_PAGES, getQuestionsForPage } from '@/constants/DBTIQuestions';
 import { useDBTI } from '@/hooks/useDBTI';
 import { starsToScore } from '@/services/dbti';
+import { getProfile } from '@/services/profile';
 
 interface DBTIResultPageProps {
   onRetakeTest?: () => void;
@@ -52,7 +53,6 @@ export default function DBTIResultPage({ hideRetakeButton = false, isInDefaultPa
   // API 결과 처리
   useEffect(() => {
     if (result && result.status === 'success') {
-      console.log('DBTI 결과 수신:', result);
       const backendDevti = result.data.devti;
       const resolvedDbtiId = typeof backendDevti === 'number'
         ? backendDevti
@@ -73,6 +73,37 @@ export default function DBTIResultPage({ hideRetakeButton = false, isInDefaultPa
       setStep('result');
     }
   }, [result, updateUser]);
+
+  useEffect(() => {
+    if (user?.dbti) {
+      return;
+    }
+    
+    let isMounted = true;
+    const loadProfileDevti = async () => {
+      try {
+        const profileResult = await getProfile(undefined, true);
+        if (!isMounted || !profileResult.success || !profileResult.data) {
+          return;
+        }
+        
+        const resolvedDbtiId = typeof profileResult.data.devti === 'number'
+          ? profileResult.data.devti
+          : getDBTIIdFromCode(profileResult.data.devti);
+        
+        if (resolvedDbtiId) {
+          updateUser({ dbti: resolvedDbtiId });
+        }
+      } catch (error) {
+        console.error('프로필 DBTI 로드 실패:', error);
+      }
+    };
+    
+    loadProfileDevti();
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.dbti, updateUser]);
 
   // API 에러 처리
   useEffect(() => {
@@ -116,7 +147,6 @@ export default function DBTIResultPage({ hideRetakeButton = false, isInDefaultPa
         scoresArray.push(score);
       }
       
-      console.log('제출할 점수 배열:', scoresArray);
       
       // 기존 DBTI가 있으면 PUT, 없으면 POST
       if (user?.dbti) {
@@ -220,65 +250,68 @@ export default function DBTIResultPage({ hideRetakeButton = false, isInDefaultPa
       <S.TitleFrame>
         <S.Title>
           {userName} 의 DBTI
-          {!hasDBTIResult && <span style={{ fontSize: '0.8em', color: '#666' }}> (예시)</span>}
         </S.Title>
         {!isDetailRoute && !hideRetakeButton && (
-          <BkMTextButton onClick={handleRetakeTest}>다시 테스트</BkMTextButton>
+          <BkMTextButton onClick={handleRetakeTest}>
+            {hasDBTIResult ? '다시 테스트' : '테스트하기'}
+          </BkMTextButton>
         )}
       </S.TitleFrame>
       
-      <S.ContentFrame>
-        <S.ResultImageTextFrame>
-          <img src={dbtiResult?.image} alt={dbtiResult?.name} />
-          <S.TextFrame>
-            <S.TypeText>{dbtiResult?.name}</S.TypeText>
-            <S.KeywordFrame>
-              {dbtiResult?.keywords.map((keyword, idx) => (
-                <Keyword key={idx} items={[keyword]} color="purple" size="m" />
-              ))}
-            </S.KeywordFrame>
-          </S.TextFrame>
-        </S.ResultImageTextFrame>
-        
-        <S.InfoFrame>
-          <S.DetailTextFrame>
-            <S.Rightlabel>Good at</S.Rightlabel>
-            <S.DetailText>{dbtiResult?.goodAt}</S.DetailText>
-          </S.DetailTextFrame>
+      {hasDBTIResult && (
+        <S.ContentFrame>
+          <S.ResultImageTextFrame>
+            <img src={dbtiResult?.image} alt={dbtiResult?.name} />
+            <S.TextFrame>
+              <S.TypeText>{dbtiResult?.name}</S.TypeText>
+              <S.KeywordFrame>
+                {dbtiResult?.keywords.map((keyword, idx) => (
+                  <Keyword key={idx} items={[keyword]} color="purple" size="m" />
+                ))}
+              </S.KeywordFrame>
+            </S.TextFrame>
+          </S.ResultImageTextFrame>
           
-          <S.DetailTextFrame>
-            <S.Rightlabel>Best Position</S.Rightlabel>
-            <S.DetailText>{dbtiResult?.bestPosition}</S.DetailText>
-          </S.DetailTextFrame>
-          
-          <S.DetailTextFrame>
-            <S.Rightlabel>Habit</S.Rightlabel>
-            <S.DetailText>{dbtiResult?.habit}</S.DetailText>
-          </S.DetailTextFrame>
-          
-          <S.DetailTextFrame>
-            <S.Rightlabel>Risk</S.Rightlabel>
-            <S.DetailText>{dbtiResult?.risk}</S.DetailText>
-          </S.DetailTextFrame>
-          
-          <S.DetailTextFrame>
-            <S.Rightlabel>Bestie</S.Rightlabel>
+          <S.InfoFrame>
+            <S.DetailTextFrame>
+              <S.Rightlabel>Good at</S.Rightlabel>
+              <S.DetailText>{dbtiResult?.goodAt}</S.DetailText>
+            </S.DetailTextFrame>
             
-            <S.BestieWrapper>
-              {dbtiResult?.bestie.map((bestieId, index) => (
-                <S.ImageTextFrame key={index}>
-                  <img src={DBTI_RESULTS[bestieId]?.image} />
-                  <S.BestieTextFrame>
-                    <S.label>{DBTI_RESULTS[bestieId]?.name}</S.label>
-                    <S.BestieDetailText>{getBestieReason(dbtiId, bestieId)}</S.BestieDetailText>
-                  </S.BestieTextFrame>
-                </S.ImageTextFrame>
-              ))}
-            </S.BestieWrapper>   
-          </S.DetailTextFrame>
+            <S.DetailTextFrame>
+              <S.Rightlabel>Best Position</S.Rightlabel>
+              <S.DetailText>{dbtiResult?.bestPosition}</S.DetailText>
+            </S.DetailTextFrame>
+            
+            <S.DetailTextFrame>
+              <S.Rightlabel>Habit</S.Rightlabel>
+              <S.DetailText>{dbtiResult?.habit}</S.DetailText>
+            </S.DetailTextFrame>
+            
+            <S.DetailTextFrame>
+              <S.Rightlabel>Risk</S.Rightlabel>
+              <S.DetailText>{dbtiResult?.risk}</S.DetailText>
+            </S.DetailTextFrame>
+            
+            <S.DetailTextFrame>
+              <S.Rightlabel>Bestie</S.Rightlabel>
+              
+              <S.BestieWrapper>
+                {dbtiResult?.bestie.map((bestieId, index) => (
+                  <S.ImageTextFrame key={index}>
+                    <img src={DBTI_RESULTS[bestieId]?.image} />
+                    <S.BestieTextFrame>
+                      <S.label>{DBTI_RESULTS[bestieId]?.name}</S.label>
+                      <S.BestieDetailText>{getBestieReason(dbtiId, bestieId)}</S.BestieDetailText>
+                    </S.BestieTextFrame>
+                  </S.ImageTextFrame>
+                ))}
+              </S.BestieWrapper>   
+            </S.DetailTextFrame>
 
-        </S.InfoFrame>
-      </S.ContentFrame>
+          </S.InfoFrame>
+        </S.ContentFrame>
+      )}
 
       {/* DBTI 센터시트 (재 테스트용) */}
       <CenterSheet

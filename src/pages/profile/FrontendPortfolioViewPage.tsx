@@ -79,9 +79,7 @@ export default function FrontendPortfolioViewPage() {
         // 프론트엔드 파트 프로필 조회
         const frontendProfileResult = await getProfile("FE");
         if (frontendProfileResult.success) {
-          console.log("Frontend profile loaded:", frontendProfileResult.data);
         } else {
-          console.log("프론트엔드 프로필 데이터가 없습니다. 새로 작성할 수 있습니다.");
         }
       } catch (error) {
         console.error("프로필 로딩 실패:", error);
@@ -170,7 +168,6 @@ export default function FrontendPortfolioViewPage() {
       
       if (!commonProfileResult.success) {
         console.error("공통 프로필 저장 실패:", commonProfileResult.error);
-        alert("프로필 저장에 실패했습니다.");
         return;
       }
 
@@ -201,7 +198,6 @@ export default function FrontendPortfolioViewPage() {
       
       if (!frontendProfileResult.success) {
         console.error("프론트엔드 프로필 저장 실패:", frontendProfileResult.error);
-        alert("프론트엔드 프로필 저장에 실패했습니다.");
         return;
       }
       
@@ -225,7 +221,6 @@ export default function FrontendPortfolioViewPage() {
       });
     } catch (error) {
       console.error("프로필 저장 중 오류:", error);
-      alert("프로필 저장 중 오류가 발생했습니다.");
     }
   };
 

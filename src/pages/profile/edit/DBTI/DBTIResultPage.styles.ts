@@ -71,7 +71,6 @@ export const ResultImageTextFrame = styled.div`
     width: ${({ theme }) => theme.componentWidths.small.wide};
     height: ${({ theme }) => theme.componentWidths.small.wide};
     aspect-ratio: 1/1;
-    background: ${({ theme }) => theme.colors.grayScale.gray100};
 
     ${({ theme }) => theme.media.desktop} {
       width: ${({ theme }) => theme.componentWidths.small.desktop};
@@ -138,9 +137,8 @@ export const ImageTextFrame = styled.div`
   align-self: stretch;
 
   img {
-    width: 3.75rem;
-    height: 3.75rem;
-    background: ${({ theme }) => theme.colors.grayScale.gray100};
+    width: 3.5rem;
+    height: 3.5rem;
   }
 `;
 

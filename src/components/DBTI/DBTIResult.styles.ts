@@ -39,22 +39,21 @@ export const ImageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.grayScale.gray100};
   
   ${({ theme }) => theme.media.wide} {
-    width: 18%;
+    width: 12.5rem;
   }
 
   ${({ theme }) => theme.media.desktop} {
-    width: 23%;
+    width: 100%;
   }
 
   ${({ theme }) => theme.media.tablet} {
-    width: 38%;
+    width: 23%;
   }
   
   ${({ theme }) => theme.media.mobile} {
-    width: 70%;
+    width: 15rem;
   }
 `;
 
