@@ -20,20 +20,19 @@ import DesignPortfolioViewPage from "@/pages/profile/DesignPortfolioViewPage";
 import FrontendPortfolioViewPage from "@/pages/profile/FrontendPortfolioViewPage";
 import BackendPortfolioViewPage from "@/pages/profile/BackendPortfolioViewPage";
 import ProfileDefaultPage from "@/pages/profile/ProfileDefaultPage";
-//import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 import JoinRoom from "@/pages/joinroom/JoinRoom";
 import NewRoom from "@/pages/newroom/NewRoom";
 import NewRoomCode from "@/pages/newroom/NewRoomCode";
 import JoinRoomPR from "@/pages/joinroom/JoinRoomPR";
-import TestPage from "@/pages/test/TestPage";
 import DBTIEditPage from "@/pages/profile/edit/DBTI/DBTIEditPage";
 import ProfileEditPage from "@/pages/profile/edit/DBTI/ProfileEditPage";
-// import DBTIResultPage from "@/pages/profile/edit/DBTI/DBTIResultPage";
-import DBTIPage from "@/pages/profile/DBTI/DBTIPage";
 import ManageRoomMatched from "@/pages/manageroom/ManageRoomMatched";
-import ManageRoomDefault from "@/pages/manageroom/ManageRoomDefault";
+import ManageRoomPage from "@/pages/manageroom/ManageRoomPage";
 import Room from "@/pages/room/Room";
 import ManageJoinPage from "@/pages/manageroom/ManageJoinPage";
+import HomeRouter from "@/utils/HomeRouter";
+import ErrorPage400 from "@/pages/error/ErrorPage400";
+import ErrorPage500 from "@/pages/error/ErrorPage500";
 
 export const router = createBrowserRouter([
   {
@@ -46,7 +45,16 @@ export const router = createBrowserRouter([
       },
       {
         path: "home",
-        element: <HomePage />,
+        children: [
+          {
+            index: true,
+            element: <HomePage />,
+          },
+          {
+            path: "check",
+            element: <HomeRouter />,
+          },
+        ],
       },
       {
         path: "home/none",
@@ -146,7 +154,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "room",
+        path: "room/:id",
         element: (
           <Room />
         ),
@@ -164,12 +172,6 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "test",
-        element: (
-          <TestPage />
-        ),
-      },
-      {
         path: "profile/edit",
         element: (
           <ProfileEditPage />
@@ -182,12 +184,6 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "profile/DBTI",
-        element: (
-          <DBTIPage />
-        ),
-      },
-      {
         path: "manage/matched",
         element: (
           <ManageRoomMatched />
@@ -196,7 +192,7 @@ export const router = createBrowserRouter([
       {
         path: "manage/default",
         element: (
-          <ManageRoomDefault />
+          <ManageRoomPage />
         ),
       },
       {
@@ -204,6 +200,14 @@ export const router = createBrowserRouter([
         element: (
           <ManageJoinPage />
         ),
+      },
+      {
+        path: "error/400",
+        element: <ErrorPage400 />,
+      },
+      {
+        path: "error/500",
+        element: <ErrorPage500 />,
       },
       {
         path: "*",

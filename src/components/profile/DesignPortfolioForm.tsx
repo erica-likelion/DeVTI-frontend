@@ -6,6 +6,7 @@ import type { SelfAssessmentItem } from "./SelfAssessmentGroup";
 import * as S from "./DesignPortfolioForm.styles";
 import WtLCloseButton from "@/components/ButtonDynamic/WtLCloseButton";
 import UploadIcon from "@/assets/icons/Upload.svg";
+import { updateProfile, createProfile, getProfile } from "@/services/profile";
 
 const FIGMA_ITEMS: SelfAssessmentItem[] = [
   {
@@ -62,9 +63,19 @@ export default function DesignPortfolioForm({
 }: DesignPortfolioFormProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const locationState = location.state as { selectedParts?: string[] } | null;
+  const locationState = location.state as { 
+    selectedParts?: string[];
+    name?: string;
+    intro?: string;
+    profileImage?: string | null;
+  } | null;
   // prop으로 전달된 selectedParts를 우선 사용, 없으면 location.state에서 가져오기
   const currentSelectedParts = propSelectedParts || locationState?.selectedParts || [];
+  
+  // location.state에서 전달받은 이름과 한줄소개를 prop보다 우선 사용
+  const currentName = locationState?.name || name;
+  const currentIntro = locationState?.intro || intro;
+  const currentProfileImage = locationState?.profileImage || profileImage;
   const [experienceSummary, setExperienceSummary] = useState(portfolioData?.experienceSummary || "");
   const [strengths, setStrengths] = useState(portfolioData?.strengths || "");
   const [designWorkFile, setDesignWorkFile] = useState<File | null>(null);
@@ -88,6 +99,15 @@ export default function DesignPortfolioForm({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // 파일 크기 제한: 10MB
+      const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+      if (file.size > maxSize) {
+        if (e.target) {
+          e.target.value = '';
+        }
+        return;
+      }
+      
       setDesignWorkFile(file);
       setDesignWorkFileName(file.name);
     }
@@ -107,7 +127,19 @@ export default function DesignPortfolioForm({
   );
   const isSelfAssessmentValid = isFigmaAssessmentComplete;
 
-  const handleRegister = (isNewcomerValue: boolean) => {
+  // 자가평가 점수의 평균 계산
+  const calculateAverage = (assessments: Record<string, number>, items: readonly SelfAssessmentItem[]): number => {
+    const scores = items
+      .map((item) => assessments[item.key] ?? 0)
+      .filter((score) => score > 0);
+    if (scores.length === 0) return 0;
+    const sum = scores.reduce((acc, score) => acc + score, 0);
+    const average = sum / scores.length;
+    // 0.5 단위로 내림
+    return Math.floor(average * 2) / 2;
+  };
+
+  const handleRegister = async (isNewcomerValue: boolean) => {
     // 등록 버튼 클릭 시 파트 추가를 위해 부모 컴포넌트에 알림
     let updatedSelectedParts = currentSelectedParts;
     if (onRegister) {
@@ -120,13 +152,73 @@ export default function DesignPortfolioForm({
         ? currentSelectedParts 
         : [...currentSelectedParts, "디자인"];
     }
+
+    // 공통 프로필이 없으면 먼저 생성
+    if (currentName || currentIntro) {
+      const commonProfileResult = await updateProfile({
+        username: currentName,
+        comment: currentIntro,
+      });
+      
+      if (!commonProfileResult.success) {
+        console.error("공통 프로필 생성/업데이트 실패:", commonProfileResult.error);
+        // 공통 프로필 생성 실패해도 계속 진행 (이미 존재할 수 있음)
+      }
+    }
+
+    // API 요청 데이터 준비
+    const designScore = calculateAverage(figmaAssessment, FIGMA_ITEMS);
     
-    // 디자인 포트폴리오 데이터를 localStorage에 저장
+    // multipart/form-data는 파일이 아니면 모두 문자열로 보내야 함
+    // 항상 FormData 사용
+    const formData = new FormData();
+    
+    // 모든 필드를 문자열로 FormData에 추가 (백엔드 구현 방식에 맞게)
+    // 신입이 아니고 experienceSummary가 있으면 추가
+    if (!isNewcomerValue && experienceSummary) {
+      formData.append("experienced", experienceSummary);
+    }
+    // 신입인 경우 experienced 필드를 보내지 않음 (서버에서 처리)
+    
+    formData.append("strength", strengths || "");
+    formData.append("design_score", String(designScore));
+    
+    // portfolio_url 처리: 파일이 있으면 파일 객체, 없으면 문자열(기존 URL 또는 빈 문자열)
+    if (designWorkFile) {
+      // 새로 업로드한 파일이 있는 경우
+      formData.append("portfolio_url", designWorkFile);
+    } else if (designWorkFileName) {
+      // 기존 파일이 있는 경우 (수정 모드에서 파일을 변경하지 않은 경우)
+      // multipart/form-data에서는 파일이 아니면 문자열로 보내야 함
+      formData.append("portfolio_url", designWorkFileName);
+    } else {
+      // 파일이 없는 경우에도 빈 문자열을 보내서 오류 방지
+      formData.append("portfolio_url", "");
+    }
+    
+    
+    // 프로필 존재 여부 확인 (404 에러 로깅 비활성화)
+    const existingProfile = await getProfile("DE", true);
+    let result;
+    
+    if (existingProfile.success && existingProfile.data) {
+      // 프로필이 있으면 PUT (업데이트)
+      result = await updateProfile(formData, "DE");
+    } else {
+      // 프로필이 없으면 POST (생성)
+      result = await createProfile(formData, "DE");
+    }
+    
+    if (!result.success) {
+      console.error("프로필 저장 실패:", result.error);
+      return;
+    }
+    
     const designData = {
-      name,
-      intro,
+      name: currentName,
+      intro: currentIntro,
       dbtiInfo,
-      profileImage,
+      profileImage: currentProfileImage,
       selectedParts: updatedSelectedParts,
       experienceSummary,
       strengths,
@@ -134,7 +226,6 @@ export default function DesignPortfolioForm({
       figmaAssessment,
       isNewcomer: isNewcomerValue,
     };
-    localStorage.setItem('portfolio_디자인', JSON.stringify(designData));
     
     // 등록 후 view 화면으로 이동 (포트폴리오 섹션에 수정/삭제 버튼, LeftPanel에 저장 버튼 활성화)
     navigate("/profile/design/view", {

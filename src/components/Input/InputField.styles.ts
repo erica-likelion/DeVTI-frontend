@@ -63,11 +63,9 @@ const InputStyles = css<{
 
   ${({ $hasIcon, $isActive, $readOnly }) => ($hasIcon || $isActive) && !$readOnly && css`
     &:focus {
-      ${({ theme }) => theme.fonts.heading.h3}
       background: ${({ theme }) => theme.colors.grayScale.white};
 
       &::placeholder {
-        ${({ theme }) => theme.fonts.body.l500}
         color: ${({ theme }) => theme.colors.grayScale.gray700};
       }
     }

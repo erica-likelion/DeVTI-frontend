@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
+import { getDBTIResult } from '@/constants/DBTIResults';
+import { getProfile, updateProfile } from '@/services/profile';
 import PMPortfolioView from "@/components/profile/PMPortfolioView";
 import * as S from "./ProfilePage.styles";
 import InputField from "@/components/Input/InputField";
@@ -45,19 +47,11 @@ export default function PMPortfolioViewPage() {
     return null;
   }
 
-  // localStorage에서 PM 포트폴리오 데이터 가져오기
-  const getStoredPortfolioData = (): LocationState | null => {
-    try {
-      const stored = localStorage.getItem('portfolio_PM');
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  };
+  // DBTI 결과 가져오기
+  const userDBTIResult = _user?.dbti ? getDBTIResult(_user.dbti) : null;
 
-  // state 또는 localStorage에서 데이터 가져오기
-  const storedData = getStoredPortfolioData();
-  const portfolioData = storedData || state;
+  // state에서 데이터 가져오기
+  const portfolioData = state;
 
   // 편집 모드 상태 관리
   const [profileImage, setProfileImage] = useState<string | null>(portfolioData.profileImage || null);
@@ -74,24 +68,34 @@ export default function PMPortfolioViewPage() {
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // PM 포트폴리오 데이터를 localStorage에 저장
+  // 서버에서 프로필 데이터 로딩
   useEffect(() => {
-    const pmData: LocationState = {
-      name,
-      intro,
-      dbtiInfo,
-      profileImage,
-      selectedParts,
-      experienceSummary: portfolioData.experienceSummary,
-      strengths: portfolioData.strengths,
-      dailyAvailability: portfolioData.dailyAvailability,
-      weeklyAvailability: portfolioData.weeklyAvailability,
-      designAssessment: portfolioData.designAssessment,
-      developmentAssessment: portfolioData.developmentAssessment,
-      isNewcomer: portfolioData.isNewcomer,
+    const loadProfile = async () => {
+      try {
+        // 공통 프로필 조회
+        const commonProfileResult = await getProfile();
+        if (commonProfileResult.success && commonProfileResult.data) {
+          const data = commonProfileResult.data;
+          setName(data.username || "");
+          setIntro(data.comment || "");
+          setDbtiInfo(data.devti || null);
+        }
+
+        // PM 파트 프로필 조회
+        const pmProfileResult = await getProfile("PM");
+        if (pmProfileResult.success) {
+        } else {
+        }
+      } catch (error) {
+        console.error("프로필 로딩 실패:", error);
+      }
     };
-    localStorage.setItem('portfolio_PM', JSON.stringify(pmData));
-  }, [name, intro, dbtiInfo, profileImage, selectedParts, portfolioData.experienceSummary, portfolioData.strengths, portfolioData.dailyAvailability, portfolioData.weeklyAvailability, portfolioData.designAssessment, portfolioData.developmentAssessment, portfolioData.isNewcomer]);
+
+    // state가 없을 때만 API에서 로딩
+    if (!state) {
+      loadProfile();
+    }
+  }, [state]);
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
@@ -146,11 +150,7 @@ export default function PMPortfolioViewPage() {
   };
 
   const handleDBTIClick = () => {
-    if (!dbtiInfo) {
-      setDbtiInfo("test"); // 임시 값
-    } else {
-      navigate("/profile/edit/dbti");
-    }
+    navigate("/profile/edit/dbti");
   };
 
   const handleSave = () => {
@@ -162,45 +162,85 @@ export default function PMPortfolioViewPage() {
     setIsSaveModalOpen(false);
   };
 
-  const handleSaveConfirm = () => {
-    // TODO: 프로필 저장 로직
+  const handleSaveConfirm = async () => {
     setIsSaveModalOpen(false);
     
-    // PM 포트폴리오 데이터를 localStorage에 저장
-    const pmData: LocationState = {
-      name,
-      intro,
-      dbtiInfo,
-      profileImage,
-      selectedParts,
-      experienceSummary: portfolioData.experienceSummary,
-      strengths: portfolioData.strengths,
-      dailyAvailability: portfolioData.dailyAvailability,
-      weeklyAvailability: portfolioData.weeklyAvailability,
-      designAssessment: portfolioData.designAssessment,
-      developmentAssessment: portfolioData.developmentAssessment,
-      isNewcomer: portfolioData.isNewcomer,
-    };
-    localStorage.setItem('portfolio_PM', JSON.stringify(pmData));
-    
-    navigate('/profile/Default', { 
-      replace: false,
-      state: {
-        part: "PM" as const,
-        experienceSummary: portfolioData.experienceSummary,
-        strengths: portfolioData.strengths,
-        dailyAvailability: portfolioData.dailyAvailability,
-        weeklyAvailability: portfolioData.weeklyAvailability,
-        designAssessment: portfolioData.designAssessment,
-        developmentAssessment: portfolioData.developmentAssessment,
-        isNewcomer: portfolioData.isNewcomer,
-        name,
-        intro,
-        dbtiInfo,
-        profileImage,
-        selectedParts, // selectedParts 전달
+    try {
+      // 공통 프로필 업데이트
+      const commonProfileResult = await updateProfile({
+        username: name,
+        comment: intro,
+      });
+      
+      if (!commonProfileResult.success) {
+        console.error("공통 프로필 저장 실패:", commonProfileResult.error);
+        return;
       }
-    });
+
+      // PM 파트 프로필 업데이트 (FormData 사용)
+      const formData = new FormData();
+      formData.append('experienced', portfolioData.isNewcomer ? '' : portfolioData.experienceSummary);
+      formData.append('strength', portfolioData.strengths);
+      
+      if (portfolioData.dailyAvailability) {
+        const dailyTimeMap = {
+          'under1h': 1,
+          '1to3h': 2,
+          'over3h': 4
+        };
+        formData.append('daily_time_capacity', dailyTimeMap[portfolioData.dailyAvailability].toString());
+      }
+      
+      if (portfolioData.weeklyAvailability) {
+        const weeklyTimeMap = {
+          'under10h': 5,
+          '10to20h': 15,
+          'over20h': 25
+        };
+        formData.append('weekly_time_capacity', weeklyTimeMap[portfolioData.weeklyAvailability].toString());
+      }
+      
+      if (portfolioData.designAssessment && Object.keys(portfolioData.designAssessment).length > 0) {
+        const scores = Object.values(portfolioData.designAssessment);
+        const avgScore = scores.reduce((sum: number, score: number) => sum + score, 0) / scores.length;
+        formData.append('design_understanding', avgScore.toString());
+      }
+      
+      if (portfolioData.developmentAssessment && Object.keys(portfolioData.developmentAssessment).length > 0) {
+        const scores = Object.values(portfolioData.developmentAssessment);
+        const avgScore = scores.reduce((sum: number, score: number) => sum + score, 0) / scores.length;
+        formData.append('development_understanding', avgScore.toString());
+      }
+
+      const pmProfileResult = await updateProfile(formData, "PM");
+      
+      if (!pmProfileResult.success) {
+        console.error("PM 프로필 저장 실패:", pmProfileResult.error);
+        return;
+      }
+      
+      // 저장 성공 시 프로필 Default 페이지로 이동
+      navigate('/profile/Default', { 
+        replace: false,
+        state: {
+          part: "PM" as const,
+          experienceSummary: portfolioData.experienceSummary,
+          strengths: portfolioData.strengths,
+          dailyAvailability: portfolioData.dailyAvailability,
+          weeklyAvailability: portfolioData.weeklyAvailability,
+          designAssessment: portfolioData.designAssessment,
+          developmentAssessment: portfolioData.developmentAssessment,
+          isNewcomer: portfolioData.isNewcomer,
+          name,
+          intro,
+          dbtiInfo,
+          profileImage,
+          selectedParts,
+        }
+      });
+    } catch (error) {
+      console.error("프로필 저장 중 오류:", error);
+    }
   };
 
   return (
@@ -262,8 +302,8 @@ export default function PMPortfolioViewPage() {
             <S.FormSection>
               <S.FormLabel>DBTI (프로젝트 성향 테스트)</S.FormLabel>
               <S.DBTIButtonWrapper>
-                <WtLPawButton onClick={handleDBTIClick}>
-                  테스트
+                <WtLPawButton onClick={handleDBTIClick} isActive={!!userDBTIResult}>
+                  {userDBTIResult ? userDBTIResult.name.split(', ')[1] || userDBTIResult.name : '테스트'}
                 </WtLPawButton>
               </S.DBTIButtonWrapper>
             </S.FormSection>
@@ -292,18 +332,8 @@ export default function PMPortfolioViewPage() {
                             '백엔드': 'backend'
                           };
                           const partSlug = partMap[part];
-                          // 다른 파트로 이동할 때는 localStorage에서 해당 파트의 데이터를 가져와서 전달
-                          const getStoredPartData = (partName: string): any => {
-                            try {
-                              const stored = localStorage.getItem(`portfolio_${partName}`);
-                              return stored ? JSON.parse(stored) : null;
-                            } catch {
-                              return null;
-                            }
-                          };
-
-                          // @ts-expect-error - part 타입이 제한적이지만 런타임에서는 모든 PartOption 가능
-                          const partData = getStoredPartData((part === "디자인" ? "디자인" : part === "PM" ? "PM" : part) as string);
+                          // 다른 파트로 이동할 때는 기본값으로 이동 (API에서 로딩)
+                          const partData: any = null;
                           
                           navigate(`/profile/${partSlug}/view`, {
                             replace: false,

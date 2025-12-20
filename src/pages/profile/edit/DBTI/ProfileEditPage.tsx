@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import * as S from './ProfileEditPage.styles';
@@ -8,6 +8,9 @@ import DropBox from '@/components/DropBox/DropBox';
 import WtMIconButton from '@/components/ButtonStatic/WtMIconButton';
 import Upload from '@/assets/icons/Upload.svg';
 import { WtLPawButton } from '@/components/ButtonDynamic';
+import { getDBTIResult } from '@/constants/DBTIResults';
+import { getProfile, updateProfile } from '@/services/profile';
+import { handleError } from '@/utils/errorHandler';
 
 interface ProfileEditPageProps {
   onMoveToDBTIResult?: () => void;
@@ -15,10 +18,14 @@ interface ProfileEditPageProps {
 
 export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageProps) {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user, updateUser } = useAuthStore();
   const [selectedPart, setSelectedPart] = useState<string>('');
   const [isDropBoxOpen, setIsDropBoxOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [name, setName] = useState<string>(user?.name || '');
+  const [intro, setIntro] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<string | null>(user?.profileImage || null);
+  const [hasAvailableParts, setHasAvailableParts] = useState<boolean>(false);
 
   const partOptions = ['PM', '디자인', '프론트엔드', '백엔드'];
   
@@ -29,13 +36,71 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
     '프론트엔드': 'frontend',
     '백엔드': 'backend'
   };
-  
-  const userName = user?.name || '사용자';
-  const userIntro = '안녕하세요!'; // 기본 소개글 (이후 백엔드에서 받아올 예정)
 
-  const handleSave = () => {
-    // 로직 확인용으로 임시 추가 (이후 제거 예정) - 이후 profile/default로 변경
-    console.log('프로필 정보가 저장되었습니다.');
+  useEffect(() => {
+    let isMounted = true;
+    const loadProfile = async () => {
+      try {
+        const result = await getProfile();
+        if (!isMounted) return;
+        if (result.success && result.data) {
+          const nextName = result.data.username || user?.name || '';
+          setName(nextName);
+          setIntro(result.data.comment || '');
+          if (nextName && nextName !== user?.name) {
+            updateUser({ name: nextName });
+          }
+          
+          if (result.data.available_parts?.length) {
+            setHasAvailableParts(true);
+            const partMap: Record<string, string> = {
+              PM: 'PM',
+              FE: '프론트엔드',
+              BE: '백엔드',
+              DE: '디자인',
+            };
+            const mappedParts = result.data.available_parts
+              .map((part) => partMap[part])
+              .filter((part): part is string => Boolean(part));
+            if (mappedParts[0]) {
+              setSelectedPart(mappedParts[0]);
+            }
+          } else {
+            setHasAvailableParts(false);
+          }
+        }
+      } catch (error) {
+        handleError(error, { navigate });
+      }
+    };
+    
+    loadProfile();
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.name]);
+  
+  // DBTI 결과 가져오기
+  const userDBTIResult = user?.dbti ? getDBTIResult(user.dbti) : null;
+
+  const handleSave = async () => {
+    try {
+      const result = await updateProfile({
+        username: name.trim(),
+        comment: intro.trim(),
+      });
+      
+      if (!result.success) {
+        console.error('프로필 저장 실패:', result.error);
+        alert(result.error || '프로필 저장에 실패했습니다.');
+        return;
+      }
+      
+      updateUser({ name: name.trim() });
+      navigate('/profile/default');
+    } catch (error) {
+      handleError(error, { navigate });
+    }
   };
 
   const handleImageUpload = () => {
@@ -45,8 +110,11 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // 파일 처리 로직 테스트용 임시 추가 (이후 제거 예정)
-      console.log('선택된 파일:', file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -59,7 +127,7 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
       <S.InfoSection>
         <S.ImageButtonFrame>
           <S.Image>
-            <img src={user?.profileImage || "/DefaultIMG_Profile.webp"} alt="프로필 이미지" />
+            <img src={profileImage || "/DefaultIMG_Profile.webp"} alt="프로필 이미지" />
           </S.Image>
           <S.EditIconButton>
             <WtMIconButton disabled={false} onClick={handleImageUpload}>
@@ -77,20 +145,24 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
         <S.DBTIFrame>
           <S.label>이름</S.label>
           <InputField 
-            variant="output" 
-            value={userName}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="이름을 입력해주세요"
           />
         </S.DBTIFrame>
         <S.DBTIFrame>
           <S.label>한 줄 소개</S.label>
           <InputField 
-            variant="output" 
-            value={userIntro}
+            value={intro}
+            onChange={(e) => setIntro(e.target.value)}
+            placeholder="미래의 팀원들에게"
           />
         </S.DBTIFrame>
         <S.DBTIFrame>
           <S.label>DBTI (프로젝트 성향 테스트)</S.label>
-          <WtLPawButton onClick={handleMoveToDBTIResult}>골든 리트리버</WtLPawButton>
+          <WtLPawButton onClick={handleMoveToDBTIResult} isActive={!!userDBTIResult} isToggle={true}>
+            {userDBTIResult ? userDBTIResult.name.split(', ')[1] || userDBTIResult.name : '테스트'}
+          </WtLPawButton>
         </S.DBTIFrame>
         <S.PartFrame>
           <S.label>파트</S.label>
@@ -103,17 +175,23 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
             onSelectOption={(option) => {
               setSelectedPart(option);
               setIsDropBoxOpen(false);
-              // 파트 선택 시 해당 포트폴리오 편집 페이지로 이동
+              // 파트 선택 시 해당 포트폴리오 편집 페이지로 이동 (이름과 한줄소개 유지)
               const partSlug = partToSlug[option];
               if (partSlug) {
-                navigate(`/profile/edit/${partSlug}`);
+                navigate(`/profile/edit/${partSlug}`, {
+                  state: {
+                    name: name.trim(),
+                    intro: intro.trim(),
+                    profileImage
+                  }
+                });
               }
             }}
           />
         </S.PartFrame>
       </S.InfoSection>
       <S.ButtonFrame>
-        <BkMTextButton onClick={handleSave}>저장</BkMTextButton>
+        <BkMTextButton onClick={handleSave} disabled={!selectedPart.trim() && !hasAvailableParts}>저장</BkMTextButton>
       </S.ButtonFrame>
     </S.Container>
   );

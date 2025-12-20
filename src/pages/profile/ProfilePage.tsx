@@ -3,6 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import * as S from "./ProfilePage.styles";
 import PMPortfolioForm from "@/components/profile/PMPortfolioForm";
+import { getProfile, updateProfile } from "@/services/profile";
+import { getDBTIResult } from '@/constants/DBTIResults';
+import { handleError } from "@/utils/errorHandler";
 import DesignPortfolioForm from "@/components/profile/DesignPortfolioForm";
 import FrontendPortfolioForm from "@/components/profile/FrontendPortfolioForm";
 import BackendPortfolioForm from "@/components/profile/BackendPortfolioForm";
@@ -63,7 +66,6 @@ export default function ProfilePage() {
     portfolioState?.selectedParts || (partFromUrl ? [partFromUrl] : [])
   );
   const [activePart, setActivePart] = useState<PartOption | null>(partFromUrl);
-  const [isEditModeFromView, setIsEditModeFromView] = useState(!!portfolioState); // 수정 버튼을 통해 들어온 경우 추적
   
   // URL 변경 시 activePart와 selectedParts 업데이트
   useEffect(() => {
@@ -71,8 +73,6 @@ export default function ProfilePage() {
     const currentPartFromUrl = currentPathPart && slugToPart[currentPathPart] ? slugToPart[currentPathPart] : null;
     const currentPortfolioState = location.state as PortfolioState | null;
     
-    // portfolioState가 있으면 수정 모드로 표시
-    setIsEditModeFromView(!!currentPortfolioState);
     
     
     // location.state에서 selectedParts가 있으면 사용
@@ -112,16 +112,104 @@ export default function ProfilePage() {
   const [name, setName] = useState<string>(portfolioState?.name || user?.name || "");
   const [intro, setIntro] = useState<string>(portfolioState?.intro || "");
   const [dbtiInfo] = useState<string | null>(portfolioState?.dbtiInfo || null); // DBTI 정보 상태
+  
+  // DBTI 결과 가져오기
+  const userDBTIResult = user?.dbti ? getDBTIResult(user.dbti) : null;
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const partSelectorRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // 편집 모드 진입 시 프로필 데이터 로드 (한 번만 실행)
+  const hasLoadedProfile = useRef(false);
+  useEffect(() => {
+    // /profile/edit 경로에 처음 진입할 때만 API에서 데이터 가져오기
+    if (isEditMode && !hasLoadedProfile.current && !portfolioState) {
+      hasLoadedProfile.current = true;
+      const loadProfile = async () => {
+        try {
+          // 공통 프로필 가져오기
+          const commonProfileResult = await getProfile();
+          if (commonProfileResult.success && commonProfileResult.data) {
+            const profileData = commonProfileResult.data;
+            setName(profileData.username || user?.name || "");
+            setIntro(profileData.comment || "");
+            // available_parts를 selectedParts에 반영
+            if (profileData.available_parts && profileData.available_parts.length > 0) {
+              const partMap: Record<string, PartOption> = {
+                'PM': 'PM',
+                'FE': '프론트엔드',
+                'BE': '백엔드',
+                'DE': '디자인'
+              };
+              const mappedParts = profileData.available_parts
+                .map(part => partMap[part])
+                .filter((part): part is PartOption => part !== undefined);
+              if (mappedParts.length > 0) {
+                setSelectedParts(mappedParts);
+              }
+              
+              // available_parts의 각 파트별 프로필 가져오기
+              const partProfilesData: Record<string, any> = {};
+              for (const part of profileData.available_parts) {
+                try {
+                  const partProfileResult = await getProfile(part);
+                  if (partProfileResult.success && partProfileResult.data) {
+                    partProfilesData[part] = partProfileResult.data;
+                  }
+                } catch (error) {
+                  console.error(`${part} 프로필 로드 실패:`, error);
+                }
+              }
+              
+              // 각 파트별 프로필 데이터 저장
+              
+              // 프로필 데이터가 있으면 default 페이지로 이동
+              if (Object.keys(partProfilesData).length > 0) {
+                // 서버에서 가져온 데이터를 ProfileDefaultPage 형식으로 변환
+                const partMap: Record<string, PartOption> = {
+                  'PM': 'PM',
+                  'FE': '프론트엔드',
+                  'BE': '백엔드',
+                  'DE': '디자인'
+                };
+                
+                // 첫 번째 파트를 기본 선택 파트로 설정
+                const firstPart = profileData.available_parts[0];
+                const firstPartOption = partMap[firstPart];
+                
+                navigate('/profile/Default', {
+                  state: {
+                    name: profileData.username,
+                    intro: profileData.comment,
+                    dbtiInfo: null, // DBTI는 별도로 가져와야 할 수 있음
+                    profileImage: null, // 프로필 이미지는 별도로 가져와야 할 수 있음
+                    selectedParts: mappedParts,
+                    part: firstPartOption,
+                    partProfiles: partProfilesData, // 각 파트별 프로필 데이터
+                    commonProfile: profileData, // 공통 프로필 데이터
+                  },
+                });
+              }
+            }
+          }
+        } catch (error) {
+          handleError(error, { navigate });
+        }
+      };
+      loadProfile();
+    }
+    
+    // /profile/edit이 아닌 경로로 이동하면 리셋
+    if (!isEditMode) {
+      hasLoadedProfile.current = false;
+    }
+  }, [isEditMode, portfolioState, user?.name]);
+
   // 이름이 공백인지 확인 (trim으로 공백 제거 후 확인)
   const isNameEmpty = !name.trim();
   
-  // 저장 버튼 활성화 조건: 이름, 한줄소개, DBTI, 파트가 모두 입력/선택되어야 함
-  // isEditModeFromView가 true이면 수정 모드이므로 저장 버튼 비활성화
-  const isSaveDisabled = isNameEmpty || !intro.trim() || !dbtiInfo || selectedParts.length === 0 || isEditModeFromView;
+  // 저장 버튼 활성화 조건: 이름, 한줄소개가 모두 입력되어야 함
+  const isSaveDisabled = isNameEmpty || !intro.trim();
 
   useEffect(() => {
     if (!isPartDropdownOpen) {
@@ -156,10 +244,31 @@ export default function ProfilePage() {
     setIsSaveModalOpen(false);
   };
 
-  const handleSaveConfirm = () => {
-    // TODO: 프로필 저장 로직
+  const handleSaveConfirm = async () => {
     setIsSaveModalOpen(false);
-    navigate('/profile/Default', { replace: false });
+    
+    try {
+      // 공통 프로필 저장
+      const commonProfileResult = await updateProfile({
+        username: name,
+        comment: intro,
+      });
+      
+      if (!commonProfileResult.success) {
+        console.error("공통 프로필 저장 실패:", commonProfileResult.error);
+        return;
+      }
+      
+      
+      // 저장 후 프로필 상태 확인
+      const verifyResult = await getProfile();
+      if (verifyResult.success) {
+      }
+      
+      navigate('/profile/Default', { replace: false });
+    } catch (error) {
+      handleError(error, { navigate });
+    }
   };
 
   const handleImageUpload = () => {
@@ -178,13 +287,8 @@ export default function ProfilePage() {
   };
 
   const handleDBTIClick = () => {
-    // DBTI 정보가 없으면 DBTI 테스트 페이지로 이동
-    if (!dbtiInfo) {
-      navigate("/profile/DBTI");
-    } else {
-      // DBTI 정보가 있으면 Profile/Edit/DBTI 페이지로 이동
-      navigate("/profile/edit/dbti");
-    }
+    // DBTI 편집 페이지로 이동
+    navigate("/profile/edit/dbti");
   };
 
   // 편집 모드가 아닐 때 (기본 프로필 보기)
@@ -273,8 +377,8 @@ export default function ProfilePage() {
           <S.FormSection>
             <S.FormLabel>DBTI (프로젝트 성향 테스트)</S.FormLabel>
             <S.DBTIButtonWrapper>
-              <WtLPawButton onClick={handleDBTIClick}>
-                테스트
+              <WtLPawButton onClick={handleDBTIClick} isActive={!!userDBTIResult} isToggle={true}>
+                {userDBTIResult ? userDBTIResult.name.split(', ')[1] || userDBTIResult.name : '테스트'}
               </WtLPawButton>
             </S.DBTIButtonWrapper>
           </S.FormSection>

@@ -30,7 +30,11 @@ export default function TopNav({ className }: TopNavProps) {
   const isProfilePage = location.pathname.startsWith("/profile");
 
   const handleLogoClick = () => {
-    navigate("/");
+    if (isLoggedIn) {
+      navigate("/home");
+    } else {
+      navigate("/");
+    }
   };
 
   const handleNewChatRoom = () => {
@@ -42,7 +46,7 @@ export default function TopNav({ className }: TopNavProps) {
   };
 
   const handleManageChatRoom = () => {
-    navigate("/home");
+    navigate("/manage/join");
   };
 
   const handleMenuToggle = () => {
@@ -74,7 +78,7 @@ export default function TopNav({ className }: TopNavProps) {
           </WtMButton>
           <WtMButton 
             onClick={handleManageChatRoom}
-            isClicked={location.pathname.startsWith('/home') || location.pathname.startsWith('/manage')}
+            isClicked={location.pathname.startsWith('/manage/join') || location.pathname.startsWith('/manage')}
           >
             매칭룸 관리
           </WtMButton>

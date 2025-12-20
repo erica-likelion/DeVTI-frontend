@@ -5,6 +5,8 @@ import GoogleIcon from '@/assets/icons/google.svg';
 import { googleLogin, kakaoLogin } from '@/services/auth'; 
 import { useGoogleLogin } from '@react-oauth/google';
 import KakaoLogin from 'react-kakao-login';
+import { handleError } from '@/utils/errorHandler';
+import { useNavigate } from 'react-router-dom';
 
 interface SocialLoginButtonProps {
   provider: 'kakao' | 'google';
@@ -12,25 +14,41 @@ interface SocialLoginButtonProps {
 }
 
 const SocialLoginButton = ({ provider, children }: SocialLoginButtonProps) => {
+  const navigate = useNavigate();
 
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      const result = await googleLogin(tokenResponse.access_token);
-      if (result?.success) {
-        window.location.href = '/home';
+      try {
+        const result = await googleLogin(tokenResponse.access_token);
+        if (result?.success) {
+          window.location.href = '/home/check';
+        }
+      } catch (error) {
+        handleError(error, { navigate });
       }
+    },
+    onError: () => {
+      // Google OAuth 자체 에러는 클라이언트 에러로 처리
+      navigate('/error/400');
     },
     flow: 'implicit',
   });
 
   const handleKakaoSuccess = async (response: any) => {
-    const result = await kakaoLogin(response.response.access_token);
-    if (result.success) {
-      window.location.href = '/home';
+    try {
+      const result = await kakaoLogin(response.response.access_token);
+      if (result.success) {
+        window.location.href = '/home/check';
+      }
+    } catch (error) {
+      handleError(error, { navigate });
     }
   };
 
-  const handleKakaoFail = () => {}; //라이브러리에서 필수가 제거하지 못하고 공백으로 놔둠
+  const handleKakaoFail = () => {
+    // Kakao OAuth 자체 에러는 클라이언트 에러로 처리
+    navigate('/error/400');
+  };
 
   const renderIcon = () => {
     const iconSrc = provider === 'kakao' ? KakaoIcon : GoogleIcon;

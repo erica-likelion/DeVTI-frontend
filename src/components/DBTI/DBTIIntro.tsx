@@ -13,7 +13,7 @@ export default function DBTIIntro({ onStart }: DBTIIntroProps) {
         <S.Subtitle>최고의 팀워크를 위해 나의 성향을 알아봐요!</S.Subtitle>
       </S.TextWrapper>
       <S.ImageWrapper>
-        <S.Image src="/dbti-intro.png" alt="DBTI 검사" />
+        <S.Image src="/dog_mystery.webp" alt="DBTI 검사" />
       </S.ImageWrapper>
       <BkMTextButton onClick={onStart}>
         테스트

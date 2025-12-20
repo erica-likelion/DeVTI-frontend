@@ -35,7 +35,7 @@ export const QuestionText = styled.p`
 export const LikertScale = styled.div`
   display: flex;
   align-items: center;
-  ${({ theme }) => theme.responsive.property.gap('M')}
+  ${({ theme }) => theme.responsive.property.gap('R')}
   width: 100%;
   justify-content: space-between;
   padding: 0;
@@ -69,5 +69,5 @@ export const ButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ${({ theme }) => theme.responsive.property.gap('M')}
+  ${({ theme }) => theme.responsive.property.gap('R')}
 `;

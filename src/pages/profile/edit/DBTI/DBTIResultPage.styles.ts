@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div<{ $isInDefaultPage?: boolean }>`
   background: ${({ theme }) => theme.colors.grayScale.white};
+  ${({ theme }) => theme.colors.grayScale.black};
   display: flex;
   width: 100%;
   padding: ${({ $isInDefaultPage, theme }) =>
@@ -43,7 +44,7 @@ export const Title = styled.h1`
 export const ContentFrame = styled.div`
   display: flex;
   ${({ theme }) =>
-    theme.responsive.property.paddingComplex("none", "M", "none", "M")}
+    theme.responsive.property.paddingComplex("none", "R", "none", "R")}
   align-items: flex-end;
   flex-direction: column;
   gap: 2.5rem;
@@ -70,7 +71,6 @@ export const ResultImageTextFrame = styled.div`
     width: ${({ theme }) => theme.componentWidths.small.wide};
     height: ${({ theme }) => theme.componentWidths.small.wide};
     aspect-ratio: 1/1;
-    background: ${({ theme }) => theme.colors.grayScale.gray100};
 
     ${({ theme }) => theme.media.desktop} {
       width: ${({ theme }) => theme.componentWidths.small.desktop};
@@ -137,9 +137,8 @@ export const ImageTextFrame = styled.div`
   align-self: stretch;
 
   img {
-    width: 3.75rem;
-    height: 3.75rem;
-    background: ${({ theme }) => theme.colors.grayScale.gray100};
+    width: 3.5rem;
+    height: 3.5rem;
   }
 `;
 

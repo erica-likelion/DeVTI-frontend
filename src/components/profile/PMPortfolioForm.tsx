@@ -7,6 +7,7 @@ import type {
   DailyAvailabilityKey,
   WeeklyAvailabilityKey,
 } from "./BasePortfolioForm";
+import { updateProfile, createProfile, getProfile } from "@/services/profile";
 
 const DESIGN_ITEMS: SelfAssessmentItem[] = [
   {
@@ -101,9 +102,19 @@ export default function PMPortfolioForm({
 }: PMPortfolioFormProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const locationState = location.state as { selectedParts?: string[] } | null;
+  const locationState = location.state as { 
+    selectedParts?: string[];
+    name?: string;
+    intro?: string;
+    profileImage?: string | null;
+  } | null;
   // prop으로 전달된 selectedParts를 우선 사용, 없으면 location.state에서 가져오기
   const currentSelectedParts = propSelectedParts || locationState?.selectedParts || [];
+  
+  // location.state에서 전달받은 이름과 한줄소개를 prop보다 우선 사용
+  const currentName = locationState?.name || name;
+  const currentIntro = locationState?.intro || intro;
+  const currentProfileImage = locationState?.profileImage || profileImage;
   const [experienceSummary, setExperienceSummary] = useState(portfolioData?.experienceSummary || "");
   const [strengths, setStrengths] = useState(portfolioData?.strengths || "");
   const [dailyAvailability, setDailyAvailability] =
@@ -145,7 +156,40 @@ export default function PMPortfolioForm({
   );
   const isSelfAssessmentValid = isDesignAssessmentComplete && isDevelopmentAssessmentComplete;
 
-  const handleRegister = (isNewcomerValue: boolean) => {
+  // daily/weekly availability를 숫자로 변환
+  const convertDailyAvailabilityToNumber = (key: DailyAvailabilityKey | null): number => {
+    if (!key) return 0;
+    const map: Record<DailyAvailabilityKey, number> = {
+      under1h: 1,
+      "1to3h": 3,
+      over3h: 5,
+    };
+    return map[key];
+  };
+
+  const convertWeeklyAvailabilityToNumber = (key: WeeklyAvailabilityKey | null): number => {
+    if (!key) return 0;
+    const map: Record<WeeklyAvailabilityKey, number> = {
+      under10h: 10,
+      "10to20h": 20,
+      over20h: 30,
+    };
+    return map[key];
+  };
+
+  // 자가평가 점수의 평균 계산
+  const calculateAverage = (assessments: Record<string, number>, items: readonly SelfAssessmentItem[]): number => {
+    const scores = items
+      .map((item) => assessments[item.key] ?? 0)
+      .filter((score) => score > 0);
+    if (scores.length === 0) return 0;
+    const sum = scores.reduce((acc, score) => acc + score, 0);
+    const average = sum / scores.length;
+    // 0.5 단위로 내림
+    return Math.floor(average * 2) / 2;
+  };
+
+  const handleRegister = async (isNewcomerValue: boolean) => {
     // 등록 버튼 클릭 시 파트 추가를 위해 부모 컴포넌트에 알림
     let updatedSelectedParts = currentSelectedParts;
     if (onRegister) {
@@ -158,13 +202,67 @@ export default function PMPortfolioForm({
         ? currentSelectedParts 
         : [...currentSelectedParts, "PM"];
     }
+
+    // 공통 프로필이 없으면 먼저 생성
+    if (currentName || currentIntro) {
+      const commonProfileResult = await updateProfile({
+        username: currentName,
+        comment: currentIntro,
+      });
+      
+      if (!commonProfileResult.success) {
+        console.error("공통 프로필 생성/업데이트 실패:", commonProfileResult.error);
+        // 공통 프로필 생성 실패해도 계속 진행 (이미 존재할 수 있음)
+      }
+    }
+
+    // API 요청 데이터 준비 (JSON 형식)
+    const designUnderstanding = calculateAverage(designAssessment, DESIGN_ITEMS);
+    const developmentUnderstanding = calculateAverage(developmentAssessment, DEVELOPMENT_ITEMS);
     
-    // PM 포트폴리오 데이터를 localStorage에 저장
+    const requestData: {
+      experienced?: string | null;
+      strength?: string | string[];
+      daily_time_capacity?: number;
+      weekly_time_capacity?: number;
+      design_understanding?: number;
+      development_understanding?: number;
+    } = {
+      // 신입인 경우 null, 아니면 experienceSummary 전송 (빈 문자열은 제외)
+      ...(isNewcomerValue 
+        ? { experienced: null } 
+        : experienceSummary ? { experienced: experienceSummary } : {}),
+      strength: strengths || "",
+      daily_time_capacity: convertDailyAvailabilityToNumber(dailyAvailability),
+      weekly_time_capacity: convertWeeklyAvailabilityToNumber(weeklyAvailability),
+      design_understanding: designUnderstanding,
+      development_understanding: developmentUnderstanding,
+    };
+
+    
+    // 프로필 존재 여부 확인 (404 에러 로깅 비활성화)
+    const existingProfile = await getProfile("PM", true);
+    let result;
+    
+    if (existingProfile.success && existingProfile.data) {
+      // 프로필이 있으면 PUT (업데이트)
+      result = await updateProfile(requestData, "PM");
+    } else {
+      // 프로필이 없으면 POST (생성)
+      result = await createProfile(requestData, "PM");
+    }
+    
+    if (!result.success) {
+      // TODO: 에러 처리 (토스트 메시지 등)
+      console.error("프로필 저장 실패:", result.error);
+      return;
+    }
+    
     const pmData = {
-      name,
-      intro,
+      name: currentName,
+      intro: currentIntro,
       dbtiInfo,
-      profileImage,
+      profileImage: currentProfileImage,
       selectedParts: updatedSelectedParts,
       experienceSummary,
       strengths,
@@ -174,7 +272,6 @@ export default function PMPortfolioForm({
       developmentAssessment,
       isNewcomer: isNewcomerValue,
     };
-    localStorage.setItem('portfolio_PM', JSON.stringify(pmData));
     
     // 등록 후 view 화면으로 이동 (포트폴리오 섹션에 수정/삭제 버튼, LeftPanel에 저장 버튼 활성화)
     navigate("/profile/pm/view", {
