@@ -4,8 +4,6 @@ import * as S from './Room.styles';
 import { createParticipantsFromApi, type ApiUsersResponse } from './RoomParticipants';
 import { type Participant } from '../room/RoomParticipants';
 import { getCurrentRoomId } from '@/utils/globalState';
-import axiosInstance, { getAuthToken } from '@/lib/AxiosInstance';
-
 
 import RoomBeforeMatch from './RoomBeforeMatch';
 import RoomAfterMatch from './RoomAfterMatch';
@@ -15,7 +13,8 @@ type WsEnvelope =
   | { type: 'participant.new'; payload: { user: any } }      // 예: 새 유저 1명 정보
   | { type: 'room.state_change'; payload: { state: 'WAGGING' | 'MATCHED' | string } };
 
-const VITE_WSS_BASE_URL = `wss://www.devti.site`; // ex) wss://devti.site/ws
+const VITE_WSS_BASE_URL = import.meta.env.VITE_WSS_BASE_URL; // ex) wss://devti.site/ws
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const TEST_TOKEN = import.meta.env.VITE_TEST_AUTH_TOKEN;
 
 console.log(TEST_TOKEN)
@@ -34,28 +33,31 @@ const Room = () => {
   const didRefetchOnWaggingRef = useRef(false);
 
   const wsUrl = useMemo(() => {
-    const token = getAuthToken();
-    if (!roomId || !token) return '';
-    return `${VITE_WSS_BASE_URL}/ws/room/${roomId}/?token=${token}`;
+    return `${VITE_WSS_BASE_URL}/ws/room/${roomId}/?token=${TEST_TOKEN}`; // 필요하면 roomId/token 붙이기
   }, [roomId]);
 
+  // ✅ REST로 participants 다시 불러오는 함수
   const fetchParticipants = useCallback(async () => {
-  try {
-    if (!roomId) return;
+    try {
+      const res = await fetch(`${VITE_API_BASE_URL}/api/users/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${TEST_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-    const { data } = await axiosInstance.get<ApiUsersResponse>(`/api/users/${roomId}`);
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
 
-    setRecommendReason(data.recommend_reason ?? '');
-    setParticipants(createParticipantsFromApi(data));
-  } catch (e) {
-    console.error(e);
-  }
-}, [roomId]);
+      const data: ApiUsersResponse = await res.json();
+      setRecommendReason(data.recommend_reason ?? '');
+      setParticipants(createParticipantsFromApi(data));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [roomId]);
 
   useEffect(() => {
-    if (!wsUrl) return;
     const ws = new WebSocket(wsUrl);
-    
     fetchParticipants();
 
     wsRef.current = ws;

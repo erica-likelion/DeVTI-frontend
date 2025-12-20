@@ -6,20 +6,11 @@ import { theme } from "@/styles/theme";
 import { router } from "@/routers/AppRouter";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
 createRoot(document.getElementById("root")!).render(
-  googleClientId ? (
-    <GoogleOAuthProvider clientId={googleClientId}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </GoogleOAuthProvider>
-  ) : (
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <RouterProvider router={router} />
     </ThemeProvider>
-  )
+  </GoogleOAuthProvider>
 );
