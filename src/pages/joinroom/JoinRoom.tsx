@@ -114,6 +114,7 @@ export default function JoinRoom() {
         handleError(error, { navigate });
         return;
       }
+      console.error('Validate code error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -140,7 +141,7 @@ export default function JoinRoom() {
         disabled={isDisabled || isLoading} 
         onClick={handleNext}
       >
-        {isLoading ? '검증 중...' : '다음'}
+        {isLoading ? '검증 중' : '다음'}
       </BlackLTextButton>
       
       <Modal

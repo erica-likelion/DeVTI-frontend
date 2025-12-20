@@ -88,6 +88,7 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
       
       if (!result.success) {
         console.error('프로필 저장 실패:', result.error);
+        alert(result.error || '프로필 저장에 실패했습니다.');
         return;
       }
       
