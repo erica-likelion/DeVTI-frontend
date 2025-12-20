@@ -110,6 +110,7 @@ const RoomBeforeMatch = ({ participants, recommendReason, isWagging }: Props) =>
 
   const handleChangeTab = (value: string) => {
     setSelectedTab(value as TabValue);
+    console.log(selectedTab);
   };
 
 

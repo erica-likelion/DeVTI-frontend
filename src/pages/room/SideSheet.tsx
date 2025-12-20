@@ -263,7 +263,8 @@ const SideSheet = ({ participantId, onClose }: Props) => {
 
 				</S.ContentSection>
 
-				<VT700LButton children="꼬리 흔들기" onClick={() => void handleWagging(profile.id)}/>
+				{!Wagging ? 
+				<VT700LButton children="꼬리 흔들기" onClick={() => void handleWagging(profile.id)} /> : ''}
 
 				<S.BlankFrame/>
 			</S.Container>
