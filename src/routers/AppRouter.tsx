@@ -31,6 +31,8 @@ import ManageRoomDefault from "@/pages/manageroom/ManageRoomDefault";
 import Room from "@/pages/room/Room";
 import ManageJoinPage from "@/pages/manageroom/ManageJoinPage";
 import HomeRouter from "@/utils/HomeRouter";
+import ErrorPage400 from "@/pages/error/ErrorPage400";
+import ErrorPage500 from "@/pages/error/ErrorPage500";
 
 export const router = createBrowserRouter([
   {
@@ -198,6 +200,14 @@ export const router = createBrowserRouter([
         element: (
           <ManageJoinPage />
         ),
+      },
+      {
+        path: "error/400",
+        element: <ErrorPage400 />,
+      },
+      {
+        path: "error/500",
+        element: <ErrorPage500 />,
       },
       {
         path: "*",
