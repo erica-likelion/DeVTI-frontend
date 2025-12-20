@@ -25,7 +25,6 @@ const Room = () => {
 
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [recommendReason, setRecommendReason] = useState('');
-  const [matchingAt, setMatchingAt] = useState('');
   const [isMatched, setIsMatched] = useState(false);
   const [isWagging, setIsWagging] = useState(false);
 
@@ -53,7 +52,6 @@ const Room = () => {
       const data: ApiUsersResponse = await res.json();
       setRecommendReason(data.recommend_reason ?? '');
       setParticipants(createParticipantsFromApi(data));
-      setMatchingAt(data.matching_at ?? '');
     } catch (e) {
       console.error(e);
     }

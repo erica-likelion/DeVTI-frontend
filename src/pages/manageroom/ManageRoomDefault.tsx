@@ -32,7 +32,6 @@ interface Props {
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const TEST_TOKEN = import.meta.env.VITE_TEST_AUTH_TOKEN;
-const TEST_TOKEN2 = '6744a2a5e8555e3f0c69bb3f6b269c761c1540d9';
 
 const ManageRoomDefault = ({ participants, matching_at, Wagging}: Props) => {
 
@@ -45,7 +44,7 @@ const ManageRoomDefault = ({ participants, matching_at, Wagging}: Props) => {
   const [selectedRoleTab, setSelectedRoleTab] = useState<RoleType>('전체');
   const [selectedTopTab, setSelectedTopTab] = useState<TopTab>('전체');
 
-  const [isMatchedByServer, setIsMatchedByServer] = useState(false);
+  const [isMatchedByServer] = useState(false);
   const [isWagging, setIsWagging] = useState(Wagging);
 
   const calcRemainingTime = (): RemainingTime => {
