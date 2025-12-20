@@ -17,7 +17,6 @@ import CopyBlackGray from "@/assets/icons/CopyBlackGray.svg"
 import DownloadIcon from "@/assets/icons/Download.svg";
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const TEST_TOKEN = import.meta.env.TEST_TOKEN;
 
 
 type Props = {
@@ -263,7 +262,8 @@ const SideSheet = ({ participantId, onClose }: Props) => {
 
 				</S.ContentSection>
 
-				<VT700LButton children="꼬리 흔들기" onClick={() => void handleWagging(profile.id)}/>
+				{!Wagging ? 
+				<VT700LButton children="꼬리 흔들기" onClick={() => void handleWagging(profile.id)} /> : ''}
 
 				<S.BlankFrame/>
 			</S.Container>

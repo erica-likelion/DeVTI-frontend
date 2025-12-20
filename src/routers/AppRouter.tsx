@@ -27,7 +27,7 @@ import JoinRoomPR from "@/pages/joinroom/JoinRoomPR";
 import DBTIEditPage from "@/pages/profile/edit/DBTI/DBTIEditPage";
 import ProfileEditPage from "@/pages/profile/edit/DBTI/ProfileEditPage";
 import ManageRoomMatched from "@/pages/manageroom/ManageRoomMatched";
-import ManageRoomDefault from "@/pages/manageroom/ManageRoomDefault";
+import ManageRoomPage from "@/pages/manageroom/ManageRoomPage";
 import Room from "@/pages/room/Room";
 import ManageJoinPage from "@/pages/manageroom/ManageJoinPage";
 import HomeRouter from "@/utils/HomeRouter";
@@ -192,7 +192,7 @@ export const router = createBrowserRouter([
       {
         path: "manage/default",
         element: (
-          <ManageRoomDefault />
+          <ManageRoomPage />
         ),
       },
       {

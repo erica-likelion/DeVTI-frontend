@@ -60,22 +60,22 @@ export const CardWrapper = styled.div<{ $cardSize?: "M" | "L" }>`
   width: calc((100% - 2 * ${({ theme }) => theme.responsive.gap('M')}) / 3);
   min-width: 15rem; /* 최소 너비 설정으로 모바일에서도 가로 배치 유지 */
   
-  ${({ theme, $cardSize }) => theme.media.wide} {
+  ${({ theme }) => theme.media.wide} {
     width: ${({ $cardSize, theme }) => $cardSize === "L" ? theme.componentWidths.large.wide : '28rem'}; /* Component-Width-Large or Medium */
     min-width: ${({ $cardSize, theme }) => $cardSize === "L" ? theme.componentWidths.large.wide : '28rem'};
   }
 
-  ${({ theme, $cardSize }) => theme.media.desktop} {
+  ${({ theme}) => theme.media.desktop} {
     width: ${({ $cardSize, theme }) => $cardSize === "L" ? theme.componentWidths.large.desktop : '28rem'}; /* Component-Width-Large or Medium */
     min-width: ${({ $cardSize, theme }) => $cardSize === "L" ? theme.componentWidths.large.desktop : '28rem'};
   }
   
-  ${({ theme, $cardSize }) => theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     width: ${({ $cardSize, theme }) => $cardSize === "L" ? theme.componentWidths.large.tablet : theme.componentWidths.medium.tablet};
     min-width: ${({ $cardSize, theme }) => $cardSize === "L" ? theme.componentWidths.large.tablet : theme.componentWidths.medium.tablet};
   }
 
-  ${({ theme, $cardSize }) => theme.media.mobile} {
+  ${({ theme }) => theme.media.mobile} {
     width: ${({ $cardSize, theme }) => $cardSize === "L" ? theme.componentWidths.large.mobile : theme.componentWidths.medium.mobile};
     min-width: ${({ $cardSize, theme }) => $cardSize === "L" ? theme.componentWidths.large.mobile : theme.componentWidths.medium.mobile};
   }

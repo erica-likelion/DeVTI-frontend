@@ -9,6 +9,7 @@ import VT700LButton from '@/components/ButtonDynamic/VT700LButton';
 import DefaultIMG_Profile from '/public/DefaultIMG_Profile.webp';
 import Modal from '@/components/modal/Modal';
 import SideSheet from './SideSheet';
+import { getMatchingStartTime } from '@/utils/globalState';
 
 import { BkLTextButton } from '@/components/ButtonStatic';
 
@@ -21,7 +22,6 @@ import {
 interface Props {
   participants: Participant[];
   recommendReason: string;
-  matching_at: string;
   isWagging: boolean;
 }
 
@@ -38,40 +38,55 @@ type TabValue = RoleTab;
 type ModalType = 'wagging' | null;
 
 
-const RoomBeforeMatch = ({ participants, recommendReason, matching_at, isWagging }: Props) => {
+const RoomBeforeMatch = ({ participants, recommendReason, isWagging }: Props) => {
   const [selectedTab, setSelectedTab] = useState<RoleType>('전체');
   const [isMatchedByServer, setIsMatchedByServer] = useState(false);
   const [Waggingfinished, setWaggingFinished] = useState(false);
 
   const calcRemainingTime = (): RemainingTime => {
-    const now = new Date().getTime();
-    
-    const deadline = new Date(matching_at.replace(' ', 'T') + '+09:00');
-    const diff = deadline.getTime() - now;
+  const now = Date.now();
 
-    if (diff <= 0) {
-      return {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-        isEnded: true,
-      };
-    }
-
-    const totalSeconds = Math.floor(diff / 1000);
-    const days = Math.floor(totalSeconds / (60 * 60 * 24));
-    const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
-    const seconds = totalSeconds % 60;
-
+  const startTime = getMatchingStartTime();
+  console.log(startTime);
+  if (!startTime) {
     return {
-      days,
-      hours,
-      minutes,
-      seconds,
-      isEnded: false,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      isEnded: false, // 시작 시간이 없으면 "종료"로 보긴 애매해서 false 추천
     };
+  }
+
+  const deadline = new Date(startTime.replace(' ', 'T') + '+09:00');
+  const diff = deadline.getTime() - now;
+
+  console.log(deadline);
+
+  // Invalid Date면 getTime()이 NaN이니까 같이 처리
+  if (!Number.isFinite(diff) || diff <= 0) {
+    return {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      isEnded: true,
+    };
+  }
+
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / (60 * 60 * 24));
+  const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+  const seconds = totalSeconds % 60;
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+    isEnded: false,
+  };
 };
 
   const [remainingTime, setRemainingTime] = useState<RemainingTime>(() => calcRemainingTime());
@@ -95,6 +110,7 @@ const RoomBeforeMatch = ({ participants, recommendReason, matching_at, isWagging
 
   const handleChangeTab = (value: string) => {
     setSelectedTab(value as TabValue);
+    console.log(selectedTab);
   };
 
 
@@ -146,6 +162,8 @@ const RoomBeforeMatch = ({ participants, recommendReason, matching_at, isWagging
   const handleEndMatching = () => {
     setIsMatchedByServer(true);
   }
+
+  console.log(`참가자 룸 ${isWagging}`)
 
 
   return (

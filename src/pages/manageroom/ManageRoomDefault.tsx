@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
 import * as S from './ManageRoomDefault.styles';
 import RoleTabs from '@/components/Tabs/RoleTabs';
 import WtLMemberList from '../../components/managerlist/WtLMemberList';
@@ -6,14 +7,14 @@ import SegmentControl from '@/components/SegmentControl/SegmentControlTransparen
 import DropBox from '@/components/DropBox/DropBox';
 import VT700LButton from '@/components/ButtonDynamic/VT700LButton';
 import DefaultIMG_Profile from '/public/DefaultIMG_Profile.webp';
+import { getCurrentRoomId } from '@/utils/globalState';
 
-import {
-  type Participant,
-  type RoleType,
-} from '../room/RoomParticipants';
+import { type Participant, ROLE_TABS, type RoleType } from '../room/RoomParticipants';
 
-const ROLE_TABS = ['전체', 'PM', '디자인', '프론트엔드', '백엔드'] as const;
 const TOP_TABS = ['전체', '꼬리 다 흔들지 않은 인원'] as const;
+type TopTab = (typeof TOP_TABS)[number];
+type RoleTab = (typeof ROLE_TABS)[number];
+type TabValue = RoleTab;
 
 interface RemainingTime {
   days: number;
@@ -23,182 +24,153 @@ interface RemainingTime {
   isEnded: boolean;
 }
 
-// 마감 시간(임시)
-const MATCH_DEADLINE = new Date('2025-12-31T23:59:59+09:00');
+interface Props {
+  participants: Participant[];
+  matching_at: string;
+  Wagging?: boolean; // 처음 진입 시 서버 상태로 내려주면 사용, 없으면 false로 시작
+}
 
-type RoleTab = (typeof ROLE_TABS)[number];
-type TopTab = (typeof TOP_TABS)[number];
-type TabValue = RoleTab | TopTab; 
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const TEST_TOKEN = import.meta.env.VITE_TEST_AUTH_TOKEN;
 
-let tabs = ROLE_TABS;
+const ManageRoomDefault = ({ participants, matching_at, Wagging}: Props) => {
 
-
-const calcRemainingTime = (): RemainingTime => {
-  const now = new Date().getTime();
-  const diff = MATCH_DEADLINE.getTime() - now;
-
-  if (diff <= 0) {
-    return {
-      days: 0,
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-      isEnded: true,
-    };
-  }
-
-  const totalSeconds = Math.floor(diff / 1000);
-  const days = Math.floor(totalSeconds / (60 * 60 * 24));
-  const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
-  const seconds = totalSeconds % 60;
-
-
-  return {
-    days,
-    hours,
-    minutes,
-    seconds,
-    isEnded: false,
-  };
-};
-
-
-const ManageRoomDefault = () => {
-
-  const [participants, setParticipants] = useState<Participant[]>(Participant);
-  const [selectedTab, setSelectedTab] = useState<TabValue>('전체');
-  const [remainingTime, setRemainingTime] = useState<RemainingTime>(
-    () => calcRemainingTime(),
-  );
-  const [isMatchedByServer] = useState(false);
-
-	const handleRemoveParticipant = (id: number) => {
-    setParticipants(prev => prev.filter(p => p.id !== id));
-  };
-
-  // 🔹 꼬리 흔들기 상태 (room.state_change → WAGGING 에서 true)
-  const [isWagging, setIsWagging] = useState(false);
-
-  const handleWaggingClick = async () => {
-    if (isWagging) return; 
-
-    setIsWagging(true);
-
-    /*
-    try {
-      await axios.post('/api/matching/carrot/{participant_id}');
-    } catch (error) {
-      console.error('꼬리 흔들기 API 호출 실패:', error);
-
-      // setIsCarrotDisabled(false);
-    }
-    */
-  };
+  const [localParticipants, setLocalParticipants] = useState<Participant[]>(participants);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setRemainingTime(calcRemainingTime());
-    }, 1000);
+    setLocalParticipants(participants);
+  }, [participants]);
 
+  const [selectedRoleTab, setSelectedRoleTab] = useState<RoleType>('전체');
+  const [selectedTopTab, setSelectedTopTab] = useState<TopTab>('전체');
+
+  const [isMatchedByServer] = useState(false);
+  const [isWagging, setIsWagging] = useState(Wagging);
+
+  const calcRemainingTime = (): RemainingTime => {
+    const now = new Date().getTime();
+    const deadline = new Date(matching_at.replace(' ', 'T') + '+09:00');
+    const diff = deadline.getTime() - now;
+
+    if (diff <= 0) {
+      return { days: 0, hours: 0, minutes: 0, seconds: 0, isEnded: true };
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / (60 * 60 * 24));
+    const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+    const seconds = totalSeconds % 60;
+
+    return { days, hours, minutes, seconds, isEnded: false };
+  };
+
+  const [remainingTime, setRemainingTime] = useState<RemainingTime>(() => calcRemainingTime());
+
+  useEffect(() => {
+    const timer = setInterval(() => setRemainingTime(calcRemainingTime()), 1000);
     return () => clearInterval(timer);
+    // matching_at이 바뀌는 케이스 있으면 deps에 넣는 게 안전
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 타이머가 끝났거나 서버에서 매칭 완료 신호를 받으면 isEnded = true
   const isEnded = remainingTime.isEnded || isMatchedByServer;
 
   useEffect(() => {
-    setSelectedTab('전체');
+    setSelectedRoleTab('전체');
+    setSelectedTopTab('전체');
   }, [isEnded]);
 
-  const handleChangeTab = (value: string) => {
-    setSelectedTab(value as TabValue);
+  const handleChangeRoleTab = (value: string) => {
+    setSelectedRoleTab(value as TabValue);
   };
 
-  // 전체 인원 / 팀 수 계산
-  const totalMembers = participants.length;
-  let filteredParticipants = participants;
+  const handleRemoveParticipant = (id: number) => {
+    setLocalParticipants(prev => prev.filter(p => p.id !== id));
+  };
 
-  if (selectedTab !== '전체') {
-        filteredParticipants = participants.filter(
-          p => p.role === (selectedTab as RoleType),
-        );
+  const handleWaggingClick = async () => {
+    if (isWagging) return;
+    const room_id = getCurrentRoomId();
+
+    setIsWagging(true);
+
+    try {
+    await axios.post(
+      `${VITE_API_BASE_URL}/api/matching/${room_id}/wagging-start/`,
+      {}, // body가 없으면 빈 객체
+      {
+        headers: {
+          Authorization: `Bearer ${TEST_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    } catch (error) {
+      console.error('꼬리 흔들기 API 호출 실패:', error);
+
+    }
+
+    console.log(`꼬리 흔들기 요청 보낸 후 ${isWagging}`)
+  };
+
+
+  // 필터링된 참가자 리스트
+  const filteredParticipants = useMemo(() => {
+    return localParticipants.filter(p => {
+      // 1) 역할 탭 필터
+      if (selectedRoleTab !== '전체') {
+        // TODO: Participant에 역할 필드명이 role인지 part인지 프로젝트에 맞게 수정
+        const participantRole = (p as any).role ?? (p as any).part;
+        if (participantRole !== selectedRoleTab) return false;
       }
 
-  /* 
-    //백엔드 연결 용
+      // 2) Top 탭: "꼬리 다 흔들지 않은 인원"
+      if (selectedTopTab === '꼬리 다 흔들지 않은 인원') {
+        // TODO: 참가자의 완료 여부 필드명에 맞게 수정
+        // 예: p.waggingFinished === true면 완료, false면 미완료
+        const finished = Boolean((p as any).waggingFinished);
+        if (finished) return false;
+      }
 
-    useEffect(() => {
-      const socket = new WebSocket(WS_URL);
+      return true;
+    });
+  }, [localParticipants, selectedRoleTab, selectedTopTab]);
 
-      socket.onmessage = (event) => {
-        const msg = JSON.parse(event.data);
-
-        switch (msg.type) {
-          case 'participants.list':
-            setParticipants(
-              createParticipantsFromList(msg.payload) // RoomParticipants.ts 에서 import
-            );
-            break;
-
-          case 'participant.new':
-            setParticipants(prev => [
-              ...prev,
-              mapSocketParticipant(msg.payload, prev.length + 1),
-            ]);
-            break;
-
-          if (new_state === 'WAGGING') {
-            setIsWagging(true);  
-          }
-            break;
-
-          case 'matching.result':
-            setParticipants(prev => applyMatchingResult(prev, msg.payload));
-            setIsMatchedByServer(true);
-            break;
-        }
-      };
-
-      return () => socket.close();
-    }, []);
-  */
-
-
+  const totalMembers = localParticipants.length;
+  const tabs = ROLE_TABS;
 
   return (
     <S.Container>
-
       <S.TopSection>
         <S.Title>매칭 시작까지</S.Title>
         <S.CountdownText>
-          {remainingTime.days}일 {remainingTime.hours}시간{' '}
-          {remainingTime.minutes}분 
+          {remainingTime.days}일 {remainingTime.hours}시간 {remainingTime.minutes}분
         </S.CountdownText>
 
-        <S.SubTitle>
-          멋쟁이사자처럼 13기 장기프로젝트 - 운영진
-        </S.SubTitle>
+        <S.SubTitle>멋쟁이사자처럼 13기 장기프로젝트 - 운영진</S.SubTitle>
       </S.TopSection>
 
-			{ !isWagging ? (
-				<VT700LButton children="꼬리 흔들기 시작" disabled={isWagging} onClick={handleWaggingClick}/>
-			) : (
-				<SegmentControl
-					options={TOP_TABS as unknown as string[]}
-					onChange={(val) => setSelectedTab(val as TopTab)}/>
-			)}
-	
+      {!isWagging ? (
+        <VT700LButton
+          children="꼬리 흔들기 시작"
+          disabled={isWagging}
+          onClick={handleWaggingClick}
+        />
+      ) : (
+        <SegmentControl
+          options={TOP_TABS as unknown as string[]}
+          onChange={val => setSelectedTopTab(val as TopTab)}
+        />
+      )}
 
       <S.ListSection>
         <S.ListHeaderRow>
-          <RoleTabs tabs={tabs as unknown as string[]} onChange={handleChangeTab} />
+          <RoleTabs tabs={tabs as unknown as string[]} onChange={handleChangeRoleTab} />
         </S.ListHeaderRow>
 
         <S.MidSection>
-          <S.TotalCount>
-         		전체 {totalMembers}명
-          </S.TotalCount>
+          <S.TotalCount>전체 {totalMembers}명</S.TotalCount>
 
           <DropBox
             value={'최근 입장순'}
@@ -218,7 +190,7 @@ const ManageRoomDefault = () => {
               keywords={participant.keywords}
               rightButton={'제거'}
               disabled={participant.disabled}
-							onRightButtonClick={() => handleRemoveParticipant(participant.id)}
+              onRightButtonClick={() => handleRemoveParticipant(participant.id)}
             />
           ))}
         </S.MemberList>
