@@ -63,9 +63,19 @@ export default function DesignPortfolioForm({
 }: DesignPortfolioFormProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const locationState = location.state as { selectedParts?: string[] } | null;
+  const locationState = location.state as { 
+    selectedParts?: string[];
+    name?: string;
+    intro?: string;
+    profileImage?: string | null;
+  } | null;
   // prop으로 전달된 selectedParts를 우선 사용, 없으면 location.state에서 가져오기
   const currentSelectedParts = propSelectedParts || locationState?.selectedParts || [];
+  
+  // location.state에서 전달받은 이름과 한줄소개를 prop보다 우선 사용
+  const currentName = locationState?.name || name;
+  const currentIntro = locationState?.intro || intro;
+  const currentProfileImage = locationState?.profileImage || profileImage;
   const [experienceSummary, setExperienceSummary] = useState(portfolioData?.experienceSummary || "");
   const [strengths, setStrengths] = useState(portfolioData?.strengths || "");
   const [designWorkFile, setDesignWorkFile] = useState<File | null>(null);
@@ -92,7 +102,6 @@ export default function DesignPortfolioForm({
       // 파일 크기 제한: 10MB
       const maxSize = 10 * 1024 * 1024; // 10MB in bytes
       if (file.size > maxSize) {
-        alert('파일 크기가 너무 큽니다. 10MB 이하의 파일을 선택해주세요.');
         if (e.target) {
           e.target.value = '';
         }
@@ -145,10 +154,10 @@ export default function DesignPortfolioForm({
     }
 
     // 공통 프로필이 없으면 먼저 생성
-    if (name || intro) {
+    if (currentName || currentIntro) {
       const commonProfileResult = await updateProfile({
-        username: name,
-        comment: intro,
+        username: currentName,
+        comment: currentIntro,
       });
       
       if (!commonProfileResult.success) {
@@ -187,10 +196,6 @@ export default function DesignPortfolioForm({
       formData.append("portfolio_url", "");
     }
     
-    console.log("FormData 내용 확인:");
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value instanceof File ? `File: ${value.name}` : value);
-    }
     
     // 프로필 존재 여부 확인 (404 에러 로깅 비활성화)
     const existingProfile = await getProfile("DE", true);
@@ -206,15 +211,14 @@ export default function DesignPortfolioForm({
     
     if (!result.success) {
       console.error("프로필 저장 실패:", result.error);
-      alert(`프로필 저장에 실패했습니다: ${result.error}`);
       return;
     }
     
     const designData = {
-      name,
-      intro,
+      name: currentName,
+      intro: currentIntro,
       dbtiInfo,
-      profileImage,
+      profileImage: currentProfileImage,
       selectedParts: updatedSelectedParts,
       experienceSummary,
       strengths,

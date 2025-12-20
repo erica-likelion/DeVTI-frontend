@@ -41,8 +41,18 @@ export default function BackendPortfolioForm({
 }: BackendPortfolioFormProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const locationState = location.state as { selectedParts?: string[] } | null;
+  const locationState = location.state as { 
+    selectedParts?: string[];
+    name?: string;
+    intro?: string;
+    profileImage?: string | null;
+  } | null;
   const currentSelectedParts = propSelectedParts || locationState?.selectedParts || [];
+  
+  // location.state에서 전달받은 이름과 한줄소개를 prop보다 우선 사용
+  const currentName = locationState?.name || name;
+  const currentIntro = locationState?.intro || intro;
+  const currentProfileImage = locationState?.profileImage || profileImage;
   
   const [experienceSummary, setExperienceSummary] = useState(
     portfolioData?.experienceSummary || ""
@@ -139,10 +149,10 @@ export default function BackendPortfolioForm({
     }
 
     // 공통 프로필이 없으면 먼저 생성
-    if (name || intro) {
+    if (currentName || currentIntro) {
       const commonProfileResult = await updateProfile({
-        username: name,
-        comment: intro,
+        username: currentName,
+        comment: currentIntro,
       });
       
       if (!commonProfileResult.success) {
@@ -205,10 +215,10 @@ export default function BackendPortfolioForm({
     }
 
     const backendData = {
-      name,
-      intro,
+      name: currentName,
+      intro: currentIntro,
       dbtiInfo,
-      profileImage,
+      profileImage: currentProfileImage,
       selectedParts: updatedSelectedParts,
       experienceSummary,
       strengths,

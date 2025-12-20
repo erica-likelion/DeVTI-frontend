@@ -64,7 +64,6 @@ export const ImageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.grayScale.gray100};
 `;
 
 export const Image = styled.img`
