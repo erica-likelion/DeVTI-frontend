@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WtMList from '@/components/list/WtMList';
 import { getMyRooms, type MyRoomInfo, type RoomErrorResponse } from '@/services/room';
+import { handleError } from '@/utils/errorHandler';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -21,8 +22,12 @@ export default function HomePage() {
         setRooms(response.data);
       } catch (error) {
         const roomError = error as RoomErrorResponse;
-        console.error('Failed to fetch rooms:', roomError);
-        // 에러 발생시도 /home/none으로 리다이렉트
+        // 404나 빈 데이터 관련 에러가 아닌 경우 에러 페이지로
+        if (roomError.code && roomError.code >= 500) {
+          handleError(error, { navigate });
+          return;
+        }
+        // 404나 빈 데이터의 경우 /home/none으로 리다이렉트
         navigate('/home/none', { replace: true });
         return;
       } finally {

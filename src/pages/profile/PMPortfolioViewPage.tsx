@@ -84,9 +84,7 @@ export default function PMPortfolioViewPage() {
         // PM 파트 프로필 조회
         const pmProfileResult = await getProfile("PM");
         if (pmProfileResult.success) {
-          console.log("PM profile loaded:", pmProfileResult.data);
         } else {
-          console.log("PM 프로필 데이터가 없습니다. 새로 작성할 수 있습니다.");
         }
       } catch (error) {
         console.error("프로필 로딩 실패:", error);
@@ -176,7 +174,6 @@ export default function PMPortfolioViewPage() {
       
       if (!commonProfileResult.success) {
         console.error("공통 프로필 저장 실패:", commonProfileResult.error);
-        alert("프로필 저장에 실패했습니다.");
         return;
       }
 
@@ -219,7 +216,6 @@ export default function PMPortfolioViewPage() {
       
       if (!pmProfileResult.success) {
         console.error("PM 프로필 저장 실패:", pmProfileResult.error);
-        alert("PM 프로필 저장에 실패했습니다.");
         return;
       }
       
@@ -244,7 +240,6 @@ export default function PMPortfolioViewPage() {
       });
     } catch (error) {
       console.error("프로필 저장 중 오류:", error);
-      alert("프로필 저장 중 오류가 발생했습니다.");
     }
   };
 

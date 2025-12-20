@@ -159,7 +159,6 @@ export default function ProfileDefaultPage() {
               try {
                 const partProfileResult = await getProfile(part);
                 if (partProfileResult.success && partProfileResult.data) {
-                  console.log(`${part} 프로필:`, partProfileResult.data);
                   partProfilesData[part] = partProfileResult.data;
                 }
               } catch (error) {
@@ -209,19 +208,13 @@ export default function ProfileDefaultPage() {
   };
 
   const handleDBTIClick = () => {
-    console.log('DBTI 버튼 클릭됨');
-    console.log('userDBTIResult:', userDBTIResult);
-    console.log('dbtiInfo:', dbtiInfo);
-    console.log('조건 체크:', !userDBTIResult && !dbtiInfo);
     
     // DBTI 정보가 없으면 DBTI 편집 페이지로 이동
     if (!userDBTIResult && !dbtiInfo) {
-      console.log('/profile/edit/dbti 페이지로 이동');
       navigate('/profile/edit/dbti');
       return;
     }
     
-    console.log('DBTI 결과를 right panel에 표시');
     // DBTI 결과를 right panel에 표시
     setShowDBTIResult(true);
     // 파트 선택 해제 (파트 버튼 비활성화)

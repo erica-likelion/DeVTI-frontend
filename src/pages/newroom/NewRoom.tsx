@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { InputField } from '@/components/Input';
 import BlackLTextButton from '@/components/ButtonStatic/BkLTextButton';
 import { createRoom, formatDateTimeForAPI, type RoomErrorResponse } from '@/services/room';
+import { handleError } from '@/utils/errorHandler';
 
 export default function NewRoom() {
     const navigate = useNavigate();
@@ -57,9 +58,10 @@ export default function NewRoom() {
                     alert('입력값이 올바르지 않습니다.');
                 }
             } else {
-                alert('매칭룸 생성에 실패했습니다. 다시 시도해주세요.');
+                // 서버 에러나 네트워크 에러인 경우 에러 페이지로 이동
+                handleError(error, { navigate });
+                return;
             }
-            console.error('Room creation error:', error);
         } finally {
             setIsLoading(false);
         }
