@@ -23,7 +23,7 @@ export default function ErrorPage400() {
       <S.Subtitle>죄송합니다, 클라이언트의 요청에 오류가 발생했습니다.</S.Subtitle>
       </S.TextWrapper>
       <S.ImageWrapper>
-        <S.ErrorImage src="/golden.webp" alt="400 Error" />
+        <S.ErrorImage src="/dog_error.webp" alt="400 Error" />
       </S.ImageWrapper>
       <S.ButtonWrapper>
         <BkLTextButton onClick={handleGoHome}>
