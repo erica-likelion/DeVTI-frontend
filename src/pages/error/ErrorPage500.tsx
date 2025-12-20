@@ -23,7 +23,7 @@ export default function ErrorPage500() {
         <S.Subtitle>죄송합니다, 서버에 오류가 발생했습니다.</S.Subtitle>
       </S.TextWrapper>
       <S.ImageWrapper>
-        <S.ErrorImage src="/golden.webp" alt="500 Error" />
+        <S.ErrorImage src="/dog_error.webp" alt="500 Error" />
       </S.ImageWrapper>
       <S.ButtonWrapper>
         <BkLTextButton onClick={handleGoHome}>
