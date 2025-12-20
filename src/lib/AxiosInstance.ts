@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '@/stores/authStore';
 
 
+
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'https://devti.site',
   timeout: 10000,
@@ -44,5 +45,20 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+export const getAuthToken = () =>
+  localStorage.getItem('access_token') || `150207ea9e570dd9fd7199614f81195ac124c1f4`;
+
+  axiosInstance.interceptors.request.use((config) => {
+  if (config.data instanceof FormData) {
+    delete config.headers['Content-Type'];
+  }
+
+  const token = getAuthToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default axiosInstance;
