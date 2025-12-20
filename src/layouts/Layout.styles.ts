@@ -72,8 +72,8 @@ export const Main = styled.main<{ $pathname: string }>`
   margin-top: 0;
   
   ${({ $pathname }) => {
-    // 로그인과 랜딩 페이지에서는 flex: 1로 남은 공간 차지하고 footer를 하단에 고정
-    if ($pathname === '/' || $pathname === '/landing' || $pathname === '/login' || $pathname === '/new-room' || $pathname === '/new-room/code' || $pathname.includes('/join-room')) {
+    // 로그인, 랜딩, 에러 페이지에서는 flex: 1로 남은 공간 차지하고 footer를 하단에 고정
+    if ($pathname === '/' || $pathname === '/landing' || $pathname === '/login' || $pathname === '/new-room' || $pathname === '/new-room/code' || $pathname.includes('/join-room') || $pathname.startsWith('/error')) {
       return `
         flex: 1;
         padding-bottom: 4.5rem;
