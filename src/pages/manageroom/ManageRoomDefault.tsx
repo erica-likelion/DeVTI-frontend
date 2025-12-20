@@ -7,6 +7,7 @@ import SegmentControl from '@/components/SegmentControl/SegmentControlTransparen
 import DropBox from '@/components/DropBox/DropBox';
 import VT700LButton from '@/components/ButtonDynamic/VT700LButton';
 import DefaultIMG_Profile from '/public/DefaultIMG_Profile.webp';
+import { getCurrentRoomId } from '@/utils/globalState';
 
 import { type Participant, ROLE_TABS, type RoleType } from '../room/RoomParticipants';
 
@@ -91,7 +92,7 @@ const ManageRoomDefault = ({ participants, matching_at, Wagging}: Props) => {
 
   const handleWaggingClick = async () => {
     if (isWagging) return;
-    const room_id = 14
+    const room_id = getCurrentRoomId();
 
     setIsWagging(true);
 

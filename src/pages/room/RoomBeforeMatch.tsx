@@ -47,6 +47,7 @@ const RoomBeforeMatch = ({ participants, recommendReason, isWagging }: Props) =>
   const now = Date.now();
 
   const startTime = getMatchingStartTime();
+  console.log(startTime);
   if (!startTime) {
     return {
       days: 0,
@@ -59,6 +60,8 @@ const RoomBeforeMatch = ({ participants, recommendReason, isWagging }: Props) =>
 
   const deadline = new Date(startTime.replace(' ', 'T') + '+09:00');
   const diff = deadline.getTime() - now;
+
+  console.log(deadline);
 
   // Invalid Date면 getTime()이 NaN이니까 같이 처리
   if (!Number.isFinite(diff) || diff <= 0) {
