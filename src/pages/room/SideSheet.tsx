@@ -17,7 +17,6 @@ import CopyBlackGray from "@/assets/icons/CopyBlackGray.svg"
 import DownloadIcon from "@/assets/icons/Download.svg";
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const TEST_TOKEN = import.meta.env.TEST_TOKEN;
 
 
 type Props = {

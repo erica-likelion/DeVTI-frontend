@@ -10,28 +10,28 @@ export const Container = styled.div<{ $size?: "M" | "L" }>`
   background: ${theme.colors.grayScale.white};
   box-shadow: 0 1px 12px 0 ${theme.colors.transparents.BL100};
   
-  ${({ theme, $size }) => theme.media.wide} {
+  ${({ theme }) => theme.media.wide} {
     width: ${({ $size, theme }) => $size === "L" ? theme.componentWidths.large.wide : '28rem'}; /* Component-Width-Large or Medium */
     height: 15.5rem;
     padding: ${({ theme }) => theme.gaps.R.wide}; /* 1.25rem */
     gap: ${({ theme }) => theme.gaps.XS.wide}; /* 0.75rem */
   }
 
-  ${({ theme, $size }) => theme.media.desktop} {
+  ${({ theme }) => theme.media.desktop} {
     width: ${({ $size, theme }) => $size === "L" ? theme.componentWidths.large.desktop : '28rem'}; /* Component-Width-Large or Medium */
     height: 15.5rem;
     padding: ${({ theme }) => theme.gaps.R.desktop}; /* 1.25rem */
     gap: ${({ theme }) => theme.gaps.XS.desktop}; /* 0.75rem */
   }
 
-  ${({ theme, $size }) => theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     width: ${({ $size, theme }) => $size === "L" ? theme.componentWidths.large.tablet : theme.componentWidths.medium.tablet};
     ${({ theme }) => theme.responsive.property.height('small')}
     ${({ theme }) => theme.responsive.property.padding('M')}
     ${({ theme }) => theme.responsive.property.gap('XS')}
   }
   
-  ${({ theme, $size }) => theme.media.mobile} {
+  ${({ theme }) => theme.media.mobile} {
     width: ${({ $size, theme }) => $size === "L" ? theme.componentWidths.large.mobile : theme.componentWidths.medium.mobile};
     height: 15.5rem;
     padding: ${({ theme }) => theme.gaps.R.mobile}; /* 0.625rem */
