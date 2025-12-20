@@ -18,7 +18,7 @@ interface ProfileEditPageProps {
 
 export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageProps) {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user, updateUser } = useAuthStore();
   const [selectedPart, setSelectedPart] = useState<string>('');
   const [isDropBoxOpen, setIsDropBoxOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -44,8 +44,12 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
         const result = await getProfile();
         if (!isMounted) return;
         if (result.success && result.data) {
-          setName(result.data.username || user?.name || '');
+          const nextName = result.data.username || user?.name || '';
+          setName(nextName);
           setIntro(result.data.comment || '');
+          if (nextName && nextName !== user?.name) {
+            updateUser({ name: nextName });
+          }
           
           if (result.data.available_parts?.length) {
             setHasAvailableParts(true);
@@ -92,6 +96,7 @@ export default function ProfileEditPage({ onMoveToDBTIResult }: ProfileEditPageP
         return;
       }
       
+      updateUser({ name: name.trim() });
       navigate('/profile/default');
     } catch (error) {
       handleError(error, { navigate });

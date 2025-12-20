@@ -173,7 +173,7 @@ export default function ProfileDefaultPage() {
       }
     };
     loadProfile();
-  }, []); // 컴포넌트 마운트 시 한 번만 실행
+  }, [location.key, portfolioData, profileInfo.intro, profileInfo.name]); // 상태 변경 시 재호출
   
   // 초기 선택된 파트 설정 (저장된 첫 번째 파트 또는 location.state의 파트)
   useEffect(() => {
@@ -702,4 +702,3 @@ export default function ProfileDefaultPage() {
     </>
   );
 }
-

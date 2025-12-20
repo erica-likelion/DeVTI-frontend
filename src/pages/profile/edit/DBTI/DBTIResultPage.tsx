@@ -13,6 +13,7 @@ import DBTIResult from '@/components/DBTI/DBTIResult';
 import { DBTI_QUESTIONS, QUESTIONS_PER_PAGE, TOTAL_PAGES, getQuestionsForPage } from '@/constants/DBTIQuestions';
 import { useDBTI } from '@/hooks/useDBTI';
 import { starsToScore } from '@/services/dbti';
+import { getProfile } from '@/services/profile';
 
 interface DBTIResultPageProps {
   onRetakeTest?: () => void;
@@ -72,6 +73,37 @@ export default function DBTIResultPage({ hideRetakeButton = false, isInDefaultPa
       setStep('result');
     }
   }, [result, updateUser]);
+
+  useEffect(() => {
+    if (user?.dbti) {
+      return;
+    }
+    
+    let isMounted = true;
+    const loadProfileDevti = async () => {
+      try {
+        const profileResult = await getProfile(undefined, true);
+        if (!isMounted || !profileResult.success || !profileResult.data) {
+          return;
+        }
+        
+        const resolvedDbtiId = typeof profileResult.data.devti === 'number'
+          ? profileResult.data.devti
+          : getDBTIIdFromCode(profileResult.data.devti);
+        
+        if (resolvedDbtiId) {
+          updateUser({ dbti: resolvedDbtiId });
+        }
+      } catch (error) {
+        console.error('프로필 DBTI 로드 실패:', error);
+      }
+    };
+    
+    loadProfileDevti();
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.dbti, updateUser]);
 
   // API 에러 처리
   useEffect(() => {
